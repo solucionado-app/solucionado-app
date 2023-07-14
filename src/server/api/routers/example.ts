@@ -10,6 +10,7 @@ export const exampleRouter = createTRPCRouter({
       };
     }),
   getAll: publicProcedure.query(({ ctx }) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return ctx.prisma.example.findMany();
   }),
 });
