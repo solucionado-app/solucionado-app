@@ -89,10 +89,10 @@ export default function Nav() {
                 </ul>
                 <div className="hidden lg:flex">
                     {!user.isSignedIn && <>
-                        <Link className="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold  rounded-xl transition duration-200" href="/login">Sign In</Link>
-                        <Link className="hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200" href="/registro">Sign up</Link>
+                        <Link className="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold  rounded-xl transition duration-200" href="/login">Iniciar Sesión</Link>
+                        <Link className="hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200" href="/registro">Registrarse</Link>
                     </>}
-                    {!!user.isSignedIn && <SignOutButton>
+                    {!!user.isSignedIn && <SignOutButton >
                         <button className="hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200">Cerrar Sesion</button>
                     </SignOutButton>
                     }
@@ -126,8 +126,8 @@ export default function Nav() {
                     </div>
                     <div className="mt-auto">
                         {!user.isSignedIn && <div className="pt-6">
-                            <Link className="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold  bg-gray-50 hover:bg-gray-100 rounded-xl" href="/login">Sign in</Link>
-                            <Link className="block px-4 py-3 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700  rounded-xl" href="/registro">Sign Up</Link>
+                            <Link className="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold  bg-gray-50 hover:bg-gray-100 rounded-xl" href="/login">Iniciar Sesión</Link>
+                            <Link className="block px-4 py-3 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700  rounded-xl" href="/registro">Registrarse</Link>
                         </div>}
                         {!!user.isSignedIn && <SignOutButton>
                             <button className="hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200">Cerrar Sesion</button>
