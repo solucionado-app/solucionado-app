@@ -130,7 +130,7 @@ export default function Nav() {
                             <Link className="block px-4 py-3 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700  rounded-xl" href="/registro">Registrarse</Link>
                         </div>}
                         {!!user.isSignedIn && <SignOutButton>
-                            <button className="hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200">Cerrar Sesion</button>
+                            <button className="  py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200">Cerrar Sesion</button>
                         </SignOutButton>
                         }
 
