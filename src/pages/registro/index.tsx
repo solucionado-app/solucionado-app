@@ -1,5 +1,11 @@
 import { SignUp } from "@clerk/nextjs";
+import { type MyPage } from "~/components/types/types";
 
-export default function Page() {
+
+const Page: MyPage = () => {
     return <SignUp />;
 }
+
+
+export default Page;
+Page.Layout = "Auth";
