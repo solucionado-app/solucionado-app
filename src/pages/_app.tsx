@@ -1,11 +1,23 @@
 import { ClerkProvider } from "@clerk/nextjs";
-import { type AppType } from "next/app";
+import { type MyAppProps } from "~/components/types/types";
+import { Layouts } from "~/components/layouts/Layouts";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
 
-const MyApp: AppType = ({ Component, pageProps }) => {
-  return <ClerkProvider {...pageProps}>
-    <Component {...pageProps} /></ClerkProvider>;
-};
+function MyApp({ Component, pageProps }: MyAppProps) {
 
+  const Layout = Layouts[Component.Layout] ?? ((page) => page);
+
+  return (
+    <ClerkProvider {...pageProps}>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </ClerkProvider>
+  );
+}
 export default api.withTRPC(MyApp);
+
+
+
+
