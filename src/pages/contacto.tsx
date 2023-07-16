@@ -1,13 +1,9 @@
-import exp from "constants";
-import { Contact } from "lucide-react";
 import Head from "next/head";
 import Link from "next/link";
 import Cardhome from "~/components/cards/Cardhome";
-import { MyPage } from "~/components/types/types";
-import { api } from "~/utils/api";
+import { type MyPage } from "~/components/types/types";
 
 const Contacto: MyPage = () => {
-    const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
     return (
         <>
@@ -48,7 +44,6 @@ const Contacto: MyPage = () => {
                         </Link>
                     </div>
                     <p className="text-2xl text-white">
-                        {hello.data ? hello.data.greeting : "Loading tRPC query..."}
                     </p>
                 </div>
             </main>
