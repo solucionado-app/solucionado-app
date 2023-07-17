@@ -25,14 +25,14 @@ const Home: MyPage = () => {
           <div className="flex flex-row flex-wrap gap-4">
             {categories?.map((categorie) => (
               <div key={categorie.id}>
-                <div className="relative w-[320px] h-52">
+                <div className="relative w-[320px] h-52  ">
                   <Link href={"/solucionar/" + slugify(categorie.name)}>
 
-                    <Image src={`/${categorie.name}.jpg`} alt="coso" fill={true} />
+                    <Image className="rounded-t-sm rounded-none" src={`/${categorie.name}.jpg`} alt={categorie.description} fill={true} />
 
                   </Link>
                 </div>
-                <Card className="w-[320px] border-2 h-36 text-gray-900 bg-slate-50 shadow-md rounded-sm">
+                <Card className="w-[320px] border-2 h-36 text-gray-900 bg-slate-50 shadow-md rounded-sm rounded-t-none">
                   <CardHeader>
                     <CardTitle>{categorie.name}</CardTitle>
                     <CardDescription>{categorie.description}</CardDescription>
