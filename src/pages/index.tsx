@@ -17,9 +17,9 @@ const Home: MyPage = () => {
     <>
       <MainHead title="Solucionado App" description="app solucionado" />
 
-      <main className="flex min-h-screen flex-col items-center justify-center text-white ">
+      <main className="flex min-h-screen flex-col items-center  ">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
+          <h1 className="text-5xl font-extrabold tracking-tight  sm:text-[5rem]">
             <span className="text-[hsl(280,100%,70%)]">Solucionado</span> App
           </h1>
           <div className="flex flex-row flex-wrap gap-4">
@@ -28,7 +28,7 @@ const Home: MyPage = () => {
                 <div className="relative w-[320px] h-52  ">
                   <Link href={"/solucionar/" + slugify(categorie.name)}>
 
-                    <Image className="rounded-t-sm rounded-none" src={`/${categorie.name}.jpg`} alt={categorie.description} fill={true} />
+                    <Image className="rounded-t-sm rounded-none" src={`/${slugify(categorie.name)}.jpg`} alt={categorie.description} fill={true} />
 
                   </Link>
                 </div>

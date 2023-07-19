@@ -22,7 +22,7 @@ interface FormSchemaType {
     }>
 }
 
-const RegisterCommonUser = () => {
+const RegisterSolucionadorUser = () => {
     const phoneRegex = new RegExp(
         /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
     );
@@ -64,7 +64,7 @@ const RegisterCommonUser = () => {
             onSubmit={handleSubmit(onSubmit)}
             className={``}
         >
-            <div className={'flex flex-col gap-2'}>
+            <div className={'flex flex-col gap-2 p-4'}>
                 <div className="grid grid-cols-2 gap-5  ">
 
                     <div className="flex flex-col ">
@@ -164,7 +164,7 @@ const RegisterCommonUser = () => {
 
 
                 <button
-                    className='block mb-6 text-gray-900 bg-orange-pastel text-lg mb-1 rounded py-2.5 w-full'
+                    className='block  text-gray-50 bg-sky-500 text-lg mb-1 rounded py-2.5 w-full'
                     type="submit"
                     disabled={isSubmitting}
                 >
@@ -175,4 +175,4 @@ const RegisterCommonUser = () => {
     );
 };
 
-export default RegisterCommonUser;
+export default RegisterSolucionadorUser;

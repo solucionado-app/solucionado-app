@@ -1,4 +1,4 @@
-import RegisterCommonUser from "~/components/auth/RegisterCommonUser";
+import RegisterCommonUser from "~/components/auth/RegisterSolucionadorUser-example";
 import { type MyPage } from "~/components/types/types";
 
 const Page: MyPage = () => {

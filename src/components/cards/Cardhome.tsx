@@ -9,7 +9,7 @@ interface Props {
 export default function Cardhome({ text, titulo }: Props) {
     return (
         <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
+            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4  hover:bg-white/20"
             href="https://create.t3.gg/en/usage/first-steps"
             target="_blank"
         >

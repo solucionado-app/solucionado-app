@@ -72,19 +72,14 @@ export default function Nav() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                         </svg>
                     </li>
-                    <li><a className={`text-sm ${router.asPath === "/sobre-nosotros" ? "text-blue-600 font-bold" : "text-gray-400"}`} href="/sobre-nosotros">About Us</a></li>
+                    <li><a className={`text-sm ${router.asPath === "/sobre-nosotros" ? "text-blue-600 font-bold" : "text-gray-400"}`} href="/sobre-nosotros">Sobre nosotros</a></li>
+
                     <li className="text-gray-300">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" className="w-4 h-4 current-fill" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                         </svg>
                     </li>
-                    <li><a className={`text-sm ${router.asPath === "" ? "text-blue-600 font-bold " : "text-gray-400"} text-gray-400 hover:text-gray-500`} href="#">Services</a></li>
-                    <li className="text-gray-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" className="w-4 h-4 current-fill" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                        </svg>
-                    </li>
-                    <li><Link className={`text-sm ${router.asPath === "/contacto" ? "text-blue-600 font-bold" : "text-gray-400"}  hover:text-gray-500`} href="/contacto">Contact</Link></li>
+                    <li><Link className={`text-sm ${router.asPath === "/contacto" ? "text-blue-600 font-bold" : "text-gray-400"}  hover:text-gray-500`} href="/contacto">Contacto</Link></li>
                 </ul>
                 <div className="hidden lg:flex">
                     {!user.isSignedIn && <>
@@ -117,6 +112,9 @@ export default function Nav() {
                         <ul>
                             <li className="mb-1">
                                 <Link className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/">Home</Link>
+                            </li>
+                            <li className="mb-1">
+                                <Link className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/">Sobre Nosotros</Link>
                             </li>
                             <li className="mb-1">
                                 <Link className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="/contacto">Contacto</Link>

@@ -14,12 +14,12 @@ const Contacto: MyPage = () => {
             </Head>
             <main className="flex min-h-screen flex-col items-center justify-center ">
                 <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-                    <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
+                    <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
                         Contacto
                     </h1>
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
                         <Link
-                            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
+                            className="flex max-w-xs flex-col gap-4 rounded-xl bg-gray-800/10 p-4 hover:bg-gray-800/20"
                             href="https://create.t3.gg/en/usage/first-steps"
                             target="_blank"
                         >
@@ -29,10 +29,9 @@ const Contacto: MyPage = () => {
                                 database and authentication.
                             </div>
                         </Link>
-                        <Cardhome text={"gay"} titulo="prueba" />
 
                         <Link
-                            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
+                            className="flex max-w-xs flex-col gap-4 rounded-xl bg-gray-800/10 p-4 hover:bg-gray-800/20"
                             href="https://create.t3.gg/en/introduction"
                             target="_blank"
                         >
@@ -43,8 +42,7 @@ const Contacto: MyPage = () => {
                             </div>
                         </Link>
                     </div>
-                    <p className="text-2xl text-white">
-                    </p>
+
                 </div>
             </main>
         </>
