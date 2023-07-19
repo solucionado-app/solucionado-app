@@ -12,12 +12,12 @@ import { slugify } from "~/utils/utils";
 const Home: MyPage = () => {
   const apitrcp = api.categories.getAll.useQuery();
   const { data: categories } = apitrcp;
-  console.log(apitrcp);
+  // console.log(apitrcp);
   return (
     <>
       <MainHead title="Solucionado App" description="app solucionado" />
 
-      <main className="flex min-h-screen flex-col items-center justify-center text-white bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+      <main className="flex min-h-screen flex-col items-center justify-center text-white ">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             <span className="text-[hsl(280,100%,70%)]">Solucionado</span> App
