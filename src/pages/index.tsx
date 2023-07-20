@@ -11,7 +11,7 @@ import { slugify } from "~/utils/utils";
 // HomePage.Layout = "OtherLayout"; -> error Type '"OtherLayout"' is not assignable to type '"Main" | "Admin" | undefined'.
 const Home: MyPage = () => {
   const apitrcp = api.categories.getAll.useQuery();
-  const { data: categories } = apitrcp;
+  const { data: categories, isLoading } = apitrcp;
   // console.log(apitrcp);
   return (
     <>
@@ -23,6 +23,7 @@ const Home: MyPage = () => {
             <span className="text-[hsl(280,100%,70%)]">Solucionado</span> App
           </h1>
           <div className="flex flex-row flex-wrap gap-4">
+            {isLoading && <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>}
             {categories?.map((categorie) => (
               <div key={categorie.id}>
                 <div className="relative w-[320px] h-52  ">

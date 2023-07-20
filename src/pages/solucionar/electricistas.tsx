@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { ElectricistasForm } from "~/components/formularios/Electricistas";
 
 import { type MyPage } from "~/components/types/types";
 
@@ -17,6 +18,7 @@ const Contacto: MyPage = () => {
                     Electricistas
                 </h1>
 
+                <ElectricistasForm />
             </div>
 
         </>

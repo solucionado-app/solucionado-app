@@ -128,7 +128,7 @@ export function RegisterSolucionadorUser() {
                         </FormItem>
                     )}
                 />
-                {/* <FormField
+                <FormField
                     control={form.control}
                     name="categories"
                     render={({ field }) => (
@@ -158,7 +158,7 @@ export function RegisterSolucionadorUser() {
                             <FormMessage />
                         </FormItem>
                     )}
-                /> */}
+                />
 
                 <Button type="submit">Registrarse</Button>
             </form>
