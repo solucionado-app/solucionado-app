@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { ElectricistasForm } from "~/components/formularios/electricistas";
+import { PintoresForm } from "~/components/formularios/pintores";
 
 import { type MyPage } from "~/components/types/types";
 
@@ -15,10 +15,9 @@ const Contacto: MyPage = () => {
 
             <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
                 <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-                    Electricistas
+                    Pintores
                 </h1>
-
-                <ElectricistasForm />
+                <PintoresForm />
             </div>
 
         </>
