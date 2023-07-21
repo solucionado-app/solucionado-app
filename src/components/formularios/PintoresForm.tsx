@@ -16,53 +16,61 @@ import { Textarea } from "~/components/ui/textarea"
 // import { Input } from "~/components/ui/input"
 
 import { useForm } from "react-hook-form";
-import { 
-    Select, 
-    SelectContent, 
-    SelectItem, 
-    SelectTrigger, 
-    SelectValue 
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
 } from "../ui/select"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 
 
 const formSchema = z.object({
     tipoSuperficie: z
-    .string({
-      required_error: "El tipo de superficie es requerido",
-    }),
+        .string({
+            required_error: "El tipo de superficie es requerido",
+        }),
 
     tipoPared: z
-    .string({
-      required_error: "El tipo de pared es requerido",
-    }),
+        .string({
+            required_error: "El tipo de pared es requerido",
+        }),
 
     imperfecciones: z
-    .string()
-    .min(10, {
-      message: "Debe tener al menos 10 caracteres.",
-    })
-    .max(160, {
-      message: "Debe tener maximo 130 caracteres.",
-    }),
-    
+        .string()
+        .min(10, {
+            message: "Debe tener al menos 10 caracteres.",
+        })
+        .max(160, {
+            message: "Debe tener maximo 130 caracteres.",
+        }),
+
     tipoCotizacionPintura: z
-    .string({
-      required_error: "El tipo de cotizacion es requerido",
-    }),
+        .string({
+            required_error: "El tipo de cotizacion es requerido",
+        }),
 
     elementosPintura: z.enum(["Si", "No"], {
         required_error: "Debe elegir una opcion",
-      }),
+    }),
 
     encargadoMaterialesPintura: z.enum(["Si", "No"], {
         required_error: "Debe elegir una opcion",
-      }),
+    }),
 });
 export function PintoresForm() {
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema)
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            tipoSuperficie: "",
+            tipoPared: "",
+            imperfecciones: "",
+            tipoCotizacionPintura: "",
+            elementosPintura: "Si",
+            encargadoMaterialesPintura: "Si",
+        },
     })
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
@@ -72,7 +80,7 @@ export function PintoresForm() {
         console.log(values)
     }
     // ...
-
+    console.log(form.control)
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -83,7 +91,10 @@ export function PintoresForm() {
                         <FormItem>
                             <FormLabel>¿Qué desea pintar?</FormLabel>
                             <FormControl>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <Select onValueChange={(e) => {
+                                    console.log(e)
+                                    field.onChange
+                                }} defaultValue={field.value}>
                                     <SelectTrigger className="w-[180px]">
                                         <SelectValue placeholder="Seleccione un opción" />
                                     </SelectTrigger>
@@ -103,10 +114,10 @@ export function PintoresForm() {
                 />
 
                 {/* esto de deberia mostrar si el cliente elige la opcion "Pared" */}
-                <FormField
+                {<FormField
                     control={form.control}
                     name="tipoPared"
-                    render={({ field }) => (                        
+                    render={({ field }) => (
                         <FormItem>
                             <FormLabel>¿Qué tipo de pared es?</FormLabel>
                             <FormControl>
@@ -128,7 +139,7 @@ export function PintoresForm() {
                             <FormMessage />
                         </FormItem>
                     )}
-                />
+                />}
 
                 <FormField
                     control={form.control}
@@ -137,11 +148,11 @@ export function PintoresForm() {
                         <FormItem>
                             <FormLabel>¿Cuenta con imperfecciones?</FormLabel>
                             <FormControl>
-                            <Textarea
-                                placeholder="Escriba los detalles aquí...f"
-                                className="resize-none"
-                                {...field}
-                            />
+                                <Textarea
+                                    placeholder="Escriba los detalles aquí...f"
+                                    className="resize-none"
+                                    {...field}
+                                />
                             </FormControl>
                             <FormDescription>
                             </FormDescription>
@@ -152,7 +163,7 @@ export function PintoresForm() {
                 <FormField
                     control={form.control}
                     name="tipoCotizacionPintura"
-                    render={({ field }) => (                        
+                    render={({ field }) => (
                         <FormItem>
                             <FormLabel>¿En base a qué desea que sea la cotización?</FormLabel>
                             <FormControl>
@@ -169,86 +180,87 @@ export function PintoresForm() {
                                 </Select>
                             </FormControl>
                             <FormMessage />
-                            <FormDescription>
-                                <div className="w-[465px] text-sm bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4"
-                                    role="alert">
-                                    <p className="font-bold">Nota</p>
-                                    <p>Si no selecciona una opción, correrá por cuenta del solucionador definir quemétodo de presupuestacion desee utilizar.</p>
-                                </div>
-                            </FormDescription>
+                            <div className="w-[465px] text-sm
+                             bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4"
+                                role="alert">
+                                <p className="font-bold">Nota</p>
+                                <FormDescription>
+                                    Si no selecciona una opción, correrá por cuenta del solucionador definir que método de presupuestacion desee utilizar.
+                                </FormDescription>
+                            </div>
                         </FormItem>
                     )}
                 />
 
                 <FormField
-                control={form.control}
-                name="elementosPintura"
-                render={({ field }) => (
-                    <FormItem className="space-y-3">
-                    <FormLabel>¿Cuenta con los siguientes elementos?: rodillo, pincel fino/grueso, pintura que desea, u otro.</FormLabel>
-                    <FormControl>
-                        <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className="flex flex-col space-y-1"
-                        >
-                            <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                    <RadioGroupItem value="Si" />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                    Si
-                                </FormLabel>
-                            </FormItem>
-                            <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                    <RadioGroupItem value="No" />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                    No
-                                </FormLabel>
-                            </FormItem>
-                        </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
-                )}
+                    control={form.control}
+                    name="elementosPintura"
+                    render={({ field }) => (
+                        <FormItem className="space-y-3">
+                            <FormLabel>¿Cuenta con los siguientes elementos?: rodillo, pincel fino/grueso, pintura que desea, u otro.</FormLabel>
+                            <FormControl>
+                                <RadioGroup
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                    className="flex flex-col space-y-1"
+                                >
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                            <RadioGroupItem value="Si" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">
+                                            Si
+                                        </FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                            <RadioGroupItem value="No" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">
+                                            No
+                                        </FormLabel>
+                                    </FormItem>
+                                </RadioGroup>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
                 />
 
                 {/* esto de deberia mostrar si el cliente no cuenta con los materiales de trabajo */}
                 <FormField
-                control={form.control}
-                name="encargadoMaterialesPintura"
-                render={({ field }) => (
-                    <FormItem className="space-y-3">
-                    <FormLabel>¿Desea que el pintor se encargue de buscar los materiales y pasar un presupuesto del mismo</FormLabel>
-                    <FormControl>
-                        <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className="flex flex-col space-y-1"
-                        >
-                            <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                    <RadioGroupItem value="Si" />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                    Si
-                                </FormLabel>
-                            </FormItem>
-                            <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                    <RadioGroupItem value="No" />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                    No
-                                </FormLabel>
-                            </FormItem>
-                        </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                    </FormItem>
-                )}
+                    control={form.control}
+                    name="encargadoMaterialesPintura"
+                    render={({ field }) => (
+                        <FormItem className="space-y-3">
+                            <FormLabel>¿Desea que el pintor se encargue de buscar los materiales y pasar un presupuesto del mismo</FormLabel>
+                            <FormControl>
+                                <RadioGroup
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                    className="flex flex-col space-y-1"
+                                >
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                            <RadioGroupItem value="Si" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">
+                                            Si
+                                        </FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                            <RadioGroupItem value="No" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">
+                                            No
+                                        </FormLabel>
+                                    </FormItem>
+                                </RadioGroup>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
                 />
                 <Button type="submit">Cotizar</Button>
             </form>

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { PintoresForm } from "~/components/formularios/pintores";
+import { PintoresForm } from "~/components/formularios/PintoresForm";
 
 import { type MyPage } from "~/components/types/types";
 
