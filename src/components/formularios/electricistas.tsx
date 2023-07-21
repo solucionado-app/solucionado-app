@@ -21,8 +21,7 @@ import { useRouter } from "next/router"
 import { trpc } from "~/utils/trpc";
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from "../ui/dialog"
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog"
-import { Label } from "../ui/label"
-import { use, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 const formSchema = z.object({
     numeroDeLamparas: z.coerce.number({ required_error: "Debes introducir un numero de lamparas", }),
 });
@@ -38,7 +37,7 @@ export function ElectricistasForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            numeroDeLamparas: typeof numeroDeLamparas === "string" ? parseInt(numeroDeLamparas) : 1,
+            numeroDeLamparas: typeof numeroDeLamparas === "string" ? numeroDeLamparasNumber : 1,
         },
     });
     useEffect(() => {
@@ -53,6 +52,7 @@ export function ElectricistasForm() {
     const utils = trpc.useContext()
 
     const mutation = api.serviceRequest.create.useMutation({
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         onSuccess: (input) => {
             void utils.serviceRequest.getAll.invalidate()
         },

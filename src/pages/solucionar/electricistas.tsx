@@ -1,9 +1,7 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { ElectricistasForm } from "~/components/formularios/Electricistas";
 
 import { type MyPage } from "~/components/types/types";
-import { api } from "~/utils/api";
 
 const Contacto: MyPage = () => {
 

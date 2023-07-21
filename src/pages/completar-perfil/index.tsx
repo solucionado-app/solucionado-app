@@ -1,14 +1,11 @@
-import { useUser } from "@clerk/nextjs";
-import Link from "next/link";
 import { RegisterSolucionadorUser } from "~/components/auth/RegisterSolucionadorUser";
-import { RegisterUser } from "~/components/auth/RegisterUser";
 import RegisterUserDialog from "~/components/auth/RegisterUserDialog";
 import { type MyPage } from "~/components/types/types";
 
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
+
     DialogHeader,
     DialogTitle,
     DialogTrigger,

@@ -1,13 +1,9 @@
 import { api } from "~/utils/api";
 import React from "react";
 import { type MyPage } from "~/components/types/types";
-import { Card, CardDescription, CardHeader, CardTitle } from "~/components/cards/CardComponent";
-import Image from "next/image";
+import { Card } from "~/components/cards/CardComponent";
 import MainHead from "~/components/layouts/head/MainHead";
-import Link from "next/link";
-import { slugify } from "~/utils/utils";
 import { useUser } from "@clerk/nextjs";
-import { object } from "zod";
 
 
 
@@ -39,10 +35,11 @@ const ServiceRequest: MyPage = () => {
                                     {service.category.name}
                                 </div>
                                 {
-                                    Object.keys(service?.details).map((key, i) => (
+                                    service?.details && Object.keys(service?.details).map((key: string, i) => (
+
                                         <p key={i}>
                                             <span> {key.replace(rex, '$1$4 $2$3$5')}</span>
-                                            <span> {service?.details[key]}</span>
+                                            <span> {service?.details && service?.details[key as keyof typeof service.details]}</span>
                                         </p>
                                     ))
                                 }
