@@ -1,5 +1,8 @@
 import Head from "next/head";
 
+import { PlomerosForm } from "~/components/formularios/plomeros";
+
+
 import { type MyPage } from "~/components/types/types";
 
 const Contacto: MyPage = () => {
@@ -16,6 +19,7 @@ const Contacto: MyPage = () => {
                     <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
                         Plomeros
                     </h1>
+                    <PlomerosForm />
 
                 </div>
             </main>

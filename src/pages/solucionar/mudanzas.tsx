@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { FletesForm } from "~/components/formularios/fletes";
 
 import { type MyPage } from "~/components/types/types";
 
@@ -16,7 +17,7 @@ const Contacto: MyPage = () => {
                     <h1 className="text-5xl font-extrabold tracking-tight  sm:text-[5rem]">
                         Mudanzas
                     </h1>
-
+                    <FletesForm />
                 </div>
             </main>
         </>

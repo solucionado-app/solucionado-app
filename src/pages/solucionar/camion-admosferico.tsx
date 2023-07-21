@@ -1,7 +1,5 @@
 import Head from "next/head";
-
-import { ElectricistasForm } from "../../components/formularios/ElectricistasForm";
-
+import { CamionAdmosfericoForm } from "~/components/formularios/camion-admosferico";
 
 import { type MyPage } from "~/components/types/types";
 
@@ -20,7 +18,7 @@ const Contacto: MyPage = () => {
                     Electricistas
                 </h1>
 
-                <ElectricistasForm />
+                <CamionAdmosfericoForm />
             </div>
 
         </>
