@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { SignOutButton, useUser } from "@clerk/nextjs";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
 
 export default function Nav() {
 
@@ -86,9 +87,15 @@ export default function Nav() {
                         <Link className="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold  rounded-xl transition duration-200" href="/login">Iniciar Sesión</Link>
                         <Link className="hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200" href="/registro">Registrarse</Link>
                     </>}
-                    {!!user.isSignedIn && <SignOutButton >
-                        <button className="hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200">Cerrar Sesion</button>
-                    </SignOutButton>
+                    {!!user.isSignedIn && <div className="flex gap-2">
+                        <Avatar className="cursor-pointer" onClick={() => { void router.push("/perfil") }}>
+                            <AvatarImage src={user.user.imageUrl} />
+                            <AvatarFallback><div className="animate-spin rounded-full  border-b-2 border-gray-900"></div></AvatarFallback>
+                        </Avatar>
+                        <SignOutButton >
+                            <button className="hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200">Cerrar Sesion</button>
+                        </SignOutButton>
+                    </div>
                     }
                 </div>
             </nav>
