@@ -12,7 +12,6 @@ import {
     FormLabel,
     FormMessage,
 } from "~/components/ui/form"
-import { Input } from "~/components/ui/input"
 
 import { useForm } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
@@ -20,7 +19,7 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 const formSchema = z.object({
     elementosPintura: z.enum(["Si", "No"], {
         required_error: "Debe elegir una opcion",
-      }),
+    }),
 });
 export function ArmadoresDeMueblesForm() {
     // 1. Define your form.
@@ -44,7 +43,7 @@ export function ArmadoresDeMueblesForm() {
                 name="elementosPintura"
                 render={({ field }) => (
                     <FormItem className="space-y-3">
-                        <FormLabel>¿Cuenta con los siguientes elementos?: rodillo, pincel fino/grueso, pintura que desea, u otro.</FormLabel>
+                        <FormLabel>¿Tiene herramientas necesarias para armar lo que solicita?</FormLabel>
                         <FormControl>
                             <RadioGroup
                             onValueChange={field.onChange}
@@ -70,6 +69,13 @@ export function ArmadoresDeMueblesForm() {
                             </RadioGroup>
                         </FormControl>
                         <FormMessage />
+                        <FormDescription>
+                            <div className="w-[465px] text-sm bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4"
+                                role="alert">
+                                <p className="font-bold">Nota</p>
+                                <p>Este trabajo se cotizará en base al elemento a armar.</p>
+                            </div>
+                        </FormDescription>
                     </FormItem>
                 )}
                 />

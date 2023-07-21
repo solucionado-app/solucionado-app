@@ -12,7 +12,6 @@ import {
     FormLabel,
     FormMessage,
 } from "~/components/ui/form"
-import { Input } from "~/components/ui/input"
 
 import { useForm } from "react-hook-form";
 import { Select,
@@ -25,7 +24,7 @@ import { Select,
 const formSchema = z.object({
     tipoSuperficie: z
     .string({
-      required_error: "El tipo de superficie es requerido",
+      required_error: "Dene elegir un a opción",
     }),
 });
 export function PlomerosForm() {
