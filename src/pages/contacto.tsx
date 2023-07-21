@@ -1,6 +1,5 @@
 import Head from "next/head";
 import Link from "next/link";
-import Cardhome from "~/components/cards/Cardhome";
 import { type MyPage } from "~/components/types/types";
 
 const Contacto: MyPage = () => {

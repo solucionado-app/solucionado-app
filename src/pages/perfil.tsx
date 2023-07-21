@@ -1,10 +1,9 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { type MyPage } from "~/components/types/types";
 import { RedirectToSignIn, SignedIn, SignedOut, UserProfile } from '@clerk/nextjs';
 
 
-export default function MyProfile(props: MyPage) {
+const MyProfile: MyPage = () => {
     return (
         <div>
             <SignedIn>
@@ -20,3 +19,4 @@ export default function MyProfile(props: MyPage) {
 
 MyProfile.Layout = "Main";
 
+export default MyProfile

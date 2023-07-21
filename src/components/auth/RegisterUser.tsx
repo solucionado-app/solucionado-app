@@ -16,6 +16,7 @@ import { Input } from "~/components/ui/input"
 
 import { useForm } from "react-hook-form";
 import { useUser } from "@clerk/nextjs"
+import { api } from "~/utils/api"
 
 
 const phoneRegex = new RegExp(
@@ -31,13 +32,20 @@ export function RegisterUser() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema)
     })
-    const user = useUser()
-    console.log(user)
+    const { user, isSignedIn } = useUser()
+    if (!isSignedIn) return null
+    const { id } = user
+    const { mutate } = api.user.update.useMutation()
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-
+        mutate({
+            userId: id,
+            phone: values.phone,
+            dni: values.dni,
+            address: values.address,
+        })
         console.log(values)
     }
     // ...

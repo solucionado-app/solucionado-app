@@ -12,43 +12,147 @@ datasource db {
 }
 
 model User {
-    id         Int        @id @default(autoincrement())
-    externalId String     @unique
-    first_name String
-    last_name  String
-    email      String     @unique
-    phone      String?    @unique
-    address    String?
-    dni        String?    @unique
-    password   String?
-    image_url  String?
-    createdAt  DateTime   @default(now())
-    updatedAt  DateTime   @updatedAt
-    categories Category[]
-    roleId     Int
-    role       Role       @relation(fields: [roleId], references: [id])
+    id              String           @id @default(cuid())
+    externalId      String           @unique
+    first_name      String
+    last_name       String
+    email           String           @unique
+    phone           String?          @unique
+    address         String?
+    dni             String?          @unique
+    password        String?
+    image_url       String?
+    cbu             String?
+    cuit            String?
+    createdAt       DateTime         @default(now())
+    updatedAt       DateTime         @updatedAt
+    serviceRequests ServiceRequest[]
+    categories      Category[]
+    roleId          Int
+    role            Role             @default(USER)
+    comentsmade     Comment[]        @relation("comentAuthor")
+    comentsRecieved Comment[]        @relation("comentUser")
+    budgets         Budget[]
+    reviewsMade     Review[]         @relation("author")
+    reviewsRecieved Review[]         @relation("solucionador")
 
     @@index([roleId], name: "roleId")
 }
 
-model Role {
-    id          Int    @id @default(autoincrement())
+model ServiceRequest {
+    id         String   @id @default(cuid())
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+    userId     String
+    user       User     @relation(fields: [userId], references: [externalId])
+    categoryId Int
+    category   Category @relation(fields: [categoryId], references: [id])
+    status     Status   @default(PENDING)
+    details    Json?
+    bugdets    Budget[]
+
+    @@index([categoryId])
+    @@index([userId])
+}
+
+model Budget {
+    id          String   @id @default(cuid())
+    description String
+    status      Status   @default(PENDING)
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    userId      String
+    user        User     @relation(fields: [userId], references: [id])
+
+    comments Comment[]
+    service  Service?
+
+    serviceRequestId String
+    ServiceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [id])
+
+    @@index([serviceRequestId])
+    @@index([userId])
+}
+
+enum Status {
+    PENDING
+    ACEPTED
+    REJECTED
+    FINISHED
+}
+
+model Service {
+    id          String   @id @default(cuid())
     name        String
     description String
+    status      Status   @default(PENDING)
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    categoryId  Int
+    category    Category @relation(fields: [categoryId], references: [id])
+    budgetId    String   @unique
+    budget      Budget   @relation(fields: [budgetId], references: [id])
+    review      Review?
 
+    @@index([categoryId])
+    @@index([budgetId])
+}
+
+model Review {
+    id        String   @id @default(cuid())
+    content   String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    users     User[]
+    rating    Decimal
+    authorId  String
+    userId    String
+
+    serviceId String  @unique
+    service   Service @relation(fields: [serviceId], references: [id])
+    user      User    @relation("solucionador", fields: [userId], references: [id])
+    author    User    @relation("author", fields: [authorId], references: [id])
+
+    @@index([authorId])
+    @@index([serviceId])
+    @@index([userId])
+}
+
+model Comment {
+    id        String   @id @default(cuid())
+    content   String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    userId    String
+    user      User     @relation("comentUser", fields: [userId], references: [id])
+    authorId  String
+    author    User     @relation("comentAuthor", fields: [authorId], references: [id])
+    budgetId  String
+    budget    Budget   @relation(fields: [budgetId], references: [id])
+    reviewId  String?
+
+    @@index([reviewId])
+    @@index([budgetId])
+    @@index([userId])
+    @@index([authorId])
+}
+
+enum Role {
+    USER
+    SOLUCIONADOR
+    ADMIN
 }
 
 model Category {
-    id          Int    @id @default(autoincrement())
-    name        String
-    description String
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    users     User[]
+    id              Int              @id @default(autoincrement())
+    name            String
+    slug            String           @unique
+    description     String
+    serviceRequests ServiceRequest[]
+    createdAt       DateTime         @default(now())
+    updatedAt       DateTime         @updatedAt
+    users           User[]
+    services        Service[]
 
     @@index([name], name: "name")
+    @@index([slug], name: "slug")
 }
