@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { ArmadoresDeMueblesForm } from "~/components/formularios/aramdores-de-muebles";
 
 import { type MyPage } from "~/components/types/types";
 
@@ -16,7 +17,7 @@ const Contacto: MyPage = () => {
                     <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
                         Armadores de Muebles
                     </h1>
-
+                    <ArmadoresDeMueblesForm />
                 </div>
             </main>
         </>
