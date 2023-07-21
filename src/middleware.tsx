@@ -1,6 +1,6 @@
 import { authMiddleware, redirectToSignIn } from '@clerk/nextjs/server';
 export default authMiddleware({
-    afterAuth(auth, req, ev) {
+    afterAuth(auth, req,) {
         // handle users who aren't authenticated
         if (!auth.userId && !auth.isPublicRoute) {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-return

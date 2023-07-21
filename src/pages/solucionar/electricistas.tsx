@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { ElectricistasForm } from "../../components/formularios/Electricistas";
+import { ElectricistasForm } from "../../components/formularios/ElectricistasForm";
 
 import { type MyPage } from "~/components/types/types";
 
