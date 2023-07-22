@@ -14,7 +14,8 @@ import {
 } from "~/components/ui/form"
 
 import { useForm } from "react-hook-form";
-import { Select,
+import {
+    Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
@@ -23,11 +24,11 @@ import { Select,
 
 const formSchema = z.object({
     tipoSuperficie: z
-    .string({
-      required_error: "Dene elegir un a opción",
-    }),
+        .string({
+            required_error: "Dene elegir un a opción",
+        }),
 });
-export function PlomerosForm() {
+export default function PlomerosForm() {
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema)
@@ -44,7 +45,7 @@ export function PlomerosForm() {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
+                <FormField
                     control={form.control}
                     name="tipoSuperficie"
                     render={({ field }) => (

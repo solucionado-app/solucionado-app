@@ -26,7 +26,7 @@ const Home: MyPage = () => {
             {categories?.map((categorie) => (
               <div key={categorie.id}>
                 <div className="relative w-[320px] h-52  ">
-                  <Link href={"/solucionar/" + slugify(categorie.name)}>
+                  <Link href={"/solucionar/" + categorie.slug}>
 
                     <Image className="rounded-t-sm rounded-none" src={`/${slugify(categorie.name)}.jpg`} alt={categorie.description} fill={true} />
 

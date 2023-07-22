@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { SignOutButton, useUser } from "@clerk/nextjs";
+import { SignOutButton, SignedIn, useUser } from "@clerk/nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
 
 export default function Nav() {
@@ -81,6 +81,22 @@ export default function Nav() {
                         </svg>
                     </li>
                     <li><Link className={`text-sm ${router.asPath === "/contacto" ? "text-blue-600 font-bold" : "text-gray-400"}  hover:text-gray-500`} href="/contacto">Contacto</Link></li>
+                    <SignedIn>
+                        <li className="text-gray-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" className="w-4 h-4 current-fill" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                            </svg>
+                        </li>
+                        <li><Link className={`text-sm ${router.asPath === "/solicitudes-de-servicio" ? "text-blue-600 font-bold" : "text-gray-400"}  hover:text-gray-500`} href="/solicitudes-de-servicio">Solicitudes de Servicio</Link></li>
+                    </SignedIn>
+                    <SignedIn>
+                        <li className="text-gray-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" className="w-4 h-4 current-fill" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                            </svg>
+                        </li>
+                        <li><Link className={`text-sm ${router.asPath === "/completar-perfil" ? "text-blue-600 font-bold" : "text-gray-400"}  hover:text-gray-500`} href="/completar-perfil">Completar Perfil</Link></li>
+                    </SignedIn>
                 </ul>
                 <div className="hidden lg:flex">
                     {!user.isSignedIn && <>

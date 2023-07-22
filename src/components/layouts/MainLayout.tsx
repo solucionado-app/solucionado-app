@@ -1,6 +1,11 @@
 import React from "react";
 import Nav from "../Nav";
-export default function MainLayout({ children }: React.PropsWithChildren<object>) {
+
+interface MainLayoutProps {
+    children: React.ReactNode;
+}
+
+export default function MainLayout({ children }: MainLayoutProps) {
     return (
         <>
             <Nav />
@@ -8,3 +13,4 @@ export default function MainLayout({ children }: React.PropsWithChildren<object>
         </>
     );
 }
+

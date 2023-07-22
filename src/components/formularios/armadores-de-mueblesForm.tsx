@@ -21,7 +21,7 @@ const formSchema = z.object({
         required_error: "Debe elegir una opcion",
     }),
 });
-export function ArmadoresDeMueblesForm() {
+export default function ArmadoresDeMueblesForm() {
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema)

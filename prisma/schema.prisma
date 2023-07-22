@@ -40,16 +40,17 @@ model User {
 }
 
 model ServiceRequest {
-    id         String   @id @default(cuid())
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+    id         String    @id @default(cuid())
+    createdAt  DateTime  @default(now())
+    updatedAt  DateTime  @updatedAt
     userId     String
-    user       User     @relation(fields: [userId], references: [externalId])
+    user       User      @relation(fields: [userId], references: [externalId])
     categoryId Int
-    category   Category @relation(fields: [categoryId], references: [id])
-    status     Status   @default(PENDING)
+    category   Category  @relation(fields: [categoryId], references: [id])
+    status     Status    @default(PENDING)
     details    Json?
     bugdets    Budget[]
+    coments    Comment[]
 
     @@index([categoryId])
     @@index([userId])
@@ -64,8 +65,7 @@ model Budget {
     userId      String
     user        User     @relation(fields: [userId], references: [id])
 
-    comments Comment[]
-    service  Service?
+    service Service?
 
     serviceRequestId String
     ServiceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [id])
@@ -126,12 +126,11 @@ model Comment {
     user      User     @relation("comentUser", fields: [userId], references: [id])
     authorId  String
     author    User     @relation("comentAuthor", fields: [authorId], references: [id])
-    budgetId  String
-    budget    Budget   @relation(fields: [budgetId], references: [id])
-    reviewId  String?
 
-    @@index([reviewId])
-    @@index([budgetId])
+    ServiceRequest   ServiceRequest? @relation(fields: [serviceRequestId], references: [id])
+    serviceRequestId String?
+
+    @@index([serviceRequestId])
     @@index([userId])
     @@index([authorId])
 }

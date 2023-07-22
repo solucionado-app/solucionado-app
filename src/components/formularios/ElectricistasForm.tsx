@@ -19,13 +19,13 @@ import { useUser } from "@clerk/nextjs"
 import { api } from "~/utils/api"
 import { useRouter } from "next/router"
 import { trpc } from "~/utils/trpc";
-import { Dialog, DialogContent, DialogFooter, DialogHeader } from "../ui/dialog"
-import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog"
+
 import { useEffect, useState } from "react"
+import DialogAuthConfirmation from "../auth/DialogAuthConfirmation"
 const formSchema = z.object({
     numeroDeLamparas: z.coerce.number({ required_error: "Debes introducir un numero de lamparas", }),
 });
-export function ElectricistasForm() {
+export default function ElectricistasForm() {
     // 1. Define your form.
     const router = useRouter()
     const { numeroDeLamparas } = router.query
@@ -37,16 +37,16 @@ export function ElectricistasForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            numeroDeLamparas: typeof numeroDeLamparas === "string" ? numeroDeLamparasNumber : 1,
+            numeroDeLamparas: typeof numeroDeLamparas === "string" ? parseInt(numeroDeLamparas) : 1,
         },
     });
-    useEffect(() => {
-        console.log(numeroDeLamparas)
-        if (typeof numeroDeLamparas === "string") {
-            setnumeroDeLamparasNumber(parseInt(numeroDeLamparas))
-            form.setValue("numeroDeLamparas", parseInt(numeroDeLamparas))
-        }
-    }, [router.query, numeroDeLamparas, form])
+    // useEffect(() => {
+    //     console.log(numeroDeLamparas)
+    //     if (numeroDeLamparas && typeof numeroDeLamparas === "string") {
+    //         setnumeroDeLamparasNumber(parseInt(numeroDeLamparas))
+    //         form.setValue("numeroDeLamparas", parseInt(numeroDeLamparas))
+    //     }
+    // }, [router.query, numeroDeLamparas, form])
     const [open, setOpen] = useState(false)
     const [formvalues, setformvalues] = useState({})
     const utils = trpc.useContext()
@@ -83,7 +83,6 @@ export function ElectricistasForm() {
         console.log(values)
     }
     // ...
-
     return (
         <>
             <Form {...form}>
@@ -108,7 +107,7 @@ export function ElectricistasForm() {
                     <Button type="submit">Cotizar</Button>
                 </form>
             </Form>
-            <Dialog open={open} onOpenChange={setOpen}>
+            {/* <Dialog open={open} onOpenChange={setOpen}>
 
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
@@ -122,14 +121,14 @@ export function ElectricistasForm() {
                         <Button onClick={() => void router.push({
                             pathname: "/login",
                             query: {
-                                redirect: "/solucionar/electricistas",
+                                redirect: router.asPath,
                                 ...formvalues
                             }
                         })} type="button">Continuar</Button>
                     </DialogFooter>
                 </DialogContent>
-            </Dialog>
-
+            </Dialog> */}
+            <DialogAuthConfirmation open={open} setOpen={setOpen} formvalues={formvalues} />
         </>
     )
 }
