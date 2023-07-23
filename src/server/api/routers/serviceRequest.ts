@@ -19,7 +19,7 @@ export const serviceRequestRouter = createTRPCRouter({
             userId: z.string(),
             status: z.string().optional(),
             details: z.record(z.string(), z.any()).optional(),
-            categoryId: z.number(),
+            categorySlug: z.string(),
         })
     ).mutation(async ({ ctx, input }) => {
         const userId = input?.userId;
@@ -36,7 +36,7 @@ export const serviceRequestRouter = createTRPCRouter({
                 },
                 category: {
                     connect: {
-                        id: input.categoryId,
+                        slug: input.categorySlug,
                     },
                 },
             }

@@ -76,7 +76,7 @@ export default function ElectricistasForm() {
             mutation?.mutate({
                 userId: id,
                 details: values,
-                categoryId: 3,
+                categorySlug: router.query?.slug as string,
             })
             void router.push("/solicitudes-de-servicio")
         }

@@ -1,7 +1,6 @@
-import { redirectToSignIn } from '@clerk/nextjs';
 import { authMiddleware } from '@clerk/nextjs/server';
 export default authMiddleware({
-    publicRoutes: ["/", "/contacto", "/login", "/registro", "/(solucionar)(.*)", "/(api|trpc)(.*)"],
+    publicRoutes: ["/", "/contacto", "/(solucionar)(.*)", "/(api|trpc)(.*)"],
 });
 
 

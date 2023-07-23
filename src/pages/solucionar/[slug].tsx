@@ -10,7 +10,6 @@ import dynamic from 'next/dynamic'
 
 
 const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ slug, name }) => {
-    console.log(slug)
     const DynamicForm = dynamic(() => import(`~/components/formularios/${slug}Form`), {
         loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
     })
@@ -47,13 +46,12 @@ export const getStaticPaths: GetStaticPaths = () => {
 export async function getStaticProps(
     context: GetStaticPropsContext<{ slug: string }>
 ) {
-    console.log(context?.params?.slug)
     const slug = context?.params?.slug;
 
     if (slug == null) {
         return {
             redirect: {
-                destination: "/",
+                destination: "/404",
             },
         };
     }
