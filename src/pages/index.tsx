@@ -7,6 +7,8 @@ import MainHead from "~/components/layouts/head/MainHead";
 import Link from "next/link";
 import { slugify } from "~/utils/utils";
 
+import Select from 'react-select';
+
 // HomePage.Layout = "OtherLayout"; -> error Type '"OtherLayout"' is not assignable to type '"Main" | "Admin" | undefined'.
 const Home: MyPage = () => {
   const apitrcp = api.categories.getAll.useQuery();
@@ -58,19 +60,17 @@ const Home: MyPage = () => {
         </div>
 
         <div className="row d_flex flex items-center justify-around w-full py-11">
-          <div className="col-md-4 col-sm-4 d_none">
+          <div className="hidden md:block text-[17px] font-semibold">
               <ul className="conta_icon">
-                <li><a href="http://wa.me/5492994014514"><i className="fa fa-phone" aria-hidden="true"></i> Contacto
-                      : +01 1234567890</a> </li>
+                <li><a href="http://wa.me/5492994014514">Contacto: +01 1234567890</a> </li>
               </ul>
           </div>
           <div className="col-md-4 col-sm-4 ">
               <a className="logo" href="#"><Image src="/solucionado-transparente.png" width={248} height={81} alt="#" /></a>
           </div>
-          <div className="col-md-4 col-sm-4 d_none">
+          <div className="hidden md:block text-[17px] font-semibold">
               <ul className="conta_icon ">
-                <li><a href="#"><i className="fa fa-envelope" aria-hidden="true"></i> info@solucionado.com.ar</a>
-                </li>
+                <li><a href="#">info@solucionado.com.ar</a></li>
               </ul>
           </div>
         </div>
@@ -78,17 +78,17 @@ const Home: MyPage = () => {
         <section className="banner_main text-white w-full bg-[url('/banner.jpg')] bg-no-repeat bg-cover ">
           <div className="container">
             <div className="row sm:flex justify-between">
-              <div className="flex items-center col-md-7 col-lg-7">
-                <div className="">
-                  <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold py-5">Solucionadores <br />y soluciones</h1>
+              <div className="flex items-center">
+                <div className="py-10">
+                  <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold py-5">Solucionadores <br />y soluciones</h1>
                   <span className="text-[#ecbb2c] text-3xl">Para tu hogar</span>
                   <p className="pb-16 text-lg py-3">Trabajos garantidos</p>
                   <a href="#" className="text-2xl">Sobre nosotros</a>
                 </div>
               </div>
-              <div className="col-md-5 col-lg-5">
-                <div className="m-0">
-                  <figure><Image src="/ba_ing.png" width={403} height={652} alt="#" /></figure>
+              <div className="">
+                <div className="">
+                  <figure><Image src="/ba_ing.png" width={351} height={510} alt="#" /></figure>
                 </div>
               </div>
             </div>
@@ -101,7 +101,7 @@ const Home: MyPage = () => {
               <div className="">
                 <div className="about_box">
                   <div className="titlepage">
-                    <h2 className="text-[#154492] text-4xl font-bold uppercase"><strong className="text-[#ecbb2c] font-semibold text-[17px]">Quienes somos</strong><br/> Te ayudamos a que puedas necesitar en tu casa
+                    <h2 className="text-[#154492] md:text-4xl font-bold uppercase"><strong className="text-[#ecbb2c] font-semibold text-[17px]">Quienes somos</strong><br/> Te ayudamos a que puedas necesitar en tu casa
                     </h2>
                   </div>
                   <h3 className="text-[#0b0b0b] text-2xl font-bold py-6">TODO LO QUE NECESITAS, TIENE SOLUCION</h3>
@@ -148,6 +148,26 @@ const Home: MyPage = () => {
           <div className="titlepage text-left w-full">
             <h2 className="text-4xl text-[#154492] font-bold"><strong className="text-[#ecbb2c] text-[17px] font-semibold uppercase">Categorias</strong><br/> TODO LO QUE BUSCAS</h2>
           </div>
+
+          <Select
+            styles={{
+                control: (styles) => ({
+                    ...styles,
+                    backgroundColor: 'white',
+                    width: '300px',
+                }),
+                menuList: (provided) => ({
+                    ...provided,
+                    backgroundColor: 'white',
+                }),
+            }}
+
+            isLoading={isLoading}
+            placeholder='Elige las categorias'
+            options={categories}
+            getOptionLabel={(option) => option.name}
+            getOptionValue={(option) => option.id.toString()}
+          />
 
           <div className="flex flex-row flex-wrap gap-4">
             {isLoading && <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>}
@@ -258,8 +278,8 @@ const Home: MyPage = () => {
                   <div className="col-md-12">
                       <a className="logo2" href="#"><Image src="/solucionado-transparente.png" width={248} height={81} alt="#" /></a>
                   </div>
-                  <div className="flex">
-                    <div className="text-[17px] w-1/2">
+                  <div className="md:flex">
+                    <div className="text-[17px] md:w-1/2">
                         <h3 className="text-xl my-5 font-semibold">Menu</h3>
                         <ul className="link_icon">
                           <li className="active mb-3"> <a href="index.html"> Inicio</a></li>
@@ -270,7 +290,7 @@ const Home: MyPage = () => {
                           <li className="mb-3"><a href="#">Reclamos</a></li>
                         </ul>
                     </div>
-                    <div className="w-1/2">
+                    <div className="md:w-1/2">
                         <h3 className="text-xl my-5 font-semibold">Contactanos</h3>
                         <ul className="location_icon flex space-x-3">
                           <li><a href="#"><i className="fa fa-map-marker" aria-hidden="true"></i></a> Rivadavia 206
