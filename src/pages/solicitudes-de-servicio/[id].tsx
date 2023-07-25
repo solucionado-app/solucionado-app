@@ -5,21 +5,7 @@ import { type JwtPayload, type ServerGetTokenOptions } from "@clerk/types";
 import Head from "next/head";
 import { type MyPage } from "~/components/types/types";
 
-import dynamic from 'next/dynamic'
-import GeneralForm from "~/components/formularios/generalForm";
-
-
-
-const getDynamicForm = (slug: string) => dynamic(() => import(`~/components/formularios/${slug}Form`).catch(() => GeneralForm), {
-    loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
-})
-
-
-
-const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ slug, name }) => {
-
-
-    const DynamicForm = getDynamicForm(slug)
+const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ id, details }) => {
 
     return (
         <>
@@ -31,10 +17,9 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
 
             <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
                 <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-                    {name}
+                    {id + " / " + JSON.stringify(details)}
                 </h1>
 
-                <DynamicForm />
             </div>
 
         </>
@@ -52,11 +37,11 @@ export const getStaticPaths: GetStaticPaths = () => {
 };
 
 export async function getStaticProps(
-    context: GetStaticPropsContext<{ slug: string }>
+    context: GetStaticPropsContext<{ id: string }>
 ) {
-    const slug = context?.params?.slug;
+    const id = context?.params?.id;
 
-    if (slug == null) {
+    if (id == null) {
         return {
             redirect: {
                 destination: "/404",
@@ -83,13 +68,13 @@ export async function getStaticProps(
         }
     }
     const ssg = ssgHelper(auth);
-    await ssg.categories.findBySlug.prefetch({ slug });
-    const category = await ssg.categories.findBySlug.fetch({ slug });
+    await ssg.serviceRequest.findById.prefetch({ id });
+    const service = await ssg.serviceRequest.findById.fetch({ id });
     return {
         props: {
             trpcState: ssg.dehydrate(),
-            slug,
-            name: category?.name,
+            id,
+            details: service?.details,
         },
     };
 }

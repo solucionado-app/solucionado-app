@@ -1,18 +1,22 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
 
 export const serviceRequestRouter = createTRPCRouter({
-    getAll: publicProcedure.input(z.object({
-        userId: z.string(),
-    })).query(({ ctx, input }) => {
+    getAll: protectedProcedure.query(({ ctx }) => {
+        return ctx.prisma.serviceRequest.findMany();
+    }),
+    getUserRequest: protectedProcedure.query(({ ctx }) => {
         return ctx.prisma.serviceRequest.findMany({
+            orderBy: {
+                createdAt: "desc",
+            },
             where: {
-                userId: input.userId,
+                userId: ctx.auth.userId,
             },
             include: {
                 category: true,
             }
-});
+        });
     }),
     create: publicProcedure.input(
         z.object({
@@ -43,6 +47,25 @@ export const serviceRequestRouter = createTRPCRouter({
         });
         return serviceRequest;
 
+    }),
+    findById: protectedProcedure.input(
+        z.object({
+            id: z.string(),
+        })
+    ).query(({ ctx, input }) => {
+        return ctx.prisma.serviceRequest.findUnique({
+            where: {
+                id: input.id,
+            },
+            include: {
+                category: {
+                    select: {
+                        name: true,
+                         slug: true,
+                    },
+                },
+            }
+        });
     }),
 
 });

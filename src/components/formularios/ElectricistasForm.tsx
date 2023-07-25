@@ -20,7 +20,7 @@ import { api } from "~/utils/api"
 import { useRouter } from "next/router"
 import { trpc } from "~/utils/trpc";
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import DialogAuthConfirmation from "../auth/DialogAuthConfirmation"
 const formSchema = z.object({
     numeroDeLamparas: z.coerce.number({ required_error: "Debes introducir un numero de lamparas", }),
@@ -31,7 +31,6 @@ export default function ElectricistasForm() {
     const { numeroDeLamparas } = router.query
     const { user, isSignedIn } = useUser()
 
-    const [numeroDeLamparasNumber, setnumeroDeLamparasNumber] = useState(1)
 
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -51,12 +50,22 @@ export default function ElectricistasForm() {
     const [formvalues, setformvalues] = useState({})
     const utils = trpc.useContext()
 
-    const mutation = api.serviceRequest.create.useMutation({
+    const requestMutation = api.serviceRequest.create.useMutation({
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        onSuccess: (input) => {
-            void utils.serviceRequest.getAll.invalidate()
+        onSuccess: (data) => {
+            if (data?.id) {
+                notification.mutate({
+                    categorySlug: router.query?.slug as string,
+                    title: "Nueva solicitud de servicio",
+                    content: "Se ha creado una nueva solicitud de servicio",
+                    link: `/solicitudes-de-servicio/${data.id}`,
+                    serviceRequestId: data.id,
+                })
+            }
         },
     })
+
+    const notification = api.notification.create.useMutation()
 
 
     // 2. Define a submit handler.
@@ -73,10 +82,14 @@ export default function ElectricistasForm() {
         }
         else {
             const { id } = user
-            mutation?.mutate({
+            requestMutation?.mutate({
                 userId: id,
                 details: values,
                 categorySlug: router.query?.slug as string,
+            }, {
+                onSuccess: () => {
+                    void utils.serviceRequest.getAll.invalidate()
+                }
             })
             void router.push("/solicitudes-de-servicio")
         }

@@ -12,45 +12,71 @@ datasource db {
 }
 
 model User {
-    id              String           @id @default(cuid())
-    externalId      String           @unique
-    first_name      String
-    last_name       String
-    email           String           @unique
-    phone           String?          @unique
-    address         String?
-    dni             String?          @unique
-    password        String?
-    image_url       String?
-    cbu             String?
-    cuit            String?
-    createdAt       DateTime         @default(now())
-    updatedAt       DateTime         @updatedAt
-    serviceRequests ServiceRequest[]
-    categories      Category[]
-    roleId          Int
-    role            Role             @default(USER)
-    comentsmade     Comment[]        @relation("comentAuthor")
-    comentsRecieved Comment[]        @relation("comentUser")
-    budgets         Budget[]
-    reviewsMade     Review[]         @relation("author")
-    reviewsRecieved Review[]         @relation("solucionador")
+    id                   String           @id @default(cuid())
+    externalId           String           @unique
+    first_name           String
+    last_name            String
+    email                String           @unique
+    phone                String?          @unique
+    address              String?
+    dni                  String?          @unique
+    password             String?
+    image_url            String?
+    cbu                  String?
+    cuit                 String?
+    createdAt            DateTime         @default(now())
+    updatedAt            DateTime         @updatedAt
+    serviceRequests      ServiceRequest[]
+    categories           Category[]
+    roleId               Int
+    role                 Role             @default(USER)
+    comentsmade          Comment[]        @relation("comentAuthor")
+    comentsRecieved      Comment[]        @relation("comentUser")
+    budgets              Budget[]
+    reviewsMade          Review[]         @relation("author")
+    reviewsRecieved      Review[]         @relation("solucionador")
+    notificationRecieved Notification[]   @relation("notificado")
+    notificationCreated  Notification[]   @relation("notificador")
+    notificationId       String?
 
     @@index([roleId], name: "roleId")
 }
 
+model Notification {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    authorId         String
+    author           User            @relation("notificador", fields: [authorId], references: [externalId])
+    users            User[]          @relation("notificado")
+    title            String
+    content          String
+    link             String?
+    read             Boolean         @default(false)
+    serviceRequestId String?
+    serviceRequest   ServiceRequest? @relation(fields: [serviceRequestId], references: [id])
+    serviceId        String?
+    service          Service?        @relation(fields: [serviceId], references: [id])
+
+    @@index([serviceRequestId])
+    @@index([serviceId])
+    @@index([authorId])
+}
+
 model ServiceRequest {
-    id         String    @id @default(cuid())
-    createdAt  DateTime  @default(now())
-    updatedAt  DateTime  @updatedAt
-    userId     String
-    user       User      @relation(fields: [userId], references: [externalId])
-    categoryId Int
-    category   Category  @relation(fields: [categoryId], references: [id])
-    status     Status    @default(PENDING)
-    details    Json?
-    bugdets    Budget[]
-    coments    Comment[]
+    id            String         @id @default(cuid())
+    createdAt     DateTime       @default(now())
+    updatedAt     DateTime       @updatedAt
+    userId        String
+    user          User           @relation(fields: [userId], references: [externalId])
+    categoryId    Int
+    category      Category       @relation(fields: [categoryId], references: [id])
+    status        Status         @default(PENDING)
+    details       Json?
+    bugdets       Budget[]
+    coments       Comment[]
+    notifications Notification[]
 
     @@index([categoryId])
     @@index([userId])
@@ -82,17 +108,18 @@ enum Status {
 }
 
 model Service {
-    id          String   @id @default(cuid())
-    name        String
-    description String
-    status      Status   @default(PENDING)
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    categoryId  Int
-    category    Category @relation(fields: [categoryId], references: [id])
-    budgetId    String   @unique
-    budget      Budget   @relation(fields: [budgetId], references: [id])
-    review      Review?
+    id           String         @id @default(cuid())
+    name         String
+    description  String
+    status       Status         @default(PENDING)
+    createdAt    DateTime       @default(now())
+    updatedAt    DateTime       @updatedAt
+    categoryId   Int
+    category     Category       @relation(fields: [categoryId], references: [id])
+    budgetId     String         @unique
+    budget       Budget         @relation(fields: [budgetId], references: [id])
+    review       Review?
+    Notification Notification[]
 
     @@index([categoryId])
     @@index([budgetId])

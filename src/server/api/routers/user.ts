@@ -38,8 +38,7 @@ export const userRouter = createTRPCRouter({
                         return {
                             id: category.id,
                         };
-                    }
-                    ),
+                    }),
                 },
             }
         });

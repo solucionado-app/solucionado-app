@@ -4,6 +4,7 @@ import { type MyPage } from "~/components/types/types";
 import { Card } from "~/components/cards/CardComponent";
 import MainHead from "~/components/layouts/head/MainHead";
 import { useUser } from "@clerk/nextjs";
+import Link from "next/link";
 
 
 
@@ -12,10 +13,9 @@ const ServiceRequest: MyPage = () => {
     const { user, isLoaded, isSignedIn } = useUser();
     if (!isLoaded && isSignedIn) return <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
 
-    const userId = user?.id || "";
     const apitrcp = api.serviceRequest;
-    const { data: services, isLoading, isFetched } = apitrcp.getAll.useQuery({ userId: userId });
-    console.log(services);
+    const { data: services, isLoading, isFetched } = apitrcp.getUserRequest.useQuery();
+    console.log(user);
     const rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
 
     return (
@@ -29,23 +29,26 @@ const ServiceRequest: MyPage = () => {
                     </h1>
                     {isLoading && <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>}
                     {services && services?.map((service) => (
+
                         <div key={service.id}>
-                            <Card className="relative w-[320px]  flex-col p-5  ">
-                                <div >
-                                    {service.category.name}
-                                </div>
-                                {
-                                    service?.details && Object.keys(service?.details).map((key: string, i) => (
+                            <Link href={`/solicitudes-de-servicio/${service.id}`}>
+                                <Card className="relative w-[320px]  flex-col p-5  ">
+                                    <div >
+                                        {service.category.name}
+                                    </div>
+                                    {
+                                        service?.details && Object.keys(service?.details).map((key: string, i) => (
 
-                                        <p key={i}>
-                                            <span> {key.replace(rex, '$1$4 $2$3$5')}</span>
-                                            <span> {service?.details && service?.details[key as keyof typeof service.details]}</span>
-                                        </p>
-                                    ))
-                                }
+                                            <p key={i}>
+                                                <span> {key.replace(rex, '$1$4 $2$3$5')}</span>
+                                                <span> {service?.details && service?.details[key as keyof typeof service.details]}</span>
+                                            </p>
+                                        ))
+                                    }
 
 
-                            </Card>
+                                </Card>
+                            </Link>
                         </div>
                     ))
                     }
