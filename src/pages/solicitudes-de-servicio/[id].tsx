@@ -1,11 +1,62 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { type SignedInAuthObject } from "@clerk/nextjs/server";
 import { type GetStaticPropsContext, type GetStaticPaths, type InferGetStaticPropsType, } from "next";
 import { ssgHelper } from "~/server/api/ssgHelper";
 import { type JwtPayload, type ServerGetTokenOptions } from "@clerk/types";
 import Head from "next/head";
 import { type MyPage } from "~/components/types/types";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+ 
+import { Button } from "~/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/ui/form"
+import { Input } from "~/components/ui/input"
+import { Textarea } from "~/components/ui/textarea";
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
+import { Calendar } from "../../components/ui/calendar"
+import { CalendarIcon } from "lucide-react"
+import es from 'date-fns/locale/es';
+import { cn } from "~/lib/utils"
+import { format } from "date-fns"
+
+const locale = es;
+ 
+const FormSchema = z.object({
+  username: z.coerce.number().min(1, {
+    message: "Username must be at least 1 characters.",
+  }),
+  detalles: z
+    .string()
+    .min(10, {
+        message: "Debe tener al menos 10 caracteres.",
+    })
+    .max(160, {
+        message: "Debe tener maximo 130 caracteres.",
+    }),
+    fechaEstimada: z.date({
+        required_error: "La fecha estimada es requerida.",
+    }),
+})
 
 const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ id, details }) => {
+
+    const form = useForm<z.infer<typeof FormSchema>>({
+        resolver: zodResolver(FormSchema),
+      })
+
+      function onSubmit(data: z.infer<typeof FormSchema>) {
+        
+        console.log(data)
+      }
 
     return (
         <>
@@ -16,10 +67,100 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
             </Head>
 
             <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-                <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-                    {id + " / " + JSON.stringify(details)}
-                </h1>
+                <div className="text-xl font-semibold border  shadow-sm relative  p-5">
+                    <h1 className="text-4xl font-extrabold tracking-tight">Informacion de Solicitud</h1>
+                    <p className="font-bold">Id de solicitud: {id}</p>
+                    <p>Urgencia: {details.urgencia}</p>
+                    <p>Comentario: {details.comentario}</p>
+                    <p>Fecha Estimada: {details.fechaEstimada}</p>
+                    <p>Direccion para el servicio: {details.direccionParaElServicio}</p>
+                </div>
+                <div>
+                    <h1 className="text-4xl font-extrabold tracking-tight">Generar Presupuesto</h1>
+                </div>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+                        <FormField
+                        control={form.control}
+                        name="username"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>Precio</FormLabel>
+                            <FormControl>
+                                <Input type="number" placeholder="Precio" {...field} />
+                            </FormControl>
+                            <FormDescription>
+                            </FormDescription>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="detalles"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>¿Cuenta con imperfecciones?</FormLabel>
+                                    <FormControl>
+                                        <Textarea
+                                            placeholder="Escriba los detalles aquí...f"
+                                            className="resize-none"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormDescription>
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
 
+                        <FormField
+                            control={form.control}
+                            name="fechaEstimada"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-col">
+                                    <FormLabel>Fecha Estimada</FormLabel>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <FormControl>
+                                                <Button
+                                                    variant={"outline"}
+                                                    className={cn(
+                                                        "w-[240px] pl-3 text-left font-normal",
+                                                        !field.value && "text-muted-foreground"
+                                                    )}
+                                                >
+                                                    {field.value ? (
+                                                        format(field?.value, "PPP", { locale })
+                                                    ) : (
+                                                        <span>Elija una fecha</span>
+                                                    )}
+                                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                </Button>
+                                            </FormControl>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-auto p-0" align="start">
+                                            <Calendar
+                                                mode="single"
+                                                selected={field.value}
+                                                onSelect={field.onChange}
+                                                disabled={(date) =>
+                                                    date > new Date() || date < new Date("1900-01-01")
+                                                }
+                                                initialFocus
+                                            />
+                                        </PopoverContent>
+                                    </Popover>
+                                    <FormDescription>
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <Button type="submit">Generar Presupuesto</Button>
+                    </form>
+                </Form>
             </div>
 
         </>
