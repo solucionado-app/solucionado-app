@@ -27,14 +27,16 @@ import { CalendarIcon } from "lucide-react"
 import es from 'date-fns/locale/es';
 import { cn } from "~/lib/utils"
 import { format } from "date-fns"
+import { api } from "~/utils/api";
+import { useUser } from "@clerk/nextjs";
 
 const locale = es;
  
 const FormSchema = z.object({
-  username: z.coerce.number().min(1, {
-    message: "Username must be at least 1 characters.",
+  price: z.coerce.number().min(2000, {
+    message: "debe haber al menos un valor mayor a 2000.",
   }),
-  detalles: z
+  description: z
     .string()
     .min(10, {
         message: "Debe tener al menos 10 caracteres.",
@@ -42,21 +44,31 @@ const FormSchema = z.object({
     .max(160, {
         message: "Debe tener maximo 130 caracteres.",
     }),
-    fechaEstimada: z.date({
+    estimatedAt: z.date({
         required_error: "La fecha estimada es requerida.",
     }),
 })
 
-const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ id, details }) => {
+const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ id }) => {
 
+    const {user , isSignedIn} = useUser()
+    const { data: serviceRequest } = api.serviceRequest.findById.useQuery({ id })
+    const mutateBugdet = api.budget.create.useMutation()
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
       })
 
       function onSubmit(data: z.infer<typeof FormSchema>) {
-        
+        mutateBugdet.mutate({
+            serviceRequestId: id,
+            price: data.price,
+            description: data.description,
+            estimatedAt: data.estimatedAt,
+            userId:user?.id as string
+        })
         console.log(data)
       }
+    const rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
 
     return (
         <>
@@ -69,27 +81,30 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
             <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
                 <div className="text-xl font-semibold border  shadow-sm relative  p-5">
                     <h1 className="text-4xl font-extrabold tracking-tight">Informacion de Solicitud</h1>
-                    <p className="font-bold">Id de solicitud: {id}</p>
-                    <p>Urgencia: {details.urgencia}</p>
-                    <p>Comentario: {details.comentario}</p>
-                    <p>Fecha Estimada: {details.fechaEstimada}</p>
-                    <p>Direccion para el servicio: {details.direccionParaElServicio}</p>
+                   {serviceRequest?.details && Object.keys(serviceRequest?.details).map((key: string, i) => (
+
+                                            <p key={i}>
+                                                <span> {key.replace(rex, '$1$4 $2$3$5')}</span>
+                                                <span> {serviceRequest?.details && serviceRequest?.details[key as keyof typeof serviceRequest.details]}</span>                                                
+                                            </p>
+                                        ))}
                 </div>
                 <div>
-                    <h1 className="text-4xl font-extrabold tracking-tight">Generar Presupuesto</h1>
+                    <h1 className="text-5xl font-extrabold tracking-tight">Generar Presupuesto</h1>
                 </div>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
                         <FormField
                         control={form.control}
-                        name="username"
+                        name="price"
                         render={({ field }) => (
                             <FormItem>
                             <FormLabel>Precio</FormLabel>
                             <FormControl>
-                                <Input type="number" placeholder="Precio" {...field} />
+                                <Input type="number" placeholder="Precio que debe ser mayor a 2000" {...field} />
                             </FormControl>
                             <FormDescription>
+                            Debe haber al menos un valor mayor a 2000.
                             </FormDescription>
                             <FormMessage />
                             </FormItem>
@@ -97,13 +112,13 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                         />
                         <FormField
                             control={form.control}
-                            name="detalles"
+                            name="description"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>¿Cuenta con imperfecciones?</FormLabel>
+                                    <FormLabel>Detalles</FormLabel>
                                     <FormControl>
                                         <Textarea
-                                            placeholder="Escriba los detalles aquí...f"
+                                            placeholder="Escriba los detalles aquí..."
                                             className="resize-none"
                                             {...field}
                                         />
@@ -117,7 +132,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
 
                         <FormField
                             control={form.control}
-                            name="fechaEstimada"
+                            name="estimatedAt"
                             render={({ field }) => (
                                 <FormItem className="flex flex-col">
                                     <FormLabel>Fecha Estimada</FormLabel>
@@ -142,11 +157,12 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0" align="start">
                                             <Calendar
+                                                
                                                 mode="single"
                                                 selected={field.value}
                                                 onSelect={field.onChange}
                                                 disabled={(date) =>
-                                                    date > new Date() || date < new Date("1900-01-01")
+                                                    date === new Date() || date < new Date()
                                                 }
                                                 initialFocus
                                             />
@@ -158,7 +174,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit">Generar Presupuesto</Button>
+                        <Button disabled={!isSignedIn} type="submit">Generar Presupuesto</Button>
                     </form>
                 </Form>
             </div>
@@ -210,12 +226,10 @@ export async function getStaticProps(
     }
     const ssg = ssgHelper(auth);
     await ssg.serviceRequest.findById.prefetch({ id });
-    const service = await ssg.serviceRequest.findById.fetch({ id });
     return {
         props: {
             trpcState: ssg.dehydrate(),
             id,
-            details: service?.details,
         },
     };
 }
