@@ -4,9 +4,10 @@ import { ssgHelper } from "~/server/api/ssgHelper";
 import { type JwtPayload, type ServerGetTokenOptions } from "@clerk/types";
 import Head from "next/head";
 import { type MyPage } from "~/components/types/types";
+import { api } from "~/utils/api";
 
-const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ id, details }) => {
-
+const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ id }) => {
+    const { data: serviceRequest } = api.serviceRequest.findById.useQuery({ id })
     return (
         <>
             <Head>
@@ -17,8 +18,11 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
 
             <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
                 <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-                    {id + " / " + JSON.stringify(details)}
+                    {id + " / " + JSON.stringify(serviceRequest)}
                 </h1>
+                <p className=" font-extrabold tracking-tight ">
+                    {JSON.stringify(serviceRequest)}
+                </p>
 
             </div>
 
@@ -69,12 +73,10 @@ export async function getStaticProps(
     }
     const ssg = ssgHelper(auth);
     await ssg.serviceRequest.findById.prefetch({ id });
-    const service = await ssg.serviceRequest.findById.fetch({ id });
     return {
         props: {
             trpcState: ssg.dehydrate(),
             id,
-            details: service?.details,
         },
     };
 }

@@ -2,14 +2,12 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const notificationRouter = createTRPCRouter({
-    getAll: protectedProcedure.input(z.object({
-        userId: z.string(),
-    })).query(({ ctx }) => {
+    getAll: protectedProcedure.query(({ ctx }) => {
         return ctx.prisma.notification.findMany({
             where: {
                 users: {
                     some: {
-                        id: ctx.auth.userId,
+                        externalId: ctx.auth.userId,
                     },
                 }
             },
