@@ -7,6 +7,7 @@ import { type MyPage } from "~/components/types/types";
 
 import dynamic from 'next/dynamic'
 import GeneralForm from "~/components/formularios/generalForm";
+import { api } from "~/utils/api";
 
 
 
@@ -16,9 +17,9 @@ const getDynamicForm = (slug: string) => dynamic(() => import(`~/components/form
 
 
 
-const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ slug, name }) => {
+const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ slug }) => {
 
-
+    const { data: category, isLoading } = api.categories.findBySlug.useQuery({ slug })
     const DynamicForm = getDynamicForm(slug)
 
     return (
@@ -31,7 +32,8 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
 
             <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
                 <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-                    {name}
+                    {isLoading && "Cargando"}
+                    {category?.name}
                 </h1>
 
                 <DynamicForm />
@@ -51,9 +53,7 @@ export const getStaticPaths: GetStaticPaths = () => {
     };
 };
 
-export async function getStaticProps(
-    context: GetStaticPropsContext<{ slug: string }>
-) {
+export async function getStaticProps(context: GetStaticPropsContext<{ slug: string }>) {
     const slug = context?.params?.slug;
 
     if (slug == null) {
@@ -84,12 +84,10 @@ export async function getStaticProps(
     }
     const ssg = ssgHelper(auth);
     await ssg.categories.findBySlug.prefetch({ slug });
-    const category = await ssg.categories.findBySlug.fetch({ slug });
     return {
         props: {
             trpcState: ssg.dehydrate(),
             slug,
-            name: category?.name,
         },
     };
 }

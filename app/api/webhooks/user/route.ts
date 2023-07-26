@@ -57,6 +57,7 @@ async function handler(request: Request) {
      await prisma.user.upsert({
        where: { externalId: id as string },
        create: {
+          id: id as string,
          externalId: id as string,
          first_name: first_name as string,
          email: email ,

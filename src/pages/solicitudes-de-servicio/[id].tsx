@@ -5,6 +5,7 @@ import { ssgHelper } from "~/server/api/ssgHelper";
 import { type JwtPayload, type ServerGetTokenOptions } from "@clerk/types";
 import Head from "next/head";
 import { type MyPage } from "~/components/types/types";
+
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -69,7 +70,6 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
         console.log(data)
       }
     const rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
-
     return (
         <>
             <Head>
@@ -79,6 +79,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
             </Head>
 
             <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+
                 <div className="text-xl font-semibold border  shadow-sm relative  p-5">
                     <h1 className="text-4xl font-extrabold tracking-tight">Informacion de Solicitud</h1>
                    {serviceRequest?.details && Object.keys(serviceRequest?.details).map((key: string, i) => (
@@ -129,6 +130,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                                 </FormItem>
                             )}
                         />
+
 
                         <FormField
                             control={form.control}
