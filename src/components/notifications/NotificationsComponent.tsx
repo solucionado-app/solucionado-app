@@ -20,7 +20,7 @@ const NotificationsPage = () => {
                 <DropdownMenuSeparator />
                 {isLoading && <DropdownMenuItem>Cargando...</DropdownMenuItem>}
                 {notifications?.map((notification) => (
-                    <Link href={notification.link ? notification.link as string : "#"} key={notification.id}>
+                    <Link href={notification.link ? notification.link : "#"} key={notification.id}>
                         <DropdownMenuItem >{notification.content}</DropdownMenuItem>
                     </Link>
                 ))
