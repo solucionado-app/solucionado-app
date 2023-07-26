@@ -85,16 +85,18 @@ model ServiceRequest {
 model Budget {
     id          String   @id @default(cuid())
     description String
+    price     Int
     status      Status   @default(PENDING)
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
     userId      String
     user        User     @relation(fields: [userId], references: [id])
-
+    estimatedAt    DateTime
+    paidAt         DateTime?
     service Service?
 
     serviceRequestId String
-    ServiceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [id])
+    serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [id])
 
     @@index([serviceRequestId])
     @@index([userId])
