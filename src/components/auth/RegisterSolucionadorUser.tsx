@@ -58,6 +58,7 @@ export function RegisterSolucionadorUser() {
             cuit: values.cuit,
             cbu: values.cbu,
             categories: values.categories,
+            role: 'SOLUCIONADOR',
         })
         console.log(values)
     }

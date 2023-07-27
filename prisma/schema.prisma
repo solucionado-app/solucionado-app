@@ -14,8 +14,8 @@ datasource db {
 model User {
     id                   String           @id @default(cuid())
     externalId           String           @unique
-    first_name           String
-    last_name            String
+    first_name           String?
+    last_name            String?
     email                String           @unique
     phone                String?          @unique
     address              String?
@@ -32,12 +32,13 @@ model User {
     role                 Role             @default(USER)
     comentsmade          Comment[]        @relation("comentAuthor")
     comentsRecieved      Comment[]        @relation("comentUser")
-    budgets              Budget[]
     reviewsMade          Review[]         @relation("author")
     reviewsRecieved      Review[]         @relation("solucionador")
     notificationRecieved Notification[]   @relation("notificado")
     notificationCreated  Notification[]   @relation("notificador")
     notificationId       String?
+    budgetsRecieved      Budget[]
+    budgetsMade          Budget[]         @relation("solucionador")
 
     @@index([roleId], name: "roleId")
 }
@@ -83,23 +84,26 @@ model ServiceRequest {
 }
 
 model Budget {
-    id          String   @id @default(cuid())
+    id          String    @id @default(cuid())
     description String
-    price     Int
-    status      Status   @default(PENDING)
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+    price       Int
+    status      Status    @default(PENDING)
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
     userId      String
-    user        User     @relation(fields: [userId], references: [id])
-    estimatedAt    DateTime
-    paidAt         DateTime?
-    service Service?
+    user        User      @relation(fields: [userId], references: [externalId])
+    authorId    String
+    author      User      @relation("solucionador", fields: [authorId], references: [externalId])
+    estimatedAt DateTime
+    paidAt      DateTime?
+    service     Service?
 
     serviceRequestId String
     serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [id])
 
     @@index([serviceRequestId])
     @@index([userId])
+    @@index([authorId])
 }
 
 enum Status {
@@ -110,18 +114,19 @@ enum Status {
 }
 
 model Service {
-    id           String         @id @default(cuid())
-    name         String
-    description  String
-    status       Status         @default(PENDING)
-    createdAt    DateTime       @default(now())
-    updatedAt    DateTime       @updatedAt
-    categoryId   Int
-    category     Category       @relation(fields: [categoryId], references: [id])
-    budgetId     String         @unique
-    budget       Budget         @relation(fields: [budgetId], references: [id])
-    review       Review?
-    Notification Notification[]
+    id            String         @id @default(cuid())
+    name          String
+    description   String
+    status        Status         @default(PENDING)
+    createdAt     DateTime       @default(now())
+    updatedAt     DateTime       @updatedAt
+    categoryId    Int
+    category      Category       @relation(fields: [categoryId], references: [id])
+    budgetId      String         @unique
+    budget        Budget         @relation(fields: [budgetId], references: [id])
+    review        Review?
+    notifications Notification[]
+    comments      Comment[]
 
     @@index([categoryId])
     @@index([budgetId])
@@ -138,8 +143,8 @@ model Review {
 
     serviceId String  @unique
     service   Service @relation(fields: [serviceId], references: [id])
-    user      User    @relation("solucionador", fields: [userId], references: [id])
-    author    User    @relation("author", fields: [authorId], references: [id])
+    user      User    @relation("solucionador", fields: [userId], references: [externalId])
+    author    User    @relation("author", fields: [authorId], references: [externalId])
 
     @@index([authorId])
     @@index([serviceId])
@@ -152,13 +157,16 @@ model Comment {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     userId    String
-    user      User     @relation("comentUser", fields: [userId], references: [id])
+    user      User     @relation("comentUser", fields: [userId], references: [externalId])
     authorId  String
-    author    User     @relation("comentAuthor", fields: [authorId], references: [id])
+    author    User     @relation("comentAuthor", fields: [authorId], references: [externalId])
 
-    ServiceRequest   ServiceRequest? @relation(fields: [serviceRequestId], references: [id])
+    serviceRequest   ServiceRequest? @relation(fields: [serviceRequestId], references: [id])
     serviceRequestId String?
+    serviceId        String?
+    service          Service?        @relation(fields: [serviceId], references: [id])
 
+    @@index([serviceId])
     @@index([serviceRequestId])
     @@index([userId])
     @@index([authorId])
@@ -175,6 +183,7 @@ model Category {
     name            String
     slug            String           @unique
     description     String
+    image_url       String?
     serviceRequests ServiceRequest[]
     createdAt       DateTime         @default(now())
     updatedAt       DateTime         @updatedAt

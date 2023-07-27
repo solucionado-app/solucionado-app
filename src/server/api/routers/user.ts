@@ -18,6 +18,7 @@ export const userRouter = createTRPCRouter({
                 name: z.string(),
                 description: z.string(),
             })).optional(),
+            role: z.enum(["USER", "SOLUCIONADOR"]).optional(),
         })
     ).mutation(async ({ ctx, input }) => {
         const userId = input.userId;
@@ -25,7 +26,7 @@ export const userRouter = createTRPCRouter({
 
         const user = await ctx.prisma.user.update({
             where: {
-                externalId: userId ,
+                externalId: userId,
             },
             data: {
                 phone: input.phone,

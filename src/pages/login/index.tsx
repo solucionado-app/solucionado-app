@@ -9,7 +9,8 @@ const Page: MyPage = () => {
 
     const url = redirect as string + "?" + params.toString();
     console.log(url);
-    return <SignIn afterSignInUrl={Object.keys(router.query).length ? url : "/perfil"} afterSignUpUrl={Object.keys(router.query).length ? redirect as string : "/completar-perfil"} />;
+    return <SignIn afterSignInUrl={Object.keys(router.query).length && redirect ? url : "/perfil"}
+        afterSignUpUrl={Object.keys(router.query).length && redirect ? redirect as string : "/completar-perfil"} />;
 }
 
 

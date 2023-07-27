@@ -1,34 +1,47 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
-export const budgetRouter = createTRPCRouter({
+export const commentRouter = createTRPCRouter({
     findByRequestId: protectedProcedure.input(
         z.object({
             serviceRequestId: z.string(),
         })
     ).query(({ ctx, input }) => {
 
-        const serviceRequest = ctx.prisma.budget.findMany({
+        const serviceRequest = ctx.prisma.comment.findMany({
             where: {
                 serviceRequestId: input.serviceRequestId,
-                authorId: ctx.auth.userId,
             },
         });
 
         if (serviceRequest === null) {
-            throw new Error("Budget not found");
+            throw new Error("comment not found");
         }
         console.log(serviceRequest);
         return serviceRequest;
     }),
-    getAll: protectedProcedure.input(
+    getNumberOfComments: protectedProcedure.input(
         z.object({
             serviceRequestId: z.string(),
         })
     ).query(({ ctx, input }) => {
-        return ctx.prisma.budget.findMany({
+        return ctx.prisma.comment.count({
             where: {
                 serviceRequestId: input.serviceRequestId,
+            },
+        });
+    }),
+    getAllByRequestId: protectedProcedure.input(
+        z.object({
+            serviceRequestId: z.string(),
+        })
+    ).query(({ ctx, input }) => {
+        return ctx.prisma.comment.findMany({
+            where: {
+                serviceRequestId: input.serviceRequestId,
+            },
+            orderBy: {
+                createdAt: "desc",
             },
             include: {
                 author: true,
@@ -38,17 +51,31 @@ export const budgetRouter = createTRPCRouter({
     create: protectedProcedure.input(
         z.object({
             description: z.string(),
-            price: z.number(),
-            estimatedAt: z.date(),
             userId: z.string(),
-            serviceRequestId: z.string(),
+            serviceRequestId: z.string().optional(),
+            serviceId: z.string().optional(),
         })).mutation(({ ctx, input }) => {
+
+            const requestConect = {
+                serviceRequest: {
+                    connect: {
+                        id: input?.serviceRequestId,
+                    },
+                }
+            }
+            const serviceConnect = {
+                service: {
+                    connect: {
+                        id: input?.serviceId,
+                    },
+                }
+            }
+
+
             console.log(ctx.auth.userId)
-            return ctx.prisma.budget.create({
+            return ctx.prisma.comment.create({
                 data: {
-                    description: input.description,
-                    price: input.price,
-                    estimatedAt: input.estimatedAt,
+                    content: input.description,
                     user: {
                         connect: {
                             externalId: input.userId,
@@ -59,11 +86,9 @@ export const budgetRouter = createTRPCRouter({
                             externalId: ctx.auth.userId,
                         },
                     },
-                    serviceRequest: {
-                        connect: {
-                            id: input.serviceRequestId,
-                        },
-                    },
+                    ...input.serviceRequestId ? requestConect : null,
+                    ...input.serviceId ? serviceConnect : null,
+
                 },
             });
         }),
