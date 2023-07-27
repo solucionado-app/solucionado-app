@@ -1,5 +1,5 @@
 import { useUser } from '@clerk/nextjs'
-import { ServiceRequest, Status } from '@prisma/client'
+import { type ServiceRequest } from '@prisma/client'
 import React from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -82,8 +82,7 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
             <div>
                 <h1 className="text-5xl font-extrabold tracking-tight">Generar Presupuesto</h1>
             </div><Form {...form}>
-
-                <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+                <form onSubmit={void form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
                     <FormField
                         control={form.control}
                         name="price"

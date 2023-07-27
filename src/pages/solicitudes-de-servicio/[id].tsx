@@ -6,26 +6,10 @@ import { type JwtPayload, type ServerGetTokenOptions } from "@clerk/types";
 import Head from "next/head";
 import { type MyPage } from "~/components/types/types";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
 
-import { Button } from "~/components/ui/button"
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "~/components/ui/form"
-import { Input } from "~/components/ui/input"
-import { Textarea } from "~/components/ui/textarea";
-import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
-import { Calendar } from "../../components/ui/calendar"
+
+
 import es from 'date-fns/locale/es';
-import { cn } from "~/lib/utils"
 import { format } from "date-fns"
 import { api } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
@@ -35,44 +19,17 @@ import CommentsServiceRequest from "~/components/comments/CommentsServiceRequest
 
 const locale = es;
 
-const FormSchema = z.object({
-    price: z.coerce.number().min(2000, {
-        message: "debe haber al menos un valor mayor a 2000.",
-    }),
-    description: z
-        .string()
-        .min(10, {
-            message: "Debe tener al menos 10 caracteres.",
-        })
-        .max(160, {
-            message: "Debe tener maximo 130 caracteres.",
-        }),
-    estimatedAt: z.date({
-        required_error: "La fecha estimada es requerida.",
-    }),
-})
+
 
 const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ id }) => {
 
-    const { user, isSignedIn } = useUser()
+    const { user } = useUser()
     const request = api.serviceRequest.findById.useQuery({ id })
     const { data: serviceRequest } = request
-    const mutateBugdet = api.budget.create.useMutation()
-    const form = useForm<z.infer<typeof FormSchema>>({
-        resolver: zodResolver(FormSchema),
-    })
+
 
     const { data: budgets, isLoading: budgetsIsLoading } = api.budget.getAll.useQuery({ serviceRequestId: id })
-    function onSubmit(data: z.infer<typeof FormSchema>) {
-        mutateBugdet.mutate({
-            serviceRequestId: id,
-            price: data.price,
-            description: data.description,
-            estimatedAt: data.estimatedAt,
-            userId: serviceRequest?.userId as string
-        })
-        console.log(data)
-    }
+
 
     const { data: budgetListSolucionador } = api.budget.findByRequestId.useQuery({ serviceRequestId: id }, {
         enabled: Boolean(user && user?.id !== serviceRequest?.userId),

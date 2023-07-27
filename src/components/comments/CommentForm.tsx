@@ -1,5 +1,5 @@
 import { useUser } from '@clerk/nextjs'
-import { ServiceRequest } from '@prisma/client'
+import { type ServiceRequest } from '@prisma/client'
 import React from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -69,7 +69,7 @@ export default function CommentsForm({ serviceRequest, serviceRequestId }: Props
         user && <>
             <Form {...form}>
 
-                <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-2">
+                <form onSubmit={void form.handleSubmit(onSubmit)} className="w-2/3 space-y-2">
 
                     <FormField
                         control={form.control}
