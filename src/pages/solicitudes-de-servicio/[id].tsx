@@ -16,6 +16,7 @@ import { useUser } from "@clerk/nextjs";
 import BudgetsForm from "~/components/budgets/BudgetsForm";
 import CommentsForm from "~/components/comments/CommentForm";
 import CommentsServiceRequest from "~/components/comments/CommentsServiceRequest";
+import Budgets from "~/components/budgets/budgets";
 
 const locale = es;
 
@@ -89,10 +90,12 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                             <p>{budget.serviceRequestId}</p>
                             <p>{budget.userId}</p>
                             <p>{budget.id}</p>
+                            
                         </div>
                     ))}
-
                 </div>}
+                
+                <Budgets />
             </div>
 
         </>
