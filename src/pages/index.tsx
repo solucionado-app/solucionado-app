@@ -42,10 +42,11 @@ const Home: MyPage = () => {
             <div className="row sm:flex justify-between">
               <div className="flex items-center">
                 <div className="py-10">
-                  <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold py-5">Solucionadores <br />y soluciones</h1>
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold py-5">Solucionadores <br />y soluciones</h1>
                   <span className="text-[#ecbb2c] text-3xl">Para tu hogar</span>
                   <p className="pb-16 text-lg py-3">Trabajos garantidos</p>
                   <a href="#" className="text-2xl">Sobre nosotros</a>
+                  <p className="inline-flex border-t border-solid border-[#ecbb2c] h-[1px] w-16 ml-3"></p>
                 </div>
               </div>
               <div className="">
@@ -61,7 +62,7 @@ const Home: MyPage = () => {
           <div className="container-fluid">
             <div className="grid md:flex">
               <div className="">
-                <div className="about_box">
+                <div className="about_box pb-2">
                   <div className="titlepage">
                     <h2 className="text-[#154492] md:text-4xl font-bold uppercase"><strong className="text-[#ecbb2c] font-semibold text-[17px]">Quienes somos</strong><br /> Te ayudamos a que puedas necesitar en tu casa
                     </h2>
@@ -161,12 +162,11 @@ const Home: MyPage = () => {
             </ol>
             <div className="carousel-inner">
               <div className="carousel-item active">
-                <div className="container">
                   <div className="carousel-caption ">
                     <div className="row">
                       <div className="col-md-6 offset-md-3">
-                        <div className="test_box px-[25%] pt-14">
-                          <p className="text-[#383737] border border-[#ecbb2c] p-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                        <div className="test_box sm:px-[10%] md:px-[25%] pt-14 p-3">
+                          <p className="text-[#383737] border border-[#ecbb2c] p-3 md:p-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                             incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis </p>
                           <div className="flex items-center space-x-2 pt-7 text-[#ecbb2c] text-[15px] font-semibold uppercase">
                             <Image src="/cos.jpg" width={83} height={79} alt="foto de prefil" />
@@ -175,7 +175,6 @@ const Home: MyPage = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -243,15 +242,12 @@ const Home: MyPage = () => {
                 </div>
                 <div className="md:w-1/2 ">
                   <h3 className="text-xl my-5 font-semibold">Contactanos</h3>
-                  <ul className="location_icon flex  flex-wrap space-x-3">
-                    <li><a href="#"><i className="fa fa-map-marker" aria-hidden="true"></i></a> Rivadavia 206
-                      <br /> Neuquen
-                    </li>
-                    <li><a href="#"><i className="fa fa-envelope" aria-hidden="true"></i></a>info@solucionado.com.ar</li>
-                    <li><a href="#"><i className="fa fa-volume-control-phone" aria-hidden="true"></i></a>+54 1234567890
-                    </li>
+                  <ul className="location_icon flex flex-col space-y-3">
+                    <li><a href="#"></a> Rivadavia 206, Neuquen</li>
+                    <li><a href="#"></a>info@solucionado.com.ar</li>
+                    <li><a href="#"></a>+54 1234567890</li>
                   </ul>
-                  <ul className="social_icon flex justify-center space-x-3">
+                  <ul className="social_icon flex justify-center space-x-3 py-5 md:py-0 md:pt-3">
                     <li>
                       <a href="#" className="w-10 h-10 text-[#082557] bg-white rounded-full flex justify-center items-center hover:bg-[#ecbb2c] hover:text-white transition duration-500">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="2 0 20 20" fill="currentColor">

@@ -10,6 +10,7 @@ import {
 } from "~/components/ui/dropdown-menu"
 import { api } from "~/utils/api";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
+
 import { Check } from "lucide-react";
 import { Button } from "../ui/button";
 import { formatDistance, subDays } from 'date-fns';
@@ -44,9 +45,10 @@ const NotificationsComponent = ({ className, notificationsNumber, ...props }: pr
             {/* <DynamicNotifications notificationsNumber={notificationsNumber} /> */}
             <DropdownMenuContent className="p-0" asChild>
                 <NotificationsContent notificationsNumber={notificationsNumber} />
+
             </DropdownMenuContent>
         </DropdownMenu>
-
+        
 
     );
 };

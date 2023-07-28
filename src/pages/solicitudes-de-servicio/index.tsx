@@ -25,15 +25,15 @@ const ServiceRequest: MyPage = () => {
             <main className="flex min-h-screen flex-col items-center  ">
                 <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
                     <h1 className="text-5xl font-extrabold tracking-tight  sm:text-[5rem]">
-                        <span className="text-[hsl(280,100%,70%)]">Solucionado</span> App
+                        Solicitudes de Servicio
                     </h1>
                     {isLoading && <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>}
                     {services && services?.map((service) => (
 
-                        <div key={service.id}>
+                        <div key={service.id} className="w-full">
                             <Link href={`/solicitudes-de-servicio/${service.id}`}>
-                                <Card className="relative w-[320px]  flex-col p-5  ">
-                                    <div >
+                                <Card className="relative flex-col p-5 hover:bg-slate-200 ">
+                                    <div className="font-bold">
                                         {service.category.name}
                                     </div>
                                     {
