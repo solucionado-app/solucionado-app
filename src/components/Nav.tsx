@@ -4,8 +4,10 @@ import { useRouter } from "next/router";
 import { SignOutButton, SignedIn, useUser } from "@clerk/nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
 import Image from "next/image";
-import NotificationsPage from "./notifications/NotificationsComponent";
+import NotificationsComponent from "./notifications/NotificationsComponent";
 import ProfileDropdown from "./auth/ProfileDropdown";
+import { number } from "zod";
+import { api } from "~/utils/api";
 
 export default function Nav() {
 
@@ -13,7 +15,7 @@ export default function Nav() {
     const user = useUser();
 
     const popover = React.useRef<HTMLDialogElement>(null);
-
+    const { data: numberOfNotifications } = api.notification.count.useQuery()
     const handleBurgerClick = () => {
         const { current: el } = popover;
         el?.show();
@@ -88,8 +90,8 @@ export default function Nav() {
                         <Link className="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold  rounded-xl transition duration-200" href="/login">Iniciar Sesión</Link>
                         <Link className="hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200" href="/registro">Registrarse</Link>
                     </>}
-                    {!!user.isSignedIn && <div className="flex gap-4">
-                        <NotificationsPage />
+                    {!!user.isSignedIn && <div className="flex items-center gap-4">
+                        {<NotificationsComponent notificationsNumber={numberOfNotifications || 0} />}
                         <ProfileDropdown>
                             <Avatar className="cursor-pointer" onClick={() => { void router.push("/perfil") }}>
                                 <AvatarImage src={user.user.imageUrl} />

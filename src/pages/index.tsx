@@ -211,7 +211,7 @@ const Home: MyPage = () => {
                       <input className="border-b border-[#003471] mb-5 text-[18px] font-normal w-full bg-transparent placeholder:text-[#363636] h-14" placeholder="Telefono" type="number" name="Phone Number "></input>
                     </div>
                     <div className="col-md-12 mb-5">
-                      <textarea className="textarea border-b border-[#003471] mb-5 text-[18px] font-normal w-full bg-transparent placeholder:text-[#363636] h-36" placeholder="Message">Mensaje</textarea>
+                      <textarea className="textarea border-b border-[#003471] mb-5 text-[18px] font-normal w-full bg-transparent placeholder:text-[#363636] h-36" defaultValue={"mensaje"} placeholder="Message"></textarea>
                     </div>
                     <div className="col-md-12 my-7">
                       <button className=" text-xl bg-[#ecbb2c] text-[#fffefe] py-5 rounded-[40px] w-[217px] font-semibold uppercase">Enviar</button>

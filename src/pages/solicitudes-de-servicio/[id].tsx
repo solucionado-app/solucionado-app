@@ -34,7 +34,6 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
     const { data: budgetListSolucionador } = api.budget.findByRequestId.useQuery({ serviceRequestId: id }, {
         enabled: Boolean(user && user?.id !== serviceRequest?.userId),
     })
-    console.log(budgetListSolucionador)
     const rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
     return (
         <>
