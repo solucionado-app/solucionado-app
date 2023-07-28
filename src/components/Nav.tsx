@@ -76,14 +76,6 @@ export default function Nav() {
 
 
                     <li><Link className={`text-sm ${router.asPath === "/contacto" ? "text-cyan-300 font-bold" : "text-gray-200"}  hover:text-sky-300`} href="/contacto">Contacto</Link></li>
-                    <SignedIn>
-
-                        <li><Link className={`text-sm ${router.asPath === "/solicitudes-de-servicio" ? "text-cyan-300 font-bold" : "text-gray-200"}  hover:text-sky-300`} href="/solicitudes-de-servicio">Solicitudes de Servicio</Link></li>
-                    </SignedIn>
-                    <SignedIn>
-
-                        <li><Link className={`text-sm ${router.asPath === "/completar-perfil" ? "text-cyan-300 font-bold" : "text-gray-200"}  hover:text-sky-300`} href="/completar-perfil">Completar Perfil</Link></li>
-                    </SignedIn>
                 </ul>
                 <div className="hidden lg:flex">
                     {!user.isSignedIn && <>
