@@ -69,7 +69,7 @@ export default function CommentsForm({ serviceRequest, serviceRequestId }: Props
         user && <>
             <Form {...form}>
 
-                <form onSubmit={void form.handleSubmit(onSubmit)} className="w-2/3 space-y-2">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-2">
 
                     <FormField
                         control={form.control}
