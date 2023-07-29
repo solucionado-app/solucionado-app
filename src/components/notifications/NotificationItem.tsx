@@ -1,14 +1,19 @@
-import { Notification } from '@prisma/client'
+import { type Notification, type User } from '@prisma/client'
 import { formatDistance } from 'date-fns'
 import { es } from 'date-fns/locale'
 import React from 'react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '../ui/dropdown-menu'
-import { Check, CheckCheck, Circle, Dot, MoreVertical, Trash2 } from 'lucide-react'
+import { CheckCheck, Circle, MoreVertical, Trash2 } from 'lucide-react'
 import { api } from '~/utils/api'
 import { trpc } from '~/utils/trpc'
+import { useRouter } from 'next/router'
 
+
+interface NotficationItemProps extends Notification {
+    readBy: User[]
+}
 interface Props {
-    notification: Notification
+    notification: NotficationItemProps
 }
 export default function NotificationItem({ notification }: Props) {
     const { mutate: markAsUnread } = api.notification.markAsUnread.useMutation()
@@ -21,17 +26,18 @@ export default function NotificationItem({ notification }: Props) {
         }, {
             onSuccess: () => {
                 void utils.notification.getAll.invalidate()
-                void utils.notification.count.invalidate()
+                void utils.notification.countUnRead.invalidate()
             }
         })
     }
+    const router = useRouter()
     const handlemarkAsRead = () => {
         markAsRead({
             notificationId: notification.id,
         }, {
             onSuccess: () => {
                 void utils.notification.getAll.invalidate()
-                void utils.notification.count.invalidate()
+                void utils.notification.countUnRead.invalidate()
             }
         })
     }
@@ -41,14 +47,16 @@ export default function NotificationItem({ notification }: Props) {
         }, {
             onSuccess: () => {
                 void utils.notification.getAll.invalidate()
-                void utils.notification.count.invalidate()
+                void utils.notification.countUnRead.invalidate()
             }
         })
     }
     return (
         <>
-            {<span className={` ${!notification.read ? "flex" : "invisible"} h-2 w-2 translate-y-1 rounded-full bg-sky-500`} />}
-            <div className="space-y-1">
+            {<span className={` ${notification.readBy?.length < 1 ? "flex" : "invisible"} h-2 w-2 translate-y-1 rounded-full bg-sky-500`} />}
+            <div onClick={() => {
+                void router.push(notification.link ? notification.link : "#")
+            }} className={`space-y-1 cursor-pointer`}>
                 <p className="text-sm font-medium leading-none">
                     {notification.content}
                 </p>
@@ -61,7 +69,7 @@ export default function NotificationItem({ notification }: Props) {
                     <MoreVertical />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent data-side='left' className='p-0 -right-1/2 w-[12.5rem]'>
-                    {!notification.read ? <div onMouseDown={handlemarkAsRead} className="p-2 flex gap-2 cursor-pointer hover:bg-slate-300">
+                    {notification.readBy?.length < 1 ? <div onMouseDown={handlemarkAsRead} className="p-2 flex gap-2 cursor-pointer hover:bg-slate-300">
                         <CheckCheck />Marcar como leido
                     </div> :
                         <div onMouseDown={handleMarkAsUnread} className="p-2 flex gap-2 items-center cursor-pointer hover:bg-slate-300">

@@ -24,6 +24,14 @@ export const serviceRequestRouter = createTRPCRouter({
             status: z.string().optional(),
             details: z.record(z.string(), z.any()).optional(),
             categorySlug: z.string(),
+            date: z.date().optional(),
+            description: z.string().optional(),
+            province: z.string().optional(),
+            city: z.string().optional(),
+            address: z.string().optional(),
+            amount: z.string().optional(),
+            schedule: z.string().optional(),
+            urgency: z.string().optional(),
         })
     ).mutation(async ({ ctx, input }) => {
         const userId = input?.userId;
@@ -43,6 +51,15 @@ export const serviceRequestRouter = createTRPCRouter({
                         slug: input.categorySlug,
                     },
                 },
+                date: input.date,
+                description: input.description,
+                province: input.province,
+                city: input.city,
+                address: input.address,
+                amount: input.amount,
+                schedule: input.schedule,
+                urgency: input.urgency,
+
             }
         });
         return serviceRequest;
@@ -61,7 +78,7 @@ export const serviceRequestRouter = createTRPCRouter({
                 category: {
                     select: {
                         name: true,
-                         slug: true,
+                        slug: true,
                     },
                 },
             }

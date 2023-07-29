@@ -64,6 +64,7 @@ export default function CommentsForm({ serviceRequest, serviceRequestId }: Props
         })
 
         console.log(data)
+        return void 0
     }
     return (
         user && <>

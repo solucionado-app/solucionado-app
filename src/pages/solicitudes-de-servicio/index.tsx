@@ -5,6 +5,8 @@ import { Card } from "~/components/cards/CardComponent";
 import MainHead from "~/components/layouts/head/MainHead";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
+import { es } from "date-fns/locale";
+import { format } from "date-fns";
 
 
 
@@ -36,6 +38,18 @@ const ServiceRequest: MyPage = () => {
                                     <div className="font-bold">
                                         {service.category.name}
                                     </div>
+                                    {service.address && <div className="text-sm text-gray-500">
+                                        {service.address}
+                                    </div>}
+                                    {service?.date && <div className="text-sm text-gray-500">
+                                        {format(service?.date, "PPP", { locale: es })}
+                                    </div>}
+                                    {service?.description && <div className="text-sm text-gray-500">
+                                        {service?.description}
+                                    </div>}
+                                    {service.amount && <div className="text-sm text-gray-500">
+                                        {service.amount}
+                                    </div>}
                                     {
                                         service?.details && Object.keys(service?.details).map((key: string, i) => (
 
