@@ -87,8 +87,8 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                                 <div className="space-y-1">
                                     {/* <Budgets /> */}
                                     {
-                                        budgetListSolucionador && budgetListSolucionador.map((budget, i) => (
-                                            <div key={i} className="text-xl font-semibold border  shadow-sm relative  p-5">
+                                        budgetListSolucionador && budgetListSolucionador.map((budget) => (
+                                            <div key={budget.id} className="text-xl font-semibold border  shadow-sm relative  p-5">
                                                 <h1 className="text-4xl font-extrabold tracking-tight">Tus Presupuestos</h1>
                                                 <p>{budget?.price}</p>
                                                 <p>{budget?.description}</p>

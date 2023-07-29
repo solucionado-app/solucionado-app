@@ -16,7 +16,7 @@ interface Props {
 
 export default function NotificationsContent({ notificationsNumber, ...props }: Props) {
     const { data: notifications, isLoading } = api.notification.getAll.useQuery(undefined, {
-        enabled: Boolean(props['data-state'] && props['data-state'] == 'open'),
+
     })
     const { mutate: markAllAsRead } = api.notification.markAllAsRead.useMutation()
     const utils = trpc.useContext()
@@ -35,7 +35,7 @@ export default function NotificationsContent({ notificationsNumber, ...props }: 
                 <CardTitle>Notificaciones</CardTitle>
                 <CardDescription>{`tienes ${notificationsNumber} notificaciones sin abrir`}</CardDescription>
             </CardHeader>
-            <CardContent className="grid gap-2 px-0 ">
+            <CardContent className="grid gap-2 px-0 w-[380px]  ">
 
                 <div>
                     <DropdownMenuSeparator className='mt-3  bg-slate-900/30' />
@@ -46,13 +46,13 @@ export default function NotificationsContent({ notificationsNumber, ...props }: 
                     ))
                     }
                     {notifications && notifications.map((notification) => (
-                        <div
+                        <DropdownMenuItem
                             key={notification.id}
                             className="mb-4  grid grid-cols-[15px_8fr_1fr] items-start  p-2 last:mb-0  hover:bg-slate-300"
                         >
                             <NotificationItem notification={notification} />
 
-                        </div>
+                        </DropdownMenuItem>
                     ))}
                     {/* -----ejemplo----- */}
                 </div>

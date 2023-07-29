@@ -61,6 +61,8 @@ model Notification {
     serviceId        String?
     service          Service?        @relation(fields: [serviceId], references: [id])
     readBy           User[]          @relation("readBy")
+    bugdetId         String?
+    budget           Budget[]
 
     @@index([serviceRequestId])
     @@index([serviceId])
@@ -110,6 +112,7 @@ model Budget {
 
     serviceRequestId String
     serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [id])
+    Notification     Notification[]
 
     @@index([serviceRequestId])
     @@index([userId])
