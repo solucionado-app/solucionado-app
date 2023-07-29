@@ -30,9 +30,21 @@ export const budgetRouter = createTRPCRouter({
             where: {
                 serviceRequestId: input.serviceRequestId,
             },
-            include: {
-                author: true,
+            select:{
+                id: true,
+                description: true,
+                price: true,
+                estimatedAt: true,
+                author: {
+                    select: {
+                        id : true,
+                        first_name: true,
+                        last_name: true,
+                        image_url: true,
+                    }
+                },
             }
+            
         });
     }),
     create: protectedProcedure.input(
