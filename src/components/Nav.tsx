@@ -57,8 +57,10 @@ export default function Nav() {
     return (
         <>
             <nav className=" w-full bg-[#032154] py-[9px] d_none text-white relative px-4 flex justify-between items-center ">
+
                 <Link className="text-3xl font-bold leading-none flex items-center gap-2" href="/">
-                    <Image className="fill-white" src="/solucionado-isologo.png" width={40} height={40} alt="logo solucionado" />
+                    <Image  src="/solucionado-isologo.png" width={35} height={35} alt="logo solucionado" />
+
                 </Link>
 
                 <ul className={`hidden  absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto  lg:items-center lg:w-auto lg:space-x-6`}>
@@ -68,14 +70,6 @@ export default function Nav() {
 
 
                     <li><Link className={`text-sm ${router.asPath === "/contacto" ? "text-cyan-300 font-bold" : "text-gray-200"}  hover:text-sky-300`} href="/contacto">Contacto</Link></li>
-                    <SignedIn>
-
-                        <li><Link className={`text-sm ${router.asPath === "/solicitudes-de-servicio" ? "text-cyan-300 font-bold" : "text-gray-200"}  hover:text-sky-300`} href="/solicitudes-de-servicio">Solicitudes de Servicio</Link></li>
-                    </SignedIn>
-                    <SignedIn>
-
-                        <li><Link className={`text-sm ${router.asPath === "/completar-perfil" ? "text-cyan-300 font-bold" : "text-gray-200"}  hover:text-sky-300`} href="/completar-perfil">Completar Perfil</Link></li>
-                    </SignedIn>
                 </ul>
 
                 <div className="flex gap-4  items-center">

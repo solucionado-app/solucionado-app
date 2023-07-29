@@ -5,6 +5,23 @@ import { ssgHelper } from "~/server/api/ssgHelper";
 import { type JwtPayload, type ServerGetTokenOptions } from "@clerk/types";
 import Head from "next/head";
 import { type MyPage } from "~/components/types/types";
+import { Button } from "~/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card"
+import { Input } from "~/components/ui/input"
+import { Label } from "~/components/ui/label"
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "~/components/ui/tabs"
 
 
 
@@ -56,46 +73,84 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                         </p>
                     ))}
                 </div>
+                <Tabs defaultValue="account" className="w-full p-5">
+                    <TabsList className="grid w-full grid-cols-2">
+                        <TabsTrigger value="account">Presupuestos</TabsTrigger>
+                        <TabsTrigger value="password">Comentarios</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="account">
+                        <Card>
+                        <CardHeader>
+                            <CardTitle>Presupuestos</CardTitle>
+                            <CardDescription>
+                                aca van los presupuestos
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                            <div className="space-y-1">
+                            {/* <Budgets /> */}
+                            {
+                                budgetListSolucionador && budgetListSolucionador.map((budget, i) => (
+                                    <div key={i} className="text-xl font-semibold border  shadow-sm relative  p-5">
+                                        <h1 className="text-4xl font-extrabold tracking-tight">Tus Presupuestos</h1>
+                                        <p>{budget?.price}</p>
+                                        <p>{budget?.description}</p>
+                                        <p>{format(budget?.estimatedAt, "PPP", { locale })}</p>
+                                        <p>{budget?.serviceRequestId}</p>
+                                        <p>{budget?.userId}</p>
+                                        <p>{budget?.id}</p>
+                                    </div>
+                                ))
+                            }
+                            <BudgetsForm
+                                serviceRequest={serviceRequest} serviceRequestId={id} />
 
-                <CommentsForm serviceRequest={serviceRequest} serviceRequestId={id} />
-                <CommentsServiceRequest serviceRequestId={id} />
-                {
-                    budgetListSolucionador && budgetListSolucionador.map((budget, i) => (
-                        <div key={i} className="text-xl font-semibold border  shadow-sm relative  p-5">
-                            <h1 className="text-4xl font-extrabold tracking-tight">Tus Presupuestos</h1>
-                            <p>{budget?.price}</p>
-                            <p>{budget?.description}</p>
-                            <p>{format(budget?.estimatedAt, "PPP", { locale })}</p>
-                            <p>{budget?.serviceRequestId}</p>
-                            <p>{budget?.userId}</p>
-                            <p>{budget?.id}</p>
-                        </div>
-                    ))
-                }
-                <BudgetsForm
-                    serviceRequest={serviceRequest} serviceRequestId={id} />
+                            {user?.id !== serviceRequest?.userId && <>
+                            </>}
+                            {user?.id === serviceRequest?.userId && <div className="text-xl font-semibold border  shadow-sm relative p-5 m-5">
+                                <h1 className="text-4xl font-extrabold tracking-tight">Presupuestos</h1>
 
-                {user?.id !== serviceRequest?.userId && <>
-                </>}
-                {user?.id === serviceRequest?.userId && <div className="text-xl font-semibold border  shadow-sm relative p-5 m-5">
-                    <h1 className="text-4xl font-extrabold tracking-tight">Presupuestos</h1>
-
-                    {budgetsIsLoading && <p>Cargando...</p>}
-                    {!budgetsIsLoading && budgets?.length === 0 && <p>Aun no hay presupuestos</p>}
-                    {budgets && budgets.map((budget, i) => (
-                        <div key={i} className="border-t my-3 p-2">
-                            <p>{budget.price}</p>
-                            <p>{budget.description}</p>
-                            <p>{format(budget.estimatedAt, "PPP", { locale })}</p>
-                            <p>{budget.serviceRequestId}</p>
-                            <p>{budget.userId}</p>
-                            <p>{budget.id}</p>
-                            
-                        </div>
-                    ))}
-                </div>}
-                
-                <Budgets />
+                                {budgetsIsLoading && <p>Cargando...</p>}
+                                {!budgetsIsLoading && budgets?.length === 0 && <p>Aun no hay presupuestos</p>}
+                                {budgets && budgets.map((budget, i) => (
+                                    <div key={i} className="border-t my-3 p-2">
+                                        <p>{budget.price}</p>
+                                        <p>{budget.description}</p>
+                                        <p>{format(budget.estimatedAt, "PPP", { locale })}</p>
+                                        <p>{budget.serviceRequestId}</p>
+                                        <p>{budget.userId}</p>
+                                        <p>{budget.id}</p>
+                                        
+                                    </div>
+                                ))}
+                            </div>}
+                            </div>
+                        </CardContent>
+                        <CardFooter>
+                            <Button>ver mas</Button>
+                        </CardFooter>
+                        </Card>
+                    </TabsContent>
+                    <TabsContent value="password">
+                        <Card>
+                        <CardHeader>
+                            <CardTitle>Comentarios</CardTitle>
+                            <CardDescription>
+                                aca van los comentarios
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                            <div className="space-y-1">
+                                <CommentsForm serviceRequest={serviceRequest} serviceRequestId={id} />
+                                <CommentsServiceRequest serviceRequestId={id} />
+                            </div>
+                        </CardContent>
+                        <CardFooter>
+                            <Button>ver mas</Button>
+                        </CardFooter>
+                        </Card>
+                    </TabsContent>
+                </Tabs>
             </div>
 
         </>

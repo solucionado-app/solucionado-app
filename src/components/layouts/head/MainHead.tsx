@@ -17,7 +17,7 @@ export default function MainHead({ title, description }: PropsWithChildren<props
             <meta name="msapplication-TileColor" content="#da532c" />
             <meta name="theme-color" content="#ffffff" />
             <meta name="description" content={description} />
-            <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+            <link rel="icon" type="image/svg+xml" href="/solucionado-isologo.svg" />
             <title>{title}</title>
         </Head>
     )
