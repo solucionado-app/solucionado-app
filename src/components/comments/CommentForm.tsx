@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { useUser } from '@clerk/nextjs'
 import { type ServiceRequest } from '@prisma/client'
 import React from 'react'
@@ -48,15 +50,31 @@ export default function CommentsForm({ serviceRequest, serviceRequestId }: Props
             description: ""
         }
     })
-    const mutateBugdet = api.comment.create.useMutation()
+    const mutateComment = api.comment.create.useMutation({
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        onSuccess: (data) => {
+            if (data?.id) {
+                notification.mutate({
+                    title: "Nueva solicitud de servicio",
+                    content: `${user?.firstName ? user?.firstName : ""} ${user?.lastName ? user.lastName : ""} ha comentado tu solicitud de servicio`,
+                    link: `/solicitudes-de-servicio/${serviceRequestId}`,
+                    serviceRequestId: serviceRequestId,
+                    userId: serviceRequest?.userId as string,
+                })
+            }
+        },
+    })
     const utils = trpc.useContext()
+    const notification = api.notification.createCommentNotification.useMutation()
     function onSubmit(data: z.infer<typeof FormSchema>) {
-        mutateBugdet.mutate({
+        mutateComment.mutate({
             serviceRequestId: serviceRequestId,
             description: data.description,
             userId: serviceRequest?.userId as string
         }, {
             onSuccess: () => {
+                void utils.notification.getAll.invalidate()
+                void utils.notification.countUnRead.invalidate()
                 void utils.comment.getAllByRequestId.invalidate({ serviceRequestId: serviceRequestId })
                 form.reset()
 

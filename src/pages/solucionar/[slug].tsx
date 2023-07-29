@@ -5,22 +5,18 @@ import { type JwtPayload, type ServerGetTokenOptions } from "@clerk/types";
 import Head from "next/head";
 import { type MyPage } from "~/components/types/types";
 
-import dynamic from 'next/dynamic'
-import GeneralForm from "~/components/formularios/generalForm";
 import { api } from "~/utils/api";
+import { FormStepsProvider } from "~/components/formularios/ContextForm";
+import FormAll from "~/components/formularios/FormAll";
 
 
 
-const getDynamicForm = (slug: string) => dynamic(() => import(`~/components/formularios/${slug}Form`).catch(() => GeneralForm), {
-    loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
-})
 
 
 
 const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ slug }) => {
 
     const { data: category, isLoading } = api.categories.findBySlug.useQuery({ slug })
-    const DynamicForm = getDynamicForm(slug)
 
     return (
         <>
@@ -36,7 +32,9 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                     {category?.name}
                 </h1>
 
-                <DynamicForm />
+                <FormStepsProvider categorieName={category?.name} >
+                    <FormAll />
+                </FormStepsProvider>
             </div>
 
         </>

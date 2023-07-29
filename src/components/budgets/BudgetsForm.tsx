@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { useUser } from '@clerk/nextjs'
 import { type ServiceRequest } from '@prisma/client'
 import React from 'react'
@@ -58,7 +59,24 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
             estimatedAt: new Date()
         }
     })
-    const mutateBugdet = api.budget.create.useMutation()
+    console.log(serviceRequest?.userId)
+    const mutateBugdet = api.budget.create.useMutation({
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        onSuccess: (data) => {
+            if (data?.id) {
+                notification.mutate({
+                    title: "Nueva solicitud de servicio",
+                    content: `${user?.firstName ? user?.firstName : ""} ${user?.lastName ? user.lastName : ""} ha enviado un presupuesto para tu solicitud de servicio`,
+                    link: `/solicitudes-de-servicio/${serviceRequestId}`,
+                    serviceRequestId: serviceRequestId,
+                    userId: serviceRequest?.userId as string,
+                    budgetId: data.id
+                })
+            }
+        },
+    })
+    const notification = api.notification.createBudgetNotification.useMutation()
+
     const utils = trpc.useContext()
     function onSubmit(data: z.infer<typeof FormSchema>) {
         mutateBugdet.mutate({
@@ -69,7 +87,8 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
             userId: serviceRequest?.userId as string
         }, {
             onSuccess: () => {
-
+                void utils.notification.getAll.invalidate()
+                void utils.notification.countUnRead.invalidate()
                 void utils.budget.findByRequestId.invalidate({ serviceRequestId: serviceRequestId })
                 form.reset()
             }
@@ -82,7 +101,7 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
             <div>
                 <h1 className="text-5xl font-extrabold tracking-tight">Generar Presupuesto</h1>
             </div><Form {...form}>
-                <form onSubmit={void form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
                     <FormField
                         control={form.control}
                         name="price"

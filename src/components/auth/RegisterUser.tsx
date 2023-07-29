@@ -17,6 +17,8 @@ import { Input } from "~/components/ui/input"
 import { useForm } from "react-hook-form";
 import { useUser } from "@clerk/nextjs"
 import { api } from "~/utils/api"
+import ProvinceAndCityOptions from "../formularios/ProvinceAndCityOptions"
+
 
 
 const phoneRegex = new RegExp(
@@ -26,12 +28,23 @@ const formSchema = z.object({
     phone: z.string({ required_error: "Debes introducir un numero de telefono" }).min(1, { message: "El telefono es requerido" }).regex(phoneRegex, 'Invalid Number!'),
     dni: z.string().min(1, { message: "El dni es requerido" }),
     address: z.string().min(1, { message: "La direccion es requerida" }),
+    province: z.object({
+        id: z.string(),
+        nombre: z.string(),
+    }),
+    city: z.object({
+        id: z.string(),
+        nombre: z.string(),
+    }),
 });
 export function RegisterUser() {
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema)
     })
+
+
+
     const { user, isSignedIn } = useUser()
     if (!isSignedIn) return null
     const { id } = user
@@ -46,7 +59,7 @@ export function RegisterUser() {
             dni: values.dni,
             address: values.address,
         })
-        console.log(values)
+        console.log("values", values)
     }
     // ...
 
@@ -98,6 +111,78 @@ export function RegisterUser() {
                         </FormItem>
                     )}
                 />
+                {/* <FormField
+                    control={form.control}
+                    name="province"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Provincia</FormLabel>
+                            <FormControl>
+                                <Select
+                                    {...field}
+                                    styles={{
+                                        control: (styles) => ({
+                                            ...styles,
+                                            backgroundColor: 'white',
+                                        }),
+                                        menuList: (provided) => ({
+                                            ...provided,
+                                            backgroundColor: 'white',
+                                        }),
+                                    }}
+                                    isLoading={queryprovinces.isLoading}
+                                    placeholder='Ingresa la provincias' options={queryprovinces.data?.provincias as Province[]}
+                                    getOptionLabel={(option: Province) => option?.nombre}
+                                    getOptionValue={(option: Province) => option?.id}
+                                    onChange={(option) => {
+
+                                        console.log("option", option)
+                                        option && form.setValue("province", { id: option.id, nombre: option.nombre })
+                                        form.setValue("city", { id: "", nombre: "" })
+                                        querycitys.refetch()
+                                    }}
+                                />
+                            </FormControl>
+                            <FormDescription>
+
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                /> */}
+                <ProvinceAndCityOptions formControl={form.control} formSetValue={form.setValue} formGetValues={form.getValues} />
+                {/* <FormField
+                    control={form.control}
+                    name="city"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Ciudad</FormLabel>
+                            <FormControl>
+                                <Select
+                                    {...field}
+                                    styles={{
+                                        control: (styles) => ({
+                                            ...styles,
+                                            backgroundColor: 'white',
+                                        }),
+                                        menuList: (provided) => ({
+                                            ...provided,
+                                            backgroundColor: 'white',
+                                        }),
+                                    }}
+                                    isLoading={querycitys.isLoading || querycitys.isFetching}
+                                    placeholder='Ingresa la ciudad' options={querycitys.data?.municipios as City[]}
+                                    getOptionLabel={(option: City) => option?.nombre}
+                                    getOptionValue={(option: City) => option?.id}
+                                />
+                            </FormControl>
+                            <FormDescription>
+
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                /> */}
 
                 <Button type="submit">Registrarse</Button>
             </form>

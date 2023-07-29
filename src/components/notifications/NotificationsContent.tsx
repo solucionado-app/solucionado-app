@@ -2,15 +2,10 @@ import React from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Check } from 'lucide-react'
-import { formatDistance } from 'date-fns'
-import { DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from '../ui/dropdown-menu'
+import { DropdownMenuItem, DropdownMenuSeparator } from '../ui/dropdown-menu'
 import { Skeleton } from '../ui/skeleton'
 import { api } from '~/utils/api'
-import Link from 'next/link'
-import es from 'date-fns/locale/es';
 import NotificationItem from './NotificationItem'
-import { router } from '@trpc/server'
-import { useRouter } from 'next/router'
 import { trpc } from '~/utils/trpc'
 
 
@@ -21,14 +16,13 @@ interface Props {
 
 export default function NotificationsContent({ notificationsNumber, ...props }: Props) {
     const { data: notifications, isLoading } = api.notification.getAll.useQuery(undefined, {
-        enabled: Boolean(props['data-state'] && props['data-state'] == 'open'),
+
     })
     const { mutate: markAllAsRead } = api.notification.markAllAsRead.useMutation()
-    const router = useRouter()
     const utils = trpc.useContext()
     const handelMarkAllAsRead = () => markAllAsRead(undefined, {
         onSuccess: () => {
-            void utils.notification.count.invalidate()
+            void utils.notification.countUnRead.invalidate()
             void utils.notification.getAll.invalidate()
         }
     })
@@ -41,7 +35,7 @@ export default function NotificationsContent({ notificationsNumber, ...props }: 
                 <CardTitle>Notificaciones</CardTitle>
                 <CardDescription>{`tienes ${notificationsNumber} notificaciones sin abrir`}</CardDescription>
             </CardHeader>
-            <CardContent className="grid gap-2 px-0 ">
+            <CardContent className="grid gap-2 px-0 w-[380px]  ">
 
                 <div>
                     <DropdownMenuSeparator className='mt-3  bg-slate-900/30' />
@@ -52,16 +46,13 @@ export default function NotificationsContent({ notificationsNumber, ...props }: 
                     ))
                     }
                     {notifications && notifications.map((notification) => (
-                        <div
-                            onClick={() => {
-                                router.push(notification.link ? notification.link : "#")
-                            }}
+                        <DropdownMenuItem
                             key={notification.id}
-                            className="mb-4 cursor-pointer grid grid-cols-[15px_8fr_1fr] items-start  p-2 last:mb-0  hover:bg-slate-300"
+                            className="mb-4  grid grid-cols-[15px_8fr_1fr] items-start  p-2 last:mb-0  hover:bg-slate-300"
                         >
                             <NotificationItem notification={notification} />
 
-                        </div>
+                        </DropdownMenuItem>
                     ))}
                     {/* -----ejemplo----- */}
                 </div>
