@@ -35,7 +35,7 @@ import dynamic from "next/dynamic";
 
 const locale = es;
 
-const budgetTableDynamic = () => dynamic(() => import(`~/components/budgets/BudgetsForm`), {
+const budgetTableDynamic = () => dynamic(() => import(`~/components/budgets/BugetsTable`), {
     loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
 })
 
@@ -104,8 +104,8 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                                         </div>
                                     ))
                                 }
-                                {/* <BudgetsForm
-                                    serviceRequest={serviceRequest} serviceRequestId={id} /> */}
+                                <BudgetsForm
+                                    serviceRequest={serviceRequest} serviceRequestId={id} />
 
                                 {user?.id !== serviceRequest?.userId && <>
                                 </>}
@@ -123,7 +123,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                                         </div>
                                     ))}
                                 </div>}
-                                <DynamicBudgetTable serviceRequestId={id} serviceRequest={undefined} />
+                                <DynamicBudgetTable serviceRequestId={id} />
                             </div>
                         </CardContent>
                         <CardFooter>
