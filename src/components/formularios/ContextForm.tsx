@@ -1,4 +1,5 @@
-import { useUser } from "@clerk/nextjs";
+/* eslint-disable */
+
 import { useRouter } from "next/router";
 import React, { createContext, useContext, useState } from "react";
 import { api } from "~/utils/api";

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable  */
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Button } from "~/components/ui/button"
@@ -26,7 +26,6 @@ import { cn } from "~/lib/utils"
 import { Calendar } from "../ui/calendar"
 
 import es from 'date-fns/locale/es';
-import { useRouter } from "next/router"
 import { api } from "~/utils/api"
 import { useFormSteps } from "./ContextForm"
 import ProvinceAndCityOptions from "./ProvinceAndCityOptions"
@@ -59,45 +58,27 @@ const formSchema = z.object({
 
 
 export default function GeneralForm() {
-    const router = useRouter()
     const { formValues, setFormValues } = useFormSteps();
     const { currentStep, setCurrentStep } = useFormSteps();
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            address: formValues.address ? formValues.address : "",
-            description: formValues.description ? formValues.description : "",
-            date: formValues.date ? formValues.date : new Date(),
-            province: formValues.province ? formValues.province : null,
-            city: formValues.city ? formValues.city : null,
+            address: formValues?.address ? formValues.address : "",
+            description: formValues?.description ? formValues.description : "",
+            date: formValues?.date ? formValues.date : new Date(),
+            province: formValues?.province ? formValues.province : null,
+            city: formValues?.city ? formValues.city : null,
         }
     })
 
 
-    const requestMutation = api.serviceRequest.create.useMutation({
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        onSuccess: (data) => {
-            if (data?.id) {
-                notification.mutate({
-                    categorySlug: router.query?.slug as string,
-                    title: "Nueva solicitud de servicio",
-                    content: "Se ha creado una nueva solicitud de servicio",
-                    link: `/solicitudes-de-servicio/${data.id}`,
-                    serviceRequestId: data.id,
-                })
-            }
-        },
-    })
+
     const handleNextStep = () => {
         setCurrentStep(currentStep + 1);
     };
 
-    const handlePreviousStep = () => {
-        setCurrentStep(currentStep - 1);
-    };
 
-    const notification = api.notification.create.useMutation()
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.

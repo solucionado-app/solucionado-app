@@ -183,6 +183,7 @@ model Comment {
 }
 
 enum Role {
+    CLIENT
     USER
     SOLUCIONADOR
     ADMIN

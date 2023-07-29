@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable  */
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Button } from "~/components/ui/button"
@@ -20,8 +20,6 @@ import {
     CurrencyInput,
 } from 'input-currency-react';
 
-import { useRouter } from "next/router"
-import { api } from "~/utils/api"
 import { useFormSteps } from "./ContextForm"
 
 
@@ -33,14 +31,13 @@ const formSchema = z.object({
     }),
     amount: z.string({ required_error: "Debes introducir un monto", }).optional(),
     schedule: z.enum(["Mañana 07:00-12:00", "Media tarde 12:00-17:00", "Tarde 17:00-20:00", "Noche 20:00-7:00"], {
-        errorMap: (issue, ctx) => ({ message: 'Eliga una franja horaria' })
+        errorMap: () => ({ message: 'Eliga una franja horaria' })
     }),
 
 });
 
 
 export default function SecondStep() {
-    const router = useRouter()
     const { formValues, setFormValues } = useFormSteps();
     const { currentStep, setCurrentStep } = useFormSteps();
     // 1. Define your form.

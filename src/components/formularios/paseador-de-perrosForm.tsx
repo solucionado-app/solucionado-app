@@ -16,9 +16,7 @@ import { Input } from "~/components/ui/input"
 
 import { useForm } from "react-hook-form";
 import { useUser } from "@clerk/nextjs"
-import { api } from "~/utils/api"
 import { useRouter } from "next/router"
-import { trpc } from "~/utils/trpc";
 
 import { useState } from "react"
 import DialogAuthConfirmation from "../auth/DialogAuthConfirmation"
@@ -53,25 +51,10 @@ export default function ElectricistasForm() {
     //     }
     // }, [router.query, numeroDeMascotas, form])
     const [open, setOpen] = useState(false)
-    const { formValues, setFormValues, handleSubmition } = useFormSteps();
-    const utils = trpc.useContext()
+    const { formValues, handleSubmition } = useFormSteps();
 
-    const requestMutation = api.serviceRequest.create.useMutation({
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        onSuccess: (data) => {
-            if (data?.id) {
-                notification.mutate({
-                    categorySlug: router.query?.slug as string,
-                    title: "Nueva solicitud de servicio",
-                    content: "Se ha creado una nueva solicitud de servicio",
-                    link: `/solicitudes-de-servicio/${data.id}`,
-                    serviceRequestId: data.id,
-                })
-            }
-        },
-    })
 
-    const notification = api.notification.create.useMutation()
+
 
 
     // 2. Define a submit handler.

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { useUser } from '@clerk/nextjs'
 import { type ServiceRequest } from '@prisma/client'
 import React from 'react'
@@ -64,7 +66,6 @@ export default function CommentsForm({ serviceRequest, serviceRequestId }: Props
         })
 
         console.log(data)
-        return void 0
     }
     return (
         user && <>

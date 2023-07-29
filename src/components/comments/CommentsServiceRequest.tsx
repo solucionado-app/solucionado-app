@@ -4,7 +4,6 @@ import es from 'date-fns/locale/es';
 import { format } from 'date-fns';
 import { Card } from '../ui/card';
 import { Skeleton } from '../ui/skeleton';
-import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 const locale = es
@@ -29,7 +28,7 @@ export default function CommentsServiceRequest({ serviceRequestId }: props) {
                         <Card key={comment.id} className=' p-5'>
                             <div className='flex items-center space-x-2 font-semibold'>
 
-                                <Avatar className="cursor-pointer h-7 w-7" onClick={() => { void router.push("/perfil") }}>                                  
+                                <Avatar className="cursor-pointer h-7 w-7" >
                                     <AvatarFallback><div className="animate-spin rounded-full  border-b-2 border-gray-900"></div></AvatarFallback>
                                     <AvatarImage src={comment.author.image_url || ""} />
                                 </Avatar>
