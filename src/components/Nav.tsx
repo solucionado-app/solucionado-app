@@ -59,7 +59,7 @@ export default function Nav() {
         <>
             <nav className=" w-full bg-[#032154] py-[9px] d_none text-white relative px-4 flex justify-between items-center ">
                 <Link className="text-3xl font-bold leading-none" href="/">
-                    <Image src="/solucionado-transparente.png" width={100} height={40} alt="#" />
+                    <Image src="/solucionado-isologo.svg" width={35} height={35} alt="#" />
                 </Link>
                 <div id="burger" onClick={handleBurgerClick} className="lg:hidden">
                     <button className="navbar-burger flex items-center text-cyan-300 p-3">

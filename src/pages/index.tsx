@@ -46,7 +46,7 @@ const Home: MyPage = () => {
                   <span className="text-solYellow text-3xl">Para tu hogar</span>
                   <p className="pb-16 text-lg py-3">Trabajos garantidos</p>
                   <a href="#" className="text-2xl">Sobre nosotros</a>
-                  <p className="inline-flex border-t border-solid border-solYbg-solYellow h-[1px] w-16 ml-3"></p>
+                  <p className="inline-flex border-t border-solid border-solYellow h-[1px] w-16 ml-3"></p>
                 </div>
               </div>
               <div className="">
@@ -106,10 +106,6 @@ const Home: MyPage = () => {
 
 
         <div className="container flex flex-col items-center justify-center gap-12 p-5 ">
-          {/* <h1 className="text-5xl font-extrabold tracking-tight  sm:text-[5rem]">
-            <span className="text-[hsl(280,100%,70%)]">Solucionado</span> App
-          </h1> */}
-
           <div className="titlepage text-left w-full">
             <h2 className="text-4xl text-solBlue font-bold"><strong className="text-solYellow text-[17px] font-semibold uppercase">Categorias</strong><br /> TODO LO QUE BUSCAS</h2>
           </div>
