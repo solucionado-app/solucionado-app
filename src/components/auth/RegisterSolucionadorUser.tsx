@@ -18,6 +18,7 @@ import { Input } from "~/components/ui/input"
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api"
 import { useUser } from "@clerk/nextjs"
+import ProvinceAndCityOptions from "../formularios/ProvinceAndCityOptions"
 
 
 const phoneRegex = new RegExp(
@@ -29,6 +30,14 @@ const formSchema = z.object({
     address: z.string().min(1, { message: "La direccion es requerida" }),
     cuit: z.string().min(1, { message: "El cuit es requerido" }),
     cbu: z.string().min(1, { message: "El cbu es requerido" }),
+    province: z.object({
+        id: z.string(),
+        nombre: z.string(),
+    }),
+    city: z.object({
+        id: z.string(),
+        nombre: z.string(),
+    }),
     categories: z.array(z.object({
         id: z.number(),
         name: z.string(),
@@ -112,6 +121,7 @@ export function RegisterSolucionadorUser() {
                         </FormItem>
                     )}
                 />
+                <ProvinceAndCityOptions formControl={form.control} formSetValue={form.setValue} formGetValues={form.getValues} />
                 <FormField
                     control={form.control}
                     name="cuit"
@@ -147,7 +157,7 @@ export function RegisterSolucionadorUser() {
                     name="categories"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>categories</FormLabel>
+                            <FormLabel>Categorias</FormLabel>
                             <FormControl>
                                 <Select
                                     {...field}

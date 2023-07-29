@@ -1,37 +1,24 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
-import Link from "next/link";
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu"
-import { api } from "~/utils/api";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 
-import { Check } from "lucide-react";
-import { Button } from "../ui/button";
-import { formatDistance, subDays } from 'date-fns';
-import es from 'date-fns/locale/es';
 import { BellRing } from 'lucide-react';
-import { Skeleton } from "../ui/skeleton";
-import dynamic from "next/dynamic";
 import NotificationsContent from "./NotificationsContent";
 
 
 
 type props = {
-    className?: string
     notificationsNumber: number
 }
 
-const NotificationsComponent = ({ className, notificationsNumber, ...props }: props) => {
+const NotificationsComponent = ({ notificationsNumber }: props) => {
     const rows = [], len = notificationsNumber;
     let i = 0
     while (++i <= len) rows.push(i);
-    const DynamicNotifications = dynamic(() => import('./NotificationsContent'), { ssr: false })
     return (
         <DropdownMenu  >
 
@@ -42,13 +29,12 @@ const NotificationsComponent = ({ className, notificationsNumber, ...props }: pr
                     <BellRing className="group-data-[state=open]:fill-white group-data-[state=closed]:fill-none   w-7 h-7 " />
                 </>
             </DropdownMenuTrigger>
-            {/* <DynamicNotifications notificationsNumber={notificationsNumber} /> */}
             <DropdownMenuContent className="p-0" asChild>
                 <NotificationsContent notificationsNumber={notificationsNumber} />
 
             </DropdownMenuContent>
         </DropdownMenu>
-        
+
 
     );
 };
