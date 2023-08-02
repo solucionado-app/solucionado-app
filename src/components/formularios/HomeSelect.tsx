@@ -74,10 +74,12 @@ export default function HomeSelect({ categories, isLoading }: props) {
                       control: (styles) => ({
                         ...styles,
                         backgroundColor: "white",
+                        color: "black",
                       }),
                       menuList: (provided) => ({
                         ...provided,
                         backgroundColor: "white",
+                        color: "black",
                       }),
                     }}
                     className="w-full "
