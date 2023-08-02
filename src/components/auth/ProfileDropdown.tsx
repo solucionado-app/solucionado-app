@@ -22,11 +22,11 @@ const ProfileDropdown = ({ children }: Props) => {
             <DropdownMenuContent>
                 <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Perfil</DropdownMenuItem>
+                <DropdownMenuItem> <Link className={`text-sm ${router.asPath === "/perfil" ? "text-cyan-300 font-semibold" : ""}`} href="/perfil">Mi Perfil</Link></DropdownMenuItem>
                 <DropdownMenuItem>
-                    <SignedIn>
+
                     <Link className={`text-sm ${router.asPath === "/completar-perfil" ? "text-cyan-300 font-semibold" : ""}`} href="/completar-perfil">Completar Perfil</Link>
-                    </SignedIn>
+
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                     <SignedIn>

@@ -123,6 +123,81 @@ export const notificationRouter = createTRPCRouter({
             },
         });
     }),
+    createBudgetNotification: protectedProcedure.input(
+        z.object({
+            link: z.string().optional(),
+            title: z.string(),
+            content: z.string(),
+            budgetId: z.string(),
+            serviceRequestId: z.string(),
+            userId: z.string(),
+
+        })
+    ).mutation(async ({ ctx, input }) => {
+
+        const notification = await ctx.prisma.notification.create({
+            data: {
+                title: input.title,
+                content: input.content,
+                link: input.link,
+                users: {
+                    connect: {
+                        externalId: input?.userId,
+                    },
+                },
+                author: {
+                    connect: {
+                        externalId: ctx.auth.userId,
+                    },
+                },
+                serviceRequest: {
+                    connect: {
+                        id: input.serviceRequestId,
+                    },
+                },
+                budget: {
+                    connect: {
+                        id: input.budgetId,
+                    },
+                },
+            },
+        });
+        return notification;
+    }),
+    createCommentNotification: protectedProcedure.input(
+        z.object({
+            link: z.string().optional(),
+            title: z.string(),
+            content: z.string(),
+            serviceRequestId: z.string(),
+            userId: z.string(),
+        })
+    ).mutation(async ({ ctx, input }) => {
+
+        const notification = await ctx.prisma.notification.create({
+            data: {
+                title: input.title,
+                content: input.content,
+                link: input.link,
+                users: {
+                    connect: {
+                        externalId: input?.userId,
+                    },
+                },
+                author: {
+                    connect: {
+                        externalId: ctx.auth.userId,
+                    },
+                },
+                serviceRequest: {
+                    connect: {
+                        id: input.serviceRequestId,
+                    },
+                },
+            },
+        });
+        return notification;
+    }),
     create: protectedProcedure.input(
         z.object({
             categorySlug: z.string(),

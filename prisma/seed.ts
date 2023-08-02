@@ -11,25 +11,31 @@ async function main() {
                     name: "Electricistas",
                     description: "¡Contrata a un ayudante eléctrico hoy!",
                     slug: "electricistas",
-                    image_url: "/electricistas.jpg",
+                    image_url: "/categories/electricistas.jpg",
                 },
                 {
                     name: "Plomería",
                     description: " Un Solucionador puede proporcionar servicios de plomería para destapar, arreglar, instalar, reemplazar, reparar y más. Encuentre ayuda hoy mismo.",
                     slug: "plomeria",
-                    image_url: "/plomeria.jpg",
+                    image_url: "/categories/plomeria.jpg",
                 },
                 {
                     name: "Armadores de Muebles",
                     description: "¿Necesitas a alguien para armar muebles? Contrata a un Solucionador para armar tus muebles y déjales el edificio a ellos.",
                     slug: "armadores-de-muebles",
-                    image_url: "/armadores-de-muebles.jpg",
+                    image_url: "/categories/armadores-de-muebles.jpg",
                 },
                 {
                     name: "Fletes",
                     description: "¡Desde el trabajo pesado hasta el desempaque y la organización, haga su movimiento con Solucionado-app",
                     slug: "fletes",
-                    image_url: "/fletes.jpg",
+                    image_url: "/categories/fletes.jpg",
+                },
+                {
+                    name: "Fletes",
+                    description: "¡Desde el trabajo pesado hasta el desempaque y la organización, haga su movimiento con Solucionado-app",
+                    slug: "fletes",
+                    image_url: "/categories/paseadores-de-perros.jpg",
                 }
             ]
         ,

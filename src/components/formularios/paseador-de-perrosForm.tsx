@@ -52,22 +52,12 @@ export default function ElectricistasForm() {
                 local[`${slug}`]?.details?.tiempoDePaseo : undefined,
         },
     });
-    // useEffect(() => {
-    //     console.log(numeroDeMascotas)
-    //     if (numeroDeMascotas && typeof numeroDeMascotas === "string") {
-    //         setnumeroDeMascotasNumber(parseInt(numeroDeMascotas))
-    //         form.setValue("numeroDeMascotas", parseInt(numeroDeMascotas))
-    //     }
-    // }, [router.query, numeroDeMascotas, form])
+
     const [open, setOpen] = useState(false)
+
     const { handleSubmition } = useFormSteps();
-
-
-
+  
     // 2. Define a submit handler.
-
-
-
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.

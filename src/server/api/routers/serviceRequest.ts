@@ -74,7 +74,6 @@ export const serviceRequestRouter = createTRPCRouter({
                 amount: input.amount,
                 schedule: input.schedule,
                 urgency: input.urgency,
-
             },
             include: {
                 category: {
@@ -82,6 +81,7 @@ export const serviceRequestRouter = createTRPCRouter({
                         name: true,
                     }
                 }
+
             }
         });
         return serviceRequest;

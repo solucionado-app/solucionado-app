@@ -124,7 +124,7 @@ const Home: MyPage = () => {
 
                 <div className="relative w-[319px] h-52  ">
 
-                  {categorie.image_url && <Image className="rounded-t-sm rounded-none" src={`/${slugify(categorie.name)}.jpg`} alt={categorie.description} fill={true} />}
+                  {categorie.image_url && <Image className="rounded-t-sm rounded-none" src={categorie.image_url} alt={categorie.description} fill={true} />}
 
                 </div>
 
@@ -158,19 +158,19 @@ const Home: MyPage = () => {
             </ol>
             <div className="carousel-inner">
               <div className="carousel-item active">
-                  <div className="carousel-caption ">
-                    <div className="row">
-                      <div className="col-md-6 offset-md-3">
-                        <div className="test_box sm:px-[10%] md:px-[25%] pt-14 p-3">
-                          <p className="text-[#383737] border border-solYbg-solYellow p-3 md:p-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis </p>
-                          <div className="flex items-center space-x-2 pt-7 text-solYellow text-[15px] font-semibold uppercase">
-                            <Image src="/cos.jpg" width={83} height={79} alt="foto de prefil" />
-                            <h1>Usuario</h1>
-                          </div>
+                <div className="carousel-caption ">
+                  <div className="row">
+                    <div className="col-md-6 offset-md-3">
+                      <div className="test_box sm:px-[10%] md:px-[25%] pt-14 p-3">
+                        <p className="text-[#383737] border border-solYbg-solYellow p-3 md:p-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                          incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis </p>
+                        <div className="flex items-center space-x-2 pt-7 text-solYellow text-[15px] font-semibold uppercase">
+                          <Image src="/cos.jpg" width={83} height={79} alt="foto de prefil" />
+                          <h1>Usuario</h1>
                         </div>
                       </div>
                     </div>
+                  </div>
                 </div>
               </div>
             </div>

@@ -29,7 +29,7 @@ const NotificationsComponent = ({ notificationsNumber }: props) => {
                     <BellRing className="group-data-[state=open]:fill-white group-data-[state=closed]:fill-none   w-7 h-7 " />
                 </>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="p-0" asChild>
+            <DropdownMenuContent className="p-0" >
                 <NotificationsContent notificationsNumber={notificationsNumber} />
 
             </DropdownMenuContent>

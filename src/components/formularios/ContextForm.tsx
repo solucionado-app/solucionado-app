@@ -28,7 +28,7 @@ interface Props {
 
 }
 
-export const FormStepsProvider = ({ children }: Props) => {
+export const FormStepsProvider = ({ children}: Props) => {
     const [currentStep, setCurrentStep] = useState(0);
     const router = useRouter()
     const [formValues, setFormValues] = useState<Record<string, any>>({});
@@ -63,6 +63,8 @@ export const FormStepsProvider = ({ children }: Props) => {
         }, {
             onSuccess: () => {
                 void utils.serviceRequest.getAll.invalidate()
+                void utils.notification.getAll.invalidate()
+                void utils.notification.countUnRead.invalidate()
                 void router.push("/solicitudes-de-servicio")
             }
         })

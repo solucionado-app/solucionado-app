@@ -1,5 +1,4 @@
 /* eslint-disable */
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Button } from "~/components/ui/button"
@@ -27,7 +26,6 @@ import { cn } from "~/lib/utils"
 import { Calendar } from "../ui/calendar"
 
 import es from 'date-fns/locale/es';
-import { useRouter } from "next/router"
 import { api } from "~/utils/api"
 import { useFormSteps } from "./ContextForm"
 import ProvinceAndCityOptions from "./ProvinceAndCityOptions"
@@ -73,16 +71,9 @@ const formSchema = z.object({
 export default function GeneralForm() {
     const router = useRouter()
     const slug = router.query.slug as string;
-    const { formValues } = useFormSteps();
     const { currentStep, setCurrentStep } = useFormSteps();
     const local: FormValues = localStorageRequests.get()
-
-
-
-
-
     const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug);
-
 
     const DinamicProvinces = getDynamicProvices()
     // 1. Define your form.
@@ -96,8 +87,7 @@ export default function GeneralForm() {
             city: hasCategoryInLocal ? local[`${slug}`]?.city : undefined,
         }
     })
-
-
+            
     const handleNextStep = () => {
         setCurrentStep(currentStep + 1);
     };
@@ -113,36 +103,8 @@ export default function GeneralForm() {
             localStorageRequests.set({ ...localStorageRequests.get(), [slug]: { ...local[`${slug}`], ...values, currentStep: currentStep + 1 } })
             handleNextStep()
         }
-
-        // console.log('id actual:', formValues)
-        // if (!formValues.id) {
-        //     const uid = self.crypto.randomUUID()
-        //     formValues.id = uid
-        //     const slug = router.query.slug
-        //     setFormValues({ ...formValues, ...values })
-        //     if (category && slug in localStorageRequests.get()) {
-
-        //         localStorageRequests.set({ ...localStorageRequests.get(), [slug]: { ...values } })
-
-
-        //     }
-        //     else {
-        //         localStorageRequests.set(prev => prev.map(item => {
-        //             if (item.id === formValues.id) {
-        //                 return { ...item, ...values }
-        //             }
-        //             return item
-        //         }
-        //         ))
-        //         setFormValues({ ...formValues, ...values })
-        //     }
-        //     console.log(localStorageRequests.get())
-        //     handleNextStep()
-
-
-        // }
     }
-    // ...
+    
 
     return (
         <>

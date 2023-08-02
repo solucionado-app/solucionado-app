@@ -57,6 +57,7 @@ export const budgetRouter = createTRPCRouter({
         })).mutation(({ ctx, input }) => {
             console.log(ctx.auth.userId)
             return ctx.prisma.budget.create({
+
                 data: {
                     description: input.description,
                     price: input.price,
@@ -76,7 +77,18 @@ export const budgetRouter = createTRPCRouter({
                             id: input.serviceRequestId,
                         },
                     },
+
                 },
+                include: {
+                    author: {
+                        select: {
+                            first_name: true,
+                            last_name: true,
+                            image_url: true,
+                        }
+                    },
+                },
+
             });
         }),
 });

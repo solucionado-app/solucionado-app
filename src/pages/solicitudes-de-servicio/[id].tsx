@@ -31,6 +31,7 @@ import { useUser } from "@clerk/nextjs";
 import BudgetsForm from "~/components/budgets/BudgetsForm";
 import CommentsForm from "~/components/comments/CommentForm";
 import CommentsServiceRequest from "~/components/comments/CommentsServiceRequest";
+
 import dynamic from "next/dynamic";
 
 const locale = es;
@@ -88,7 +89,6 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                             </CardHeader>
                             <CardContent className="space-y-2">
                                 <div className="space-y-1">
-
                                     {/* <Budgets /> */}
                                     {
                                         budgetListSolucionador && budgetListSolucionador.map((budget, i) => (
@@ -103,13 +103,9 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                                             </div>
                                         ))
                                     }
-                                    <BudgetsForm
-                                        serviceRequest={serviceRequest} serviceRequestId={id} />
+                                   {user?.id !== serviceRequest?.userId && <BudgetsForm serviceRequest={serviceRequest} serviceRequestId={id} />}
 
-                                    {user?.id !== serviceRequest?.userId && <>
-                                    </>}
-
-                                    <DynamicBudgetTable serviceRequestId={id} />
+                                    {user?.id === serviceRequest?.userId && <DynamicBudgetTable serviceRequestId={id} />}
                                 </div>
                             </CardContent>
                             <CardFooter>

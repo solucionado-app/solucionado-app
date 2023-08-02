@@ -55,6 +55,7 @@ export default function NotificationItem({ notification }: Props) {
         <>
             {<span className={` ${notification.readBy?.length < 1 ? "flex" : "invisible"} h-2 w-2 translate-y-1 rounded-full bg-sky-500`} />}
             <div onClick={() => {
+                handlemarkAsRead()
                 void router.push(notification.link ? notification.link : "#")
             }} className={`space-y-1 cursor-pointer`}>
                 <p className="text-sm font-medium leading-none">
