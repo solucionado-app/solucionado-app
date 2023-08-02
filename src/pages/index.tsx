@@ -19,7 +19,7 @@ const Home: MyPage = () => {
     <>
       <MainHead title="Solucionado App" description="app solucionado" />
       <main className="flex min-h-screen w-full flex-col items-center  ">
-        <Hero />
+        <Hero categories={categories} isLoading={isLoading} />
         <About categories={categories} isLoading={isLoading} />
         <Testimonials />
         <Contact />

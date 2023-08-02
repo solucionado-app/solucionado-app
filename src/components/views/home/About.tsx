@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import HomeSelect from "~/components/formularios/HomeSelect";
+import type { CategoriesQueryResponse } from "~/components/types/common";
 import {
   Card,
   CardDescription,
@@ -9,20 +10,8 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 
-type Categories =
-  | {
-      id: number;
-      name: string;
-      slug: string;
-      description: string;
-      createdAt: Date;
-      updatedAt: Date;
-      image_url: string | null;
-    }[]
-  | undefined;
-
 interface ViewProps {
-  categories: Categories;
+  categories: CategoriesQueryResponse[] | undefined;
   isLoading: boolean;
 }
 export const About: React.FC<ViewProps> = ({ categories, isLoading }) => {
@@ -116,7 +105,7 @@ export const About: React.FC<ViewProps> = ({ categories, isLoading }) => {
                 Registrate y comienza
               </span>
               <a
-                className="read_morea inline-block rounded-xl bg-solYellow px-5 py-2 text-center text-lg font-bold text-sol_darkBlue"
+                className="read_morea inline-block rounded-xl bg-solYellow px-5 py-2 text-center text-lg font-bold text-black"
                 href="{{ route('register') }}"
               >
                 Registrarme
