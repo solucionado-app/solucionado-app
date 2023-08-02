@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { SignOutButton, SignedIn, useUser } from "@clerk/nextjs";
+import { SignOutButton, useUser } from "@clerk/nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
 import Image from "next/image";
 import NotificationsComponent from "./notifications/NotificationsComponent";
@@ -59,7 +59,7 @@ export default function Nav() {
             <nav className=" w-full bg-[#032154] py-[9px] d_none text-white relative px-4 flex justify-between items-center ">
 
                 <Link className="text-3xl font-bold leading-none flex items-center gap-2" href="/">
-                    <Image  src="/solucionado-isologo.png" width={35} height={35} alt="logo solucionado" />
+                    <Image src="/solucionado-isologo.png" width={35} height={35} alt="logo solucionado" />
 
                 </Link>
 

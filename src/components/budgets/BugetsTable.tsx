@@ -33,21 +33,23 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table"
-import { Budget, ServiceRequest } from "@prisma/client"
 import { api } from "~/utils/api"
+import format from "date-fns/format"
+import { es } from "date-fns/locale"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 
 const data: Payment[] = [
   {
     id: "m5gr84i9",
     price: 316,
     description: "ken99@yahoo.com",
-    fechaEstimada:"28/7/2023",
+    fechaEstimada: "28/7/2023",
   },
   {
     id: "3u1reuv4",
     price: 242,
     description: "Abe45@gmail.com",
-    fechaEstimada:"28/7/2023",
+    fechaEstimada: "28/7/2023",
   },
 ]
 
@@ -58,43 +60,44 @@ export type Payment = {
   fechaEstimada: string,
 }
 interface BudgetsTableProps {
-    id: string;
-    description: string;
-    price: number;
-    estimatedAt: Date;
-    author: {
-        id: string;
-        first_name: string | null;
-        last_name: string | null;
-        image_url: string | null;
-    };
-  }
+  id: string;
+  description: string;
+  price: number;
+  estimatedAt: Date;
+  author: Author;
+}
+type Author = {
+  id: string;
+  first_name: string | null;
+  last_name: string | null;
+  image_url: string | null;
+}
 export const columns: ColumnDef<BudgetsTableProps>[] = [
-    {
-        accessorKey: "price",
-        header: ({ column }) => {
-            return (
-              <Button className=""
-                variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-              >
-                Precio
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-              </Button>
-            )
-          },
-        cell: ({ row }) => {
-            const price = parseFloat(row.getValue("price"))
-
-            // Format the price as a dollar price
-            const formatted = new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-            }).format(price)
-
-            return <div className="font-medium">{formatted}</div>
-        },
+  {
+    accessorKey: "price",
+    header: ({ column }) => {
+      return (
+        <Button className=""
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Precio
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
     },
+    cell: ({ row }) => {
+      const price = parseFloat(row.getValue("price"))
+
+      // Format the price as a dollar price
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(price)
+
+      return <div className="font-medium">{formatted}</div>
+    },
+  },
   {
     accessorKey: "description",
     header: () => <div className="">Descripcion</div>,
@@ -104,8 +107,27 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
     accessorKey: "estimatedAt",
     header: "fecha Estimada",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("estimatedAt")}</div>
+      <div className="capitalize">{format(row.getValue("estimatedAt"), "PPP", { locale: es })}</div>
     ),
+  },
+  {
+    accessorKey: "author",
+    header: "Autor",
+    cell: ({ row }) => {
+      const author: Author = row.getValue("author")
+
+      return (
+        <div className="flex items-center space-x-2">
+          <Avatar className="cursor-pointer" >
+            <AvatarImage src={author?.image_url ? author?.image_url : undefined} />
+            <AvatarFallback><div className="animate-spin rounded-full  border-b-2 border-gray-900"></div></AvatarFallback>
+          </Avatar>
+          <div className="text-sm font-medium">
+            {author.first_name} {author.last_name}
+          </div>
+        </div>
+      )
+    }
   },
   {
     id: "actions",
@@ -139,11 +161,12 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
 ]
 
 interface Props {
-    serviceRequestId: string
-  }
+  serviceRequestId: string
+}
 
-export default function BudgetsTable({serviceRequestId }:Props) {
-    const { data: budgets, isLoading: budgetsIsLoading } = api.budget.getAll.useQuery({ serviceRequestId: serviceRequestId })
+
+export default function BudgetsTable({ serviceRequestId }: Props) {
+  const { data: budgets, isLoading: budgetsIsLoading } = api.budget.getAll.useQuery({ serviceRequestId: serviceRequestId })
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -151,7 +174,6 @@ export default function BudgetsTable({serviceRequestId }:Props) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
-    console.log(budgets)
   const table = useReactTable({
     data: budgets ?? [],
     columns,
@@ -220,9 +242,9 @@ export default function BudgetsTable({serviceRequestId }:Props) {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   )
                 })}

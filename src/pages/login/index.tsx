@@ -4,13 +4,10 @@ import { type MyPage } from "~/components/types/types";
 
 const Page: MyPage = () => {
     const router = useRouter()
-    const { redirect, ...rest } = router.query
-    const params = new URLSearchParams(rest as Record<string, string>);
+    const { redirect } = router.query
 
-    const url = redirect as string + "?" + params.toString();
-    console.log(url);
-    return <SignIn afterSignInUrl={Object.keys(router.query).length && redirect ? url : "/perfil"}
-        afterSignUpUrl={Object.keys(router.query).length && redirect ? redirect as string : "/completar-perfil"} />;
+    return <SignIn afterSignInUrl={!!redirect ? redirect as string : "/perfil"}
+        afterSignUpUrl={!!redirect ? redirect as string : "/completar-perfil"} />;
 }
 
 

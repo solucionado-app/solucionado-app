@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { useUser } from '@clerk/nextjs'
 import { type ServiceRequest } from '@prisma/client'
 import React from 'react'

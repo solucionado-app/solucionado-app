@@ -6,10 +6,10 @@ import { useRouter } from 'next/router'
 interface DialogAuthConfirmationProps {
     open: boolean
     setOpen: (open: boolean) => void
-    formvalues: object,
+
 }
 
-export default function DialogAuthConfirmation({ open, setOpen, formvalues }: DialogAuthConfirmationProps) {
+export default function DialogAuthConfirmation({ open, setOpen, }: DialogAuthConfirmationProps) {
     const router = useRouter()
     return (
         <>
@@ -28,7 +28,6 @@ export default function DialogAuthConfirmation({ open, setOpen, formvalues }: Di
                             pathname: "/login",
                             query: {
                                 redirect: router.asPath,
-                                ...formvalues
                             }
                         })} type="button">Continuar</Button>
                     </DialogFooter>

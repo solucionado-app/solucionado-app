@@ -32,7 +32,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                     {category?.name}
                 </h1>
 
-                <FormStepsProvider >
+                <FormStepsProvider>
                     <FormAll />
                 </FormStepsProvider>
             </div>

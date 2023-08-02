@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -16,14 +17,13 @@ import { Input } from "~/components/ui/input"
 
 import { useForm } from "react-hook-form";
 import { useUser } from "@clerk/nextjs"
-import { api } from "~/utils/api"
 import { useRouter } from "next/router"
-import { trpc } from "~/utils/trpc";
 
 import { useState } from "react"
 import DialogAuthConfirmation from "../auth/DialogAuthConfirmation"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { useFormSteps } from "./ContextForm"
+import { type FormValues, localStorageRequests } from "~/lib/localStorage"
 const formSchema = z.object({
     numeroDeMascotas: z.coerce.number({ required_error: "Debes introducir un numero de mascotas", }).min(1, { message: "El numero de mascotas es requerido" }),
     tieneCorrea: z.enum(["Si", "No"]),
@@ -34,15 +34,22 @@ const formSchema = z.object({
 export default function ElectricistasForm() {
     // 1. Define your form.
     const router = useRouter()
-    const { numeroDeMascotas } = router.query
+    // const { numeroDeMascotas } = router.query
     const { user, isSignedIn } = useUser()
+    const slug = router.query.slug as string
+    const local: FormValues = localStorageRequests.get()
+    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug);
 
-
-
+    console.log(local[`${slug}`]?.details)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            numeroDeMascotas: typeof numeroDeMascotas === "string" ? parseInt(numeroDeMascotas) : 1,
+            numeroDeMascotas: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.numeroDeMascotas ?
+                local[`${slug}`]?.details?.numeroDeMascotas as number : 1,
+            tieneCorrea: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.tieneCorrea ?
+                local[`${slug}`]?.details?.tieneCorrea : undefined,
+            tiempoDePaseo: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.tiempoDePaseo ?
+                local[`${slug}`]?.details?.tiempoDePaseo : undefined,
         },
     });
     // useEffect(() => {
@@ -53,25 +60,8 @@ export default function ElectricistasForm() {
     //     }
     // }, [router.query, numeroDeMascotas, form])
     const [open, setOpen] = useState(false)
-    const { formValues, setFormValues, handleSubmition } = useFormSteps();
-    const utils = trpc.useContext()
+    const { handleSubmition } = useFormSteps();
 
-    const requestMutation = api.serviceRequest.create.useMutation({
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        onSuccess: (data) => {
-            if (data?.id) {
-                notification.mutate({
-                    categorySlug: router.query?.slug as string,
-                    title: "Nueva solicitud de servicio",
-                    content: "Se ha creado una nueva solicitud de servicio",
-                    link: `/solicitudes-de-servicio/${data.id}`,
-                    serviceRequestId: data.id,
-                })
-            }
-        },
-    })
-
-    const notification = api.notification.create.useMutation()
 
 
     // 2. Define a submit handler.
@@ -81,15 +71,21 @@ export default function ElectricistasForm() {
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
+        // localStorageRequests.set(prev => [...prev, { details: values }])
+
+        localStorageRequests.set({
+            ...localStorageRequests.get(), [slug]: {
+                ...local[`${slug}`],
+                details: { ...values },
+            }
+        })
         if (!isSignedIn) {
             setOpen(true)
+            return
         }
         else {
-            const { id } = user
-            // setFormValues({ ...formValues, details: values })
-            handleSubmition(values, id)
+            handleSubmition(values, user?.id, local[`${slug}`])
         }
-        console.log(values)
     }
     // ...
     return (
@@ -210,7 +206,7 @@ export default function ElectricistasForm() {
                 </form>
             </Form>
 
-            <DialogAuthConfirmation open={open} setOpen={setOpen} formvalues={formValues} />
+            <DialogAuthConfirmation open={open} setOpen={setOpen} />
         </>
     )
 }

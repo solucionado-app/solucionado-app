@@ -1,6 +1,7 @@
-import { useUser } from "@clerk/nextjs";
+/* eslint-disable */
 import { useRouter } from "next/router";
 import React, { createContext, useContext, useState } from "react";
+import { ServiceRequest } from "~/lib/localStorage";
 import { api } from "~/utils/api";
 import { trpc } from "~/utils/trpc";
 
@@ -9,7 +10,7 @@ interface FormStepsContextType {
     setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
     formValues: Record<string, any>;
     setFormValues: React.Dispatch<React.SetStateAction<Record<string, any>>>;
-    handleSubmition: (values: Record<string, any>, userId: string) => void;
+    handleSubmition: (values: Record<string, any>, userId: string, local: ServiceRequest | undefined) => void;
 }
 
 const FormStepsContext = createContext<FormStepsContextType>({
@@ -24,12 +25,17 @@ export const useFormSteps = () => useContext(FormStepsContext);
 
 interface Props {
     children: React.ReactNode;
+
 }
 
 export const FormStepsProvider = ({ children }: Props) => {
     const [currentStep, setCurrentStep] = useState(0);
     const router = useRouter()
     const [formValues, setFormValues] = useState<Record<string, any>>({});
+
+
+
+
     const requestMutation = api.serviceRequest.create.useMutation({
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         onSuccess: (data) => {
@@ -37,7 +43,7 @@ export const FormStepsProvider = ({ children }: Props) => {
                 notification.mutate({
                     categorySlug: router.query?.slug as string,
                     title: "Nueva solicitud de servicio",
-                    content: "Se ha creado una nueva solicitud de servicio",
+                    content: `Se ha creado una nueva solicitud de servicio para ${data.category.name}}`,
                     link: `/solicitudes-de-servicio/${data.id}`,
                     serviceRequestId: data.id,
                 })
@@ -46,14 +52,13 @@ export const FormStepsProvider = ({ children }: Props) => {
     })
     const utils = trpc.useContext()
     const notification = api.notification.create.useMutation()
-    const handleSubmition = (values: Record<string, any>, userId: string) => {
-        const { city, province, ...rest } = formValues
+    const handleSubmition = (local: ServiceRequest | undefined) => {
+
         requestMutation.mutate({
-            userId: userId,
-            ...rest,
-            city: city.nombre,
-            province: province.nombre,
-            details: values,
+            ...local,
+            city: local?.city?.nombre,
+            province: local?.province?.nombre,
+            details: local?.details,
             categorySlug: router.query?.slug as string,
         }, {
             onSuccess: () => {
