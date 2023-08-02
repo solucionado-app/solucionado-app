@@ -42,27 +42,29 @@ model User {
 }
 
 model Notification {
-  id               String          @id @default(cuid())
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
-  authorId         String
-  title            String
-  content          String
-  link             String?
-  read             Boolean         @default(false)
-  serviceRequestId String?
-  serviceId        String?
-  bugdetId         String?
-  author           User            @relation("notificador", fields: [authorId], references: [externalId])
-  users            User[]          @relation("notificado")
-  serviceRequest   ServiceRequest? @relation(fields: [serviceRequestId], references: [id])
-  service          Service?        @relation(fields: [serviceId], references: [id])
-  readBy           User[]          @relation("readBy")
-  budget           Budget[]
 
-  @@index([serviceRequestId])
-  @@index([serviceId])
-  @@index([authorId])
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    authorId         String
+    author           User            @relation("notificador", fields: [authorId], references: [externalId], onDelete: Cascade)
+    users            User[]          @relation("notificado")
+    title            String
+    content          String
+    link             String?
+    read             Boolean         @default(false)
+    serviceRequestId String?
+    serviceRequest   ServiceRequest? @relation(fields: [serviceRequestId], references: [id])
+    serviceId        String?
+    service          Service?        @relation(fields: [serviceId], references: [id])
+    readBy           User[]          @relation("readBy")
+    bugdetId         String?
+    budget           Budget[]
+
+    @@index([serviceRequestId])
+    @@index([serviceId])
+    @@index([authorId])
 }
 
 model ServiceRequest {

@@ -1,4 +1,4 @@
-/* eslint-disable  */
+/* eslint-disable */
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Button } from "~/components/ui/button"
@@ -16,17 +16,17 @@ import {
     RadioGroup,
     RadioGroupItem
 } from "../ui/radio-group"
-import {
-    CurrencyInput,
-} from 'input-currency-react';
 
 import { useFormSteps } from "./ContextForm"
+import dynamic from "next/dynamic";
+import { FormValues, localStorageRequests } from "~/lib/localStorage";
+import { useRouter } from "next/router";
 
 
 
 const formSchema = z.object({
 
-    urgency: z.enum(["Si", "No"], {
+    urgency: z.enum(["SI", "NO"], {
         required_error: "Debe elegir una opcion",
     }),
     amount: z.string({ required_error: "Debes introducir un monto", }).optional(),
@@ -36,21 +36,34 @@ const formSchema = z.object({
 
 });
 
+const getDynamicCurrencyInput = () => dynamic(() => import('input-currency-react').then(module => {
+
+    return module.CurrencyInput
+}), {
+    loading: () => <p>Loading...</p>,
+    ssr: false
+});
+
 
 export default function SecondStep() {
     const { formValues, setFormValues } = useFormSteps();
     const { currentStep, setCurrentStep } = useFormSteps();
+
     // 1. Define your form.
+    const router = useRouter()
+    const slug = router.query.slug as string
+    let local: FormValues = localStorageRequests.get()
+    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            urgency: formValues.urgency ? formValues.urgency : "",
-            amount: formValues.amount ? formValues.amount : "000",
-            schedule: formValues.schedule ? formValues.schedule : "",
+            urgency: hasCategoryInLocal ? local[`${slug}`]?.urgency : undefined,
+            amount: hasCategoryInLocal ? local[`${slug}`]?.amount : "000",
+            schedule: hasCategoryInLocal ? local[`${slug}`]?.schedule : undefined,
         }
     })
 
-
+    const DynamicCurrencyInput = getDynamicCurrencyInput();
 
     const handleNextStep = () => {
         setCurrentStep(currentStep + 1);
@@ -62,10 +75,18 @@ export default function SecondStep() {
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        setFormValues({ ...formValues, ...values })
-        handleNextStep()
 
-        console.log(values)
+        if (!!slug) {
+
+            localStorageRequests.set({
+                ...localStorageRequests.get(), [slug]: {
+                    ...local[`${slug}`],
+                    ...values, currentStep: currentStep + 1,
+                }
+            })
+            handleNextStep()
+        }
+
     }
     // ...
 
@@ -91,18 +112,18 @@ export default function SecondStep() {
                                     >
                                         <FormItem className="flex items-center space-x-3 space-y-0">
                                             <FormControl>
-                                                <RadioGroupItem value="Si" />
+                                                <RadioGroupItem value="SI" />
                                             </FormControl>
                                             <FormLabel className="font-normal">
-                                                Si
+                                                SI
                                             </FormLabel>
                                         </FormItem>
                                         <FormItem className="flex items-center space-x-3 space-y-0">
                                             <FormControl>
-                                                <RadioGroupItem value="No" />
+                                                <RadioGroupItem value="NO" />
                                             </FormControl>
                                             <FormLabel className="font-normal">
-                                                No
+                                                NO
                                             </FormLabel>
                                         </FormItem>
                                     </RadioGroup>
@@ -173,7 +194,7 @@ export default function SecondStep() {
                                 <FormLabel>Monto Dispuesto a pagar (opcional)</FormLabel>
                                 <FormControl>
 
-                                    <CurrencyInput
+                                    <DynamicCurrencyInput
                                         {...field}
                                         className="flex h-10 w-full rounded-md border border-gray-200  bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-800  dark:bg-gray-950 dark:ring-offset-gray-950 dark:placeholder:text-gray-400 dark:focus-visible:ring-gray-800"
                                         // Initial value

@@ -369,6 +369,7 @@ export default function Nav() {
               </SignOutButton>
             )}
 
+
             <p className="my-4 text-center text-xs text-zinc-900">
               <span>Copyright © 2021</span>
             </p>

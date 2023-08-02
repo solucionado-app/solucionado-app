@@ -16,27 +16,29 @@ import { Input } from "~/components/ui/input"
 
 import { useForm } from "react-hook-form";
 import { useUser } from "@clerk/nextjs"
-import { api } from "~/utils/api"
 import { useRouter } from "next/router"
-import { trpc } from "~/utils/trpc";
 
 import { useState } from "react"
 import DialogAuthConfirmation from "../auth/DialogAuthConfirmation"
+import { type FormValues, localStorageRequests } from "~/lib/localStorage"
+import { useFormSteps } from "./ContextForm"
 const formSchema = z.object({
     numeroDeLamparas: z.coerce.number({ required_error: "Debes introducir un numero de lamparas", }),
 });
 export default function ElectricistasForm() {
     // 1. Define your form.
     const router = useRouter()
-    const { numeroDeLamparas } = router.query
     const { user, isSignedIn } = useUser()
-
-
+    const { handleSubmition } = useFormSteps()
+    const slug = router.query.slug as string
+    const local: FormValues = localStorageRequests.get()
+    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            numeroDeLamparas: typeof numeroDeLamparas === "string" ? parseInt(numeroDeLamparas) : 1,
+            numeroDeLamparas: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.numeroDeMascotas ?
+                local[`${slug}`]?.details?.numeroDeMascotas as number : 1,
         },
     });
     // useEffect(() => {
@@ -47,25 +49,7 @@ export default function ElectricistasForm() {
     //     }
     // }, [router.query, numeroDeLamparas, form])
     const [open, setOpen] = useState(false)
-    const [formvalues, setformvalues] = useState({})
-    const utils = trpc.useContext()
 
-    const requestMutation = api.serviceRequest.create.useMutation({
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        onSuccess: (data) => {
-            if (data?.id) {
-                notification.mutate({
-                    categorySlug: router.query?.slug as string,
-                    title: "Nueva solicitud de servicio",
-                    content: "Se ha creado una nueva solicitud de servicio",
-                    link: `/solicitudes-de-servicio/${data.id}`,
-                    serviceRequestId: data.id,
-                })
-            }
-        },
-    })
-
-    const notification = api.notification.create.useMutation()
 
 
     // 2. Define a submit handler.
@@ -75,25 +59,19 @@ export default function ElectricistasForm() {
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
+        localStorageRequests.set({
+            ...localStorageRequests.get(), [slug]: {
+                ...local[`${slug}`],
+                details: { ...values },
+            }
+        })
         if (!isSignedIn) {
-            setformvalues(values)
             setOpen(true)
-
+            return
         }
         else {
-            const { id } = user
-            requestMutation?.mutate({
-                userId: id,
-                details: values,
-                categorySlug: router.query?.slug as string,
-            }, {
-                onSuccess: () => {
-                    void utils.serviceRequest.getAll.invalidate()
-                }
-            })
-            void router.push("/solicitudes-de-servicio")
+            handleSubmition(values, user?.id, local[`${slug}`])
         }
-        console.log(values)
     }
     // ...
     return (
@@ -121,7 +99,7 @@ export default function ElectricistasForm() {
                 </form>
             </Form>
 
-            <DialogAuthConfirmation open={open} setOpen={setOpen} formvalues={formvalues} />
+            <DialogAuthConfirmation open={open} setOpen={setOpen} />
         </>
     )
 }
