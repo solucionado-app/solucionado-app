@@ -3,8 +3,8 @@ import React from "react";
 
 export const Hero = () => {
   return (
-    <section className="banner_main w-full bg-[url('/banner.jpg')] bg-cover bg-no-repeat text-white ">
-      <div className="container">
+    <section className="banner_main flex w-full justify-center bg-[url('/banner.jpg')] bg-cover bg-no-repeat px-5 text-white ">
+      <div className="w-full max-w-7xl">
         <div className="flex flex-col items-center sm:flex-row sm:justify-between">
           <div className="flex items-center">
             <div className="py-10 text-center sm:text-start">

@@ -28,9 +28,12 @@ interface ViewProps {
 export const About: React.FC<ViewProps> = ({ categories, isLoading }) => {
   return (
     <>
-      <div id="about" className="w-full max-w-7xl px-5 py-10">
-        <div className="container-fluid">
-          <div className="grid place-content-center items-center lg:flex ">
+      <div
+        id="about"
+        className="flex w-full justify-center bg-white px-5 py-10"
+      >
+        <div className="w-full max-w-7xl">
+          <div className="grid items-center lg:flex ">
             <div className="">
               <div className="about_box space-y-6 pb-2">
                 <div className="titlepage ">
@@ -113,7 +116,7 @@ export const About: React.FC<ViewProps> = ({ categories, isLoading }) => {
                 Registrate y comienza
               </span>
               <a
-                className="read_morea inline-block rounded-xl bg-solYellow px-5 py-2 text-center text-lg font-bold text-black"
+                className="read_morea inline-block rounded-xl bg-solYellow px-5 py-2 text-center text-lg font-bold text-sol_darkBlue"
                 href="{{ route('register') }}"
               >
                 Registrarme
@@ -125,51 +128,55 @@ export const About: React.FC<ViewProps> = ({ categories, isLoading }) => {
         </div>
       </div>
 
-      <div className="container flex flex-col items-center justify-center gap-12 p-5 ">
-        <div className="titlepage w-full space-y-6 text-left">
-          <div>
-            <strong className="text-lg font-semibold uppercase text-sol_lightBlue">
-              Categorias
-            </strong>
-            <h2 className="text-2xl font-bold text-solBlue sm:text-3xl md:text-4xl">
-              TODO LO QUE BUSCAS
-            </h2>
+      <div className="container flex flex-col items-center justify-center gap-12 px-5 py-10 ">
+        <div className="w-full max-w-7xl space-y-6">
+          <div className="titlepage w-full space-y-6 text-left">
+            <div>
+              <strong className="text-lg font-semibold uppercase text-sol_lightBlue">
+                Categorias
+              </strong>
+              <h2 className="text-2xl font-bold text-solBlue sm:text-3xl md:text-4xl">
+                TODO LO QUE BUSCAS
+              </h2>
+            </div>
           </div>
-        </div>
-        {isLoading && (
-          <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
-        )}
-        {categories && (
-          <>
-            <HomeSelect categories={categories} isLoading={isLoading} />{" "}
-          </>
-        )}
+          <div className="flex w-full items-center justify-center">
+            {isLoading && (
+              <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
+            )}
+            {categories && (
+              <>
+                <HomeSelect categories={categories} isLoading={isLoading} />{" "}
+              </>
+            )}
+          </div>
 
-        <div className="flex flex-row flex-wrap justify-center gap-4">
-          {isLoading && (
-            <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
-          )}
-          {categories?.map((categorie) => (
-            <Link key={categorie.id} href={"/solucionar/" + categorie.slug}>
-              <div className="relative h-52 w-[319px]  ">
-                {categorie.image_url && (
-                  <Image
-                    className="rounded-none rounded-t-sm"
-                    src={categorie.image_url}
-                    alt={categorie.description}
-                    fill={true}
-                  />
-                )}
-              </div>
+          <div className="flex flex-row flex-wrap justify-center gap-4">
+            {isLoading && (
+              <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
+            )}
+            {categories?.map((categorie) => (
+              <Link key={categorie.id} href={"/solucionar/" + categorie.slug}>
+                <div className="relative h-52 w-[319px]  ">
+                  {categorie.image_url && (
+                    <Image
+                      className="rounded-none rounded-t-sm"
+                      src={categorie.image_url}
+                      alt={categorie.description}
+                      fill={true}
+                    />
+                  )}
+                </div>
 
-              <Card className="h-36 w-[320px] rounded-sm rounded-t-none border-2 bg-slate-50 text-gray-900 shadow-md">
-                <CardHeader>
-                  <CardTitle>{categorie.name}</CardTitle>
-                  <CardDescription>{categorie.description}</CardDescription>
-                </CardHeader>
-              </Card>
-            </Link>
-          ))}
+                <Card className="h-36 w-[320px] rounded-sm rounded-t-none border-2 bg-slate-50 text-gray-900 shadow-md">
+                  <CardHeader>
+                    <CardTitle>{categorie.name}</CardTitle>
+                    <CardDescription>{categorie.description}</CardDescription>
+                  </CardHeader>
+                </Card>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </>
