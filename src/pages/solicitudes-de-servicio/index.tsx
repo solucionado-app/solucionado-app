@@ -1,12 +1,9 @@
 import { api } from "~/utils/api";
 import React from "react";
 import { type MyPage } from "~/components/types/types";
-import { Card } from "~/components/cards/CardComponent";
 import MainHead from "~/components/layouts/head/MainHead";
 import { useUser } from "@clerk/nextjs";
-import Link from "next/link";
-import { es } from "date-fns/locale";
-import { format } from "date-fns";
+import ServiceRequestTable from "~/components/servicerequest/ServiceRequestTable";
 
 
 
@@ -18,7 +15,7 @@ const ServiceRequest: MyPage = () => {
     const apitrcp = api.serviceRequest;
     const { data: services, isLoading, isFetched } = apitrcp.getUserRequest.useQuery();
     console.log(user);
-    const rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+    // const rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
 
     return (
         <>
@@ -30,7 +27,7 @@ const ServiceRequest: MyPage = () => {
                         Solicitudes de Servicio
                     </h1>
                     {isLoading && <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>}
-                    {services && services?.map((service) => (
+                    {/* {services && services?.map((service) => (
 
                         <div key={service.id} className="w-full">
                             <Link href={`/solicitudes-de-servicio/${service.id}`}>
@@ -65,7 +62,8 @@ const ServiceRequest: MyPage = () => {
                             </Link>
                         </div>
                     ))
-                    }
+                    } */}
+                    {services && <ServiceRequestTable serviceRequests={services} />}
                     {
                         isFetched && !services && <div className="text-2xl">No hay servicios</div>
                     }

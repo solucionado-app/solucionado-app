@@ -2,7 +2,7 @@
 import React from 'react'
 import { useQuery } from "@tanstack/react-query"
 import Select from "react-select"
-import { UseFormReturn } from 'react-hook-form';
+import { type UseFormReturn } from 'react-hook-form';
 import { FormDescription, FormControl, FormField, FormItem, FormMessage, FormLabel } from '../ui/form';
 
 interface Province {
@@ -68,8 +68,8 @@ export default function ProvinceAndCityOptions({ formGetValues, formSetValue, fo
                             }}
                             isLoading={queryprovinces.isLoading}
                             placeholder='Ingresa la provincia' options={queryprovinces.data?.provincias as Province[]}
-                            getOptionLabel={(option: Province) => option?.nombre}
-                            getOptionValue={(option: Province) => option?.id}
+                            getOptionLabel={(option: Province) => option?.nombre ? option?.nombre : ""}
+                            getOptionValue={(option: Province) => option?.id ? option?.id : ""}
                             onChange={(option) => {
                                 option && formSetValue("province", { id: option.id, nombre: option.nombre })
                                 formSetValue("city", { id: "", nombre: "" })

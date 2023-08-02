@@ -1,4 +1,4 @@
-/* eslint-disable  */
+/* eslint-disable */
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Button } from "~/components/ui/button"
@@ -20,7 +20,7 @@ import {
     PopoverContent,
     PopoverTrigger
 } from "../ui/popover"
-import { format } from "date-fns"
+import { format, set } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 import { cn } from "~/lib/utils"
 import { Calendar } from "../ui/calendar"
@@ -29,8 +29,18 @@ import es from 'date-fns/locale/es';
 import { api } from "~/utils/api"
 import { useFormSteps } from "./ContextForm"
 import ProvinceAndCityOptions from "./ProvinceAndCityOptions"
+import { ServiceRequest, FormValues, localStorageRequests } from "~/lib/localStorage"
+import { randomUUID } from "crypto"
+import { map } from "@trpc/server/observable"
+import { useEffect, useState } from "react"
+import dynamic from "next/dynamic"
 
 const locale = es;
+
+const getDynamicProvices = () => dynamic(() => import("./ProvinceAndCityOptions"), {
+    ssr: false,
+    loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
+})
 
 const formSchema = z.object({
     address: z
@@ -57,23 +67,27 @@ const formSchema = z.object({
 });
 
 
+
 export default function GeneralForm() {
-    const { formValues, setFormValues } = useFormSteps();
+    const router = useRouter()
+    const slug = router.query.slug as string;
     const { currentStep, setCurrentStep } = useFormSteps();
+    const local: FormValues = localStorageRequests.get()
+    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug);
+
+    const DinamicProvinces = getDynamicProvices()
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            address: formValues?.address ? formValues.address : "",
-            description: formValues?.description ? formValues.description : "",
-            date: formValues?.date ? formValues.date : new Date(),
-            province: formValues?.province ? formValues.province : null,
-            city: formValues?.city ? formValues.city : null,
+            address: hasCategoryInLocal ? local[`${slug}`]?.address : "",
+            description: hasCategoryInLocal ? local[`${slug}`]?.description : "",
+            date: new Date(),
+            province: hasCategoryInLocal ? local[`${slug}`]?.province : undefined,
+            city: hasCategoryInLocal ? local[`${slug}`]?.city : undefined,
         }
     })
-
-
-
+            
     const handleNextStep = () => {
         setCurrentStep(currentStep + 1);
     };
@@ -83,19 +97,21 @@ export default function GeneralForm() {
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        setFormValues({ ...formValues, ...values })
-        handleNextStep()
 
-        console.log(values)
+        if (!!slug) {
+
+            localStorageRequests.set({ ...localStorageRequests.get(), [slug]: { ...local[`${slug}`], ...values, currentStep: currentStep + 1 } })
+            handleNextStep()
+        }
     }
-    // ...
+    
 
     return (
         <>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 
-                    <ProvinceAndCityOptions formSetValue={form.setValue} formGetValues={form.getValues} formControl={form.control} />
+                    <DinamicProvinces formSetValue={form.setValue} formGetValues={form.getValues} formControl={form.control} />
                     <FormField
                         control={form.control}
                         name="address"
