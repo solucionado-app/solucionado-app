@@ -39,7 +39,7 @@ async function handler(request: Request) {
   if (eventType === "user.created" || eventType === "user.updated") {
     const { id, ...attributes } = evt.data;
     const emailId = attributes.primary_email_address_id as string;
-    const { first_name, last_name, email_addresses: emailsList, phone, image_url } = attributes;
+    const { first_name, last_name, email_addresses: emailsList, image_url } = attributes;
     let email = "";
     if (!!emailsList || (Array.isArray(emailsList) && emailsList.length === 0)) {
 
@@ -51,26 +51,24 @@ async function handler(request: Request) {
 
 
     }
-    console.log("user created or updated", id, attributes);
+    console.log("user created or updated", id, first_name, last_name, email, image_url );
     console.log(email)
-
+    const user = {
+      id: id as string,
+      externalId: id as string,
+      first_name: first_name as string,
+      email: email,
+      last_name: last_name as string,
+      image_url: image_url as string,
+      roleId: 1,
+    }
     await prisma.user.upsert({
       where: { externalId: id as string },
-      create: {
-        id: id as string,
-        externalId: id as string,
-        first_name: first_name as string,
-        email: email,
-        phone: phone as string,
-        last_name: last_name as string,
-        image_url: image_url as string,
-        roleId: 1,
-      },
+      create: user,
       update: {
         externalId: id as string,
         first_name: first_name as string,
         email: email,
-        phone: phone as string,
         last_name: last_name as string,
         image_url: image_url as string,
       },

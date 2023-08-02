@@ -50,7 +50,7 @@ model Notification {
     updatedAt DateTime @updatedAt
 
     authorId         String
-    author           User            @relation("notificador", fields: [authorId], references: [externalId])
+    author           User            @relation("notificador", fields: [authorId], references: [externalId], onDelete: Cascade)
     users            User[]          @relation("notificado")
     title            String
     content          String

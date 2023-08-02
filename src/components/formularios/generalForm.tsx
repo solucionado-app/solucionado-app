@@ -26,14 +26,11 @@ import { cn } from "~/lib/utils"
 import { Calendar } from "../ui/calendar"
 
 import es from 'date-fns/locale/es';
-import { api } from "~/utils/api"
 import { useFormSteps } from "./ContextForm"
-import ProvinceAndCityOptions from "./ProvinceAndCityOptions"
-import { ServiceRequest, FormValues, localStorageRequests } from "~/lib/localStorage"
-import { randomUUID } from "crypto"
-import { map } from "@trpc/server/observable"
-import { useEffect, useState } from "react"
+import { FormValues, localStorageRequests } from "~/lib/localStorage"
+
 import dynamic from "next/dynamic"
+import { useRouter } from "next/router"
 
 const locale = es;
 
@@ -87,7 +84,7 @@ export default function GeneralForm() {
             city: hasCategoryInLocal ? local[`${slug}`]?.city : undefined,
         }
     })
-            
+
     const handleNextStep = () => {
         setCurrentStep(currentStep + 1);
     };
@@ -104,7 +101,7 @@ export default function GeneralForm() {
             handleNextStep()
         }
     }
-    
+
 
     return (
         <>
