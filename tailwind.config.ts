@@ -33,6 +33,8 @@ module.exports = {
       colors: {
         solYellow: '#ecbb2c',
         solBlue: '#154492', 
+        sol_lightBlue: '#3090D6', 
+        sol_darkBlue: '#032154', 
       },
     },
   },

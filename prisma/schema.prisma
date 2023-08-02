@@ -1,50 +1,48 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider     = "mysql"
-    url          = env("DATABASE_URL")
-    relationMode = "prisma"
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model User {
-    id                   String           @id @default(cuid())
-    externalId           String           @unique
-    first_name           String?
-    last_name            String?
-    email                String           @unique
-    phone                String?          @unique
-    address              String?
-    dni                  String?          @unique
-    password             String?
-    image_url            String?
-    cbu                  String?
-    cuit                 String?
-    createdAt            DateTime         @default(now())
-    updatedAt            DateTime         @updatedAt
-    serviceRequests      ServiceRequest[]
-    categories           Category[]
-    roleId               Int
-    role                 Role             @default(USER)
-    comentsmade          Comment[]        @relation("comentAuthor")
-    comentsRecieved      Comment[]        @relation("comentUser")
-    reviewsMade          Review[]         @relation("author")
-    reviewsRecieved      Review[]         @relation("solucionador")
-    notificationRecieved Notification[]   @relation("notificado")
-    notificationCreated  Notification[]   @relation("notificador")
-    notificationId       String?
-    budgetsRecieved      Budget[]
-    budgetsMade          Budget[]         @relation("solucionador")
-    notificationsReaded  Notification[]   @relation("readBy")
+  id                   String           @id @default(cuid())
+  externalId           String           @unique
+  first_name           String?
+  last_name            String?
+  email                String           @unique
+  phone                String?          @unique
+  address              String?
+  dni                  String?          @unique
+  password             String?
+  image_url            String?
+  cbu                  String?
+  cuit                 String?
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  roleId               Int
+  role                 Role             @default(USER)
+  notificationId       String?
+  serviceRequests      ServiceRequest[]
+  categories           Category[]
+  comentsmade          Comment[]        @relation("comentAuthor")
+  comentsRecieved      Comment[]        @relation("comentUser")
+  reviewsMade          Review[]         @relation("author")
+  reviewsRecieved      Review[]         @relation("solucionador")
+  notificationRecieved Notification[]   @relation("notificado")
+  notificationCreated  Notification[]   @relation("notificador")
+  budgetsRecieved      Budget[]
+  budgetsMade          Budget[]         @relation("solucionador")
+  notificationsReaded  Notification[]   @relation("readBy")
 
-    @@index([roleId], name: "roleId")
+  @@index([roleId], map: "roleId")
 }
 
 model Notification {
+
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -70,140 +68,173 @@ model Notification {
 }
 
 model ServiceRequest {
-    id            String         @id @default(cuid())
-    createdAt     DateTime       @default(now())
-    updatedAt     DateTime       @updatedAt
-    userId        String
-    user          User           @relation(fields: [userId], references: [externalId])
-    categoryId    Int
-    category      Category       @relation(fields: [categoryId], references: [id])
-    status        Status         @default(PENDING)
-    description   String?
-    date          DateTime?
-    address       String?
-    province      String?
-    city          String?
-    urgency       String?        @default("No")
-    amount        String?
-    schedule      String?
-    details       Json?
-    bugdets       Budget[]
-    coments       Comment[]
-    notifications Notification[]
+  id            String         @id @default(cuid())
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  userId        String
+  categoryId    Int
+  status        Status         @default(PENDING)
+  details       Json?
+  address       String?
+  amount        String?
+  city          String?
+  date          DateTime?
+  description   String?
+  province      String?
+  schedule      String?
+  urgency       String?        @default("No")
+  user          User           @relation(fields: [userId], references: [externalId])
+  category      Category       @relation(fields: [categoryId], references: [id])
+  bugdets       Budget[]
+  coments       Comment[]
+  notifications Notification[]
 
-    @@index([categoryId])
-    @@index([userId])
+  @@index([categoryId])
+  @@index([userId])
 }
 
 model Budget {
-    id          String    @id @default(cuid())
-    description String
-    price       Int
-    status      Status    @default(PENDING)
-    createdAt   DateTime  @default(now())
-    updatedAt   DateTime  @updatedAt
-    userId      String
-    user        User      @relation(fields: [userId], references: [externalId])
-    authorId    String
-    author      User      @relation("solucionador", fields: [authorId], references: [externalId])
-    estimatedAt DateTime
-    paidAt      DateTime?
-    service     Service?
+  id               String         @id @default(cuid())
+  description      String
+  price            Int
+  status           Status         @default(PENDING)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  userId           String
+  authorId         String
+  estimatedAt      DateTime
+  paidAt           DateTime?
+  serviceRequestId String
+  user             User           @relation(fields: [userId], references: [externalId])
+  author           User           @relation("solucionador", fields: [authorId], references: [externalId])
+  service          Service?
+  serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [id])
+  Notification     Notification[]
 
-    serviceRequestId String
-    serviceRequest   ServiceRequest @relation(fields: [serviceRequestId], references: [id])
-    Notification     Notification[]
-
-    @@index([serviceRequestId])
-    @@index([userId])
-    @@index([authorId])
-}
-
-enum Status {
-    PENDING
-    ACEPTED
-    REJECTED
-    FINISHED
+  @@index([serviceRequestId])
+  @@index([userId])
+  @@index([authorId])
 }
 
 model Service {
-    id            String         @id @default(cuid())
-    name          String
-    description   String
-    status        Status         @default(PENDING)
-    createdAt     DateTime       @default(now())
-    updatedAt     DateTime       @updatedAt
-    categoryId    Int
-    category      Category       @relation(fields: [categoryId], references: [id])
-    budgetId      String         @unique
-    budget        Budget         @relation(fields: [budgetId], references: [id])
-    review        Review?
-    notifications Notification[]
-    comments      Comment[]
+  id            String         @id @default(cuid())
+  name          String
+  description   String
+  status        Status         @default(PENDING)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  categoryId    Int
+  budgetId      String         @unique
+  category      Category       @relation(fields: [categoryId], references: [id])
+  budget        Budget         @relation(fields: [budgetId], references: [id])
+  review        Review?
+  notifications Notification[]
+  comments      Comment[]
 
-    @@index([categoryId])
-    @@index([budgetId])
+  @@index([categoryId])
+  @@index([budgetId])
 }
 
 model Review {
-    id        String   @id @default(cuid())
-    content   String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    rating    Decimal
-    authorId  String
-    userId    String
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  rating    Decimal
+  authorId  String
+  userId    String
+  serviceId String   @unique
+  service   Service  @relation(fields: [serviceId], references: [id])
+  user      User     @relation("solucionador", fields: [userId], references: [externalId])
+  author    User     @relation("author", fields: [authorId], references: [externalId])
 
-    serviceId String  @unique
-    service   Service @relation(fields: [serviceId], references: [id])
-    user      User    @relation("solucionador", fields: [userId], references: [externalId])
-    author    User    @relation("author", fields: [authorId], references: [externalId])
-
-    @@index([authorId])
-    @@index([serviceId])
-    @@index([userId])
+  @@index([authorId])
+  @@index([serviceId])
+  @@index([userId])
 }
 
 model Comment {
-    id        String   @id @default(cuid())
-    content   String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    userId    String
-    user      User     @relation("comentUser", fields: [userId], references: [externalId])
-    authorId  String
-    author    User     @relation("comentAuthor", fields: [authorId], references: [externalId])
+  id               String          @id @default(cuid())
+  content          String
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  userId           String
+  authorId         String
+  serviceRequestId String?
+  serviceId        String?
+  user             User            @relation("comentUser", fields: [userId], references: [externalId])
+  author           User            @relation("comentAuthor", fields: [authorId], references: [externalId])
+  serviceRequest   ServiceRequest? @relation(fields: [serviceRequestId], references: [id])
+  service          Service?        @relation(fields: [serviceId], references: [id])
 
-    serviceRequest   ServiceRequest? @relation(fields: [serviceRequestId], references: [id])
-    serviceRequestId String?
-    serviceId        String?
-    service          Service?        @relation(fields: [serviceId], references: [id])
-
-    @@index([serviceId])
-    @@index([serviceRequestId])
-    @@index([userId])
-    @@index([authorId])
-}
-
-enum Role {
-    CLIENT
-    USER
-    SOLUCIONADOR
-    ADMIN
+  @@index([serviceId])
+  @@index([serviceRequestId])
+  @@index([userId])
+  @@index([authorId])
 }
 
 model Category {
-    id              Int              @id @default(autoincrement())
-    name            String
-    slug            String           @unique
-    description     String
-    image_url       String?
-    serviceRequests ServiceRequest[]
-    createdAt       DateTime         @default(now())
-    updatedAt       DateTime         @updatedAt
-    users           User[]
-    services        Service[]
+  id              Int              @id @default(autoincrement())
+  name            String
+  slug            String           @unique
+  description     String
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  image_url       String?
+  serviceRequests ServiceRequest[]
+  users           User[]
+  services        Service[]
 
-    @@index([name], name: "name")
-    @@index([slug], name: "slug")
+  @@index([name], map: "name")
+  @@index([slug], map: "slug")
+}
+
+model BudgetToNotification {
+  A String
+  B String
+
+  @@unique([A, B], map: "_BudgetToNotification_AB_unique")
+  @@index([B], map: "_BudgetToNotification_B_index")
+  @@map("_BudgetToNotification")
+}
+
+model CategoryToUser {
+  A Int
+  B String
+
+  @@unique([A, B], map: "_CategoryToUser_AB_unique")
+  @@index([B], map: "_CategoryToUser_B_index")
+  @@map("_CategoryToUser")
+}
+
+model notificado {
+  A String
+  B String
+
+  @@unique([A, B], map: "_notificado_AB_unique")
+  @@index([B], map: "_notificado_B_index")
+  @@map("_notificado")
+}
+
+model readBy {
+  A String
+  B String
+
+  @@unique([A, B], map: "_readBy_AB_unique")
+  @@index([B], map: "_readBy_B_index")
+  @@map("_readBy")
+}
+
+enum Status {
+  PENDING
+  ACEPTED
+  REJECTED
+  FINISHED
+}
+
+enum Role {
+  CLIENT
+  USER
+  SOLUCIONADOR
+  ADMIN
 }
