@@ -5,8 +5,6 @@ import { Card } from "~/components/cards/CardComponent";
 import MainHead from "~/components/layouts/head/MainHead";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
-import { es } from "date-fns/locale";
-import { format } from "date-fns";
 
 
 
@@ -26,7 +24,7 @@ const ServiceRequest: MyPage = () => {
 
             <main className="flex min-h-screen flex-col items-center  ">
                 <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-                    <h1 className="text-5xl font-extrabold tracking-tight  sm:text-[5rem]">
+                    <h1 className="text-5xl font-extrabold tracking-tight text-center sm:text-[5rem]">
                         Solicitudes de Servicio
                     </h1>
                     {isLoading && <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>}
@@ -34,40 +32,26 @@ const ServiceRequest: MyPage = () => {
 
                         <div key={service.id} className="w-full">
                             <Link href={`/solicitudes-de-servicio/${service.id}`}>
-                                <Card className="relative flex-col p-5 hover:bg-slate-200 ">
-                                    <div className="font-bold">
+                                <Card className="relative flex-col p-3 hover:bg-slate-200 ">
+                                    <div className="font-bold uppercase text-lg">
                                         {service.category.name}
                                     </div>
-                                    {service.address && <div className="text-sm text-gray-500">
-                                        {service.address}
-                                    </div>}
-                                    {service?.date && <div className="text-sm text-gray-500">
-                                        {format(service?.date, "PPP", { locale: es })}
-                                    </div>}
-                                    {service?.description && <div className="text-sm text-gray-500">
-                                        {service?.description}
-                                    </div>}
-                                    {service.amount && <div className="text-sm text-gray-500">
-                                        {service.amount}
-                                    </div>}
                                     {
                                         service?.details && Object.keys(service?.details).map((key: string, i) => (
 
                                             <p key={i}>
-                                                <span> {key.replace(rex, '$1$4 $2$3$5')}</span>
-                                                <span> {service?.details && service?.details[key as keyof typeof service.details]}</span>
+                                                <span className="uppercase"> {key.replace(rex, '$1$4 $2$3$5')}:</span>
+                                                <span className="font-semibold"> {service?.details && service?.details[key as keyof typeof service.details]}</span>
                                             </p>
                                         ))
                                     }
-
-
                                 </Card>
                             </Link>
                         </div>
                     ))
                     }
                     {
-                        isFetched && !services && <div className="text-2xl">No hay servicios</div>
+                        isFetched && !services && <div className="text-2xl font-semibold">No hay servicios</div>
                     }
                 </div>
             </main>
