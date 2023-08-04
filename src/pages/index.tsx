@@ -10,6 +10,7 @@ import {
   Testimonials,
 } from "~/components/views/home";
 
+
 // HomePage.Layout = "OtherLayout"; -> error Type '"OtherLayout"' is not assignable to type '"Main" | "Admin" | undefined'.
 const Home: MyPage = () => {
   const apitrcp = api.categories.getAll.useQuery();
