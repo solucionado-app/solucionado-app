@@ -20,7 +20,7 @@ import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
 import ProvinceAndCityOptions from "../formularios/ProvinceAndCityOptions";
-import { User } from "@prisma/client";
+import { type User } from "@prisma/client";
 import { Loader2 } from "lucide-react";
 
 const phoneRegex = new RegExp(
@@ -104,6 +104,38 @@ export const EditSolucionadorDialog: React.FC<Props> = ({
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
+          name="categories"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Categorias</FormLabel>
+              <FormControl>
+                <Select
+                  {...field}
+                  styles={{
+                    control: (styles) => ({
+                      ...styles,
+                      backgroundColor: "white",
+                    }),
+                    menuList: (provided) => ({
+                      ...provided,
+                      backgroundColor: "white",
+                    }),
+                  }}
+                  isLoading={isLoading}
+                  isMulti
+                  placeholder="Elige las categorias"
+                  options={categories}
+                  getOptionLabel={(option) => option.name}
+                  getOptionValue={(option) => option.id.toString()}
+                />
+              </FormControl>
+              <FormDescription></FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="phone"
           render={({ field }) => (
             <FormItem>
@@ -177,38 +209,7 @@ export const EditSolucionadorDialog: React.FC<Props> = ({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="categories"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Categorias</FormLabel>
-              <FormControl>
-                <Select
-                  {...field}
-                  styles={{
-                    control: (styles) => ({
-                      ...styles,
-                      backgroundColor: "white",
-                    }),
-                    menuList: (provided) => ({
-                      ...provided,
-                      backgroundColor: "white",
-                    }),
-                  }}
-                  isLoading={isLoading}
-                  isMulti
-                  placeholder="Elige las categorias"
-                  options={categories}
-                  getOptionLabel={(option) => option.name}
-                  getOptionValue={(option) => option.id.toString()}
-                />
-              </FormControl>
-              <FormDescription></FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+
 
         <Button
           type="submit"

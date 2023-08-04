@@ -1,12 +1,12 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.user.findMany();
   }),
-  getById: publicProcedure.query(({ ctx }) => {
+  getById: protectedProcedure.query(({ ctx }) => {
     const userId = ctx.auth.userId;
     if (!userId) {
       throw new TRPCError({ code: "NOT_FOUND" });
@@ -51,6 +51,7 @@ export const userRouter = createTRPCRouter({
           address: input?.address,
           cbu: input?.cbu,
           cuit: input?.cuit,
+          role: input?.role,
           categories: {
             connect: input?.categories?.map((category) => {
               return {

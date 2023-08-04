@@ -8,7 +8,6 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import type { User } from "@prisma/client";
-import { RegisterSolucionadorUser } from "../auth/RegisterSolucionadorUser";
 import { EditUserForm } from "./EditUserForm";
 import { EditSolucionadorDialog } from "./EditSolucionadorDialog";
 interface EditUserDialogProps {

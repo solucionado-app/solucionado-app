@@ -5,7 +5,6 @@ import { Card, CardDescription, CardHeader, CardTitle } from "~/components/cards
 import Image from "next/image";
 import MainHead from "~/components/layouts/head/MainHead";
 import Link from "next/link";
-import { slugify } from "~/utils/utils";
 import HomeSelect from "~/components/formularios/HomeSelect";
 
 // HomePage.Layout = "OtherLayout"; -> error Type '"OtherLayout"' is not assignable to type '"Main" | "Admin" | undefined'.
