@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const serviceRequestRouter = createTRPCRouter({
     getAll: protectedProcedure.query(({ ctx }) => {
@@ -13,14 +13,31 @@ export const serviceRequestRouter = createTRPCRouter({
             where: {
                 userId: ctx.auth.userId,
             },
-            include: {
-                category: true,
+            select:{
+                id: true,
+                status: true,
+                createdAt: true,
+                category: {
+                    select: {
+                        id: true,
+                        name: true,
+                        slug: true,
+                    },
+                },
+                address: true,
+                amount: true,
+                schedule: true,
+                urgency: true,
+                details: true,
+                description: true,
+                date: true,
+                city: true,
+                province: true,
             }
         });
     }),
-    create: publicProcedure.input(
+    create: protectedProcedure.input(
         z.object({
-            userId: z.string(),
             status: z.string().optional(),
             details: z.record(z.string(), z.any()).optional(),
             categorySlug: z.string(),
@@ -34,16 +51,15 @@ export const serviceRequestRouter = createTRPCRouter({
             urgency: z.string().optional(),
         })
     ).mutation(async ({ ctx, input }) => {
-        const userId = input?.userId;
-        console.log(userId);
-
+        console.log(input.date)
+        console.log(ctx.auth.userId)
         const serviceRequest = await ctx.prisma.serviceRequest.create({
             data: {
                 status: "PENDING",
                 details: input.details,
                 user: {
                     connect: {
-                        externalId: userId,
+                        externalId: ctx.auth.userId,
                     },
                 },
                 category: {
@@ -59,8 +75,17 @@ export const serviceRequestRouter = createTRPCRouter({
                 amount: input.amount,
                 schedule: input.schedule,
                 urgency: input.urgency,
+            },
+            include: {
+                category: {
+                    select: {
+                        name: true,
+                    }
+                }
+
             }
         });
+        console.log(serviceRequest)
         return serviceRequest;
 
     }),

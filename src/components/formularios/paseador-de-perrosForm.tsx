@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -22,6 +23,7 @@ import { useState } from "react"
 import DialogAuthConfirmation from "../auth/DialogAuthConfirmation"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { useFormSteps } from "./ContextForm"
+import { type FormValues, localStorageRequests } from "~/lib/localStorage"
 const formSchema = z.object({
     numeroDeMascotas: z.coerce.number({ required_error: "Debes introducir un numero de mascotas", }).min(1, { message: "El numero de mascotas es requerido" }),
     tieneCorrea: z.enum(["Si", "No"]),
@@ -32,47 +34,47 @@ const formSchema = z.object({
 export default function ElectricistasForm() {
     // 1. Define your form.
     const router = useRouter()
-    const { numeroDeMascotas } = router.query
-    const { user, isSignedIn } = useUser()
-
-
+    // const { numeroDeMascotas } = router.query
+    const { isSignedIn } = useUser()
+    const slug = router.query.slug as string
+    const local: FormValues = localStorageRequests.get()
+    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug) && JSON.stringify(local[`${slug}`]) !== '{}';
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            numeroDeMascotas: typeof numeroDeMascotas === "string" ? parseInt(numeroDeMascotas) : 1,
+            numeroDeMascotas: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.numeroDeMascotas ?
+                local[`${slug}`]?.details?.numeroDeMascotas as number : 1,
+            tieneCorrea: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.tieneCorrea ?
+                local[`${slug}`]?.details?.tieneCorrea : undefined,
+            tiempoDePaseo: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.tiempoDePaseo ?
+                local[`${slug}`]?.details?.tiempoDePaseo : undefined,
         },
     });
-    // useEffect(() => {
-    //     console.log(numeroDeMascotas)
-    //     if (numeroDeMascotas && typeof numeroDeMascotas === "string") {
-    //         setnumeroDeMascotasNumber(parseInt(numeroDeMascotas))
-    //         form.setValue("numeroDeMascotas", parseInt(numeroDeMascotas))
-    //     }
-    // }, [router.query, numeroDeMascotas, form])
+
     const [open, setOpen] = useState(false)
-    const { formValues, handleSubmition } = useFormSteps();
 
-
-
-
+    const { handleSubmition } = useFormSteps();
 
     // 2. Define a submit handler.
-
-
-
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
+        // localStorageRequests.set(prev => [...prev, { details: values }])
+
+        localStorageRequests.set({
+            ...localStorageRequests.get(), [slug]: {
+                ...local[`${slug}`],
+                details: { ...values },
+            }
+        })
         if (!isSignedIn) {
             setOpen(true)
+            return
         }
         else {
-            const { id } = user
-            // setFormValues({ ...formValues, details: values })
-            handleSubmition(values, id)
+            handleSubmition(local[`${slug}`])
         }
-        console.log(values)
     }
     // ...
     return (
@@ -193,7 +195,7 @@ export default function ElectricistasForm() {
                 </form>
             </Form>
 
-            <DialogAuthConfirmation open={open} setOpen={setOpen} formvalues={formValues} />
+            <DialogAuthConfirmation open={open} setOpen={setOpen} />
         </>
     )
 }
