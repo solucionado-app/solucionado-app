@@ -30,27 +30,30 @@ const formSchema = z.object({
     herramientas: z.enum(["Si", "No"], {
         required_error: "Debe elegir una opcion",
     }),
-    ancho: z.coerce.number().min(1, { 
-        message: "El ancho es requerido" }
+    ancho: z.coerce.number().min(1, {
+        message: "El ancho es requerido"
+    }
     ),
-    largo: z.coerce.number().min(1, { 
-        message: "El largo es requerido" }
+    largo: z.coerce.number().min(1, {
+        message: "El largo es requerido"
+    }
     ),
-    alto: z.coerce.number().min(1, { 
-        message: "El alto es requerido" }
+    alto: z.coerce.number().min(1, {
+        message: "El alto es requerido"
+    }
     ),
 
     detalles: z.string().min(10, {
-            message: "Debe tener al menos 10 caracteres.",
-        }).max(160, {
-            message: "Debe tener maximo 130 caracteres.",
-        }),
+        message: "Debe tener al menos 10 caracteres.",
+    }).max(160, {
+        message: "Debe tener maximo 130 caracteres.",
+    }),
 });
 export default function JardinerosForm() {
     // 1. Define your form.
     const router = useRouter()
     // const { numeroDeMascotas } = router.query
-    const { user, isSignedIn } = useUser()
+    const { isSignedIn } = useUser()
     const slug = router.query.slug as string
     const local: FormValues = localStorageRequests.get()
     const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug);
@@ -69,14 +72,14 @@ export default function JardinerosForm() {
                 local[`${slug}`]?.details?.alto as number : undefined,
             detalles: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.detalles ?
                 local[`${slug}`]?.details?.detalles : undefined,
-            
+
         },
     });
 
     const [open, setOpen] = useState(false)
 
     const { handleSubmition } = useFormSteps();
-  
+
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
@@ -94,7 +97,7 @@ export default function JardinerosForm() {
             return
         }
         else {
-            handleSubmition(values, user?.id, local[`${slug}`])
+            handleSubmition(local[`${slug}`])
         }
     }
     // ...
@@ -102,7 +105,7 @@ export default function JardinerosForm() {
         <>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <FormField
+                    <FormField
                         control={form.control}
                         name="herramientas"
                         render={({ field }) => (
@@ -148,8 +151,8 @@ export default function JardinerosForm() {
                                     <FormControl >
                                         <Input type="number" placeholder="" {...field} />
                                     </FormControl>
-                                        <FormDescription>
-                                        </FormDescription>
+                                    <FormDescription>
+                                    </FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -163,8 +166,8 @@ export default function JardinerosForm() {
                                     <FormControl >
                                         <Input type="number" placeholder="" {...field} />
                                     </FormControl>
-                                        <FormDescription>
-                                        </FormDescription>
+                                    <FormDescription>
+                                    </FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -178,14 +181,14 @@ export default function JardinerosForm() {
                                     <FormControl >
                                         <Input type="number" placeholder="" {...field} />
                                     </FormControl>
-                                        <FormDescription>
-                                        </FormDescription>
+                                    <FormDescription>
+                                    </FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                     </div>
-                    
+
                     <FormField
                         control={form.control}
                         name="detalles"
