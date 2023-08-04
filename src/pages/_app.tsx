@@ -5,21 +5,20 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import React from "react";
 
+import { Inter } from "@next/font/google";
+const inter = Inter({ subsets: ["latin"] });
 
 function MyApp({ Component, pageProps }: MyAppProps) {
-
   const Layout = Layouts[Component.Layout] ?? ((page: MyPage) => page);
 
   return (
-    <ClerkProvider {...pageProps}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </ClerkProvider>
+    <main className={inter.className}>
+      <ClerkProvider {...pageProps}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ClerkProvider>
+    </main>
   );
 }
 export default api.withTRPC(MyApp);
-
-
-
-

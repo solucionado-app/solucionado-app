@@ -25,9 +25,8 @@ export default function CommentsServiceRequest({ serviceRequestId }: props) {
                 ))}
                 {
                     requestComments && requestComments.map((comment) => (
-                        <Card key={comment.id} className=' p-5'>
+                        <Card key={comment.id} id={comment.id} className=' p-5'>
                             <div className='flex items-center space-x-2 font-semibold'>
-
                                 <Avatar className="cursor-pointer h-7 w-7" >
                                     <AvatarFallback><div className="animate-spin rounded-full  border-b-2 border-gray-900"></div></AvatarFallback>
                                     <AvatarImage src={comment.author.image_url || ""} />

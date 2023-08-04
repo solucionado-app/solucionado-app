@@ -1,3 +1,4 @@
+import { DialogPortal } from "@radix-ui/react-dialog";
 import { RegisterSolucionadorUser } from "~/components/auth/RegisterSolucionadorUser";
 import RegisterUserDialog from "~/components/auth/RegisterUserDialog";
 import { type MyPage } from "~/components/types/types";
@@ -51,13 +52,15 @@ const Page: MyPage = () => {
                                     </div>
 
                                 </DialogTrigger>
-                                <DialogContent>
-                                    <DialogHeader>
-                                        <DialogTitle className="mb-2">Completa los datos para registrarte</DialogTitle>
+                                <DialogPortal className="overflow-y-auto my-32  ">
+                                    <DialogContent className="h-5/6">
+                                        <DialogHeader>
+                                            <DialogTitle className="mb-2">Completa los datos para registrarte</DialogTitle>
 
-                                    </DialogHeader>
-                                    <RegisterSolucionadorUser />
-                                </DialogContent>
+                                        </DialogHeader>
+                                        <RegisterSolucionadorUser />
+                                    </DialogContent>
+                                </DialogPortal>
                             </Dialog>
 
                         </div>

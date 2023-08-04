@@ -21,20 +21,18 @@ import {
     TabsTrigger,
 } from "~/components/ui/tabs"
 
-
-
-
-import es from 'date-fns/locale/es';
-import { format } from "date-fns"
 import { api } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
 import BudgetsForm from "~/components/budgets/BudgetsForm";
 import CommentsForm from "~/components/comments/CommentForm";
 import CommentsServiceRequest from "~/components/comments/CommentsServiceRequest";
 
-const locale = es;
+import dynamic from "next/dynamic";
 
 
+const budgetTableDynamic = () => dynamic(() => import(`~/components/budgets/BugetsTable`), {
+    loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
+})
 
 const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ id }) => {
 
@@ -42,9 +40,10 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
     const request = api.serviceRequest.findById.useQuery({ id })
     const { data: serviceRequest } = request
 
+    const DynamicBudgetTable = budgetTableDynamic()
+
 
     const { data: budgets, isLoading: budgetsIsLoading } = api.budget.getAll.useQuery({ serviceRequestId: id })
-
 
     const { data: budgetListSolucionador } = api.budget.findByRequestId.useQuery({ serviceRequestId: id }, {
         enabled: Boolean(user && user?.id !== serviceRequest?.userId),
@@ -87,44 +86,15 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                                 <div className="space-y-1">
                                     {/* <Budgets /> */}
                                     {
-                                        budgetListSolucionador && budgetListSolucionador.map((budget) => (
-                                            <div key={budget.id} className="text-xl font-semibold border  shadow-sm relative  p-5">
-                                                <h1 className="text-4xl font-extrabold tracking-tight">Tus Presupuestos</h1>
-                                                <p>{budget?.price}</p>
-                                                <p>{budget?.description}</p>
-                                                <p>{format(budget?.estimatedAt, "PPP", { locale })}</p>
-                                                <p>{budget?.serviceRequestId}</p>
-                                                <p>{budget?.userId}</p>
-                                                <p>{budget?.id}</p>
-                                            </div>
-                                        ))
+                                        budgetListSolucionador && <DynamicBudgetTable budgets={budgetListSolucionador} />
                                     }
-                                    <BudgetsForm
-                                        serviceRequest={serviceRequest} serviceRequestId={id} />
+                                    {user?.id !== serviceRequest?.userId && <BudgetsForm serviceRequest={serviceRequest} serviceRequestId={id} />}
 
-                                    {user?.id !== serviceRequest?.userId && <>
-                                    </>}
-                                    {user?.id === serviceRequest?.userId && <div className="text-xl font-semibold border  shadow-sm relative p-5 m-5">
-                                        <h1 className="text-4xl font-extrabold tracking-tight">Presupuestos</h1>
-
-                                        {budgetsIsLoading && <p>Cargando...</p>}
-                                        {!budgetsIsLoading && budgets?.length === 0 && <p>Aun no hay presupuestos</p>}
-                                        {budgets && budgets.map((budget, i) => (
-                                            <div key={i} className="border-t my-3 p-2">
-                                                <p>{budget.price}</p>
-                                                <p>{budget.description}</p>
-                                                <p>{format(budget.estimatedAt, "PPP", { locale })}</p>
-                                                <p>{budget.serviceRequestId}</p>
-                                                <p>{budget.userId}</p>
-                                                <p>{budget.id}</p>
-
-                                            </div>
-                                        ))}
-                                    </div>}
+                                    {user?.id === serviceRequest?.userId && !budgetsIsLoading && budgets && <DynamicBudgetTable budgets={budgets} />}
                                 </div>
                             </CardContent>
                             <CardFooter>
-                                <Button>ver mas</Button>
+                                {/* <Button>ver mas</Button> */}
                             </CardFooter>
                         </Card>
                     </TabsContent>
