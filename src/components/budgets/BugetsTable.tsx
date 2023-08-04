@@ -65,6 +65,9 @@ interface BudgetsTableProps {
   price: number;
   estimatedAt: Date;
   author: Author;
+  createdAt: Date;
+  updatedAt: Date;
+  status: string;
 }
 type Author = {
   id: string;
@@ -161,12 +164,11 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
 ]
 
 interface Props {
-  serviceRequestId: string
+  budgets: BudgetsTableProps[] | undefined;
 }
 
 
-export default function BudgetsTable({ serviceRequestId }: Props) {
-  const { data: budgets, isLoading: budgetsIsLoading } = api.budget.getAll.useQuery({ serviceRequestId: serviceRequestId })
+export default function BudgetsTable({ budgets }: Props) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []

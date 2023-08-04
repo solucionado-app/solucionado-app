@@ -70,8 +70,7 @@ export default function GeneralForm() {
     const slug = router.query.slug as string;
     const { currentStep, setCurrentStep } = useFormSteps();
     const local: FormValues = localStorageRequests.get()
-    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug);
-
+    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug) && JSON.stringify(local[`${slug}`]) !== '{}';
     const DinamicProvinces = getDynamicProvices()
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({

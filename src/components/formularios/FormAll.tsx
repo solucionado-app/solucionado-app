@@ -22,13 +22,17 @@ export default function FormAll() {
         setCurrentStep(currentStep - 1);
     };
     const local: FormValues = localStorageRequests.get()
-    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug);
+    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug) && JSON.stringify(local[`${slug}`]) !== '{}';
 
     useEffect(() => {
         if (hasCategoryInLocal) {
+
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
             const step: number = local[`${slug}`]?.currentStep as number
-            setCurrentStep(step)
+            if (!isNaN(step)) {
+                setCurrentStep(step)
+            }
+
         }
     }, [local, hasCategoryInLocal, slug, setCurrentStep])
 

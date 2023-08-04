@@ -1,3 +1,4 @@
+import { clerkClient } from "@clerk/nextjs";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
@@ -13,6 +14,24 @@ export const budgetRouter = createTRPCRouter({
                 serviceRequestId: input.serviceRequestId,
                 authorId: ctx.auth.userId,
             },
+            select:{
+                id: true,
+                description: true,
+                price: true,
+                estimatedAt: true,
+                status: true,
+                updatedAt: true,
+                createdAt: true,
+                author: {
+                    select: {
+                        id : true,
+                        first_name: true,
+                        last_name: true,
+                        image_url: true,
+                    }
+                },
+            }
+
         });
 
         if (serviceRequest === null) {
@@ -26,25 +45,31 @@ export const budgetRouter = createTRPCRouter({
             serviceRequestId: z.string(),
         })
     ).query(({ ctx, input }) => {
+
+
+
         return ctx.prisma.budget.findMany({
             where: {
                 serviceRequestId: input.serviceRequestId,
             },
-            select:{
+            select: {
                 id: true,
                 description: true,
                 price: true,
                 estimatedAt: true,
+                status: true,
+                updatedAt: true,
+                createdAt: true,
                 author: {
                     select: {
-                        id : true,
+                        id: true,
                         first_name: true,
                         last_name: true,
                         image_url: true,
                     }
                 },
             }
-            
+
         });
     }),
     create: protectedProcedure.input(
@@ -55,6 +80,12 @@ export const budgetRouter = createTRPCRouter({
             userId: z.string(),
             serviceRequestId: z.string(),
         })).mutation(({ ctx, input }) => {
+            // const email = clerkClient.emails.createEmail({
+            //     fromEmailName: "asdasd",
+            //     emailAddressId: ctx.auth.user?.emailAddresses[0]?.id || "",
+            //     subject: "Nuevo presupuesto",
+            //     body: "Hay un nuevo presupuesto para tu solicitud de servicio",
+            // })
             console.log(ctx.auth.userId)
             return ctx.prisma.budget.create({
 

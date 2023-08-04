@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { useRouter } from "next/router";
 import React, { createContext, useContext, useState } from "react";
-import { ServiceRequest } from "~/lib/localStorage";
+import { ServiceRequest, localStorageRequests } from "~/lib/localStorage";
 import { api } from "~/utils/api";
 import { trpc } from "~/utils/trpc";
 
@@ -10,7 +10,7 @@ interface FormStepsContextType {
     setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
     formValues: Record<string, any>;
     setFormValues: React.Dispatch<React.SetStateAction<Record<string, any>>>;
-    handleSubmition: (values: Record<string, any>, userId: string, local: ServiceRequest | undefined) => void;
+    handleSubmition: (local: ServiceRequest | undefined) => void;
 }
 
 const FormStepsContext = createContext<FormStepsContextType>({
@@ -28,7 +28,7 @@ interface Props {
 
 }
 
-export const FormStepsProvider = ({ children}: Props) => {
+export const FormStepsProvider = ({ children }: Props) => {
     const [currentStep, setCurrentStep] = useState(0);
     const router = useRouter()
     const [formValues, setFormValues] = useState<Record<string, any>>({});
@@ -43,7 +43,7 @@ export const FormStepsProvider = ({ children}: Props) => {
                 notification.mutate({
                     categorySlug: router.query?.slug as string,
                     title: "Nueva solicitud de servicio",
-                    content: `Se ha creado una nueva solicitud de servicio para ${data.category.name}}`,
+                    content: `Se ha creado una nueva solicitud de servicio para ${data.category.name}`,
                     link: `/solicitudes-de-servicio/${data.id}`,
                     serviceRequestId: data.id,
                 })
@@ -53,9 +53,12 @@ export const FormStepsProvider = ({ children}: Props) => {
     const utils = trpc.useContext()
     const notification = api.notification.create.useMutation()
     const handleSubmition = (local: ServiceRequest | undefined) => {
+        const date = new Date(local?.date as Date)
 
+        console.log(date)
         requestMutation.mutate({
             ...local,
+            date: date,
             city: local?.city?.nombre,
             province: local?.province?.nombre,
             details: local?.details,
@@ -66,6 +69,10 @@ export const FormStepsProvider = ({ children}: Props) => {
                 void utils.notification.getAll.invalidate()
                 void utils.notification.countUnRead.invalidate()
                 void router.push("/solicitudes-de-servicio")
+                const slug = router.query.slug as string
+                localStorageRequests.set({
+                    ...localStorageRequests.get(), [slug]: {}
+                })
             }
         })
 

@@ -51,7 +51,8 @@ export const serviceRequestRouter = createTRPCRouter({
             urgency: z.string().optional(),
         })
     ).mutation(async ({ ctx, input }) => {
-
+        console.log(input.date)
+        console.log(ctx.auth.userId)
         const serviceRequest = await ctx.prisma.serviceRequest.create({
             data: {
                 status: "PENDING",
@@ -84,6 +85,7 @@ export const serviceRequestRouter = createTRPCRouter({
 
             }
         });
+        console.log(serviceRequest)
         return serviceRequest;
 
     }),

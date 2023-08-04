@@ -49,6 +49,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
     const DynamicBudgetTable = budgetTableDynamic()
 
 
+    const { data: budgets, isLoading: budgetsIsLoading } = api.budget.getAll.useQuery({ serviceRequestId: id })
 
     const { data: budgetListSolucionador } = api.budget.findByRequestId.useQuery({ serviceRequestId: id }, {
         enabled: Boolean(user && user?.id !== serviceRequest?.userId),
@@ -91,21 +92,11 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                                 <div className="space-y-1">
                                     {/* <Budgets /> */}
                                     {
-                                        budgetListSolucionador && budgetListSolucionador.map((budget, i) => (
-                                            <div key={i} className="text-xl font-semibold border  shadow-sm relative  p-5">
-                                                <h1 className="text-4xl font-extrabold tracking-tight">Tus Presupuestos</h1>
-                                                <p>{budget?.price}</p>
-                                                <p>{budget?.description}</p>
-                                                <p>{format(budget?.estimatedAt, "PPP", { locale })}</p>
-                                                <p>{budget?.serviceRequestId}</p>
-                                                <p>{budget?.userId}</p>
-                                                <p>{budget?.id}</p>
-                                            </div>
-                                        ))
+                                        budgetListSolucionador && <DynamicBudgetTable budgets={budgetListSolucionador} />
                                     }
-                                   {user?.id !== serviceRequest?.userId && <BudgetsForm serviceRequest={serviceRequest} serviceRequestId={id} />}
+                                    {user?.id !== serviceRequest?.userId && <BudgetsForm serviceRequest={serviceRequest} serviceRequestId={id} />}
 
-                                    {user?.id === serviceRequest?.userId && <DynamicBudgetTable serviceRequestId={id} />}
+                                    {user?.id === serviceRequest?.userId && !budgetsIsLoading && budgets && <DynamicBudgetTable budgets={budgets} />}
                                 </div>
                             </CardContent>
                             <CardFooter>
