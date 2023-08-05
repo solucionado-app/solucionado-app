@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import HomeSelect from "~/components/formularios/HomeSelect";
 import type { CategoriesQueryResponse } from "~/components/types/common";
+import { Button } from "~/components/ui/button";
 import {
   Card,
   CardDescription,
@@ -57,12 +58,11 @@ export const About: React.FC<ViewProps> = ({ categories, isLoading }) => {
                   <span className="try uppercase text-sol_lightBlue">
                     Registrate y comienza
                   </span>
+                  <a className="read_morea" href="{{ route('register') }}">
+                    <Button className="bg-sol_lightBlue px-5 py-2 text-center text-lg font-bold text-white hover:bg-sol_lightBlue/80">
+                      Registrarme{" "}
+                    </Button>
 
-                  <a
-                    className="read_morea inline-block rounded-xl bg-sol_lightBlue px-5 py-2 text-center text-lg font-bold text-[#fff]"
-                    href="{{ route('register') }}"
-                  >
-                    Registrarme
                     <i className="fa fa-angle-right" aria-hidden="true"></i>
                     <br />
                   </a>
@@ -104,11 +104,11 @@ export const About: React.FC<ViewProps> = ({ categories, isLoading }) => {
               <span className="try uppercase text-solYellow">
                 Registrate y comienza
               </span>
-              <a
-                className="read_morea inline-block rounded-xl bg-solYellow px-5 py-2 text-center text-lg font-bold text-black"
-                href="{{ route('register') }}"
-              >
-                Registrarme
+              <a className="read_morea" href="{{ route('register') }}">
+                <Button className="bg-solYellow px-5 py-2 text-center text-lg font-bold text-black hover:bg-solYellow/80">
+                  Registrarme{" "}
+                </Button>
+
                 <i className="fa fa-angle-right" aria-hidden="true"></i>
                 <br />
               </a>

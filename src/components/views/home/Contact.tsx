@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "~/components/ui/button";
 
 export const Contact = () => {
   return (
@@ -51,9 +52,12 @@ export const Contact = () => {
                   ></textarea>
                 </div>
                 <div className="col-md-12 my-7">
-                  <button className="inline-block rounded-xl bg-sol_lightBlue px-8 py-2 text-center text-lg font-bold text-[#fff]">
+                  <Button
+                    type="submit"
+                    className="bg-sol_lightBlue px-5 py-2 text-center text-lg font-bold text-white hover:bg-sol_lightBlue/80"
+                  >
                     Enviar
-                  </button>
+                  </Button>
                 </div>
               </div>
             </form>

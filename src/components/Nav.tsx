@@ -271,9 +271,9 @@ export default function Nav() {
             </SignedIn>
           )}
           <div id="burger" onClick={handleBurgerClick} className="lg:hidden">
-            <button className="navbar-burger flex items-center p-3 text-white transition-colors hover:text-solYellow">
+            <button className="navbar-burger flex items-center p-1 text-white transition-colors hover:text-solYellow">
               <svg
-                className="block h-4 w-4 fill-current"
+                className="block h-7 w-7 fill-current"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -368,7 +368,6 @@ export default function Nav() {
                 </button>
               </SignOutButton>
             )}
-
 
             <p className="my-4 text-center text-xs text-zinc-900">
               <span>Copyright © 2021</span>
