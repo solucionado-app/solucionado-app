@@ -6,6 +6,7 @@ import "~/styles/globals.css";
 import React from "react";
 
 import { Inter } from "@next/font/google";
+import { Toaster } from "~/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 function MyApp({ Component, pageProps }: MyAppProps) {
@@ -16,6 +17,7 @@ function MyApp({ Component, pageProps }: MyAppProps) {
       <ClerkProvider {...pageProps}>
         <Layout>
           <Component {...pageProps} />
+          <Toaster />
         </Layout>
       </ClerkProvider>
     </main>
