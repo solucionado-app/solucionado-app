@@ -96,7 +96,10 @@ export default function HomeSelect({ categories, isLoading }: props) {
             )}
           />
 
-          <Button className="mb-[9px] max-[400px]:w-full" type="submit">
+          <Button
+            className="mb-[9px] bg-solBlue hover:bg-solBlue/80 max-[400px]:w-full"
+            type="submit"
+          >
             Buscar
           </Button>
         </form>
