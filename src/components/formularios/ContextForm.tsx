@@ -1,4 +1,7 @@
 /* eslint-disable */
+import { useUser } from "@clerk/nextjs";
+import { clerkClient } from "@clerk/nextjs";
+
 import { useRouter } from "next/router";
 import React, { createContext, useContext, useState } from "react";
 import { ServiceRequest, localStorageRequests } from "~/lib/localStorage";
@@ -50,14 +53,23 @@ export const FormStepsProvider = ({ children }: Props) => {
             }
         },
     })
+    const { user } = useUser()
     const utils = trpc.useContext()
     const notification = api.notification.create.useMutation()
     const handleSubmition = (local: ServiceRequest | undefined) => {
         const date = new Date(local?.date as Date)
-
+        // const email = clerkClient.emails.createEmail({
+        //     fromEmailName: "@clerk.email",
+        //     body: "Hay un nuevo presupuesto para tu solicitud de servicio",
+        //     subject: "Nuevo presupuesto",
+        //     emailAddressId: user?.primaryEmailAddressId || "",
+        // })
+        // console.log(email)
+        console.log(user?.primaryEmailAddressId)
         console.log(date)
         requestMutation.mutate({
             ...local,
+            emailaddress: user?.primaryEmailAddressId || "",
             date: date,
             city: local?.city?.nombre,
             province: local?.province?.nombre,
@@ -68,11 +80,12 @@ export const FormStepsProvider = ({ children }: Props) => {
                 void utils.serviceRequest.getAll.invalidate()
                 void utils.notification.getAll.invalidate()
                 void utils.notification.countUnRead.invalidate()
-                void router.push("/solicitudes-de-servicio")
+
+                // void router.push("/solicitudes-de-servicio")
                 const slug = router.query.slug as string
-                localStorageRequests.set({
-                    ...localStorageRequests.get(), [slug]: {}
-                })
+                // localStorageRequests.set({
+                //     ...localStorageRequests.get(), [slug]: {}
+                // })
             }
         })
 

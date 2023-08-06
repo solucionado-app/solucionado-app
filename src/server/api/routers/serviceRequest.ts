@@ -1,3 +1,4 @@
+import { clerkClient } from "@clerk/nextjs";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
@@ -49,10 +50,26 @@ export const serviceRequestRouter = createTRPCRouter({
             amount: z.string().optional(),
             schedule: z.string().optional(),
             urgency: z.string().optional(),
+            emailaddress: z.string(),
         })
     ).mutation(async ({ ctx, input }) => {
-        console.log(input.date)
-        console.log(ctx.auth.userId)
+
+        // ...
+        console.log(ctx.auth)
+        console.log(ctx.auth.user?.emailAddresses)
+
+         const email = clerkClient.emails.createEmail({
+             fromEmailName: "info",
+             body: "Hay un nuevo presupuesto para tu solicitud de servicio",
+             subject: "Nuevo presupuesto",
+             emailAddressId: input.emailaddress,
+         }).then((res) => {
+             console.log(res)
+
+         }).catch((err) => {
+             console.log(err)
+             });
+        console.log(email)
         const serviceRequest = await ctx.prisma.serviceRequest.create({
             data: {
                 status: "PENDING",
@@ -85,7 +102,41 @@ export const serviceRequestRouter = createTRPCRouter({
 
             }
         });
+
         console.log(serviceRequest)
+        const userswithCategory = await ctx.prisma.user.findMany({
+            where: {
+                categories: {
+                    some: {
+                        slug: input.categorySlug,
+                    },
+                },
+            },
+            select: {
+                emailAddressId: true,
+                first_name: true,
+                last_name: true,
+
+            },
+        });
+        if (userswithCategory?.length > 0) {
+            userswithCategory.forEach((user) => {
+                clerkClient.emails.createEmail({
+                    fromEmailName: "info",
+                    body: `Hola ${user.first_name || ""} ${user.last_name || ""} hay una nueva solicitud de servicio de ${serviceRequest.category.name} en tu zona.
+                    Entra a este link para ver los detalles de la solicitud: solucionado-app.vercel.app/solicitudes-de-servicio/${serviceRequest.id}
+                    `,
+                    subject: `Solicitud de servicio en ${serviceRequest.category.name}`,
+                    emailAddressId: user.emailAddressId as string,
+                }).then((res) => {
+                    console.log(res)
+                }
+                ).catch((err) => {
+                    console.log(err)
+                }
+                );
+            });
+        }
         return serviceRequest;
 
     }),
@@ -94,6 +145,7 @@ export const serviceRequestRouter = createTRPCRouter({
             id: z.string(),
         })
     ).query(({ ctx, input }) => {
+
         return ctx.prisma.serviceRequest.findUnique({
             where: {
                 id: input.id,
