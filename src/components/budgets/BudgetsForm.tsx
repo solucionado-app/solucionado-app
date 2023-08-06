@@ -70,7 +70,9 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
                     link: `/solicitudes-de-servicio/${serviceRequestId}`,
                     serviceRequestId: serviceRequestId,
                     userId: serviceRequest?.userId as string,
-                    budgetId: data.id
+                    budgetId: data.id,
+                    authorName: user?.firstName || "",
+                    authorLastName: user?.lastName || "",
                 })
             }
         },

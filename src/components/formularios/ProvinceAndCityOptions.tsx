@@ -1,4 +1,5 @@
 /* eslint-disable */
+
 import React from 'react'
 import { useQuery } from "@tanstack/react-query"
 import Select from "react-select"
@@ -71,6 +72,7 @@ export default function ProvinceAndCityOptions({ formGetValues, formSetValue, fo
                             getOptionLabel={(option: Province) => option?.nombre ? option?.nombre : ""}
                             getOptionValue={(option: Province) => option?.id ? option?.id : ""}
                             onChange={(option) => {
+
                                 option && formSetValue("province", { id: option.id, nombre: option.nombre })
                                 formSetValue("city", { id: "", nombre: "" })
                                 querycitys.refetch()

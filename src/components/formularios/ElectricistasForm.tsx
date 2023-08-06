@@ -28,26 +28,19 @@ const formSchema = z.object({
 export default function ElectricistasForm() {
     // 1. Define your form.
     const router = useRouter()
-    const { user, isSignedIn } = useUser()
+    const { isSignedIn } = useUser()
     const { handleSubmition } = useFormSteps()
     const slug = router.query.slug as string
     const local: FormValues = localStorageRequests.get()
-    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug);
-
+    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug) && JSON.stringify(local[`${slug}`]) !== '{}' && local[`${slug}`]?.details;
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            numeroDeLamparas: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.numeroDeMascotas ?
+            numeroDeLamparas: hasCategoryInLocal && local[`${slug}`]?.details?.numeroDeMascotas ?
                 local[`${slug}`]?.details?.numeroDeMascotas as number : 1,
         },
     });
-    // useEffect(() => {
-    //     console.log(numeroDeLamparas)
-    //     if (numeroDeLamparas && typeof numeroDeLamparas === "string") {
-    //         setnumeroDeLamparasNumber(parseInt(numeroDeLamparas))
-    //         form.setValue("numeroDeLamparas", parseInt(numeroDeLamparas))
-    //     }
-    // }, [router.query, numeroDeLamparas, form])
+
     const [open, setOpen] = useState(false)
 
 
@@ -59,18 +52,19 @@ export default function ElectricistasForm() {
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        localStorageRequests.set({
-            ...localStorageRequests.get(), [slug]: {
-                ...local[`${slug}`],
-                details: { ...values },
-            }
-        })
+
         if (!isSignedIn) {
+            localStorageRequests.set({
+                ...localStorageRequests.get(), [slug]: {
+                    ...local[`${slug}`],
+                    details: { ...values },
+                }
+            })
             setOpen(true)
             return
         }
         else {
-            handleSubmition(values, user?.id, local[`${slug}`])
+            handleSubmition(local[`${slug}`])
         }
     }
     // ...

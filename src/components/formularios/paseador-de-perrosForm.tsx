@@ -35,12 +35,11 @@ export default function ElectricistasForm() {
     // 1. Define your form.
     const router = useRouter()
     // const { numeroDeMascotas } = router.query
-    const { user, isSignedIn } = useUser()
+    const { isSignedIn } = useUser()
     const slug = router.query.slug as string
     const local: FormValues = localStorageRequests.get()
-    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug);
+    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug) && JSON.stringify(local[`${slug}`]) !== '{}';
 
-    console.log(local[`${slug}`]?.details)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -56,7 +55,7 @@ export default function ElectricistasForm() {
     const [open, setOpen] = useState(false)
 
     const { handleSubmition } = useFormSteps();
-  
+
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
@@ -74,7 +73,7 @@ export default function ElectricistasForm() {
             return
         }
         else {
-            handleSubmition(values, user?.id, local[`${slug}`])
+            handleSubmition(local[`${slug}`])
         }
     }
     // ...

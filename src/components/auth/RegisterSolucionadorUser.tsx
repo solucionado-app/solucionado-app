@@ -75,7 +75,38 @@ export function RegisterSolucionadorUser() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 overflow-y-auto">
+                <FormField
+                    control={form.control}
+                    name="categories"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Categorias</FormLabel>
+                            <FormControl>
+                                <Select
+                                    {...field}
+                                    styles={{
+                                        control: (styles) => ({
+                                            ...styles,
+                                            backgroundColor: 'white',
+                                        }),
+                                        menuList: (provided) => ({
+                                            ...provided,
+                                            backgroundColor: 'white',
+                                        }),
+                                    }}
+                                    isLoading={isLoading}
+                                    isMulti placeholder='Elige las categorias' options={categories}
+                                    getOptionLabel={(option) => option.name}
+                                    getOptionValue={(option) => option.id.toString()}
+                                />
+                            </FormControl>
+                            <FormDescription>
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
                 <FormField
                     control={form.control}
                     name="phone"
@@ -152,37 +183,7 @@ export function RegisterSolucionadorUser() {
                         </FormItem>
                     )}
                 />
-                <FormField
-                    control={form.control}
-                    name="categories"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Categorias</FormLabel>
-                            <FormControl>
-                                <Select
-                                    {...field}
-                                    styles={{
-                                        control: (styles) => ({
-                                            ...styles,
-                                            backgroundColor: 'white',
-                                        }),
-                                        menuList: (provided) => ({
-                                            ...provided,
-                                            backgroundColor: 'white',
-                                        }),
-                                    }}
-                                    isLoading={isLoading}
-                                    isMulti placeholder='Elige las categorias' options={categories}
-                                    getOptionLabel={(option) => option.name}
-                                    getOptionValue={(option) => option.id.toString()}
-                                />
-                            </FormControl>
-                            <FormDescription>
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+
 
                 <Button type="submit">Registrarse</Button>
             </form>

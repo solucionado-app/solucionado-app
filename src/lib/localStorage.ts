@@ -20,7 +20,8 @@ export type FormValues =  {
     [key: string]: ServiceRequest;
 }
 
-type urgency = "SI" | "NO" | undefined;
+export type urgency = "SI" | "NO" | undefined;
+
 
 type schedule = "Mañana 07:00-12:00"| "Media tarde 12:00-17:00"| "Tarde 17:00-20:00"| "Noche 20:00-7:00";
 

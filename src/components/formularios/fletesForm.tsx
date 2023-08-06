@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-misused-promises, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 
@@ -20,6 +20,10 @@ import {
     RadioGroup,
     RadioGroupItem
 } from "../ui/radio-group"
+import { useRouter } from "next/router"
+import { useUser } from "@clerk/nextjs"
+import { useFormSteps } from "./ContextForm"
+import { type FormValues, localStorageRequests } from "~/lib/localStorage"
 
 const formSchema = z.object({
     lugarDePartida: z
@@ -55,10 +59,24 @@ const formSchema = z.object({
         required_error: "Debe elegir una opcion.",
     }),
 });
+
+
+
 export default function FletesForm() {
     // 1. Define your form.
+    const router = useRouter()
+    const { isSignedIn } = useUser()
+    const { handleSubmition } = useFormSteps()
+    const slug = router.query.slug as string
+    const local: FormValues = localStorageRequests.get()
+    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug) && JSON.stringify(local[`${slug}`]) !== '{}' && local[`${slug}`]?.details;
+
     const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema)
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            lugarDePartida: hasCategoryInLocal && local[`${slug}`]?.details?.lugarDePartida ? local[`${slug}`]?.details?.lugarDePartida as string : "",
+            acomodarElementos: hasCategoryInLocal && !!local[`${slug}`]?.details?.acomodarElementos ? local[`${slug}`]?.details?.acomodarElementos : undefined,
+        }
     })
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {

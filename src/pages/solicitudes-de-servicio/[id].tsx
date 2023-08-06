@@ -21,11 +21,6 @@ import {
     TabsTrigger,
 } from "~/components/ui/tabs"
 
-
-
-
-import es from 'date-fns/locale/es';
-import { format } from "date-fns"
 import { api } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
 import BudgetsForm from "~/components/budgets/BudgetsForm";
@@ -34,7 +29,6 @@ import CommentsServiceRequest from "~/components/comments/CommentsServiceRequest
 
 import dynamic from "next/dynamic";
 
-const locale = es;
 
 const budgetTableDynamic = () => dynamic(() => import(`~/components/budgets/BugetsTable`), {
     loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
@@ -49,6 +43,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
     const DynamicBudgetTable = budgetTableDynamic()
 
 
+    const { data: budgets, isLoading: budgetsIsLoading } = api.budget.getAll.useQuery({ serviceRequestId: id })
 
     const { data: budgetListSolucionador } = api.budget.findByRequestId.useQuery({ serviceRequestId: id }, {
         enabled: Boolean(user && user?.id !== serviceRequest?.userId),
@@ -91,21 +86,11 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                                 <div className="space-y-1">
                                     {/* <Budgets /> */}
                                     {
-                                        budgetListSolucionador && budgetListSolucionador.map((budget, i) => (
-                                            <div key={i} className="text-xl font-semibold border  shadow-sm relative  p-5">
-                                                <h1 className="text-4xl font-extrabold tracking-tight">Tus Presupuestos</h1>
-                                                <p>{budget?.price}</p>
-                                                <p>{budget?.description}</p>
-                                                <p>{format(budget?.estimatedAt, "PPP", { locale })}</p>
-                                                <p>{budget?.serviceRequestId}</p>
-                                                <p>{budget?.userId}</p>
-                                                <p>{budget?.id}</p>
-                                            </div>
-                                        ))
+                                        budgetListSolucionador && <DynamicBudgetTable budgets={budgetListSolucionador} />
                                     }
-                                   {user?.id !== serviceRequest?.userId && <BudgetsForm serviceRequest={serviceRequest} serviceRequestId={id} />}
+                                    {user?.id !== serviceRequest?.userId && <BudgetsForm serviceRequest={serviceRequest} serviceRequestId={id} />}
 
-                                    {user?.id === serviceRequest?.userId && <DynamicBudgetTable serviceRequestId={id} />}
+                                    {user?.id === serviceRequest?.userId && !budgetsIsLoading && budgets && <DynamicBudgetTable budgets={budgets} />}
                                 </div>
                             </CardContent>
                             <CardFooter>
@@ -123,7 +108,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                             </CardHeader>
                             <CardContent className="space-y-2">
                                 <div className="space-y-1">
-                                    <CommentsForm serviceRequest={serviceRequest} serviceRequestId={id} />
+                                    <CommentsForm serviceRequest={serviceRequest} serviceRequestId={id} categoryName={serviceRequest?.category.name} />
                                     <CommentsServiceRequest serviceRequestId={id} />
                                 </div>
                             </CardContent>
