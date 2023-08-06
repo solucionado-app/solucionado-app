@@ -229,59 +229,60 @@ export default function Nav() {
                     </li>
                 </ul>
 
-                <div className="flex items-center  gap-4">
-                    {!user.isSignedIn && (
-                        <>
-                            <Link
-                                className="hidden rounded-xl bg-gray-50 px-4 py-2 text-sm font-bold text-gray-900 transition  duration-200 hover:bg-gray-100 lg:inline-block"
-                                href="/login"
-                            >
-                                Iniciar Sesión
-                            </Link>
-                            <Link
-                                className="hidden rounded-xl bg-blue-500 px-4 py-2 text-sm font-bold text-white transition duration-200 hover:bg-blue-600 lg:inline-block"
-                                href="/registro"
-                            >
-                                Registrarse
-                            </Link>
-                        </>
-                    )}
-                    {!!user.isSignedIn && (
-                        <SignedIn>
-                            {
-                                <NotificationsComponent
-                                    notificationsNumber={numberOfNotifications || 0}
-                                />
-                            }
-                            <ProfileDropdown>
-                                <Avatar
-                                    className="cursor-pointer"
-                                    onClick={() => {
-                                        void router.push("/perfil");
-                                    }}
-                                >
-                                    <AvatarImage src={user.user.imageUrl} />
-                                    <AvatarFallback>
-                                        <div className="animate-spin rounded-full  border-b-2 border-gray-900"></div>
-                                    </AvatarFallback>
-                                </Avatar>
-                            </ProfileDropdown>
-                        </SignedIn>
-                    )}
-                    <div id="burger" onClick={handleBurgerClick} className="lg:hidden">
-                        <button className="navbar-burger flex items-center p-3 text-white transition-colors hover:text-solYellow">
-                            <svg
-                                className="block h-4 w-4 fill-current"
-                                viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <title>Mobile menu</title>
-                                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </nav>
+        <div className="flex items-center gap-4">
+          {!user.isSignedIn && (
+            <>
+              <Link
+                className="hidden rounded-xl bg-gray-50 px-4 py-2 text-sm font-bold text-gray-900 transition  duration-200 hover:bg-gray-100 lg:inline-block"
+                href="/login"
+              >
+                Iniciar Sesión
+              </Link>
+              <Link
+                className="hidden rounded-xl bg-blue-500 px-4 py-2 text-sm font-bold text-white transition duration-200 hover:bg-blue-600 lg:inline-block"
+                href="/registro"
+              >
+                Registrarse
+              </Link>
+            </>
+          )}
+          {!!user.isSignedIn && (
+            <SignedIn>
+              {
+                <NotificationsComponent
+                  notificationsNumber={numberOfNotifications || 0}
+                />
+              }
+              <ProfileDropdown>
+                <Avatar
+                  className="cursor-pointer"
+                  onClick={() => {
+                    void router.push("/perfil");
+                  }}
+                >
+                  <AvatarImage src={user.user.imageUrl} />
+                  <AvatarFallback>
+                    <div className="animate-spin rounded-full  border-b-2 border-gray-900"></div>
+                  </AvatarFallback>
+                </Avatar>
+              </ProfileDropdown>
+            </SignedIn>
+          )}
+          <div id="burger" onClick={handleBurgerClick} className="lg:hidden">
+            <button className="navbar-burger flex items-center p-1 text-white transition-colors hover:text-solYellow">
+              <svg
+                className="block h-7 w-7 fill-current"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <title>Mobile menu</title>
+                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </nav>
+
 
             <dialog
                 ref={popover}
@@ -368,13 +369,13 @@ export default function Nav() {
                             </SignOutButton>
                         )}
 
+            <p className="my-4 text-center text-xs text-zinc-900">
+              <span>Copyright © 2021</span>
+            </p>
+          </div>
+        </nav>
+      </dialog>
+    </>
+  );
 
-                        <p className="my-4 text-center text-xs text-zinc-900">
-                            <span>Copyright © 2021</span>
-                        </p>
-                    </div>
-                </nav>
-            </dialog>
-        </>
-    );
 }
