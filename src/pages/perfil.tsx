@@ -4,6 +4,7 @@ import { RedirectToSignIn, SignedIn, SignedOut } from "@clerk/nextjs";
 import { ProfileData } from "~/components/auth/ProfileData";
 
 const MyProfile: MyPage = () => {
+
   return (
     <div className="flex min-h-[70vh] w-full items-center justify-center">
       <SignedIn>

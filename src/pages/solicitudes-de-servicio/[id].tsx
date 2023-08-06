@@ -108,7 +108,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                             </CardHeader>
                             <CardContent className="space-y-2">
                                 <div className="space-y-1">
-                                    <CommentsForm serviceRequest={serviceRequest} serviceRequestId={id} />
+                                    <CommentsForm serviceRequest={serviceRequest} serviceRequestId={id} categoryName={serviceRequest?.category.name} />
                                     <CommentsServiceRequest serviceRequestId={id} />
                                 </div>
                             </CardContent>
