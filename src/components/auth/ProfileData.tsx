@@ -1,11 +1,21 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-misused-promises */
+// import React from "react";
 import { Input } from "~/components/ui/input";
 import { api } from "~/utils/api";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { EditUserDialog } from "../profile/EditUserDialog";
+import { EditIcon, User2 } from "lucide-react";
+import { type ChangeEvent, useState } from "react";
+import { useUser } from "@clerk/nextjs";
+import { Skeleton } from "../ui/skeleton";
+import { useToast } from "../ui/use-toast";
 
 export const ProfileData = () => {
-  const { data: user, isLoading } = api.user.getById.useQuery();
+  const { data: user, isLoading, refetch } = api.user.getById.useQuery();
+  const { user: clerkUser } = useUser();
+  const { toast } = useToast();
+  const [isUpdatingImage, setIsUpdatingImage] = useState<boolean>(false);
+  const [publicUrl, setPublicUrl] = useState<string | null>(null);
   if (!user) {
     return (
       <div className="h-96 w-full rounded-xl bg-white shadow">
@@ -13,120 +23,174 @@ export const ProfileData = () => {
       </div>
     );
   }
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    try {
+      setIsUpdatingImage(true);
+      const file = e.target.files?.[0] ?? null;
+      const resp = await clerkUser?.setProfileImage({ file });
+      setPublicUrl(resp?.publicUrl ?? null);
+      setIsUpdatingImage(false);
+      void refetch();
+
+      toast({
+        title: "Imagen actualizada",
+        description: "",
+        variant: "default",
+        duration: 3000,
+      });
+    } catch (error) {
+      setPublicUrl(null);
+      setIsUpdatingImage(false);
+      toast({
+        title: "No se pudo actualizar la imagen",
+        description: "Por favor, intentelo de nuevo.",
+        variant: "destructive",
+        duration: 3000,
+      });
+    }
+  };
+
   return (
-
     <>
-      {isLoading && <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>}
+      {isLoading && (
+        <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
+      )}
 
-      {!!user && <>
-        <div className="my-8">
-          <Avatar className="h-24 w-24">
-            <AvatarFallback ><div className="animate-spin rounded-full  border-b-2 border-gray-900"></div></AvatarFallback>
-            <AvatarImage
-              src={user?.image_url || undefined}
-              alt={`image of user ${user.email}`}
-            />
-          </Avatar>
-        </div>
-        <div className="p-4  min-h-[24rem] w-full  ">
-          <div className="flex min-h-[24rem] w-full flex-col justify-center space-y-4 rounded-xl bg-white p-4 shadow">
-            <div>
-              <EditUserDialog user={user} />
+      {!!user && (
+        <>
+          <div className="relative my-8">
+            <Avatar className="h-24 w-24 bg-white shadow">
+              <AvatarFallback>
+                <div className="animate-spin rounded-full  border-b-2 border-gray-900" />
+              </AvatarFallback>
+              {isUpdatingImage ? (
+                <Skeleton className="flex h-full w-full animate-pulse items-center justify-center rounded-full">
+                  <User2 className="h-12 w-12 animate-pulse text-gray-400" />
+                </Skeleton>
+              ) : (
+                <AvatarImage
+                  src={publicUrl ?? (clerkUser?.profileImageUrl || undefined)}
+                  alt={`image of user ${user.email}`}
+                  className="object-contain p-1"
+                />
+              )}
+            </Avatar>
+            <div className="absolute -bottom-4 right-0 cursor-pointer rounded-full border border-gray-300 bg-white p-2">
+              <EditIcon className="h-4 w-4 cursor-pointer text-black" />
+
+              <input
+                type="file"
+                name="picture"
+                className="absolute bottom-0 left-0 right-0 top-0 cursor-pointer opacity-0"
+                onChange={handleChange}
+              />
             </div>
-            <form className="grid w-full auto-rows-auto grid-cols-1 gap-8  sm:grid-cols-2 md:grid-cols-3">
+          </div>
+          <div className="min-h-[24rem]  w-full p-4  ">
+            <div className="flex min-h-[24rem] w-full flex-col justify-center space-y-4 rounded-xl bg-white p-4 shadow">
               <div>
-                <label className="text-sm font-semibold text-solBlue">
-                  Correo Electronico
-                </label>
-                <Input
-                  type="email"
-                  value={user.email}
-                  readOnly
-                  className="outline-none ring-0 focus:outline-transparent"
-                />
+                <EditUserDialog user={user} />
               </div>
-              <div>
-                <label className="text-sm font-semibold text-solBlue">Nombre</label>
-                <Input
-                  type="text"
-                  value={user.first_name ?? "-"}
-                  readOnly
-                  className="outline-none ring-0 focus:outline-transparent"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-semibold text-solBlue">
-                  Apellido
-                </label>
-                <Input
-                  type="text"
-                  value={user.last_name ?? "-"}
-                  readOnly
-                  className="outline-none ring-0 focus:outline-transparent"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-semibold text-solBlue">
-                  Telefono
-                </label>
-                <Input
-                  type="phone"
-                  value={user.phone ?? "-"}
-                  readOnly
-                  className="outline-none ring-0 focus:outline-transparent"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-semibold text-solBlue">Calle</label>
-                <Input
-                  type="text"
-                  value={user.address ?? "-"}
-                  readOnly
-                  className="outline-none ring-0 focus:outline-transparent"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-semibold text-solBlue">
-                  Documento de Identidad
-                </label>
-                <Input
-                  type="text"
-                  value={user.dni ?? "-"}
-                  readOnly
-                  className="outline-none ring-0 focus:outline-transparent"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-semibold text-solBlue">
-                  CUIT/CUIL
-                </label>
-                <Input
-                  type="text"
-                  value={user.cuit ?? "-"}
-                  readOnly
-                  className="outline-none ring-0 focus:outline-transparent"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-semibold text-solBlue">CBU</label>
-                <Input
-                  type="text"
-                  value={user.cbu ?? "-"}
-                  readOnly
-                  className="outline-none ring-0 focus:outline-transparent"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-semibold text-solBlue">
-                  Fecha de Creación
-                </label>
-                <Input
-                  type="text"
-                  value={new Date(user.createdAt).toLocaleDateString()}
-                  readOnly
-                />
-              </div>
-              {/* <FormField
+              <form className="grid w-full auto-rows-auto grid-cols-1 gap-8  sm:grid-cols-2 md:grid-cols-3">
+                <div>
+                  <label className="text-sm font-semibold text-solBlue">
+                    Correo Electronico
+                  </label>
+                  <Input
+                    type="email"
+                    value={user.email}
+                    readOnly
+                    className="outline-none ring-0 focus:outline-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-semibold text-solBlue">
+                    Nombre
+                  </label>
+                  <Input
+                    type="text"
+                    value={user.first_name ?? "-"}
+                    readOnly
+                    className="outline-none ring-0 focus:outline-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-semibold text-solBlue">
+                    Apellido
+                  </label>
+                  <Input
+                    type="text"
+                    value={user.last_name ?? "-"}
+                    readOnly
+                    className="outline-none ring-0 focus:outline-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-semibold text-solBlue">
+                    Telefono
+                  </label>
+                  <Input
+                    type="phone"
+                    value={user.phone ?? "-"}
+                    readOnly
+                    className="outline-none ring-0 focus:outline-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-semibold text-solBlue">
+                    Calle
+                  </label>
+                  <Input
+                    type="text"
+                    value={user.address ?? "-"}
+                    readOnly
+                    className="outline-none ring-0 focus:outline-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-semibold text-solBlue">
+                    Documento de Identidad
+                  </label>
+                  <Input
+                    type="text"
+                    value={user.dni ?? "-"}
+                    readOnly
+                    className="outline-none ring-0 focus:outline-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-semibold text-solBlue">
+                    CUIT/CUIL
+                  </label>
+                  <Input
+                    type="text"
+                    value={user.cuit ?? "-"}
+                    readOnly
+                    className="outline-none ring-0 focus:outline-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-semibold text-solBlue">
+                    CBU
+                  </label>
+                  <Input
+                    type="text"
+                    value={user.cbu ?? "-"}
+                    readOnly
+                    className="outline-none ring-0 focus:outline-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-semibold text-solBlue">
+                    Fecha de Creación
+                  </label>
+                  <Input
+                    type="text"
+                    value={new Date(user.createdAt).toLocaleDateString()}
+                    readOnly
+                  />
+                </div>
+                {/* <FormField
                     control={form.control}
                     name="phone"
                     render={({ field }) => (
@@ -171,9 +235,11 @@ export const ProfileData = () => {
                         </FormItem>
                     )}
                 /> */}
-            </form>
-          </div>
-        </div> </>}
+              </form>
+            </div>
+          </div>{" "}
+        </>
+      )}
     </>
   );
 };

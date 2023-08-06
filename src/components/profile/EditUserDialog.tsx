@@ -23,7 +23,7 @@ export const EditUserDialog: React.FC<EditUserDialogProps> = ({ user }) => {
           onClick={() => setOpen(true)}
           className="bg-solBlue text-white hover:bg-solBlue/80 hover:text-white"
         >
-          Edit Profile
+          Editar Perfil
         </Button>
       </DialogTrigger>
 
