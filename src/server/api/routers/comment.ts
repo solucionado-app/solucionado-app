@@ -20,14 +20,37 @@ export const commentRouter = createTRPCRouter({
         // console.log(serviceRequest);
         return serviceRequest;
     }),
-    getNumberOfComments: protectedProcedure.input(
+    getNumberOfCommentsRequest: protectedProcedure.input(
         z.object({
-            serviceRequestId: z.string(),
+            serviceRequestId: z.string().optional(),
         })
     ).query(({ ctx, input }) => {
         return ctx.prisma.comment.count({
             where: {
-                serviceRequestId: input.serviceRequestId,
+                  serviceRequestId: input.serviceRequestId,
+            },
+        });
+    }),
+    getNumberOfCommentsService: protectedProcedure.input(
+        z.object({
+            serviceId: z.string(),
+        })
+    ).query(({ ctx, input }) => {
+        return ctx.prisma.comment.count({
+            where: {
+                serviceId: input.serviceId,
+            },
+        });
+    }),
+    getNumberOfCommentsUser: protectedProcedure.input(
+        z.object({
+
+            userId: z.string(),
+        })
+    ).query(({ ctx, input }) => {
+        return ctx.prisma.comment.count({
+            where: {
+                userId: input.userId,
             },
         });
     }),
@@ -38,7 +61,41 @@ export const commentRouter = createTRPCRouter({
     ).query(({ ctx, input }) => {
         return ctx.prisma.comment.findMany({
             where: {
-                serviceRequestId: input.serviceRequestId,
+                    serviceRequestId: input.serviceRequestId,
+            },
+            orderBy: {
+                createdAt: "desc",
+            },
+            include: {
+                author: true,
+            }
+        });
+    }),
+    getAllByServiceId: protectedProcedure.input(
+        z.object({
+            serviceId: z.string(),
+        })
+    ).query(({ ctx, input }) => {
+        return ctx.prisma.comment.findMany({
+            where: {
+                    serviceId: input.serviceId,
+            },
+            orderBy: {
+                createdAt: "desc",
+            },
+            include: {
+                author: true,
+            }
+        });
+    }),
+    getAllByUserId: protectedProcedure.input(
+        z.object({
+            userId: z.string(),
+        })
+    ).query(({ ctx, input }) => {
+        return ctx.prisma.comment.findMany({
+            where: {
+                userId: input.userId,
             },
             orderBy: {
                 createdAt: "desc",

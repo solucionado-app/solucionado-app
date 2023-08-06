@@ -58,17 +58,7 @@ export const serviceRequestRouter = createTRPCRouter({
         // console.log(ctx.auth)
         // console.log(ctx.auth.user?.emailAddresses)
 
-        const email = clerkClient.emails.createEmail({
-            fromEmailName: "info",
-            body: "Hay un nuevo presupuesto para tu solicitud de servicio",
-            subject: "Nuevo presupuesto",
-            emailAddressId: input.emailaddress,
-        }).then((res) => {
-            // console.log(res)
 
-        }).catch((err) => {
-            // console.log(err)
-        });
         // console.log(email)
         const serviceRequest = await ctx.prisma.serviceRequest.create({
             data: {
@@ -129,10 +119,10 @@ export const serviceRequestRouter = createTRPCRouter({
                     subject: `Solicitud de servicio en ${serviceRequest.category.name}`,
                     emailAddressId: user.emailAddressId as string,
                 }).then((res) => {
-                    // console.log(res)
+                     console.log(res)
                 }
                 ).catch((err) => {
-                    // console.log(err)
+                     console.log(err)
                 }
                 );
             });

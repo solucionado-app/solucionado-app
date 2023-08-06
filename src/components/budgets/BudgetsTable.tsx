@@ -37,6 +37,8 @@ import { api } from "~/utils/api"
 import format from "date-fns/format"
 import { es } from "date-fns/locale"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import { useAcceptBudget } from "./acceptBudget"
+import { string } from "zod"
 
 const data: Payment[] = [
   {
@@ -64,6 +66,7 @@ interface BudgetsTableProps {
   description: string;
   price: number;
   estimatedAt: Date;
+  serviceRequestId: string;
   author: Author;
   createdAt: Date;
   updatedAt: Date;
@@ -133,11 +136,20 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
     }
   },
   {
+    accessorKey: "status",
+    header: "Estado",
+    cell: ({ row }) => {
+      return (
+        <div className="capitalize">{row.getValue("status")}</div>
+      )
+    }
+  },
+  {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original
-
+      const budget = row.original
+      const acceptBudget = useAcceptBudget()
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -154,8 +166,8 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
               Copy payment ID
             </DropdownMenuItem> */}
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Contactar</DropdownMenuItem>
-            <DropdownMenuItem>Contratar</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => acceptBudget(budget.id, budget.serviceRequestId)} >Aceptar</DropdownMenuItem>
+            <DropdownMenuItem>Rechazar</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
