@@ -207,6 +207,7 @@ export default function Nav() {
             </Link>
           </li>
 
+
           <li>
             <a
               className={`text-sm sm:text-lg ${
@@ -219,6 +220,7 @@ export default function Nav() {
               Sobre nosotros
             </a>
           </li>
+
 
           <li>
             <Link
@@ -233,7 +235,6 @@ export default function Nav() {
             </Link>
           </li>
         </ul>
-
         <div className="flex items-center  gap-4">
           {!user.isSignedIn && (
             <>
@@ -381,4 +382,5 @@ export default function Nav() {
       </dialog>
     </>
   );
+
 }

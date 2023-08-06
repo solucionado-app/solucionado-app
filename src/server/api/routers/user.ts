@@ -16,7 +16,7 @@ export const userRouter = createTRPCRouter({
     });
     return currentUser;
   }),
-  update: publicProcedure
+  update: protectedProcedure
     .input(
       z.object({
         userId: z.string(),

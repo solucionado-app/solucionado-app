@@ -27,6 +27,7 @@ import { trpc } from '~/utils/trpc'
 interface Props {
     serviceRequest: ServiceRequest | null | undefined,
     serviceRequestId: string
+    categoryName: string | undefined | null,
 }
 
 const FormSchema = z.object({
@@ -41,7 +42,7 @@ const FormSchema = z.object({
         }),
 })
 
-export default function CommentsForm({ serviceRequest, serviceRequestId }: Props) {
+export default function CommentsForm({ serviceRequest, serviceRequestId, categoryName }: Props) {
     const { user, isSignedIn } = useUser()
 
     const form = useForm<z.infer<typeof FormSchema>>({
@@ -60,6 +61,9 @@ export default function CommentsForm({ serviceRequest, serviceRequestId }: Props
                     link: `/solicitudes-de-servicio/${serviceRequestId}#${data.id}`,
                     serviceRequestId: serviceRequestId,
                     userId: serviceRequest?.userId as string,
+                    authorName: user?.firstName || "",
+                    authorLastName: user?.lastName || "",
+                    categoryName: categoryName || "",
                 })
             }
         },

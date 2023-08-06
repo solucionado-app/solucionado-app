@@ -1,3 +1,4 @@
+// import { clerkClient } from "@clerk/nextjs/dist/types/server";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
@@ -79,12 +80,15 @@ export const budgetRouter = createTRPCRouter({
             userId: z.string(),
             serviceRequestId: z.string(),
         })).mutation(({ ctx, input }) => {
-            // const email = clerkClient.emails.createEmail({
-            //     fromEmailName: "asdasd",
-            //     emailAddressId: ctx.auth.user?.emailAddresses[0]?.id || "",
-            //     subject: "Nuevo presupuesto",
-            //     body: "Hay un nuevo presupuesto para tu solicitud de servicio",
-            // })
+
+            // const primaryemailId = ctx.auth.user?.primaryEmailAddressId;
+            //  const email = clerkClient.emails.createEmail({
+            //      fromEmailName: "asdasd",
+            //      emailAddressId: primaryemailId || "",
+            //      subject: "Nuevo presupuesto",
+            //      body: "Hay un nuevo presupuesto para tu solicitud de servicio",
+            //  })
+
             console.log(ctx.auth.userId)
             return ctx.prisma.budget.create({
 
