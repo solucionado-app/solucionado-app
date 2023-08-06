@@ -58,7 +58,7 @@ export default function JardinerosForm() {
     const local: FormValues = localStorageRequests.get()
     const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug);
 
-    console.log(local[`${slug}`]?.details)
+    // console.log(local[`${slug}`]?.details)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {

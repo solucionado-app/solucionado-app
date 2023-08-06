@@ -13,7 +13,7 @@ interface props {
 export default function CommentsServiceRequest({ serviceRequestId }: props) {
     const { data: getNumberOfComments } = api.comment.getNumberOfComments.useQuery({ serviceRequestId: serviceRequestId })
     const { data: requestComments, isLoading: comentsLoading } = api.comment.getAllByRequestId.useQuery({ serviceRequestId: serviceRequestId })
-    console.log(getNumberOfComments)
+    // console.log(getNumberOfComments)
     const rows = [], len = getNumberOfComments || 0;
     let i = 0
     while (++i <= len) rows.push(i);

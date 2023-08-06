@@ -12,7 +12,7 @@ async function handler(request: Request) {
   const payload = await request.json() as Record<string, unknown>;
   const headersList = headers();
   if (!headersList) {
-    console.error("Headers not found");
+    // console.error("Headers not found");
     return NextResponse.json({}, { status: 400 });
   }
   const heads = {
@@ -30,8 +30,8 @@ async function handler(request: Request) {
       heads as IncomingHttpHeaders & WebhookRequiredHeaders
     ) as Event;
   } catch (err) {
-    console.log("error")
-    console.error("err", (err as Error).message);
+    // console.log("error")
+    // console.error("err", (err as Error).message);
     return NextResponse.json({}, { status: 400 });
   }
 
@@ -51,7 +51,7 @@ async function handler(request: Request) {
 
 
     }
-    console.log("user created or updated", id, first_name, last_name, email, primary_email_address_id, image_url );
+     console.log("user created or updated", id, first_name, last_name, email, primary_email_address_id, image_url );
     const user = {
       id: id as string,
       externalId: id as string,
@@ -62,7 +62,7 @@ async function handler(request: Request) {
       emailAddressId: primary_email_address_id as string,
       roleId: 1,
     }
-    const userclerk = await prisma.user.upsert({
+     await prisma.user.upsert({
       where: { externalId: id as string },
       create: user,
       update: {
@@ -74,7 +74,7 @@ async function handler(request: Request) {
         emailAddressId: primary_email_address_id as string,
       },
     });
-    console.log(userclerk);
+    // console.log(userclerk);
     return NextResponse.json({}, { status: 200 });
 
 
@@ -94,8 +94,8 @@ async function handler(request: Request) {
 
 
     }
-    console.log("user deleted", id, email);
-    console.log("email", email);
+     console.log("user deleted", id, email);
+    // console.log("email", email);
     await prisma.user.delete({
       where: { externalId: id as string },
     });

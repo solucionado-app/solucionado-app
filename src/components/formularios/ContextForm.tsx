@@ -64,9 +64,9 @@ export const FormStepsProvider = ({ children }: Props) => {
         //     subject: "Nuevo presupuesto",
         //     emailAddressId: user?.primaryEmailAddressId || "",
         // })
-        // console.log(email)
-        console.log(user?.primaryEmailAddressId)
-        console.log(date)
+        // // console.log(email)
+        // console.log(user?.primaryEmailAddressId)
+        // console.log(date)
         requestMutation.mutate({
             ...local,
             emailaddress: user?.primaryEmailAddressId || "",

@@ -69,7 +69,7 @@ export const EditUserForm: React.FC<Props> = ({ userData, closeDialog }) => {
       dni: values.dni,
       address: values.address,
     });
-    console.log("values", values);
+    // console.log("values", values);
     closeDialog(false);
   }
   // ...
@@ -144,7 +144,7 @@ export const EditUserForm: React.FC<Props> = ({ userData, closeDialog }) => {
                                     getOptionValue={(option: Province) => option?.id}
                                     onChange={(option) => {
 
-                                        console.log("option", option)
+                                        // console.log("option", option)
                                         option && form.setValue("province", { id: option.id, nombre: option.nombre })
                                         form.setValue("city", { id: "", nombre: "" })
                                         querycitys.refetch()

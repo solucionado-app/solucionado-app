@@ -7,7 +7,7 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
- import { SECRET_KEY, getAuth } from "@clerk/nextjs/server";
+import { SECRET_KEY, getAuth } from "@clerk/nextjs/server";
 import { TRPCError, initTRPC } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
@@ -52,7 +52,7 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext =  (opts: CreateNextContextOptions) => {
+export const createTRPCContext = (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
 
   // Get the session from the server using the getServerSession wrapper function
@@ -112,7 +112,7 @@ export const createTRPCRouter = t.router;
 export const publicProcedure = t.procedure;
 
 const isAuthed = t.middleware(({ next, ctx }) => {
-  console.log(ctx.auth)
+  // console.log(ctx.auth)
   if (!ctx.auth.userId) {
     throw new TRPCError({ code: 'UNAUTHORIZED' })
   }

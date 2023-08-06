@@ -17,7 +17,7 @@ export const commentRouter = createTRPCRouter({
         if (serviceRequest === null) {
             throw new Error("comment not found");
         }
-        console.log(serviceRequest);
+        // console.log(serviceRequest);
         return serviceRequest;
     }),
     getNumberOfComments: protectedProcedure.input(
@@ -72,7 +72,7 @@ export const commentRouter = createTRPCRouter({
             }
 
 
-            console.log(ctx.auth.userId)
+            // console.log(ctx.auth.userId)
             return ctx.prisma.comment.create({
                 data: {
                     content: input.description,

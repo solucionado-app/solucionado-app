@@ -45,7 +45,7 @@ export const notificationRouter = createTRPCRouter({
                 }
             },
         });
-        console.log(notification);
+        // console.log(notification);
         return notification;
     }),
     markAsUnread: protectedProcedure.input(
@@ -157,10 +157,10 @@ export const notificationRouter = createTRPCRouter({
             subject: `Nuevo presupuesto para tu solicitud de servicio`,
             emailAddressId: user?.emailAddressId as string,
         }).then((res) => {
-            console.log(res)
+            // console.log(res)
         }
         ).catch((err) => {
-            console.log(err)
+            // console.log(err)
         }
         );
 
@@ -226,13 +226,13 @@ export const notificationRouter = createTRPCRouter({
             },
             select: {
                 id: true,
-                last_name   : true,
-                first_name  : true,
+                last_name: true,
+                first_name: true,
                 emailAddressId: true,
             },
             distinct: ['id'],
         });
-        if(!users.find((user) => user.id === input.userId) ){
+        if (!users.find((user) => user.id === input.userId)) {
             const serviceRequestAuthor = await ctx.prisma.user.findUnique({
                 where: {
                     externalId: input.userId,
@@ -248,8 +248,8 @@ export const notificationRouter = createTRPCRouter({
                 users.push(serviceRequestAuthor);
             }
         }
-        const filteredUsers = users.filter((user) => user.id !== ctx.auth.userId );
-        if(filteredUsers.length === 0){
+        const filteredUsers = users.filter((user) => user.id !== ctx.auth.userId);
+        if (filteredUsers.length === 0) {
             return null;
         }
         !!filteredUsers && filteredUsers.length > 0 && filteredUsers.forEach((user) => {
@@ -261,10 +261,10 @@ export const notificationRouter = createTRPCRouter({
                 subject: `Nuevo comenario en Solicitud de servicio en ${input.categoryName}`,
                 emailAddressId: user.emailAddressId as string,
             }).then((res) => {
-                console.log(res)
+                // console.log(res)
             }
             ).catch((err) => {
-                console.log(err)
+                // console.log(err)
             }
             );
         });

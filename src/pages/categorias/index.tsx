@@ -6,7 +6,7 @@ import { type MyPage } from "~/components/types/types";
 // HomePage.Layout = "OtherLayout"; -> error Type '"OtherLayout"' is not assignable to type '"Main" | "Admin" | undefined'.
 const Home: MyPage = () => {
     const { data: categories } = api.categories.getAll.useQuery();
-    console.log(categories);
+    // console.log(categories);
     return (
         <>
             <Head>

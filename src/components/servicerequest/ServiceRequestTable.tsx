@@ -78,7 +78,7 @@ export const columns: ColumnDef<ServiceRequest>[] = [
         },
         cell: ({ row }) => {
 
-            console.log(row.getValue("amount"))
+            // console.log(row.getValue("amount"))
             return <div className="font-medium">{row.getValue("amount")}</div>
         },
     },

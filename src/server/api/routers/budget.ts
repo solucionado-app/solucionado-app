@@ -14,7 +14,7 @@ export const budgetRouter = createTRPCRouter({
                 serviceRequestId: input.serviceRequestId,
                 authorId: ctx.auth.userId,
             },
-            select:{
+            select: {
                 id: true,
                 description: true,
                 price: true,
@@ -24,7 +24,7 @@ export const budgetRouter = createTRPCRouter({
                 createdAt: true,
                 author: {
                     select: {
-                        id : true,
+                        id: true,
                         first_name: true,
                         last_name: true,
                         image_url: true,
@@ -37,7 +37,7 @@ export const budgetRouter = createTRPCRouter({
         if (serviceRequest === null) {
             throw new Error("Budget not found");
         }
-        console.log(serviceRequest);
+        // console.log(serviceRequest);
         return serviceRequest;
     }),
     getAll: protectedProcedure.input(
@@ -89,7 +89,7 @@ export const budgetRouter = createTRPCRouter({
             //      body: "Hay un nuevo presupuesto para tu solicitud de servicio",
             //  })
 
-            console.log(ctx.auth.userId)
+            // console.log(ctx.auth.userId)
             return ctx.prisma.budget.create({
 
                 data: {

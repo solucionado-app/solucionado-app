@@ -14,7 +14,7 @@ const ServiceRequest: MyPage = () => {
 
     const apitrcp = api.serviceRequest;
     const { data: services, isLoading, isFetched } = apitrcp.getUserRequest.useQuery();
-    console.log(user);
+    // console.log(user);
     // const rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
 
     return (

@@ -69,7 +69,7 @@ export function RegisterSolucionadorUser() {
             categories: values.categories,
             role: 'SOLUCIONADOR',
         })
-        console.log(values)
+        // console.log(values)
     }
     // ...
 
