@@ -2,6 +2,7 @@ import React from "react";
 import { Tabs, TabsList, TabsTrigger } from "../../ui/tabs";
 import dynamic from "next/dynamic";
 import { Loader2 } from "lucide-react";
+import { api } from "~/utils/api";
 const DynamicDescriptionTab = dynamic(
   () => import("../SolucionadorTabs/descriptionTab"),
   { loading: () => <Loader2 className="h-12 w-12 animate-spin" /> }
@@ -14,23 +15,32 @@ const DynamicCommentsTab = dynamic(
   () => import("../SolucionadorTabs/commentsTab"),
   { loading: () => <Loader2 className="h-12 w-12 animate-spin" /> }
 );
-export const SolucionadorTabs = () => {
+
+type SolucionadorTabsProps = {
+  userId: string;
+};
+export const SolucionadorTabs: React.FC<SolucionadorTabsProps> = ({
+  userId,
+}) => {
+  const { data: commentsCount } = api.comment.getNumberOfCommentsUser.useQuery({
+    userId,
+  });
   return (
-    <Tabs defaultValue="description">
+    <Tabs defaultValue="description ">
       <TabsList className="w-full">
-        <TabsTrigger className="w-full" value="description">
+        <TabsTrigger className="w-full text-xs sm:text-sm" value="description">
           Descripción
         </TabsTrigger>
-        <TabsTrigger className="w-full" value="reviews">
-          Opiniones / Reseñas
+        <TabsTrigger className="w-full text-xs sm:text-sm" value="reviews">
+          Reseñas
         </TabsTrigger>
-        <TabsTrigger className="w-full" value="comments">
-          Comentarios
+        <TabsTrigger className="w-full text-xs sm:text-sm" value="comments">
+          Comentarios {commentsCount && `(${commentsCount})`}
         </TabsTrigger>
       </TabsList>
       <DynamicDescriptionTab />
       <DynamicReviewsTab />
-      <DynamicCommentsTab />
+      <DynamicCommentsTab userId={userId} />
     </Tabs>
   );
 };

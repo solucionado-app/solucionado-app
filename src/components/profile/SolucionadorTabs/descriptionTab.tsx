@@ -2,7 +2,11 @@ import React from "react";
 import { TabsContent } from "~/components/ui/tabs";
 
 const DescriptionTab = () => {
-  return <TabsContent value="description">DescriptionTab</TabsContent>;
+  return (
+    <TabsContent value="description" className="px-2">
+      DescriptionTab
+    </TabsContent>
+  );
 };
 
 export default DescriptionTab;
