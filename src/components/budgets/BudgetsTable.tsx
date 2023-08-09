@@ -38,6 +38,7 @@ import format from "date-fns/format"
 import { es } from "date-fns/locale"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { useAcceptBudget } from "./acceptBudget"
+import AlertCompleteBudgetDialog from "./AlertCompleteBudgetDialog"
 import { string } from "zod"
 
 const data: Payment[] = [
@@ -166,7 +167,7 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
               Copy payment ID
             </DropdownMenuItem> */}
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => acceptBudget(budget.id, budget.serviceRequestId)} >Aceptar</DropdownMenuItem>
+            <AlertCompleteBudgetDialog />
             <DropdownMenuItem>Rechazar</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

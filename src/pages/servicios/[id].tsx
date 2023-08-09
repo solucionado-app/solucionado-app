@@ -26,14 +26,15 @@ import ServiceComents from "~/components/comments/ServiceComents";
 
 import CommentServiceForm from "~/components/comments/CommentServiceForm";
 
+import dynamic from "next/dynamic";
 
 
 
-const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ id }) => {
+
+const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ id }) => {
 
     const request = api.service.findById.useQuery({ id })
     const { data: service } = request
-
 
 
 
@@ -76,7 +77,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                             </CardHeader>
                             <CardContent className="space-y-2">
                                 <div className="space-y-1">
-
+                                    {/* <DynamicMercadoPago /> */}
                                 </div>
                             </CardContent>
                             <CardFooter>
@@ -109,8 +110,8 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
     );
 }
 
-export default CategoryPage;
-CategoryPage.Layout = "Main";
+export default ServicePage;
+ServicePage.Layout = "Main";
 
 export const getStaticPaths: GetStaticPaths = () => {
     return {

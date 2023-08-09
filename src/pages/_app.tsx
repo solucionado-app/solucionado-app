@@ -9,6 +9,8 @@ import { Inter } from "@next/font/google";
 import { Toaster } from "~/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
+
+
 function MyApp({ Component, pageProps }: MyAppProps) {
   const Layout = Layouts[Component.Layout] ?? ((page: MyPage) => page);
 
