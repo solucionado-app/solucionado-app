@@ -1,6 +1,10 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
@@ -16,6 +20,25 @@ export const userRouter = createTRPCRouter({
     });
     return currentUser;
   }),
+  getSolucionadorProfileInfoById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const userSolucionador = await ctx.prisma.user.findUnique({
+        where: { id: input.id, role: "SOLUCIONADOR" },
+        select: {
+          email: true,
+          address: true,
+          first_name: true,
+          last_name: true,
+          image_url: true,
+          phone: true,
+        },
+      });
+      if (!userSolucionador) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+      return userSolucionador;
+    }),
   update: protectedProcedure
     .input(
       z.object({
