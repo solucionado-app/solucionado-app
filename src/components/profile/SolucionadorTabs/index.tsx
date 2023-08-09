@@ -25,6 +25,10 @@ export const SolucionadorTabs: React.FC<SolucionadorTabsProps> = ({
   const { data: commentsCount } = api.comment.getNumberOfCommentsUser.useQuery({
     userId,
   });
+  const { data: reviewsCount } = api.review.getNumberOfReviewsUser.useQuery({
+    userId,
+  });
+
   return (
     <Tabs defaultValue="description ">
       <TabsList className="w-full">
@@ -32,14 +36,14 @@ export const SolucionadorTabs: React.FC<SolucionadorTabsProps> = ({
           Descripción
         </TabsTrigger>
         <TabsTrigger className="w-full text-xs sm:text-sm" value="reviews">
-          Reseñas
+          Reseñas ({reviewsCount && `${reviewsCount}`})
         </TabsTrigger>
         <TabsTrigger className="w-full text-xs sm:text-sm" value="comments">
-          Comentarios {commentsCount && `(${commentsCount})`}
+          Comentarios ({commentsCount && `${commentsCount}`})
         </TabsTrigger>
       </TabsList>
       <DynamicDescriptionTab />
-      <DynamicReviewsTab />
+      <DynamicReviewsTab userId={userId} />
       <DynamicCommentsTab userId={userId} />
     </Tabs>
   );
