@@ -46,7 +46,7 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
       <div className="container flex flex-col items-center justify-center gap-8 px-4 py-16 ">
         <div className="relative border p-5  text-xl font-semibold  shadow-sm">
           <h1 className="text-4xl font-extrabold tracking-tight">
-            Informacion de el servicio
+            Información de el servicio
           </h1>
           <div className="flex flex-col gap-2">
             <div className="font-bold">{service?.category.name}</div>
@@ -55,20 +55,22 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
         </div>
         <Tabs defaultValue="info" className="w-full p-5">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="info">Informacion del Servicio</TabsTrigger>
+            <TabsTrigger value="info">Información del Servicio</TabsTrigger>
             <TabsTrigger value="comments">Comentarios</TabsTrigger>
           </TabsList>
           <TabsContent value="info">
             <Card>
               <CardHeader>
                 <CardTitle>Presupuestos</CardTitle>
-                <CardDescription>Informacion</CardDescription>
+                <CardDescription>Información</CardDescription>
               </CardHeader>
               <CardContent className="space-y-2 py-2">
-                <div className="space-y-1">
-                  {/* <DynamicMercadoPago /> */}
-                  <ReviewServiceForm />
-                </div>
+                {service?.status === "FINISHED" && (
+                  <div className="space-y-1">
+                    {/* <DynamicMercadoPago /> */}
+                    <ReviewServiceForm />
+                  </div>
+                )}
               </CardContent>
               <CardFooter></CardFooter>
             </Card>
@@ -90,7 +92,7 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                 </div>
               </CardContent>
               <CardFooter>
-                <Button>ver mas</Button>
+                <Button>Ver más</Button>
               </CardFooter>
             </Card>
           </TabsContent>
