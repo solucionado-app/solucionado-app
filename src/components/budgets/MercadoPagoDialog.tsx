@@ -4,11 +4,15 @@ import { initMercadoPago } from '@mercadopago/sdk-react'
 import { Payment } from '@mercadopago/sdk-react';
 import { Dialog, DialogContent } from '../ui/dialog';
 import { Skeleton } from '../ui/skeleton';
-
+import { observable } from '@legendapp/state';
+import { Reactive } from "@legendapp/state/react"
+import { enableReactComponents } from "@legendapp/state/config/enableReactComponents"
+import { trpc } from '~/utils/trpc';
+enableReactComponents()
 interface Props {
     open: boolean
     onClose?: () => void
-    preferenceId?: string
+    preferenceId: string
     isLoading?: boolean
     setIsloading: () => void
 }
@@ -16,18 +20,19 @@ interface Props {
 export default function MercadoPago({ open, onClose, preferenceId, setIsloading, isLoading }: Props) {
 
 
-    initMercadoPago(process.env.NEXT_PUBLIC_MP_PUBLIC_KEY as string);
+    initMercadoPago(process.env.NEXT_PUBLIC_MP_PUBLIC_KEY as string, { locale: 'es-AR' });
     const initialization = {
         amount: 10000,
-        preferenceId: preferenceId ? preferenceId : undefined,
+        preferenceId: preferenceId,
     };
 
-
+    const isloading$ = observable(true)
 
 
     //eslint disable-next-line @typescript-eslint/no-unused-vars
-    const onSubmit = async ({ formData }) => {
+    const onSubmit = async (formData: any) => {
         // callback llamado al hacer clic en el botón enviar datos
+        console.log(formData);
         return new Promise<void>((resolve, reject) => {
             fetch("/api/mercadopago/payment", {
                 method: "POST",
@@ -49,6 +54,7 @@ export default function MercadoPago({ open, onClose, preferenceId, setIsloading,
                 })
                 .catch((error) => {
                     // manejar la respuesta de error al intentar crear el pago
+                    console.log(error);
                     reject();
                 });
         });
@@ -62,39 +68,42 @@ export default function MercadoPago({ open, onClose, preferenceId, setIsloading,
           Callback llamado cuando el Brick está listo.
           Aquí puede ocultar cargamentos de su sitio, por ejemplo.
         */
-        setIsloading();
-
+        isloading$.set(false);
+        console.log()
     };
 
 
 
     return (
-        <div className='flex flex-col gap-5'>
-            <Dialog open={open} onOpenChange={onClose} >
-                <DialogContent>
+        <Dialog open={open} onOpenChange={onClose} modal >
+            <DialogContent>
 
-                    <div>
+                {/* <div>
                         <h1 className="text-5xl font-extrabold tracking-tight">Pagar presupuesto</h1>
 
-                    </div>
-                    {isLoading && <Skeleton className='h-96' />}
-                    <Payment
-                        initialization={initialization}
-                        customization={{
-                            paymentMethods: {
-                                debitCard: "all",
-                                mercadoPago: ['wallet_purchase']
-                            },
+                    </div> */}
+                <Reactive.div
+                    $style={() => ({ display: isloading$.get() ? 'block' : 'none' })}
+                >
+                    {<Skeleton className='h-96' />}
+                </Reactive.div>
+                <Payment
+                    initialization={initialization}
+                    customization={{
+                        paymentMethods: {
+                            debitCard: "all",
+                            mercadoPago: ['wallet_purchase'],
+                        },
 
-                        }}
-                        onSubmit={onSubmit}
-                        onReady={onReady}
-                        onError={onError}
-                    />
+                    }}
+                    onSubmit={onSubmit}
+                    onReady={onReady}
+                    onError={onError}
+                />
 
 
-                </DialogContent>
-            </Dialog>
-        </div>
+            </DialogContent>
+        </Dialog >
+
     )
 }

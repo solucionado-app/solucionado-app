@@ -49,7 +49,7 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ i
 
             <div className="container flex flex-col items-center justify-center gap-8 px-4 py-16 ">
 
-                <div className="text-xl font-semibold border  shadow-sm relative  p-5">
+                <div className="text-xl font-semibold border  shadow-sm relative w-full  p-5">
                     <h1 className="text-4xl font-extrabold tracking-tight">Informacion de el servicio</h1>
                     <div className="flex flex-col gap-2">
                         <div className="font-bold">
@@ -62,7 +62,7 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ i
                     </div>
 
                 </div>
-                <Tabs defaultValue="info" className="w-full p-5">
+                <Tabs defaultValue="comments" className="w-full p-5">
                     <TabsList className="grid w-full grid-cols-2">
                         <TabsTrigger value="info">Informacion del Servicio</TabsTrigger>
                         <TabsTrigger value="comments">Comentarios</TabsTrigger>

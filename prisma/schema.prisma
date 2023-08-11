@@ -121,6 +121,7 @@ model Budget {
   updatedAt        DateTime       @updatedAt
   userId           String
   authorId         String
+  status_detail    String?
   estimatedAt      DateTime
   paidAt           DateTime?
   serviceRequestId String

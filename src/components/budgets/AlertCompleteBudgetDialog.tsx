@@ -14,29 +14,35 @@ import {
     AlertDialogTrigger,
 } from "~/components/ui/alert-dialog"
 import { Button } from "~/components/ui/button"
-import MercadoPagoDialog from "./MercadoPagoDialog";
-import { DropdownMenuItem } from "../ui/dropdown-menu";
 import dynamic from "next/dynamic";
+import { type BudgetsTableProps } from "./BudgetsTable";
+import { observable } from "@legendapp/state";
+import { useObservable } from "@legendapp/state/react";
 
 const getDynamicMercadoPago = () => dynamic(() => import(`~/components/budgets/MercadoPagoDialog`), {
     loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
 })
 
+interface Props {
+    budget: BudgetsTableProps
+}
 
-export default function AlertDialogDemo() {
+
+export default function AlertDialogDemo({ budget }: Props) {
 
     const { user } = useUser()
     const [isOpen, setIsOpen] = useState(false)
     const [isLoading, setisLoading] = useState(true)
     const DynamicMercadoPago = getDynamicMercadoPago()
+    const preference$ = useObservable({ id: "" })
 
     const [preferenceId, setpreferenceId] = useState<null | string>();
     const createPreference = async () => {
         const requestData = {
             items: [
                 {
-                    title: "Dummy Title",
-                    description: "Dummy description",
+                    title: `Pagar Presupuesto a ${budget.author.first_name || ""} por ${budget.price} `,
+                    description: budget.description,
                     picture_url: "http://www.myapp.com/myimage.jpg",
                     category_id: "car_electronics",
                     quantity: 1,
@@ -56,8 +62,14 @@ export default function AlertDialogDemo() {
                 free_methods: [{}],
                 receiver_address: {},
             },
+            metadata: {
+                user_id: user?.id as string,
+                budget_id: budget.id,
+                description: budget.description,
+                price: budget.price,
+            },
             back_urls: {
-                success: "localhost:3000/success",
+                success: "localhost:3000/servicios",
                 failure: "localhost:3000/error",
                 pending: "localhost:3000/pending",
             },
@@ -77,7 +89,10 @@ export default function AlertDialogDemo() {
             const { id } = data
             console.log(data);
             if (id && typeof id === 'string') {
-                setpreferenceId(id);
+                // setpreferenceId(id);
+                preference$.set({ id: id })
+                console.log(preference$.get().id)
+
                 setIsOpen(true)
             }
         }
@@ -86,7 +101,7 @@ export default function AlertDialogDemo() {
         }
 
     };
-
+    preference$.use()
     return (
         <>
             <AlertDialog>
@@ -110,12 +125,12 @@ export default function AlertDialogDemo() {
                 </AlertDialogContent>
             </AlertDialog>
 
-            {preferenceId && <DynamicMercadoPago
+            {preference$.get().id !== "" && <DynamicMercadoPago
                 open={isOpen}
                 isLoading={isLoading}
                 setIsloading={() => setisLoading(false)}
                 onClose={() => setIsOpen(false)}
-                preferenceId={preferenceId} />}
+                preferenceId={preference$.get().id} />}
         </>
     )
 }

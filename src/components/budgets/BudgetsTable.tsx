@@ -62,7 +62,7 @@ export type Payment = {
   description: string
   fechaEstimada: string,
 }
-interface BudgetsTableProps {
+export interface BudgetsTableProps {
   id: string;
   description: string;
   price: number;
@@ -150,6 +150,7 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const budget = row.original
+      console.log(budget)
       const acceptBudget = useAcceptBudget()
       return (
         <DropdownMenu>
@@ -167,7 +168,7 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
               Copy payment ID
             </DropdownMenuItem> */}
             <DropdownMenuSeparator />
-            <AlertCompleteBudgetDialog />
+            <AlertCompleteBudgetDialog budget={budget} />
             <DropdownMenuItem>Rechazar</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
