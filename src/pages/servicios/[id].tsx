@@ -22,9 +22,9 @@ import {
 } from "~/components/ui/tabs"
 
 import { api } from "~/utils/api";
-import ServiceComents from "~/components/comments/ServiceComents";
+import ServiceComents from "~/components/servicesComponents/ServiceComents";
 
-import CommentServiceForm from "~/components/comments/CommentServiceForm";
+import CommentServiceForm from "~/components/servicesComponents/CommentServiceForm";
 
 import dynamic from "next/dynamic";
 
@@ -87,19 +87,18 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ i
                     <TabsContent value="comments">
                         <Card>
                             <CardHeader>
-                                <CardTitle>Comentarios</CardTitle>
+                                <CardTitle>Mensajes</CardTitle>
                                 <CardDescription>
-                                    aca van los comentarios
+
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-2">
                                 <div className="space-y-1">
-                                    <CommentServiceForm service={service} serviceId={id} categoryName={service?.category.name} />
                                     <ServiceComents serviceId={id} />
+                                    <CommentServiceForm service={service} serviceId={id} categoryName={service?.category.name} />
                                 </div>
                             </CardContent>
                             <CardFooter>
-                                <Button>ver mas</Button>
                             </CardFooter>
                         </Card>
                     </TabsContent>

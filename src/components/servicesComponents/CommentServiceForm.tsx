@@ -56,9 +56,6 @@ const FormSchema = z.object({
 
     description: z
         .string()
-        .min(10, {
-            message: "Debe tener al menos 10 caracteres.",
-        })
         .max(160, {
             message: "Debe tener maximo 130 caracteres.",
         }),
@@ -113,14 +110,14 @@ export default function CommentServiceForm({ service, serviceId, categoryName }:
         user && <>
             <Form {...form}>
 
-                <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-2">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2">
 
                     <FormField
                         control={form.control}
                         name="description"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Comentario</FormLabel>
+                                <FormLabel>Mensaje</FormLabel>
                                 <FormControl>
                                     <Textarea
                                         placeholder="Escriba los detalles aquí..."
@@ -135,7 +132,7 @@ export default function CommentServiceForm({ service, serviceId, categoryName }:
                         )}
                     />
 
-                    <Button disabled={!isSignedIn} type="submit">Comentar</Button>
+                    <Button disabled={!isSignedIn} type="submit">Enviar</Button>
                 </form>
             </Form>
         </>
