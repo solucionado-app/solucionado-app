@@ -9,10 +9,7 @@ import { ssgHelper } from "~/server/api/ssgHelper";
 import { type JwtPayload, type ServerGetTokenOptions } from "@clerk/types";
 import Head from "next/head";
 import { type MyPage } from "~/components/types/types";
-<<<<<<< HEAD
 import { Button } from "~/components/ui/button";
-=======
->>>>>>> dev
 import {
   Card,
   CardContent,
@@ -27,9 +24,6 @@ import { api } from "~/utils/api";
 import ServiceComents from "~/components/servicesComponents/ServiceComents";
 
 import CommentServiceForm from "~/components/servicesComponents/CommentServiceForm";
-
-import dynamic from "next/dynamic";
-import { Textarea } from "~/components/ui/textarea";
 import { ReviewServiceForm } from "~/components/reviews/ReviewServiceForm";
 
 const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
@@ -82,21 +76,17 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
             <Card>
               <CardHeader>
                 <CardTitle>Comentarios</CardTitle>
-                <CardDescription>aca van los comentarios</CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="space-y-1">
+                <div className="space-y-4">
+                  <ServiceComents serviceId={id} />
                   <CommentServiceForm
                     service={service}
                     serviceId={id}
                     categoryName={service?.category.name}
                   />
-                  <ServiceComents serviceId={id} />
                 </div>
               </CardContent>
-              <CardFooter>
-                <Button>Ver más</Button>
-              </CardFooter>
             </Card>
           </TabsContent>
         </Tabs>
