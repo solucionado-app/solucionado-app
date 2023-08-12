@@ -27,12 +27,11 @@ import CommentsForm from "~/components/comments/CommentForm";
 import CommentsServiceRequest from "~/components/comments/CommentsServiceRequest";
 
 import dynamic from "next/dynamic";
+import Spinner from "~/components/ui/spinner";
 
 const budgetTableDynamic = () =>
   dynamic(() => import(`~/components/budgets/BudgetsTable`), {
-    loading: () => (
-      <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
-    ),
+    loading: () => <Spinner className="h-12 w-12 text-solBlue" />,
   });
 
 const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({

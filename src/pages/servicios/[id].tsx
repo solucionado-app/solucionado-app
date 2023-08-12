@@ -25,12 +25,19 @@ import ServiceComents from "~/components/servicesComponents/ServiceComents";
 
 import CommentServiceForm from "~/components/servicesComponents/CommentServiceForm";
 import { ReviewServiceForm } from "~/components/reviews/ReviewServiceForm";
+import { Badge } from "~/components/ui/badge";
+import { AvatarSolucionador } from "~/components/ui/avatarSolucionador";
+import { ConfirmServiceFinishedDialog } from "~/components/servicesComponents/confirmServiceFinishedDialog";
 
 const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   id,
 }) => {
   const request = api.service.findById.useQuery({ id });
   const { data: service } = request;
+
+  if (!service) {
+    return <div></div>;
+  }
 
   return (
     <>
@@ -40,56 +47,80 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="container flex flex-col items-center justify-center gap-8 px-4 py-16 ">
-        <div className="relative border p-5  text-xl font-semibold  shadow-sm">
-          <h1 className="text-4xl font-extrabold tracking-tight">
-            Información de el servicio
-          </h1>
-          <div className="flex flex-col gap-2">
-            <div className="font-bold">{service?.category.name}</div>
-            <div className="text-sm text-gray-500">{service?.description}</div>
+      <div className="flex w-full  max-w-7xl flex-col items-center justify-center gap-8 px-4 py-16">
+        <div className="w-full max-w-7xl">
+          {" "}
+          <div className="w-full space-y-2 py-5 text-xl font-semibold shadow-sm">
+            <div className="flex w-full flex-wrap items-center justify-between gap-2">
+              <h1 className="text-4xl font-extrabold tracking-tight text-gray-800">
+                Información del Servicio
+              </h1>
+              {/* <Button variant="destructive">Finalizar</Button> */}
+              <ConfirmServiceFinishedDialog />
+            </div>
+            <div className="flex flex-col gap-2">
+              <div>
+                <Badge
+                  className="bg-sol_lightBlue text-white"
+                  variant="secondary"
+                >
+                  {service?.category.name}
+                </Badge>
+              </div>
+              <div className="text-sm text-gray-600">
+                {service?.description}
+              </div>
+            </div>
           </div>
-        </div>
-        <Tabs defaultValue="info" className="w-full p-5">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="info">Información del Servicio</TabsTrigger>
-            <TabsTrigger value="comments">Comentarios</TabsTrigger>
-          </TabsList>
-          <TabsContent value="info">
-            <Card>
-              <CardHeader>
-                <CardTitle>Presupuestos</CardTitle>
-                <CardDescription>Información</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2 py-2">
-                {service?.status === "FINISHED" && (
-                  <div className="space-y-1">
-                    {/* <DynamicMercadoPago /> */}
-                    <ReviewServiceForm />
+          <Tabs defaultValue="info" className="w-full ">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="info">Información del Servicio</TabsTrigger>
+              <TabsTrigger value="comments">Comentarios</TabsTrigger>
+            </TabsList>
+            <TabsContent value="info">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Presupuestos</CardTitle>
+                  <CardDescription>Información</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2 py-2">
+                  {service?.status === "FINISHED" && (
+                    <div className="space-y-1">
+                      {/* <DynamicMercadoPago /> */}
+                      <ReviewServiceForm />
+                    </div>
+                  )}
+                </CardContent>
+                <CardFooter></CardFooter>
+              </Card>
+            </TabsContent>
+            <TabsContent value="comments">
+              <Card className="bg-slate-100">
+                <CardHeader className="rounded-t-lg bg-white">
+                  <CardTitle className="flex items-center gap-2">
+                    <AvatarSolucionador
+                      userId={service.budget.author.id}
+                      image={service.budget.author.image_url ?? ""}
+                    />
+                    <h2>Comentarios</h2>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div className="space-y-4">
+                    <ServiceComents serviceId={id} />
                   </div>
-                )}
-              </CardContent>
-              <CardFooter></CardFooter>
-            </Card>
-          </TabsContent>
-          <TabsContent value="comments">
-            <Card>
-              <CardHeader>
-                <CardTitle>Comentarios</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="space-y-4">
-                  <ServiceComents serviceId={id} />
+                </CardContent>
+                <CardFooter className="rounded-b-lg border-t-gray-300 bg-white py-4">
                   <CommentServiceForm
                     service={service}
                     serviceId={id}
                     categoryName={service?.category.name}
                   />
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+                </CardFooter>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
     </>
   );

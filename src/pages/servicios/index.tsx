@@ -4,14 +4,13 @@ import { type MyPage } from "~/components/types/types";
 import MainHead from "~/components/layouts/head/MainHead";
 import { useUser } from "@clerk/nextjs";
 import ServicesTable from "~/components/servicesComponents/ServicesTable";
+import Spinner from "~/components/ui/spinner";
 
 // HomePage.Layout = "OtherLayout"; -> error Type '"OtherLayout"' is not assignable to type '"Main" | "Admin" | undefined'.
 const ServiceRequest: MyPage = () => {
   const { isLoaded, isSignedIn } = useUser();
   if (!isLoaded && isSignedIn)
-    return (
-      <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
-    );
+    return <Spinner className="h-12 w-12 text-solBlue" />;
 
   const {
     data: services,
@@ -28,9 +27,7 @@ const ServiceRequest: MyPage = () => {
       <main className="flex min-h-screen w-full flex-col items-center ">
         <div className="flex w-full max-w-7xl flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-5xl font-extrabold tracking-tight">Servicios</h1>
-          {isLoading && (
-            <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
-          )}
+          {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
           {/* {services && services?.map((service) => (
 
                         <div key={service.id} className="w-full">

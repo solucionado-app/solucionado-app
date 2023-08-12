@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
+import { getDateAsTwitterFormat } from "~/helpers/date";
 
 interface Author {
   id: string;
@@ -30,24 +31,35 @@ export default function ServiceMessage({ comment }: Props) {
     <Card
       key={comment.id}
       id={comment.id}
-      className={`flex flex-col  ${own ? "items-end justify-end" : ""} p-5`}
+      className={`flex gap-2 bg-transparent  ${
+        own ? "items-end justify-end " : ""
+      } border-none  p-5 shadow-none`}
     >
-      <div className="flex flex-col items-start  font-semibold">
-        {!own && (
-          <Link href={`/solucionador/${comment.author.id}`}>
-            <Avatar className="h-10 w-10 cursor-pointer">
-              <AvatarImage src={comment.author.image_url || ""} />
-              <AvatarFallback>
-                <div className="animate-spin rounded-full  border-b-2 border-gray-900"></div>
-              </AvatarFallback>
-            </Avatar>
-          </Link>
-        )}
+      <div
+        className={`${
+          own ? "bg-blue-200" : "bg-emerald-300"
+        } rounded-full px-8 py-2`}
+      >
+        <div className="flex flex-col items-start font-semibold">
+          {/* {!own && (
+            <Link href={`/solucionador/${comment.author.id}`}>
+              <Avatar className="h-10 w-10 cursor-pointer">
+                <AvatarImage src={comment.author.image_url || ""} />
+                <AvatarFallback>
+                  <div className="animate-spin rounded-full  border-b-2 border-gray-900"></div>
+                </AvatarFallback>
+              </Avatar>
+            </Link>
+          )} */}
+        </div>
+        <div className="flex flex-col">
+          {" "}
+          <p className="text-sm font-semibold text-black">{comment.content}</p>
+          <p className="text-sm  text-gray-600">
+            {getDateAsTwitterFormat(comment.createdAt)}
+          </p>
+        </div>
       </div>
-      <p>{comment.content}</p>
-      <p className="text-sm text-slate-400">
-        {format(comment.createdAt, "PPP", { locale: es })}
-      </p>
     </Card>
   );
 }

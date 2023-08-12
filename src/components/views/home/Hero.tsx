@@ -1,6 +1,7 @@
 import React from "react";
 import HomeSelect from "~/components/formularios/HomeSelect";
 import type { CategoriesQueryResponse } from "~/components/types/common";
+import Spinner from "~/components/ui/spinner";
 
 interface ViewProps {
   categories: CategoriesQueryResponse[] | undefined;
@@ -25,9 +26,7 @@ export const Hero: React.FC<ViewProps> = ({ categories, isLoading }) => {
           </div>
           <div className="flex w-full  items-center justify-center md:w-1/2 md:justify-end">
             <div className="flex w-full max-w-lg justify-center rounded-xl bg-white px-4 py-6">
-              {isLoading && (
-                <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
-              )}
+              {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
               {categories && (
                 <>
                   <HomeSelect categories={categories} isLoading={isLoading} />{" "}

@@ -9,6 +9,7 @@ import { type ChangeEvent, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { Skeleton } from "../ui/skeleton";
 import { useToast } from "../ui/use-toast";
+import Spinner from "../ui/spinner";
 
 export const ProfileData = () => {
   const { data: user, isLoading, refetch } = api.user.getById.useQuery();
@@ -52,9 +53,7 @@ export const ProfileData = () => {
 
   return (
     <>
-      {isLoading && (
-        <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
-      )}
+      {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
 
       {!!user && (
         <>
