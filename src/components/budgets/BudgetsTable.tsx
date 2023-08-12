@@ -174,12 +174,12 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
               Copy payment ID
             </DropdownMenuItem> */}
             <DropdownMenuSeparator />
-            {/* <AlertCompleteBudgetDialog /> */}
-            <DropdownMenuItem
+            <AlertCompleteBudgetDialog budget={budget} />
+            {/* <DropdownMenuItem
               onClick={() => acceptBudget(budget.id, budget.serviceRequestId)}
             >
               Aceptar
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
             <DropdownMenuItem>Rechazar</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
