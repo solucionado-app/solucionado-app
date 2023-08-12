@@ -20,7 +20,7 @@ export const userRouter = createTRPCRouter({
     });
     return currentUser;
   }),
-  getSolucionadorProfileInfoById: publicProcedure
+  getSolucionadorProfileInfoById: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
       const userSolucionador = await ctx.prisma.user.findUnique({

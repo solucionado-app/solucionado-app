@@ -37,11 +37,11 @@ const SolucionadorProfilePage = ({ id }: Props) => {
   }
   return (
     <div className="flex w-full flex-col items-center">
-      <div className="flex w-full max-w-6xl flex-col justify-center p-4">
+      <div className="flex w-full max-w-6xl flex-col justify-center gap-2 p-4">
         {/* Card User */}
         <SolucionadorProfileCard profile={profile} />
         {/* Tabs */}
-        <SolucionadorTabs />
+        <SolucionadorTabs userId={id} />
       </div>
     </div>
   );
@@ -90,6 +90,8 @@ export async function getStaticProps(
   };
   const ssg = ssgHelper(auth);
   await ssg.user.getSolucionadorProfileInfoById.prefetch({ id });
+  await ssg.comment.getNumberOfCommentsUser.prefetch({ userId: id });
+  await ssg.review.getNumberOfReviewsUser.prefetch({ userId: id });
   return {
     props: {
       trpcState: ssg.dehydrate(),

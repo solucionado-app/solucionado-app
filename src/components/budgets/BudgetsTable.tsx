@@ -1,5 +1,5 @@
 /* eslint-disable */
-import * as React from "react"
+import * as React from "react";
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -11,10 +11,10 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+} from "@tanstack/react-table";
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
-import { Button } from "~/components/ui/button"
+import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -23,8 +23,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu"
-import { Input } from "~/components/ui/input"
+} from "~/components/ui/dropdown-menu";
+import { Input } from "~/components/ui/input";
 import {
   Table,
   TableBody,
@@ -32,14 +32,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "~/components/ui/table"
-import { api } from "~/utils/api"
-import format from "date-fns/format"
-import { es } from "date-fns/locale"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
-import { useAcceptBudget } from "./acceptBudget"
-import AlertCompleteBudgetDialog from "./AlertCompleteBudgetDialog"
-import { string } from "zod"
+} from "~/components/ui/table";
+import { api } from "~/utils/api";
+import format from "date-fns/format";
+import { es } from "date-fns/locale";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useAcceptBudget } from "./acceptBudget";
+import AlertCompleteBudgetDialog from "./AlertCompleteBudgetDialog";
+import { string } from "zod";
 
 const data: Payment[] = [
   {
@@ -54,15 +54,15 @@ const data: Payment[] = [
     description: "Abe45@gmail.com",
     fechaEstimada: "28/7/2023",
   },
-]
+];
 
 export type Payment = {
-  id: string
-  price: number
-  description: string
-  fechaEstimada: string,
-}
-export interface BudgetsTableProps {
+  id: string;
+  price: number;
+  description: string;
+  fechaEstimada: string;
+};
+interface BudgetsTableProps {
   id: string;
   description: string;
   price: number;
@@ -78,80 +78,86 @@ type Author = {
   first_name: string | null;
   last_name: string | null;
   image_url: string | null;
-}
+};
 export const columns: ColumnDef<BudgetsTableProps>[] = [
   {
     accessorKey: "price",
     header: ({ column }) => {
       return (
-        <Button className=""
+        <Button
+          className=""
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Precio
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => {
-      const price = parseFloat(row.getValue("price"))
+      const price = parseFloat(row.getValue("price"));
 
       // Format the price as a dollar price
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
-      }).format(price)
+      }).format(price);
 
-      return <div className="font-medium">{formatted}</div>
+      return <div className="font-medium">{formatted}</div>;
     },
   },
   {
     accessorKey: "description",
     header: () => <div className="">Descripcion</div>,
-    cell: ({ row }) => <div className="lowercase">{row.getValue("description")}</div>,
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("description")}</div>
+    ),
   },
   {
     accessorKey: "estimatedAt",
     header: "fecha Estimada",
     cell: ({ row }) => (
-      <div className="capitalize">{format(row.getValue("estimatedAt"), "PPP", { locale: es })}</div>
+      <div className="capitalize">
+        {format(row.getValue("estimatedAt"), "PPP", { locale: es })}
+      </div>
     ),
   },
   {
     accessorKey: "author",
     header: "Autor",
     cell: ({ row }) => {
-      const author: Author = row.getValue("author")
+      const author: Author = row.getValue("author");
 
       return (
         <div className="flex items-center space-x-2">
-          <Avatar className="cursor-pointer" >
-            <AvatarImage src={author?.image_url ? author?.image_url : undefined} />
-            <AvatarFallback><div className="animate-spin rounded-full  border-b-2 border-gray-900"></div></AvatarFallback>
+          <Avatar className="cursor-pointer">
+            <AvatarImage
+              src={author?.image_url ? author?.image_url : undefined}
+            />
+            <AvatarFallback>
+              <div className="animate-spin rounded-full  border-b-2 border-gray-900"></div>
+            </AvatarFallback>
           </Avatar>
           <div className="text-sm font-medium">
             {author.first_name} {author.last_name}
           </div>
         </div>
-      )
-    }
+      );
+    },
   },
   {
     accessorKey: "status",
     header: "Estado",
     cell: ({ row }) => {
-      return (
-        <div className="capitalize">{row.getValue("status")}</div>
-      )
-    }
+      return <div className="capitalize">{row.getValue("status")}</div>;
+    },
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const budget = row.original
-      console.log(budget)
-      const acceptBudget = useAcceptBudget()
+      const budget = row.original;
+      const acceptBudget = useAcceptBudget();
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -168,28 +174,32 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
               Copy payment ID
             </DropdownMenuItem> */}
             <DropdownMenuSeparator />
-            <AlertCompleteBudgetDialog budget={budget} />
+            {/* <AlertCompleteBudgetDialog /> */}
+            <DropdownMenuItem
+              onClick={() => acceptBudget(budget.id, budget.serviceRequestId)}
+            >
+              Aceptar
+            </DropdownMenuItem>
             <DropdownMenuItem>Rechazar</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      )
+      );
     },
   },
-]
+];
 
 interface Props {
   budgets: BudgetsTableProps[] | undefined;
 }
 
-
 export default function BudgetsTable({ budgets }: Props) {
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
-  )
+  );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
   const table = useReactTable({
     data: budgets ?? [],
     columns,
@@ -207,7 +217,7 @@ export default function BudgetsTable({ budgets }: Props) {
       columnVisibility,
       rowSelection,
     },
-  })
+  });
 
   return (
     <div className="w-full">
@@ -242,7 +252,7 @@ export default function BudgetsTable({ budgets }: Props) {
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
-                )
+                );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -258,11 +268,11 @@ export default function BudgetsTable({ budgets }: Props) {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -298,7 +308,7 @@ export default function BudgetsTable({ budgets }: Props) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        <div className="text-muted-foreground flex-1 text-sm">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} Fila(s) seleccionadas.
         </div>
@@ -322,5 +332,5 @@ export default function BudgetsTable({ budgets }: Props) {
         </div>
       </div>
     </div>
-  )
+  );
 }
