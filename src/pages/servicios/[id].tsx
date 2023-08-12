@@ -5,7 +5,6 @@ import { ssgHelper } from "~/server/api/ssgHelper";
 import { type JwtPayload, type ServerGetTokenOptions } from "@clerk/types";
 import Head from "next/head";
 import { type MyPage } from "~/components/types/types";
-import { Button } from "~/components/ui/button"
 import {
     Card,
     CardContent,
@@ -26,7 +25,6 @@ import ServiceComents from "~/components/servicesComponents/ServiceComents";
 
 import CommentServiceForm from "~/components/servicesComponents/CommentServiceForm";
 
-import dynamic from "next/dynamic";
 
 
 

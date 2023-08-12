@@ -16,7 +16,6 @@ import {
 import { Button } from "~/components/ui/button"
 import dynamic from "next/dynamic";
 import { type BudgetsTableProps } from "./BudgetsTable";
-import { observable } from "@legendapp/state";
 import { useObservable } from "@legendapp/state/react";
 
 const getDynamicMercadoPago = () => dynamic(() => import(`~/components/budgets/MercadoPagoDialog`), {
@@ -36,7 +35,6 @@ export default function AlertDialogDemo({ budget }: Props) {
     const DynamicMercadoPago = getDynamicMercadoPago()
     const preference$ = useObservable({ id: "" })
 
-    const [preferenceId, setpreferenceId] = useState<null | string>();
     const createPreference = async () => {
         const requestData = {
             items: [

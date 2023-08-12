@@ -1,10 +1,5 @@
-import { auth, clerkClient } from "@clerk/nextjs";
-import { getAuth } from "@clerk/nextjs/dist/types/server-helpers.server";
-import { ca } from "date-fns/locale";
 import { NextResponse } from "next/server";
-import { ssgHelper } from "~/server/api/ssgHelper";
 import { prisma } from "~/server/db";
-import { trpc } from "~/utils/trpc";
 
 async function handler(request:Request) {
     const payload = await request.json()  as { type: string, data: { id: string } };
