@@ -9,7 +9,10 @@ import { ssgHelper } from "~/server/api/ssgHelper";
 import { type JwtPayload, type ServerGetTokenOptions } from "@clerk/types";
 import Head from "next/head";
 import { type MyPage } from "~/components/types/types";
+<<<<<<< HEAD
 import { Button } from "~/components/ui/button";
+=======
+>>>>>>> dev
 import {
   Card,
   CardContent,
@@ -21,9 +24,9 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 
 import { api } from "~/utils/api";
-import ServiceComents from "~/components/comments/ServiceComents";
+import ServiceComents from "~/components/servicesComponents/ServiceComents";
 
-import CommentServiceForm from "~/components/comments/CommentServiceForm";
+import CommentServiceForm from "~/components/servicesComponents/CommentServiceForm";
 
 import dynamic from "next/dynamic";
 import { Textarea } from "~/components/ui/textarea";

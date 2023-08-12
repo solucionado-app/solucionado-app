@@ -10,7 +10,8 @@ import { Toaster } from "~/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 
-
+import { enableReactUse } from '@legendapp/state/config/enableReactUse';
+enableReactUse()
 function MyApp({ Component, pageProps }: MyAppProps) {
   const Layout = Layouts[Component.Layout] ?? ((page: MyPage) => page);
 

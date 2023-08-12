@@ -81,10 +81,20 @@ export const commentRouter = createTRPCRouter({
                     serviceId: input.serviceId,
             },
             orderBy: {
-                createdAt: "desc",
+                createdAt: "asc",
             },
-            include: {
-                author: true,
+            select:{
+                id: true,
+                content: true,
+                author: {
+                    select: {
+                        id: true,
+                        first_name: true,
+                        last_name: true,
+                        image_url: true,
+                    }
+                },
+                createdAt: true,
             }
         });
     }),
