@@ -3,7 +3,7 @@ import React from "react";
 import { type MyPage } from "~/components/types/types";
 import MainHead from "~/components/layouts/head/MainHead";
 import { useUser } from "@clerk/nextjs";
-import ServiceRequestTable from "~/components/servicerequest/ServiceRequestTable";
+import ServicesTable from "~/components/servicesComponents/ServicesTable";
 
 
 
@@ -12,8 +12,7 @@ const ServiceRequest: MyPage = () => {
     const { isLoaded, isSignedIn } = useUser();
     if (!isLoaded && isSignedIn) return <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
 
-    const apitrcp = api.serviceRequest;
-    const { data: services, isLoading, isFetched } = apitrcp.getUserRequest.useQuery();
+    const { data: services, isLoading, isFetched } = api.service.getAll.useQuery();
     // console.log(user);
     // const rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
 
@@ -24,7 +23,7 @@ const ServiceRequest: MyPage = () => {
             <main className="flex min-h-screen flex-col items-center  ">
                 <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
                     <h1 className="text-5xl font-extrabold tracking-tight  sm:text-[5rem]">
-                        Solicitudes de Servicio
+                        Servicios
                     </h1>
                     {isLoading && <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>}
                     {/* {services && services?.map((service) => (
@@ -63,7 +62,7 @@ const ServiceRequest: MyPage = () => {
                         </div>
                     ))
                     } */}
-                    {services && <ServiceRequestTable serviceRequests={services} />}
+                    {!!services && <ServicesTable services={services} />}
                     {
                         isFetched && !services && <div className="text-2xl">No hay servicios</div>
                     }

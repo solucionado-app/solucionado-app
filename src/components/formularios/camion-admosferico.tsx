@@ -18,9 +18,9 @@ import { useForm } from "react-hook-form";
 
 const formSchema = z.object({
     cantidadDePozos: z
-    .coerce.number().min(1, {
-        message: "Deben ir al menos 1 caracter mayor o igual a 1.",
-    }),
+        .coerce.number().min(1, {
+            message: "Deben ir al menos 1 caracter mayor o igual a 1.",
+        }),
 });
 export function CamionAdmosfericoForm() {
     // 1. Define your form.
@@ -32,7 +32,7 @@ export function CamionAdmosfericoForm() {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
 
-        console.log(values)
+        // console.log(values)
     }
     // ...
 

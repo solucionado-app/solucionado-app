@@ -24,11 +24,10 @@ const ProfileDropdown = ({ children }: Props) => {
         <DropdownMenuItem>
           {" "}
           <Link
-            className={`text-sm ${
-              router.asPath === "/perfil"
+            className={`text-sm ${router.asPath === "/perfil"
                 ? "font-semibold text-sol_lightBlue"
                 : ""
-            }`}
+              }`}
             href="/perfil"
           >
             Mi Perfil
@@ -36,24 +35,33 @@ const ProfileDropdown = ({ children }: Props) => {
         </DropdownMenuItem>
         <DropdownMenuItem>
           <Link
-            className={`text-sm ${
-              router.asPath === "/completar-perfil"
+            className={`text-sm ${router.asPath === "/completar-perfil"
                 ? "font-semibold text-sol_lightBlue"
                 : ""
-            }`}
+              }`}
             href="/completar-perfil"
           >
             Completar Perfil
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
+          <Link
+            className={`text-sm ${router.asPath === "/servicios"
+              ? "font-semibold text-sol_lightBlue"
+              : ""
+              }`}
+            href="/servicios"
+          >
+            Mis servicios
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
           <SignedIn>
             <Link
-              className={`text-sm ${
-                router.asPath === "/solicitudes-de-servicio"
+              className={`text-sm ${router.asPath === "/solicitudes-de-servicio"
                   ? "font-semibold text-sol_lightBlue"
                   : ""
-              }`}
+                }`}
               href="/solicitudes-de-servicio"
             >
               Solicitudes de Servicio

@@ -77,10 +77,10 @@ export function PintoresForm() {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
 
-        console.log(values)
+        // console.log(values)
     }
     // ...
-    console.log(form.control)
+    // console.log(form.control)
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -92,7 +92,7 @@ export function PintoresForm() {
                             <FormLabel>¿Qué desea pintar?</FormLabel>
                             <FormControl>
                                 <Select onValueChange={(e) => {
-                                    console.log(e)
+                                    // console.log(e)
                                     field.onChange
                                 }} defaultValue={field.value}>
                                     <SelectTrigger className="w-[180px]">

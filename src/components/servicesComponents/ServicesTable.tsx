@@ -37,32 +37,11 @@ import { api } from "~/utils/api"
 import format from "date-fns/format"
 import { es } from "date-fns/locale"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
-import { JSONValue } from "superjson/dist/types"
 import { useRouter } from "next/router"
 
-const data: Payment[] = [
-    {
-        id: "m5gr84i9",
-        price: 316,
-        description: "ken99@yahoo.com",
-        fechaEstimada: "28/7/2023",
-    },
-    {
-        id: "3u1reuv4",
-        price: 242,
-        description: "Abe45@gmail.com",
-        fechaEstimada: "28/7/2023",
-    },
-]
 
-export type Payment = {
-    id: string
-    price: number
-    description: string
-    fechaEstimada: string,
-}
 
-export const columns: ColumnDef<ServiceRequest>[] = [
+export const columns: ColumnDef<Service>[] = [
     {
         accessorKey: "amount",
         header: ({ column }) => {
@@ -77,9 +56,12 @@ export const columns: ColumnDef<ServiceRequest>[] = [
             )
         },
         cell: ({ row }) => {
-
+            const formatted = new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+            }).format(row.original.budget.price)
             // console.log(row.getValue("amount"))
-            return <div className="font-medium">{row.getValue("amount")}</div>
+            return <div className="font-medium">{formatted}</div>
         },
     },
     {
@@ -90,9 +72,40 @@ export const columns: ColumnDef<ServiceRequest>[] = [
     {
         accessorKey: "date",
         header: "fecha Estimada",
-        cell: ({ row }) => (
-            <div className="capitalize">{format(row.getValue("date"), "PPP", { locale: es })}</div>
-        ),
+        cell: ({ row }) => {
+
+            return (
+                <div className="capitalize">{format(row.original.budget.estimatedAt, "PPP", { locale: es })}</div>
+            )
+        },
+    },
+    {
+        accessorKey: "author",
+        header: "Solucionador",
+        cell: ({ row }) => {
+            const author = row.original.budget.author
+
+            return (
+                <div className="flex items-center space-x-2">
+                    <Avatar className="cursor-pointer" >
+                        <AvatarImage src={author?.image_url ? author?.image_url : undefined} />
+                        <AvatarFallback><div className="animate-spin rounded-full  border-b-2 border-gray-900"></div></AvatarFallback>
+                    </Avatar>
+                    <div className="text-sm font-medium">
+                        {author.first_name} {author.last_name}
+                    </div>
+                </div>
+            )
+        }
+    },
+    {
+        accessorKey: "status",
+        header: "Estado",
+        cell: ({ row }) => {
+            return (
+                <div className="capitalize">{row.getValue("status")}</div>
+            )
+        }
     },
 
     {
@@ -117,8 +130,8 @@ export const columns: ColumnDef<ServiceRequest>[] = [
               Copy payment ID
             </DropdownMenuItem> */}
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>Contactar</DropdownMenuItem>
-                        <DropdownMenuItem>Contratar</DropdownMenuItem>
+                        <DropdownMenuItem>Finalizar</DropdownMenuItem>
+                        <DropdownMenuItem>Aceptar</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )
@@ -129,32 +142,36 @@ export const columns: ColumnDef<ServiceRequest>[] = [
 type Status = "PENDING" | "ACEPTED" | "REJECTED" | "FINISHED";
 
 
-interface ServiceRequest {
+interface Service {
     id: string;
     status: Status;
-    createdAt: Date;
+    description: string;
+    budget: Budget;
     category: {
         id: number;
         name: string;
-        slug: string;
     };
-    address: string | null;
-    amount: string | null;
-    schedule: string | null;
-    urgency: string | null;
-    description: string | null;
-    details: JSONValue;
-    province: string | null;
-    city: string | null;
-    date: Date | null;
+}
+
+interface Author {
+    id: string;
+    first_name: string | null;
+    last_name: string | null;
+    image_url: string | null;
+}
+interface Budget {
+    id: string;
+    price: number;
+    author: Author;
+    estimatedAt: Date;
 }
 
 interface Props {
-    serviceRequests: ServiceRequest[]
+    services: Service[]
 }
 
 
-export default function ServiceRequestTable({ serviceRequests }: Props) {
+export default function ServicesTable({ services }: Props) {
     const router = useRouter()
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -164,7 +181,7 @@ export default function ServiceRequestTable({ serviceRequests }: Props) {
         React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
     const table = useReactTable({
-        data: serviceRequests ?? [],
+        data: services ?? [],
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -248,7 +265,7 @@ export default function ServiceRequestTable({ serviceRequests }: Props) {
                                     data-state={row.getIsSelected() && "selected"}
                                     className="cursor-pointer"
                                     onClick={() => {
-                                        router.push(`/solicitudes-de-servicio/${row.original.id}`)
+                                        router.push(`/servicios/${row.original.id}`)
 
                                     }}
                                 >

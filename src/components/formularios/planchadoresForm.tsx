@@ -13,7 +13,6 @@ import {
     FormLabel,
     FormMessage,
 } from "~/components/ui/form"
-import { Input } from "~/components/ui/input"
 
 import { useForm } from "react-hook-form";
 import { useUser } from "@clerk/nextjs"
@@ -25,31 +24,20 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { Textarea } from "../ui/textarea"
 import { useFormSteps } from "./ContextForm"
 import { type FormValues, localStorageRequests } from "~/lib/localStorage"
+import { Input } from "../ui/input";
 
 const formSchema = z.object({
-    herramientas: z.enum(["Si", "No"], {
+    cantidadDePrendas: z
+    .coerce.number().min(1, {
+        message: "Deben ir al menos 1 caracter mayor o igual a 1.",
+    }),
+    TienePlanchaYAromatizante: z.enum(["Si", "No"], {
         required_error: "Debe elegir una opcion",
     }),
-    ancho: z.coerce.number().min(1, {
-        message: "El ancho es requerido"
-    }
-    ),
-    largo: z.coerce.number().min(1, {
-        message: "El largo es requerido"
-    }
-    ),
-    alto: z.coerce.number().min(1, {
-        message: "El alto es requerido"
-    }
-    ),
 
-    detalles: z.string().min(10, {
-        message: "Debe tener al menos 10 caracteres.",
-    }).max(160, {
-        message: "Debe tener maximo 130 caracteres.",
-    }),
+    detallesDeCotizacion: z.string(),
 });
-export default function JardinerosForm() {
+export default function PlanchadoresForm() {
     // 1. Define your form.
     const router = useRouter()
     // const { numeroDeMascotas } = router.query
@@ -62,17 +50,12 @@ export default function JardinerosForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            herramientas: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.herramientas ?
-                local[`${slug}`]?.details?.herramientas : undefined,
-            ancho: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.ancho ?
-                local[`${slug}`]?.details?.ancho as number : undefined,
-            largo: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.largo ?
-                local[`${slug}`]?.details?.largo as number : undefined,
-            alto: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.alto ?
-                local[`${slug}`]?.details?.alto as number : undefined,
-            detalles: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.detalles ?
-                local[`${slug}`]?.details?.detalles : undefined,
-
+            cantidadDePrendas: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.cantidadDePrendas ?
+                local[`${slug}`]?.details?.cantidadDePrendas : undefined,
+            TienePlanchaYAromatizante: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.TienePlanchaYAromatizante ?
+                local[`${slug}`]?.details?.TienePlanchaYAromatizante : undefined,
+            detallesDeCotizacion: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.detallesDeCotizacion ?
+                local[`${slug}`]?.details?.detallesDeCotizacion : " ",
         },
     });
 
@@ -107,10 +90,27 @@ export default function JardinerosForm() {
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                     <FormField
                         control={form.control}
-                        name="herramientas"
+                        name="cantidadDePrendas"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>¿Cuántas prendas son?</FormLabel>
+                                <FormControl >
+                                    <Input type="number" placeholder="" {...field} />
+                                </FormControl>
+                                <FormDescription className="text-xs bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-2">
+                                    <p className="font-bold">Nota:</p>
+                                    <p>si hay una prenda que no debe plancharse, corre por cuenta del cliente, en caso de que el solucionador no distinga. si se arruina la prenda.</p>
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="TienePlanchaYAromatizante"
                         render={({ field }) => (
                             <FormItem className="space-y-3">
-                                <FormLabel>¿Tiene herramientas de jardinería?</FormLabel>
+                                <FormLabel>¿Proveera de plancha y aromatizante de ropa?</FormLabel>
                                 <FormControl>
                                     <RadioGroup
                                         onValueChange={field.onChange}
@@ -141,60 +141,13 @@ export default function JardinerosForm() {
                             </FormItem>
                         )}
                     />
-                    <div className="flex space-x-5 ">
-                        <FormField
-                            control={form.control}
-                            name="ancho"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Ancho(metros)</FormLabel>
-                                    <FormControl >
-                                        <Input type="number" placeholder="" {...field} />
-                                    </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="largo"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Largo(metros)</FormLabel>
-                                    <FormControl >
-                                        <Input type="number" placeholder="" {...field} />
-                                    </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="alto"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Alto(metros)</FormLabel>
-                                    <FormControl >
-                                        <Input type="number" placeholder="" {...field} />
-                                    </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-
+                    
                     <FormField
                         control={form.control}
-                        name="detalles"
+                        name="detallesDeCotizacion"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>¿Que detalle requiere?</FormLabel>
+                                <FormLabel>¿Cómo desea que le coticen el servicio?</FormLabel>
                                 <FormControl>
                                     <Textarea
                                         placeholder="Escriba los detalles aquí..."
@@ -202,13 +155,18 @@ export default function JardinerosForm() {
                                         {...field}
                                     />
                                 </FormControl>
-                                <FormDescription>
+                                <FormDescription className="text-xs bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-2">
+                                
+                                    
+                                    <p className="font-bold">Nota:</p>
+                                    <p>En caso de no responder corre por cuenta del solucionador optar por una de las 2 opciones.</p>
+                                
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
-                    <div className="w-[465px] text-sm bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4"
+                    <div className="text-sm bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4"
                         role="alert">
                         <p className="font-bold">Nota:</p>
                         <p>Los presupuestos son en base a lo mencionado en estos comentarios, cualquier cambio que el cliente quiera hacer, deberá volver a pedir un presupuesto. ya que el cambio realizado puede cambiar el costo de los trabajos.</p>

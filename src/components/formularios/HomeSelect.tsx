@@ -39,7 +39,7 @@ export default function HomeSelect({ categories, isLoading }: props) {
     resolver: zodResolver(formSchema),
   });
   // useEffect(() => {
-  //     console.log(numeroDeLamparas)
+  //     // console.log(numeroDeLamparas)
   //     if (numeroDeLamparas && typeof numeroDeLamparas === "string") {
   //         setnumeroDeLamparasNumber(parseInt(numeroDeLamparas))
   //         form.setValue("numeroDeLamparas", parseInt(numeroDeLamparas))

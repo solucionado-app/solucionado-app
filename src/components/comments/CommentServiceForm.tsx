@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import { useUser } from '@clerk/nextjs'
-import { type ServiceRequest } from '@prisma/client'
 import React from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -21,13 +20,36 @@ import { Textarea } from "~/components/ui/textarea";
 
 import { api } from "~/utils/api";
 import { trpc } from '~/utils/trpc'
+import { Status } from '@prisma/client'
 
 
 
 interface Props {
-    serviceRequest: ServiceRequest | null | undefined,
-    serviceRequestId: string
+    service: Service | null | undefined,
+    serviceId: string
     categoryName: string | undefined | null,
+}
+
+interface Service {
+    id: string;
+    status: Status;
+    description: string;
+    budget: Budget;
+    category: {
+        id: number;
+        name: string;
+    };
+}
+
+interface Author {
+    id: string;
+    first_name: string | null;
+    last_name: string | null;
+}
+interface Budget {
+    id: string;
+    price: number;
+    author: Author;
 }
 
 const FormSchema = z.object({
@@ -42,7 +64,7 @@ const FormSchema = z.object({
         }),
 })
 
-export default function CommentsForm({ serviceRequest, serviceRequestId, categoryName }: Props) {
+export default function CommentServiceForm({ service, serviceId, categoryName }: Props) {
     const { user, isSignedIn } = useUser()
 
     const form = useForm<z.infer<typeof FormSchema>>({
@@ -53,33 +75,33 @@ export default function CommentsForm({ serviceRequest, serviceRequestId, categor
     })
     const mutateComment = api.comment.create.useMutation({
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        onSuccess: (data) => {
-            if (data?.id) {
-                notification.mutate({
-                    title: "Nueva solicitud de servicio",
-                    content: `${user?.firstName ? user?.firstName : ""} ${user?.lastName ? user.lastName : ""} ha comentado tu solicitud de servicio`,
-                    link: `/solicitudes-de-servicio/${serviceRequestId}#${data.id}`,
-                    serviceRequestId: serviceRequestId,
-                    userId: serviceRequest?.userId as string,
-                    authorName: user?.firstName || "",
-                    authorLastName: user?.lastName || "",
-                    categoryName: categoryName || "",
-                })
-            }
-        },
+        // onSuccess: (data) => {
+        //     if (data?.id) {
+        //         notification.mutate({
+        //             title: "Nueva solicitud de servicio",
+        //             content: `${user?.firstName ? user?.firstName : ""} ${user?.lastName ? user.lastName : ""} ha comentado tu solicitud de servicio`,
+        //             link: `/solicitudes-de-servicio/${serviceId}#${data.id}`,
+        //             serviceId: serviceId,
+        //             userId: service?.userId as string,
+        //             authorName: user?.firstName || "",
+        //             authorLastName: user?.lastName || "",
+        //             categoryName: categoryName || "",
+        //         })
+        //     }
+        // },
     })
     const utils = trpc.useContext()
     const notification = api.notification.createCommentNotification.useMutation()
     function onSubmit(data: z.infer<typeof FormSchema>) {
         mutateComment.mutate({
-            serviceRequestId: serviceRequestId,
+            serviceId: serviceId,
             description: data.description,
-            userId: serviceRequest?.userId as string
+            userId: service?.budget.author.id as string
         }, {
             onSuccess: () => {
                 void utils.notification.getAll.invalidate()
                 void utils.notification.countUnRead.invalidate()
-                void utils.comment.getAllByRequestId.invalidate({ serviceRequestId: serviceRequestId })
+                void utils.comment.getAllByServiceId.invalidate({ serviceId: serviceId })
                 form.reset()
 
             }

@@ -59,7 +59,7 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
             estimatedAt: new Date()
         }
     })
-    console.log(serviceRequest?.userId)
+    // console.log(serviceRequest?.userId)
     const mutateBugdet = api.budget.create.useMutation({
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         onSuccess: (data) => {
@@ -96,7 +96,7 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
             }
         })
 
-        console.log(data)
+        // console.log(data)
     }
     return (
         user && user?.id !== serviceRequest?.userId && <>

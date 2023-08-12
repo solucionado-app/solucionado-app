@@ -45,7 +45,7 @@ export const notificationRouter = createTRPCRouter({
                 }
             },
         });
-        console.log(notification);
+        // console.log(notification);
         return notification;
     }),
     markAsUnread: protectedProcedure.input(
@@ -157,10 +157,10 @@ export const notificationRouter = createTRPCRouter({
             subject: `Nuevo presupuesto para tu solicitud de servicio`,
             emailAddressId: user?.emailAddressId as string,
         }).then((res) => {
-            console.log(res)
+             console.log(res)
         }
         ).catch((err) => {
-            console.log(err)
+             console.log(err)
         }
         );
 
@@ -193,6 +193,72 @@ export const notificationRouter = createTRPCRouter({
         });
         return notification;
     }),
+    createBudgetAcceptedNotification: protectedProcedure.input(
+        z.object({
+            link: z.string().optional(),
+            title: z.string(),
+            content: z.string(),
+            budgetId: z.string(),
+            serviceRequestId: z.string(),
+            userId: z.string(),
+            authorName: z.string(),
+            authorLastName: z.string(),
+        })
+    ).mutation(async ({ ctx, input }) => {
+        const user = await ctx.prisma.user.findUnique({
+            where: {
+                externalId: input.userId,
+            },
+            select: {
+                first_name: true,
+                last_name: true,
+                emailAddressId: true,
+            },
+        });
+        clerkClient.emails.createEmail({
+            fromEmailName: "info",
+            body: `hola ${user?.first_name || ""} ${user?.last_name || ""} el usuario  ${input.authorName} ${input.authorLastName} ha aceptado tu presupuesto para su solicitud de servicio
+            Entra a este link para ver los detalles de la solicitud: solucionado-app.vercel.app/${input.link || "solicitudes-de-servicio"}/${input.serviceRequestId}
+            `,
+            subject: `Presupuesto aceptado para tu solicitud de servicio`,
+            emailAddressId: user?.emailAddressId as string,
+        }).then((res) => {
+                console.log(res)
+        })
+        .catch((err) => {
+                console.log(err)
+        });
+        const notification = await ctx.prisma.notification.create({
+            data: {
+                title: input.title,
+                content: input.content,
+                link: input.link,
+                users: {
+                    connect: {
+                        externalId: input?.userId,
+                    },
+                },
+                budget: {
+                    connect: {
+                        id: input.budgetId,
+                    },
+                },
+                serviceRequest: {
+                    connect: {
+                        id: input.serviceRequestId,
+                    },
+                },
+                author: {
+                    connect: {
+                        externalId: ctx.auth.userId,
+                    },
+                },
+            },
+        });
+        return notification;
+
+    }),
+
     createCommentNotification: protectedProcedure.input(
         z.object({
             link: z.string().optional(),
@@ -226,13 +292,13 @@ export const notificationRouter = createTRPCRouter({
             },
             select: {
                 id: true,
-                last_name   : true,
-                first_name  : true,
+                last_name: true,
+                first_name: true,
                 emailAddressId: true,
             },
             distinct: ['id'],
         });
-        if(!users.find((user) => user.id === input.userId) ){
+        if (!users.find((user) => user.id === input.userId)) {
             const serviceRequestAuthor = await ctx.prisma.user.findUnique({
                 where: {
                     externalId: input.userId,
@@ -248,8 +314,8 @@ export const notificationRouter = createTRPCRouter({
                 users.push(serviceRequestAuthor);
             }
         }
-        const filteredUsers = users.filter((user) => user.id !== ctx.auth.userId );
-        if(filteredUsers.length === 0){
+        const filteredUsers = users.filter((user) => user.id !== ctx.auth.userId);
+        if (filteredUsers.length === 0) {
             return null;
         }
         !!filteredUsers && filteredUsers.length > 0 && filteredUsers.forEach((user) => {
@@ -261,7 +327,7 @@ export const notificationRouter = createTRPCRouter({
                 subject: `Nuevo comenario en Solicitud de servicio en ${input.categoryName}`,
                 emailAddressId: user.emailAddressId as string,
             }).then((res) => {
-                console.log(res)
+                 console.log(res)
             }
             ).catch((err) => {
                 console.log(err)
@@ -342,5 +408,66 @@ export const notificationRouter = createTRPCRouter({
         return notification;
 
     }),
+    createServiceNotification: protectedProcedure.input(
+        z.object({
+            link: z.string().optional(),
+            title: z.string(),
+            content: z.string(),
+            serviceId: z.string(),
+            userId: z.string(),
+            authorName: z.string(),
+            authorLastName: z.string(),
+        })    ).mutation(async ({ ctx, input }) => {
+
+            const user = await ctx.prisma.user.findUnique({
+                where: {
+                    externalId: input.userId,
+                },
+                select: {
+                    first_name: true,
+                    last_name: true,
+                    emailAddressId: true,
+                },
+            });
+            clerkClient.emails.createEmail({
+                fromEmailName: "info",
+                body: `hola ${user?.first_name || ""} ${user?.last_name || ""} el usuario  ${input.authorName} ${input.authorLastName} ha creado un nuevo servicio
+            Entra a este link para ver los detalles del servicio: solucionado-app.vercel.app${input.link || "servicios"}/${input.serviceId}
+            `,
+                subject: `Nuevo servicio creado`,
+                emailAddressId: user?.emailAddressId as string,
+            }).then((res) => {
+                console.log(res)
+            }
+            ).catch((err) => {
+                console.log(err)
+            }
+            );
+            const notification = await ctx.prisma.notification.create({
+                data: {
+                    title: input.title,
+                    content: input.content,
+                    link: input.link,
+                    users: {
+                        connect: {
+                            externalId: input?.userId,
+                        },
+                    },
+                    author: {
+                        connect: {
+                            externalId: ctx.auth.userId,
+                        },
+                    },
+                    service: {
+                        connect: {
+                            id: input.serviceId,
+                        },
+                    },
+                },
+            });
+            return notification;
+        }),
+
+
 
 });

@@ -15,7 +15,7 @@ import {
 const Home: MyPage = () => {
   const apitrcp = api.categories.getAll.useQuery();
   const { data: categories, isLoading } = apitrcp;
-  // console.log(apitrcp);
+  // // console.log(apitrcp);
   return (
     <>
       <MainHead title="Solucionado App" description="app solucionado" />

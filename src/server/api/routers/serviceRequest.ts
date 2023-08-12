@@ -14,7 +14,7 @@ export const serviceRequestRouter = createTRPCRouter({
             where: {
                 userId: ctx.auth.userId,
             },
-            select:{
+            select: {
                 id: true,
                 status: true,
                 createdAt: true,
@@ -55,21 +55,11 @@ export const serviceRequestRouter = createTRPCRouter({
     ).mutation(async ({ ctx, input }) => {
 
         // ...
-        console.log(ctx.auth)
-        console.log(ctx.auth.user?.emailAddresses)
+        // console.log(ctx.auth)
+        // console.log(ctx.auth.user?.emailAddresses)
 
-         const email = clerkClient.emails.createEmail({
-             fromEmailName: "info",
-             body: "Hay un nuevo presupuesto para tu solicitud de servicio",
-             subject: "Nuevo presupuesto",
-             emailAddressId: input.emailaddress,
-         }).then((res) => {
-             console.log(res)
 
-         }).catch((err) => {
-             console.log(err)
-             });
-        console.log(email)
+        // console.log(email)
         const serviceRequest = await ctx.prisma.serviceRequest.create({
             data: {
                 status: "PENDING",
@@ -103,7 +93,7 @@ export const serviceRequestRouter = createTRPCRouter({
             }
         });
 
-        console.log(serviceRequest)
+        // console.log(serviceRequest)
         const userswithCategory = await ctx.prisma.user.findMany({
             where: {
                 categories: {
@@ -129,10 +119,10 @@ export const serviceRequestRouter = createTRPCRouter({
                     subject: `Solicitud de servicio en ${serviceRequest.category.name}`,
                     emailAddressId: user.emailAddressId as string,
                 }).then((res) => {
-                    console.log(res)
+                     console.log(res)
                 }
                 ).catch((err) => {
-                    console.log(err)
+                     console.log(err)
                 }
                 );
             });

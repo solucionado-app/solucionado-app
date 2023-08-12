@@ -196,11 +196,10 @@ export default function Nav() {
         >
           <li>
             <Link
-              className={`text-sm sm:text-lg ${
-                router.asPath === "/"
-                  ? "font-bold text-solYellow"
-                  : "text-gray-200 transition-colors hover:text-solYellow hover:underline"
-              }  hover:text-sol_lightBLue`}
+              className={`text-sm sm:text-lg ${router.asPath === "/"
+                ? "font-bold text-solYellow"
+                : "text-gray-200 transition-colors hover:text-solYellow hover:underline"
+                }  hover:text-sol_lightBLue`}
               href="/"
             >
               Home
@@ -210,11 +209,10 @@ export default function Nav() {
 
           <li>
             <a
-              className={`text-sm sm:text-lg ${
-                router.asPath === "/sobre-nosotros"
-                  ? "font-bold text-solYellow"
-                  : "text-gray-200 transition-colors hover:text-solYellow hover:underline"
-              } hover:text-sol_lightBLue`}
+              className={`text-sm sm:text-lg ${router.asPath === "/sobre-nosotros"
+                ? "font-bold text-solYellow"
+                : "text-gray-200 transition-colors hover:text-solYellow hover:underline"
+                } hover:text-sol_lightBLue`}
               href="/sobre-nosotros"
             >
               Sobre nosotros
@@ -224,11 +222,10 @@ export default function Nav() {
 
           <li>
             <Link
-              className={`text-sm sm:text-lg ${
-                router.asPath === "/contacto"
-                  ? "font-bold text-solYellow"
-                  : "text-gray-200 transition-colors hover:text-solYellow hover:underline"
-              }  hover:text-sol_lightBLue`}
+              className={`text-sm sm:text-lg ${router.asPath === "/contacto"
+                ? "font-bold text-solYellow"
+                : "text-gray-200 transition-colors hover:text-solYellow hover:underline"
+                }  hover:text-sol_lightBLue`}
               href="/contacto"
             >
               Contacto

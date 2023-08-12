@@ -95,7 +95,7 @@ export const EditSolucionadorDialog: React.FC<Props> = ({
       role: "SOLUCIONADOR",
     });
     closeDialog(false);
-    console.log(values);
+    // console.log(values);
   }
   // ...
 

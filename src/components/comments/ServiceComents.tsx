@@ -8,11 +8,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 const locale = es
 interface props {
-    serviceRequestId: string
+    serviceId: string
 }
-export default function CommentsServiceRequest({ serviceRequestId }: props) {
-    const { data: getNumberOfComments } = api.comment.getNumberOfCommentsRequest.useQuery({ serviceRequestId: serviceRequestId })
-    const { data: requestComments, isLoading: comentsLoading } = api.comment.getAllByRequestId.useQuery({ serviceRequestId: serviceRequestId })
+export default function CommentsServiceRequest({ serviceId }: props) {
+    const { data: getNumberOfComments } = api.comment.getNumberOfCommentsService.useQuery({ serviceId: serviceId })
+    const { data: requestComments, isLoading: comentsLoading } = api.comment.getAllByServiceId.useQuery({ serviceId: serviceId })
     // console.log(getNumberOfComments)
     const rows = [], len = getNumberOfComments || 0;
     let i = 0

@@ -22,33 +22,22 @@ import {
 } from "~/components/ui/tabs"
 
 import { api } from "~/utils/api";
-import { useUser } from "@clerk/nextjs";
-import BudgetsForm from "~/components/budgets/BudgetsForm";
-import CommentsForm from "~/components/comments/CommentForm";
-import CommentsServiceRequest from "~/components/comments/CommentsServiceRequest";
+import ServiceComents from "~/components/comments/ServiceComents";
 
-import dynamic from "next/dynamic";
+import CommentServiceForm from "~/components/comments/CommentServiceForm";
 
 
-const budgetTableDynamic = () => dynamic(() => import(`~/components/budgets/BudgetsTable`), {
-    loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
-})
+
 
 const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ id }) => {
 
-    const { user } = useUser()
-    const request = api.serviceRequest.findById.useQuery({ id })
-    const { data: serviceRequest } = request
-
-    const DynamicBudgetTable = budgetTableDynamic()
+    const request = api.service.findById.useQuery({ id })
+    const { data: service } = request
 
 
-    const { data: budgets, isLoading: budgetsIsLoading } = api.budget.getAll.useQuery({ serviceRequestId: id })
 
-    const { data: budgetListSolucionador } = api.budget.findByRequestId.useQuery({ serviceRequestId: id }, {
-        enabled: Boolean(user && user?.id !== serviceRequest?.userId),
-    })
-    const rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+
+
     return (
         <>
             <Head>
@@ -60,45 +49,41 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
             <div className="container flex flex-col items-center justify-center gap-8 px-4 py-16 ">
 
                 <div className="text-xl font-semibold border  shadow-sm relative  p-5">
-                    <h1 className="text-4xl font-extrabold tracking-tight">Informacion de Solicitud</h1>
-                    {serviceRequest?.details && Object.keys(serviceRequest?.details).map((key: string, i) => (
+                    <h1 className="text-4xl font-extrabold tracking-tight">Informacion de el servicio</h1>
+                    <div className="flex flex-col gap-2">
+                        <div className="font-bold">
+                            {service?.category.name}
 
-                        <p key={i}>
-                            <span> {key.replace(rex, '$1$4 $2$3$5')}</span>
-                            <span> {serviceRequest?.details && serviceRequest?.details[key as keyof typeof serviceRequest.details]}</span>
-                        </p>
-                    ))}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                            {service?.description}
+                        </div>
+                    </div>
+
                 </div>
-                <Tabs defaultValue="account" className="w-full p-5">
+                <Tabs defaultValue="info" className="w-full p-5">
                     <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="account">Presupuestos</TabsTrigger>
-                        <TabsTrigger value="password">Comentarios</TabsTrigger>
+                        <TabsTrigger value="info">Informacion del Servicio</TabsTrigger>
+                        <TabsTrigger value="comments">Comentarios</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="account">
+                    <TabsContent value="info">
                         <Card>
                             <CardHeader>
                                 <CardTitle>Presupuestos</CardTitle>
                                 <CardDescription>
-                                    aca van los presupuestos
+                                    Informacion
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-2">
                                 <div className="space-y-1">
-                                    {/* <Budgets /> */}
-                                    {
-                                        budgetListSolucionador && <DynamicBudgetTable budgets={budgetListSolucionador} />
-                                    }
-                                    {user?.id !== serviceRequest?.userId && <BudgetsForm serviceRequest={serviceRequest} serviceRequestId={id} />}
 
-                                    {user?.id === serviceRequest?.userId && !budgetsIsLoading && budgets && <DynamicBudgetTable budgets={budgets} />}
                                 </div>
                             </CardContent>
                             <CardFooter>
-                                {/* <Button>ver mas</Button> */}
                             </CardFooter>
                         </Card>
                     </TabsContent>
-                    <TabsContent value="password">
+                    <TabsContent value="comments">
                         <Card>
                             <CardHeader>
                                 <CardTitle>Comentarios</CardTitle>
@@ -108,8 +93,8 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ 
                             </CardHeader>
                             <CardContent className="space-y-2">
                                 <div className="space-y-1">
-                                    <CommentsForm serviceRequest={serviceRequest} serviceRequestId={id} categoryName={serviceRequest?.category.name} />
-                                    <CommentsServiceRequest serviceRequestId={id} />
+                                    <CommentServiceForm service={service} serviceId={id} categoryName={service?.category.name} />
+                                    <ServiceComents serviceId={id} />
                                 </div>
                             </CardContent>
                             <CardFooter>
@@ -166,8 +151,7 @@ export async function getStaticProps(
         }
     }
     const ssg = ssgHelper(auth);
-    await ssg.serviceRequest.findById.prefetch({ id });
-    await ssg.comment.getNumberOfCommentsRequest.prefetch({ serviceRequestId: id });
+    await ssg.service.findById.prefetch({ id });
     return {
         props: {
             trpcState: ssg.dehydrate(),

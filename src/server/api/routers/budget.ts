@@ -14,7 +14,7 @@ export const budgetRouter = createTRPCRouter({
                 serviceRequestId: input.serviceRequestId,
                 authorId: ctx.auth.userId,
             },
-            select:{
+            select: {
                 id: true,
                 description: true,
                 price: true,
@@ -22,9 +22,10 @@ export const budgetRouter = createTRPCRouter({
                 status: true,
                 updatedAt: true,
                 createdAt: true,
+                serviceRequestId: true,
                 author: {
                     select: {
-                        id : true,
+                        id: true,
                         first_name: true,
                         last_name: true,
                         image_url: true,
@@ -37,7 +38,7 @@ export const budgetRouter = createTRPCRouter({
         if (serviceRequest === null) {
             throw new Error("Budget not found");
         }
-        console.log(serviceRequest);
+        // console.log(serviceRequest);
         return serviceRequest;
     }),
     getAll: protectedProcedure.input(
@@ -60,6 +61,7 @@ export const budgetRouter = createTRPCRouter({
                 status: true,
                 updatedAt: true,
                 createdAt: true,
+                serviceRequestId: true,
                 author: {
                     select: {
                         id: true,
@@ -81,15 +83,6 @@ export const budgetRouter = createTRPCRouter({
             serviceRequestId: z.string(),
         })).mutation(({ ctx, input }) => {
 
-            // const primaryemailId = ctx.auth.user?.primaryEmailAddressId;
-            //  const email = clerkClient.emails.createEmail({
-            //      fromEmailName: "asdasd",
-            //      emailAddressId: primaryemailId || "",
-            //      subject: "Nuevo presupuesto",
-            //      body: "Hay un nuevo presupuesto para tu solicitud de servicio",
-            //  })
-
-            console.log(ctx.auth.userId)
             return ctx.prisma.budget.create({
 
                 data: {
@@ -125,4 +118,43 @@ export const budgetRouter = createTRPCRouter({
 
             });
         }),
+        accept: protectedProcedure.input(
+            z.object({
+                budgetId: z.string(),
+                serviceRequestId: z.string(),
+            })).mutation(async({ ctx, input }) => {
+
+                await ctx.prisma.budget.updateMany({
+                    where: {
+                        serviceRequestId: input.serviceRequestId,
+                        id: {
+                            not: input.budgetId,
+                        },
+                    },
+                    data: {
+                        status: "REJECTED",
+                    },
+                });
+
+                return ctx.prisma.budget.update({
+                    where: {
+                        id: input.budgetId,
+                    },
+                    data: {
+                        status: "ACEPTED",
+                    },
+                    include: {
+                       author: {
+                            select: {
+                                id: true,
+                                first_name: true,
+                                last_name: true,
+                                emailAddressId: true,
+                            }
+                        },
+                    },
+                });
+            }),
+
+
 });
