@@ -39,30 +39,9 @@ import { es } from "date-fns/locale";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useAcceptBudget } from "./acceptBudget";
 import AlertCompleteBudgetDialog from "./AlertCompleteBudgetDialog";
-import { string } from "zod";
 
-const data: Payment[] = [
-  {
-    id: "m5gr84i9",
-    price: 316,
-    description: "ken99@yahoo.com",
-    fechaEstimada: "28/7/2023",
-  },
-  {
-    id: "3u1reuv4",
-    price: 242,
-    description: "Abe45@gmail.com",
-    fechaEstimada: "28/7/2023",
-  },
-];
 
-export type Payment = {
-  id: string;
-  price: number;
-  description: string;
-  fechaEstimada: string;
-};
-interface BudgetsTableProps {
+export interface BudgetsTableProps {
   id: string;
   description: string;
   price: number;
@@ -268,9 +247,9 @@ export default function BudgetsTable({ budgets }: Props) {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}

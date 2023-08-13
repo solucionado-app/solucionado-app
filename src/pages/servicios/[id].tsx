@@ -100,7 +100,7 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                   <CardTitle className="flex items-center gap-2">
                     <AvatarSolucionador
                       userId={service.budget.author.id}
-                      image={service.budget.author.image_url ?? ""}
+                      image={service.budget.author.image_url as string ?? ""}
                     />
                     <h2>Comentarios</h2>
                   </CardTitle>
