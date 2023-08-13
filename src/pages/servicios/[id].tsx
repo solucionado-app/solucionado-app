@@ -160,7 +160,7 @@ export async function getStaticProps(
     organization: undefined,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getToken: function (
-      options?: ServerGetTokenOptions | undefined
+      _options?: ServerGetTokenOptions | undefined
     ): Promise<string | null> {
       throw new Error("Function not implemented.");
     },

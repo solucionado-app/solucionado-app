@@ -101,7 +101,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                 <div className="space-y-1">
                   {/* <Budgets /> */}
                   {budgetListSolucionador && serviceRequest && (
-                    <DynamicBudgetTable budgets={budgetListSolucionador} status={serviceRequest?.status} />
+                    <DynamicBudgetTable budgets={budgetListSolucionador} status={serviceRequest?.status} isSolucionador={true} />
                   )}
                   {user?.id !== serviceRequest?.userId && serviceRequest?.status !== 'ACEPTED' && (
                     <BudgetsForm
@@ -180,7 +180,7 @@ export async function getStaticProps(
     organization: undefined,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getToken: function (
-      options?: ServerGetTokenOptions | undefined
+      _options?: ServerGetTokenOptions | undefined
     ): Promise<string | null> {
       throw new Error("Function not implemented.");
     },

@@ -166,9 +166,10 @@ type Status = "PENDING" | "ACEPTED" | "REJECTED" | "FINISHED"
 interface Props {
   budgets: BudgetsTableProps[] | undefined;
   status: Status;
+  isSolucionador?: boolean;
 }
 
-export default function BudgetsTable({ budgets, status }: Props) {
+export default function BudgetsTable({ budgets, status, isSolucionador }: Props) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -176,7 +177,7 @@ export default function BudgetsTable({ budgets, status }: Props) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-  if (status === 'ACEPTED') columnVisibility["actions"] = false;
+  if (status === 'ACEPTED' || isSolucionador) columnVisibility["actions"] = false;
   const table = useReactTable({
     data: budgets ?? [],
     columns,

@@ -1,10 +1,6 @@
 import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Card } from "../ui/card";
-import { format } from "date-fns";
-import { es } from "date-fns/locale";
 import { useUser } from "@clerk/nextjs";
-import Link from "next/link";
 import { getDateAsTwitterFormat } from "~/helpers/date";
 
 interface Author {
