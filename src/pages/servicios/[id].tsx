@@ -9,7 +9,6 @@ import { ssgHelper } from "~/server/api/ssgHelper";
 import { type JwtPayload, type ServerGetTokenOptions } from "@clerk/types";
 import Head from "next/head";
 import { type MyPage } from "~/components/types/types";
-import { Button } from "~/components/ui/button";
 import {
   Card,
   CardContent,
@@ -74,7 +73,7 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
           </div>
           <Tabs defaultValue="info" className="w-full ">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="info">Información del Servicio</TabsTrigger>
+              <TabsTrigger value="info">Información </TabsTrigger>
               <TabsTrigger value="comments">Comentarios</TabsTrigger>
             </TabsList>
             <TabsContent value="info">
@@ -102,10 +101,10 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                       userId={service.budget.author.id}
                       image={service.budget.author.image_url as string ?? ""}
                     />
-                    <h2>Comentarios</h2>
+                    <h2>Mensajes</h2>
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-2">
+                <CardContent className="space-y-2 p-0">
                   <div className="space-y-4">
                     <ServiceComents serviceId={id} />
                   </div>

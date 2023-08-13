@@ -125,7 +125,7 @@ export default function CommentServiceForm({
                   <FormLabel>Mensaje</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Escriba los detalles aquí..."
+                      placeholder=""
                       className="resize-none"
                       {...field}
                     />

@@ -66,6 +66,12 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
           <h1 className="text-4xl font-extrabold tracking-tight">
             Información de Solicitud
           </h1>
+          <p className="text-2xl font-bold tracking-tight">
+            {serviceRequest?.category.name}
+          </p>
+          <p className="text-2xl font-bold tracking-tight">
+            {serviceRequest?.status}
+          </p>
           {serviceRequest?.details &&
             Object.keys(serviceRequest?.details).map((key: string, i) => (
               <p key={i}>
@@ -74,7 +80,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                   {" "}
                   {serviceRequest?.details &&
                     serviceRequest?.details[
-                      key as keyof typeof serviceRequest.details
+                    key as keyof typeof serviceRequest.details
                     ]}
                 </span>
               </p>
@@ -94,10 +100,10 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
               <CardContent className="space-y-2">
                 <div className="space-y-1">
                   {/* <Budgets /> */}
-                  {budgetListSolucionador && (
-                    <DynamicBudgetTable budgets={budgetListSolucionador} />
+                  {budgetListSolucionador && serviceRequest && (
+                    <DynamicBudgetTable budgets={budgetListSolucionador} status={serviceRequest?.status} />
                   )}
-                  {user?.id !== serviceRequest?.userId && (
+                  {user?.id !== serviceRequest?.userId && serviceRequest?.status !== 'ACEPTED' && (
                     <BudgetsForm
                       serviceRequest={serviceRequest}
                       serviceRequestId={id}
@@ -106,7 +112,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
                   {user?.id === serviceRequest?.userId &&
                     !budgetsIsLoading &&
-                    budgets && <DynamicBudgetTable budgets={budgets} />}
+                    budgets && serviceRequest && <DynamicBudgetTable budgets={budgets} status={serviceRequest?.status} />}
                 </div>
               </CardContent>
               <CardFooter>{/* <Button>ver mas</Button> */}</CardFooter>
@@ -120,11 +126,11 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="space-y-1">
-                  <CommentsForm
+                  {serviceRequest?.status !== 'ACEPTED' && <CommentsForm
                     serviceRequest={serviceRequest}
                     serviceRequestId={id}
                     categoryName={serviceRequest?.category.name}
-                  />
+                  />}
                   <CommentsServiceRequest serviceRequestId={id} />
                 </div>
               </CardContent>

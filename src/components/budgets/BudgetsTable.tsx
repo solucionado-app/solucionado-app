@@ -24,7 +24,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { Input } from "~/components/ui/input";
 import {
   Table,
   TableBody,
@@ -33,11 +32,9 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { api } from "~/utils/api";
 import format from "date-fns/format";
 import { es } from "date-fns/locale";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { useAcceptBudget } from "./acceptBudget";
 import AlertCompleteBudgetDialog from "./AlertCompleteBudgetDialog";
 
 
@@ -133,10 +130,8 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
   },
   {
     id: "actions",
-    enableHiding: false,
     cell: ({ row }) => {
       const budget = row.original;
-      const acceptBudget = useAcceptBudget();
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -166,12 +161,14 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
     },
   },
 ];
+type Status = "PENDING" | "ACEPTED" | "REJECTED" | "FINISHED"
 
 interface Props {
   budgets: BudgetsTableProps[] | undefined;
+  status: Status;
 }
 
-export default function BudgetsTable({ budgets }: Props) {
+export default function BudgetsTable({ budgets, status }: Props) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -179,6 +176,7 @@ export default function BudgetsTable({ budgets }: Props) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  if (status === 'ACEPTED') columnVisibility["actions"] = false;
   const table = useReactTable({
     data: budgets ?? [],
     columns,
@@ -197,6 +195,7 @@ export default function BudgetsTable({ budgets }: Props) {
       rowSelection,
     },
   });
+
 
   return (
     <div className="w-full">
@@ -220,6 +219,7 @@ export default function BudgetsTable({ budgets }: Props) {
               .getAllColumns()
               .filter((column) => column.getCanHide())
               .map((column) => {
+                if (column.id === 'actions' && status === 'ACEPTED') return null;
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
@@ -263,14 +263,17 @@ export default function BudgetsTable({ budgets }: Props) {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+                  {row.getVisibleCells().map((cell) => {
+                    return (
+
+                      (cell.id === 'actions' && status === 'ACEPTED') ? null : <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    )
+                  })}
                 </TableRow>
               ))
             ) : (

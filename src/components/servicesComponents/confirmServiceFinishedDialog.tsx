@@ -14,7 +14,7 @@ import { Button } from "../ui/button";
 export const ConfirmServiceFinishedDialog = () => {
   return (
     <AlertDialog>
-      <AlertDialogTrigger>
+      <AlertDialogTrigger asChild>
         <Button className="bg-solBlue hover:bg-solBlue/80">Finalizar</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
