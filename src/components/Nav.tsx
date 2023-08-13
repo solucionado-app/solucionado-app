@@ -202,7 +202,7 @@ export default function Nav() {
                 }  hover:text-sol_lightBLue`}
               href="/"
             >
-              Home
+              Inicio
             </Link>
           </li>
 
@@ -325,7 +325,7 @@ export default function Nav() {
                   className="block rounded p-4 text-sm font-semibold text-zinc-900 hover:bg-slate-300"
                   href="/"
                 >
-                  Home
+                  Inicio
                 </Link>
               </li>
               <li className="mb-1">

@@ -9,7 +9,6 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "~/components/ui/form";
 
@@ -66,7 +65,6 @@ export default function HomeSelect({ categories, isLoading }: props) {
             name="category"
             render={({ field }) => (
               <FormItem className="w-full self-end">
-                <FormLabel className="text-gray-700">Categoria</FormLabel>
                 <FormControl>
                   <Select
                     {...field}
@@ -84,7 +82,7 @@ export default function HomeSelect({ categories, isLoading }: props) {
                     }}
                     className="w-full "
                     isLoading={isLoading}
-                    placeholder="Elige la categorias"
+                    placeholder="Elige una categoria"
                     options={categories}
                     getOptionLabel={(option) => option.name}
                     getOptionValue={(option) => option.id.toString()}
