@@ -241,7 +241,7 @@ export default function ServicesTable({ services }: Props) {
       </div>
       <div className="rounded-md border">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-white">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -271,7 +271,7 @@ export default function ServicesTable({ services }: Props) {
                   }}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="bg-white">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

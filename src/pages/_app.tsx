@@ -7,11 +7,14 @@ import React from "react";
 
 import { Inter } from "@next/font/google";
 import { Toaster } from "~/components/ui/toaster";
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
-
-import { enableReactUse } from '@legendapp/state/config/enableReactUse';
-enableReactUse()
+import { enableReactUse } from "@legendapp/state/config/enableReactUse";
+enableReactUse();
 function MyApp({ Component, pageProps }: MyAppProps) {
   const Layout = Layouts[Component.Layout] ?? ((page: MyPage) => page);
 

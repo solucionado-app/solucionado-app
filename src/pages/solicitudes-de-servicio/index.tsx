@@ -9,9 +9,7 @@ import ServiceRequestTable from "~/components/servicerequest/ServiceRequestTable
 const ServiceRequest: MyPage = () => {
   const { isLoaded, isSignedIn } = useUser();
   if (!isLoaded && isSignedIn)
-    return (
-      <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
-    );
+    return <Spinner className="h-12 w-12 text-solBlue" />;
 
   const apitrcp = api.serviceRequest;
   const {
@@ -31,9 +29,7 @@ const ServiceRequest: MyPage = () => {
           <h1 className="text-5xl font-extrabold tracking-tight">
             Solicitudes de Servicio
           </h1>
-          {isLoading && (
-            <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
-          )}
+          {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
           {/* {services && services?.map((service) => (
 
                         <div key={service.id} className="w-full">

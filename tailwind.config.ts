@@ -2,11 +2,11 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   theme: {
     container: {
       center: true,
@@ -16,6 +16,9 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-inter)"],
+      },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },
@@ -31,12 +34,12 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       colors: {
-        solYellow: '#ecbb2c',
-        solBlue: '#154492', 
-        sol_lightBlue: '#3090D6', 
-        sol_darkBlue: '#032154', 
+        solYellow: "#ecbb2c",
+        solBlue: "#154492",
+        sol_lightBlue: "#3090D6",
+        sol_darkBlue: "#032154",
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};

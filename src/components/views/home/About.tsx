@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
+import Spinner from "~/components/ui/spinner";
 
 interface ViewProps {
   categories: CategoriesQueryResponse[] | undefined;
@@ -130,9 +131,7 @@ export const About: React.FC<ViewProps> = ({ categories, isLoading }) => {
             </div>
           </div>
           <div className="flex w-full items-center justify-center">
-            {isLoading && (
-              <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
-            )}
+            {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
             {categories && (
               <>
                 <HomeSelect categories={categories} isLoading={isLoading} />{" "}
@@ -141,9 +140,7 @@ export const About: React.FC<ViewProps> = ({ categories, isLoading }) => {
           </div>
 
           <div className="flex flex-row flex-wrap justify-center gap-4">
-            {isLoading && (
-              <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
-            )}
+            {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
             {categories?.map((categorie) => (
               <Link key={categorie.id} href={"/solucionar/" + categorie.slug}>
                 <div className="relative h-52 w-[319px]  ">
