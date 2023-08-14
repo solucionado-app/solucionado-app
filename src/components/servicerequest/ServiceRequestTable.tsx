@@ -121,8 +121,12 @@ export const columns: ColumnDef<ServiceRequest>[] = [
               Copy payment ID
             </DropdownMenuItem> */}
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Contactar</DropdownMenuItem>
-            <DropdownMenuItem>Contratar</DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
+              Contactar
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
+              Contratar
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -222,9 +226,9 @@ export default function ServiceRequestTable({ serviceRequests }: Props) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
+      <div className="rounded border">
+        <Table className="rounded-md">
+          <TableHeader className="rounded-md bg-white">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -254,7 +258,7 @@ export default function ServiceRequestTable({ serviceRequests }: Props) {
                   }}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="rounded-md bg-white">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -267,7 +271,7 @@ export default function ServiceRequestTable({ serviceRequests }: Props) {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-24 bg-white text-center text-gray-600"
                 >
                   Sin Resultados.
                 </TableCell>

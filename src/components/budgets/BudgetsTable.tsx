@@ -37,7 +37,6 @@ import { es } from "date-fns/locale";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import AlertCompleteBudgetDialog from "./AlertCompleteBudgetDialog";
 
-
 export interface BudgetsTableProps {
   id: string;
   description: string;
@@ -154,14 +153,16 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
             >
               Aceptar
             </DropdownMenuItem> */}
-            <DropdownMenuItem>Rechazar</DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
+              Rechazar
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
     },
   },
 ];
-type Status = "PENDING" | "ACEPTED" | "REJECTED" | "FINISHED"
+type Status = "PENDING" | "ACEPTED" | "REJECTED" | "FINISHED";
 
 interface Props {
   budgets: BudgetsTableProps[] | undefined;
@@ -169,7 +170,11 @@ interface Props {
   isSolucionador?: boolean;
 }
 
-export default function BudgetsTable({ budgets, status, isSolucionador }: Props) {
+export default function BudgetsTable({
+  budgets,
+  status,
+  isSolucionador,
+}: Props) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -177,7 +182,8 @@ export default function BudgetsTable({ budgets, status, isSolucionador }: Props)
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-  if (status === 'ACEPTED' || isSolucionador) columnVisibility["actions"] = false;
+  if (status === "ACEPTED" || isSolucionador)
+    columnVisibility["actions"] = false;
   const table = useReactTable({
     data: budgets ?? [],
     columns,
@@ -196,7 +202,6 @@ export default function BudgetsTable({ budgets, status, isSolucionador }: Props)
       rowSelection,
     },
   });
-
 
   return (
     <div className="w-full">
@@ -220,7 +225,8 @@ export default function BudgetsTable({ budgets, status, isSolucionador }: Props)
               .getAllColumns()
               .filter((column) => column.getCanHide())
               .map((column) => {
-                if (column.id === 'actions' && status === 'ACEPTED') return null;
+                if (column.id === "actions" && status === "ACEPTED")
+                  return null;
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
@@ -239,7 +245,7 @@ export default function BudgetsTable({ budgets, status, isSolucionador }: Props)
       </div>
       <div className="rounded-md border">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-white">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -248,9 +254,9 @@ export default function BudgetsTable({ budgets, status, isSolucionador }: Props)
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}
@@ -265,15 +271,15 @@ export default function BudgetsTable({ budgets, status, isSolucionador }: Props)
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => {
-                    return (
-
-                      (cell.id === 'actions' && status === 'ACEPTED') ? null : <TableCell key={cell.id}>
+                    return cell.id === "actions" &&
+                      status === "ACEPTED" ? null : (
+                      <TableCell key={cell.id} className="bg-white">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
                         )}
                       </TableCell>
-                    )
+                    );
                   })}
                 </TableRow>
               ))
@@ -281,7 +287,7 @@ export default function BudgetsTable({ budgets, status, isSolucionador }: Props)
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-24 bg-white text-center text-gray-600"
                 >
                   No results.
                 </TableCell>

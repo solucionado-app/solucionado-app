@@ -17,6 +17,7 @@ export const serviceRouter = createTRPCRouter({
           id: true,
           description: true,
           status: true,
+          createdAt: true,
           budget: {
             select: {
               id: true,
