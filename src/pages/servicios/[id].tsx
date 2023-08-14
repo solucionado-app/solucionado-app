@@ -63,22 +63,11 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
       <div className="flex w-full  max-w-7xl flex-col items-center justify-center gap-8 px-4 py-16">
         <div className="w-full max-w-7xl">
           {" "}
-          <div className="w-full space-y-2 py-5 text-xl font-semibold shadow-sm">
+          <div className="w-full space-y-2 py-5 text-xl font-semibold shadow-none">
             <div className="flex w-full flex-wrap items-center justify-between gap-2">
               <h1 className="text-4xl font-extrabold tracking-tight text-gray-800">
                 Información del Servicio
               </h1>
-              {service.status === "FINISHED" ? (
-                <ServiceReviewModal open={open} setOpen={setOpen} />
-              ) : (
-                <ConfirmServiceFinishedDialog
-                  serviceId={id}
-                  refetch={refetch}
-                  setOpen={setOpen}
-                />
-              )}
-            </div>
-            <div className="flex flex-col gap-2">
               <div>
                 <Badge
                   className="bg-sol_lightBlue text-white hover:bg-sol_lightBlue"
@@ -87,47 +76,37 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                   {service.category.name}
                 </Badge>
               </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-wrap items-center gap-1">
+                <h2 className="text-lg text-gray-500 ">Costo:</h2>
+                <p className="text-sm font-bold text-solBlue">
+                  ${service.budget.price}
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-1">
+                <h2 className="text-lg text-gray-500 ">Fecha de Solicitud:</h2>
+                <p className="text-sm font-bold text-solBlue">
+                  {format(service.createdAt, "dd/MM/yyyy")}
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-1">
+                <h2 className="text-lg text-gray-500 ">Estado de Solicitud:</h2>
+                <p className="text-sm font-bold text-solBlue">
+                  {formatStatusToSpanish(service.status)}
+                </p>
+              </div>
+
               <div className="text-sm text-gray-600">{service.description}</div>
             </div>
           </div>
-          <Tabs defaultValue="info" className="w-full ">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="info">Información </TabsTrigger>
-              <TabsTrigger value="comments">Comentarios</TabsTrigger>
+          <Tabs defaultValue="comments" className="w-full ">
+            <TabsList className="w-full">
+              <TabsTrigger value="comments" className="w-full">
+                Comentarios y Reseñas
+              </TabsTrigger>
             </TabsList>
-            <TabsContent value="info">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Presupuestos</CardTitle>
-                  <CardDescription className=" flex flex-col space-y-2">
-                    <div className="mt-4 flex items-center gap-2">
-                      <h2 className="text-lg text-gray-500 ">Costo:</h2>
-                      <p className="text-sm font-bold text-solBlue">
-                        ${service.budget.price}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <h2 className="text-lg text-gray-500 ">
-                        Fecha de Solicitud:
-                      </h2>
-                      <p className="text-sm font-bold text-solBlue">
-                        {format(service.createdAt, "dd/MM/yyyy")}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <h2 className="text-lg text-gray-500 ">
-                        Estado de Solicitud:
-                      </h2>
-                      <p className="text-sm font-bold text-solBlue">
-                        {formatStatusToSpanish(service.status)}
-                      </p>
-                    </div>
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-2 py-2"></CardContent>
-                <CardFooter></CardFooter>
-              </Card>
-            </TabsContent>
+
             <TabsContent value="comments">
               <Card className="bg-slate-100">
                 <CardHeader className="rounded-t-lg bg-white">
@@ -144,12 +123,25 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                     <ServiceComents serviceId={id} />
                   </div>
                 </CardContent>
-                <CardFooter className="rounded-b-lg border-t-gray-300 bg-white py-4">
-                  <CommentServiceForm
-                    service={service}
-                    serviceId={id}
-                    categoryName={service.category.name}
-                  />
+                <CardFooter className="flex flex-col space-y-4 rounded-b-lg border-t-gray-300 bg-white py-4">
+                  <div className="">
+                    {service.status === "FINISHED" ? (
+                      <ServiceReviewModal open={open} setOpen={setOpen} />
+                    ) : (
+                      <>
+                        <CommentServiceForm
+                          service={service}
+                          serviceId={id}
+                          categoryName={service.category.name}
+                        />
+                        <ConfirmServiceFinishedDialog
+                          serviceId={id}
+                          refetch={refetch}
+                          setOpen={setOpen}
+                        />
+                      </>
+                    )}
+                  </div>
                 </CardFooter>
               </Card>
             </TabsContent>

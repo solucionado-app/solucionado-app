@@ -51,7 +51,9 @@ export const ConfirmServiceFinishedDialog = ({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="bg-solBlue hover:bg-solBlue/80">Finalizar</Button>
+        <Button className="bg-solBlue hover:bg-solBlue/80">
+          Finalizar Servicio
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

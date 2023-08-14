@@ -57,7 +57,7 @@ export const ReviewServiceForm = () => {
               <Button
                 disabled={!isSignedIn}
                 type="submit"
-                className="bg-solBlue text-white"
+                className="bg-yellow-400 text-black hover:bg-yellow-400/80"
               >
                 Enviar
               </Button>

@@ -19,7 +19,7 @@ export default function CommentsServiceRequest({ serviceId }: props) {
   while (++i <= len) rows.push(i);
 
   return (
-    <div className="w-full">
+    <div className="w-full py-4">
       <div className="flex flex-col gap-2">
         {comentsLoading &&
           rows.map((_row, i) => (
