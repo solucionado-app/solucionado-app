@@ -54,11 +54,7 @@ export default function AlertDialogDemo({ budget }: Props) {
             },
             payment_methods: {
                 excluded_payment_methods: [{}],
-                excluded_payment_types: [{}],
-            },
-            shipments: {
-                free_methods: [{}],
-                receiver_address: {},
+                default_payment_method_id: 'account_money',
             },
             metadata: {
                 user_id: user?.id as string,

@@ -16,6 +16,7 @@ export default function Nav() {
     undefined,
     {
       enabled: !!user.isSignedIn,
+      staleTime: Infinity,
     }
   );
   const handleBurgerClick = () => {

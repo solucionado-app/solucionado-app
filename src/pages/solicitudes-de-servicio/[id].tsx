@@ -38,13 +38,17 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   id,
 }) => {
   const { user } = useUser();
-  const request = api.serviceRequest.findById.useQuery({ id });
+  const request = api.serviceRequest.findById.useQuery({ id }, {
+    staleTime: Infinity,
+  });
   const { data: serviceRequest } = request;
 
   const DynamicBudgetTable = budgetTableDynamic();
 
   const { data: budgets, isLoading: budgetsIsLoading } =
-    api.budget.getAll.useQuery({ serviceRequestId: id });
+    api.budget.getAll.useQuery({ serviceRequestId: id }, {
+      staleTime: Infinity,
+    });
 
   const { data: budgetListSolucionador } = api.budget.findByRequestId.useQuery(
     { serviceRequestId: id },

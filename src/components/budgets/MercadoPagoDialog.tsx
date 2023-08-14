@@ -30,9 +30,9 @@ export default function MercadoPago({ open, onClose, preferenceId, setIsloading,
 
 
     //eslint disable-next-line @typescript-eslint/no-unused-vars
-    const onSubmit = async (formData: any) => {
+    const onSubmit = async ({ selectedPaymentMethod, formData }: any) => {
         // callback llamado al hacer clic en el botón enviar datos
-        console.log(formData);
+        console.log(selectedPaymentMethod);
         return new Promise<void>((resolve, reject) => {
             fetch("/api/mercadopago/payment", {
                 method: "POST",
@@ -75,7 +75,7 @@ export default function MercadoPago({ open, onClose, preferenceId, setIsloading,
 
 
     return (
-        <Dialog open={open} onOpenChange={onClose} modal >
+        <Dialog defaultOpen={true} >
             <DialogContent>
 
                 {/* <div>
@@ -91,7 +91,6 @@ export default function MercadoPago({ open, onClose, preferenceId, setIsloading,
                     initialization={initialization}
                     customization={{
                         paymentMethods: {
-                            debitCard: "all",
                             mercadoPago: ['wallet_purchase'],
                         },
 
