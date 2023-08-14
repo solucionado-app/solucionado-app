@@ -36,7 +36,7 @@ export const ProfileData = () => {
       toast({
         title: "Imagen actualizada",
         description: "",
-        variant: "default",
+        variant: "success",
         duration: 3000,
       });
     } catch (error) {

@@ -102,4 +102,14 @@ export const serviceRouter = createTRPCRouter({
         },
       });
     }),
+  updateStatus: protectedProcedure
+    .input(z.object({ serviceId: z.string() }))
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.service.update({
+        where: { id: input.serviceId },
+        data: {
+          status: "FINISHED",
+        },
+      });
+    }),
 });
