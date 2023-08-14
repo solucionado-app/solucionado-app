@@ -63,9 +63,9 @@ export default function AlertDialogDemo({ budget }: Props) {
                 price: budget.price,
             },
             back_urls: {
-                success: "localhost:3000/servicios",
-                failure: "localhost:3000/error",
-                pending: "localhost:3000/pending",
+                success: `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}/servicios`,
+                failure: `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}/error`,
+                pending: `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}/servicios`,
             },
             differential_pricing: {},
         };
