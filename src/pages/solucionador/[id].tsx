@@ -2,7 +2,7 @@
 import { Ban, Loader2 } from "lucide-react";
 import type { SignedInAuthObject } from "@clerk/nextjs/dist/types/server";
 import type { GetStaticPaths, GetStaticPropsContext } from "next";
-import type { JwtPayload, ServerGetTokenOptions } from "@clerk/types";
+import type { JwtPayload } from "@clerk/types";
 import React from "react";
 import { SolucionadorProfileCard } from "~/components/profile/SolucionadorProfileCard";
 import { SolucionadorTabs } from "~/components/profile/SolucionadorTabs";

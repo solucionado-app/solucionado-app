@@ -63,6 +63,14 @@ async function handler(request:Request) {
                 },
             });
             console.log(budgetAprobbed);
+            await prisma.serviceRequest.update({
+                where: {
+                    id: budget.serviceRequestId,
+                },
+                data: {
+                    status: 'ACEPTED',
+                },
+            });
             try {
                 const newService = await prisma.service.create({
                     data: {

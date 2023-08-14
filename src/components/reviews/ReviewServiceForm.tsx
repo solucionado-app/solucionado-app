@@ -13,7 +13,6 @@ import {
 } from "../ui/form";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
-import { api } from "~/utils/api";
 const FormSchema = z.object({
   description: z
     .string()

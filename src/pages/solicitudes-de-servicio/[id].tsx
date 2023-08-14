@@ -38,13 +38,17 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   id,
 }) => {
   const { user } = useUser();
-  const request = api.serviceRequest.findById.useQuery({ id });
+  const request = api.serviceRequest.findById.useQuery({ id }, {
+    staleTime: Infinity,
+  });
   const { data: serviceRequest } = request;
 
   const DynamicBudgetTable = budgetTableDynamic();
 
   const { data: budgets, isLoading: budgetsIsLoading } =
-    api.budget.getAll.useQuery({ serviceRequestId: id });
+    api.budget.getAll.useQuery({ serviceRequestId: id }, {
+      staleTime: Infinity,
+    });
 
   const { data: budgetListSolucionador } = api.budget.findByRequestId.useQuery(
     { serviceRequestId: id },
@@ -66,6 +70,12 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
           <h1 className="text-4xl font-extrabold tracking-tight">
             Información de Solicitud
           </h1>
+          <p className="text-2xl font-bold tracking-tight">
+            {serviceRequest?.category.name}
+          </p>
+          <p className="text-2xl font-bold tracking-tight">
+            {serviceRequest?.status}
+          </p>
           {serviceRequest?.details &&
             Object.keys(serviceRequest?.details).map((key: string, i) => (
               <p key={i}>
@@ -74,7 +84,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                   {" "}
                   {serviceRequest?.details &&
                     serviceRequest?.details[
-                      key as keyof typeof serviceRequest.details
+                    key as keyof typeof serviceRequest.details
                     ]}
                 </span>
               </p>
@@ -94,10 +104,10 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
               <CardContent className="space-y-2">
                 <div className="space-y-1">
                   {/* <Budgets /> */}
-                  {budgetListSolucionador && (
-                    <DynamicBudgetTable budgets={budgetListSolucionador} />
+                  {budgetListSolucionador && serviceRequest && (
+                    <DynamicBudgetTable budgets={budgetListSolucionador} status={serviceRequest?.status} isSolucionador={true} />
                   )}
-                  {user?.id !== serviceRequest?.userId && (
+                  {user?.id !== serviceRequest?.userId && serviceRequest?.status !== 'ACEPTED' && (
                     <BudgetsForm
                       serviceRequest={serviceRequest}
                       serviceRequestId={id}
@@ -106,7 +116,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
                   {user?.id === serviceRequest?.userId &&
                     !budgetsIsLoading &&
-                    budgets && <DynamicBudgetTable budgets={budgets} />}
+                    budgets && serviceRequest && <DynamicBudgetTable budgets={budgets} status={serviceRequest?.status} />}
                 </div>
               </CardContent>
               <CardFooter>{/* <Button>ver mas</Button> */}</CardFooter>
@@ -120,11 +130,11 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="space-y-1">
-                  <CommentsForm
+                  {serviceRequest?.status !== 'ACEPTED' && <CommentsForm
                     serviceRequest={serviceRequest}
                     serviceRequestId={id}
                     categoryName={serviceRequest?.category.name}
-                  />
+                  />}
                   <CommentsServiceRequest serviceRequestId={id} />
                 </div>
               </CardContent>
@@ -174,7 +184,7 @@ export async function getStaticProps(
     organization: undefined,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getToken: function (
-      options?: ServerGetTokenOptions | undefined
+      _options?: ServerGetTokenOptions | undefined
     ): Promise<string | null> {
       throw new Error("Function not implemented.");
     },

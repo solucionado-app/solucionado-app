@@ -121,6 +121,7 @@ model Budget {
   userId           String
   authorId         String
   estimatedAt      DateTime
+  status_detail    String?
   paidAt           DateTime?
   serviceRequestId String
   user             User           @relation(fields: [userId], references: [externalId])

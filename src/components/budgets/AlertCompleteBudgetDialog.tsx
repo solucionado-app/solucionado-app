@@ -54,11 +54,7 @@ export default function AlertDialogDemo({ budget }: Props) {
             },
             payment_methods: {
                 excluded_payment_methods: [{}],
-                excluded_payment_types: [{}],
-            },
-            shipments: {
-                free_methods: [{}],
-                receiver_address: {},
+                default_payment_method_id: 'account_money',
             },
             metadata: {
                 user_id: user?.id as string,
@@ -67,9 +63,9 @@ export default function AlertDialogDemo({ budget }: Props) {
                 price: budget.price,
             },
             back_urls: {
-                success: "localhost:3000/servicios",
-                failure: "localhost:3000/error",
-                pending: "localhost:3000/pending",
+                success: `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}/servicios`,
+                failure: `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}/error`,
+                pending: `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}/servicios`,
             },
             differential_pricing: {},
         };

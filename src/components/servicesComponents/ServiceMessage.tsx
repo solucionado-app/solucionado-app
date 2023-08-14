@@ -1,10 +1,6 @@
 import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Card } from "../ui/card";
-import { format } from "date-fns";
-import { es } from "date-fns/locale";
 import { useUser } from "@clerk/nextjs";
-import Link from "next/link";
 import { getDateAsTwitterFormat } from "~/helpers/date";
 
 interface Author {
@@ -31,14 +27,12 @@ export default function ServiceMessage({ comment }: Props) {
     <Card
       key={comment.id}
       id={comment.id}
-      className={`flex gap-2 bg-transparent  ${
-        own ? "items-end justify-end " : ""
-      } border-none  p-5 shadow-none`}
+      className={`flex gap-2 bg-transparent  ${own ? "items-end justify-end " : ""
+        } border-none p-2  shadow-none`}
     >
       <div
-        className={`${
-          own ? "bg-blue-200" : "bg-emerald-300"
-        } rounded-full px-8 py-2`}
+        className={`${own ? "bg-blue-200" : "bg-emerald-300"
+          } rounded-xl px-4 py-2.5`}
       >
         <div className="flex flex-col items-start font-semibold">
           {/* {!own && (
@@ -54,10 +48,10 @@ export default function ServiceMessage({ comment }: Props) {
         </div>
         <div className="flex flex-col">
           {" "}
-          <p className="text-sm font-semibold text-black">{comment.content}</p>
-          <p className="text-sm  text-gray-600">
+          <p className="text-sm font-normal text-black">{comment.content}</p>
+          <span className="text-sm font-light text-gray-600">
             {getDateAsTwitterFormat(comment.createdAt)}
-          </p>
+          </span>
         </div>
       </div>
     </Card>
