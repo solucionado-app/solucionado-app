@@ -118,7 +118,7 @@ export const commentRouter = createTRPCRouter({
     create: protectedProcedure.input(
         z.object({
             description: z.string(),
-            userId: z.string(),
+            userId: z.string().optional(),
             serviceRequestId: z.string().optional(),
             serviceId: z.string().optional(),
         })).mutation(({ ctx, input }) => {
@@ -137,22 +137,26 @@ export const commentRouter = createTRPCRouter({
                     },
                 }
             }
+            const userConect = {
+                user: {
+                    connect: {
+                        id: input?.userId,
+                    },
+                }
+            }
 
 
             // console.log(ctx.auth.userId)
             return ctx.prisma.comment.create({
                 data: {
                     content: input.description,
-                    user: {
-                        connect: {
-                            externalId: input.userId,
-                        },
-                    },
+
                     author: {
                         connect: {
                             externalId: ctx.auth.userId,
                         },
                     },
+                    ...input.userId ? userConect : null,
                     ...input.serviceRequestId ? requestConect : null,
                     ...input.serviceId ? serviceConnect : null,
 

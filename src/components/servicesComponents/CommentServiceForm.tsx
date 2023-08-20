@@ -93,7 +93,6 @@ export default function CommentServiceForm({
       {
         serviceId: serviceId,
         description: data.description,
-        userId: service?.budget.author.id as string,
       },
       {
         onSuccess: () => {

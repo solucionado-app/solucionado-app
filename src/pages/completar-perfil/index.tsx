@@ -1,4 +1,5 @@
 import { DialogPortal } from "@radix-ui/react-dialog";
+import DialogRegisterSolucionador from "~/components/auth/DialogRegisterSolucionador";
 import { RegisterSolucionadorUser } from "~/components/auth/RegisterSolucionadorUser";
 import RegisterUserDialog from "~/components/auth/RegisterUserDialog";
 import { type MyPage } from "~/components/types/types";
@@ -32,7 +33,7 @@ const Page: MyPage = () => {
                         </div>
                         <div className="flex flex-col w-full mt-5 justify-center md:flex-row gap-10 items-center">
                             <RegisterUserDialog />
-                            <Dialog>
+                            {/* <Dialog>
                                 <DialogTrigger className="w-full max-w-md h-72 flex flex-col justify-between items-center text-center p-5 bg-gray-100 border-4 border-orange-brand rounded-lg shadow-md dark:bg-gray-800 ">
 
                                     <h5 className="text-center  cursor-pointer text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Anunciarme y prestar mis servicios</h5>
@@ -61,8 +62,8 @@ const Page: MyPage = () => {
                                         <RegisterSolucionadorUser />
                                     </DialogContent>
                                 </DialogPortal>
-                            </Dialog>
-
+                            </Dialog> */}
+                            <DialogRegisterSolucionador />
                         </div>
 
                     </div >

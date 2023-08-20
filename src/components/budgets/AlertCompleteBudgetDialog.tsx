@@ -39,22 +39,19 @@ export default function AlertDialogDemo({ budget }: Props) {
         const requestData = {
             items: [
                 {
+                    id: budget.id,
                     title: `Pagar Presupuesto a ${budget.author.first_name || ""} por ${budget.price} `,
                     description: budget.description,
                     picture_url: "http://www.myapp.com/myimage.jpg",
                     category_id: "car_electronics",
                     quantity: 1,
                     currency_id: "ARS",
-                    unit_price: 10,
+                    unit_price: budget.price,
                 },
             ],
             payer: {
                 name: user?.firstName as string,
                 surname: user?.lastName as string,
-            },
-            payment_methods: {
-                excluded_payment_methods: [{}],
-                default_payment_method_id: 'account_money',
             },
             metadata: {
                 user_id: user?.id as string,
@@ -62,6 +59,9 @@ export default function AlertDialogDemo({ budget }: Props) {
                 description: budget.description,
                 price: budget.price,
             },
+            marketplace: process.env.NEXT_PUBLIC_MP_CLIENT_ID as string,
+            marketplace_fee: budget.price * 0.1,
+            notification_url: `${process.env.NEXT_PUBLIC_DOMAIN as string}/api/webhooks/mercadopago/notificacion`,
             back_urls: {
                 success: `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}/servicios`,
                 failure: `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}/error`,
@@ -70,15 +70,14 @@ export default function AlertDialogDemo({ budget }: Props) {
             differential_pricing: {},
         };
         try {
-            const response = await fetch("https://api.mercadopago.com/checkout/preferences", {
+            const response = await fetch(`https://api.mercadopago.com/checkout/preferences`, {
                 method: "POST",
                 headers: {
-                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_MP_SECRET_TOKEN as string}`,
+                    Authorization: `Bearer ${budget.author.mpCode?.access_token as string}`,
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(requestData),
             });
-
             const data = await response.json();
             const { id } = data
             console.log(data);
@@ -121,6 +120,7 @@ export default function AlertDialogDemo({ budget }: Props) {
 
             {preference$.get().id !== "" && <DynamicMercadoPago
                 open={isOpen}
+                publickey={budget.author.mpCode?.public_key as string}
                 isLoading={isLoading}
                 setIsloading={() => setisLoading(false)}
                 onClose={() => setIsOpen(false)}

@@ -10,6 +10,7 @@ import { enableReactComponents } from "@legendapp/state/config/enableReactCompon
 import { trpc } from '~/utils/trpc';
 enableReactComponents()
 interface Props {
+    publickey: string
     open: boolean
     onClose?: () => void
     preferenceId: string
@@ -17,51 +18,49 @@ interface Props {
     setIsloading: () => void
 }
 
-export default function MercadoPago({ open, onClose, preferenceId, setIsloading, isLoading }: Props) {
+export default function MercadoPago({ publickey, open, onClose, preferenceId, setIsloading, isLoading }: Props) {
 
-
-    initMercadoPago(process.env.NEXT_PUBLIC_MP_PUBLIC_KEY as string, { locale: 'es-AR' });
-    const initialization = {
-        amount: 10000,
-        preferenceId: preferenceId,
-    };
+    initMercadoPago(publickey, { locale: 'es-AR' });
 
     const isloading$ = observable(true)
 
 
     //eslint disable-next-line @typescript-eslint/no-unused-vars
-    const onSubmit = async ({ selectedPaymentMethod, formData }: any) => {
+    const onSubmit = async (formData: any) => {
         // callback llamado al hacer clic en el botón enviar datos
-        console.log(selectedPaymentMethod);
-        return new Promise<void>((resolve, reject) => {
-            fetch("/api/mercadopago/payment", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            })
-                .then((response) => {
-                    console.log(response)
+        console.log(formData);
+        if (formData.formData) {
+            return new Promise<void>((resolve, reject) => {
+                fetch("/api/mercadopago/payment", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(formData),
+                })
+                    .then((response) => {
+                        console.log(response)
 
 
-                    response.json()
-                })
-                .then((response) => {
-                    // recibir el resultado del pago
-                    console.log(response);
-                    resolve();
-                })
-                .catch((error) => {
-                    // manejar la respuesta de error al intentar crear el pago
-                    console.log(error);
-                    reject();
-                });
-        });
+                        response.json()
+                    })
+                    .then((response) => {
+                        // recibir el resultado del pago
+                        console.log(response);
+                        resolve();
+                    })
+                    .catch((error) => {
+                        // manejar la respuesta de error al intentar crear el pago
+                        console.log(error);
+                        reject();
+                    });
+            });
+        }
     };
     const onError = async (error: any) => {
         // callback llamado para todos los casos de error de Brick
         console.log(error);
+
     };
     const onReady = () => {
         /*
@@ -88,10 +87,14 @@ export default function MercadoPago({ open, onClose, preferenceId, setIsloading,
                     {<Skeleton className='h-96' />}
                 </Reactive.div>
                 <Payment
-                    initialization={initialization}
+                    initialization={{
+                        amount: 10000,
+                        preferenceId: preferenceId,
+                    }}
                     customization={{
                         paymentMethods: {
                             mercadoPago: ['wallet_purchase'],
+                            debitCard: 'all',
                         },
 
                     }}

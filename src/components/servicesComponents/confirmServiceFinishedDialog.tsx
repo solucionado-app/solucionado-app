@@ -11,7 +11,25 @@ import {
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import { Button } from "../ui/button";
-export const ConfirmServiceFinishedDialog = () => {
+import { api } from "~/utils/api";
+import { trpc } from "~/utils/trpc";
+
+interface Props {
+  serviceId: string;
+}
+
+export const ConfirmServiceFinishedDialog = ({ serviceId }: Props) => {
+
+  const { mutate, isLoading } = api.service.finish.useMutation()
+  const utils = trpc.useContext()
+  const handleFinishService = () => {
+    mutate({ serviceId: serviceId }, {
+      onSuccess: () => {
+        void utils.service.findById.invalidate({ id: serviceId })
+      }
+    })
+  }
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -27,7 +45,7 @@ export const ConfirmServiceFinishedDialog = () => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction className="bg-solBlue hover:bg-solBlue/80">
+          <AlertDialogAction onClick={handleFinishService} className="bg-solBlue hover:bg-solBlue/80">
             Finalizar
           </AlertDialogAction>
         </AlertDialogFooter>

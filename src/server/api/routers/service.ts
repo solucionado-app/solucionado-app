@@ -40,8 +40,25 @@ export const serviceRouter = createTRPCRouter({
         },
       });
     }),
+    finish: protectedProcedure.input(
+      z.object({
+        serviceId: z.string(),
+      })
+    ).mutation(({ ctx, input }) => {
+      return ctx.prisma.service.update({
+        where: {
+          id: input.serviceId,
+        },
+        data: {
+          status: "FINISHED",
+        },
+      });
+    }),
   getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.service.findMany({
+      orderBy: {
+          createdAt: "desc",
+      },
       where: {
         budget: {
           userId: ctx.auth.userId,

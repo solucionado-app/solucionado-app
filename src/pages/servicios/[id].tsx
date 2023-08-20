@@ -27,13 +27,14 @@ import { ReviewServiceForm } from "~/components/reviews/ReviewServiceForm";
 import { Badge } from "~/components/ui/badge";
 import { AvatarSolucionador } from "~/components/ui/avatarSolucionador";
 import { ConfirmServiceFinishedDialog } from "~/components/servicesComponents/confirmServiceFinishedDialog";
+import { useUser } from "@clerk/nextjs";
 
 const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   id,
 }) => {
   const request = api.service.findById.useQuery({ id });
   const { data: service } = request;
-
+  const { user } = useUser()
   if (!service) {
     return <div></div>;
   }
@@ -55,7 +56,7 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                 Información del Servicio
               </h1>
               {/* <Button variant="destructive">Finalizar</Button> */}
-              <ConfirmServiceFinishedDialog />
+              {user && service && user?.id !== service?.budget.author.id && < ConfirmServiceFinishedDialog serviceId={service.id} />}
             </div>
             <div className="flex flex-col gap-2">
               <div>
@@ -66,21 +67,29 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                   {service?.category.name}
                 </Badge>
               </div>
+              <div>
+                <Badge
+                  className="bg-sol_lightBlue text-white"
+                  variant="secondary"
+                >
+                  {service?.status}
+                </Badge>
+              </div>
               <div className="text-sm text-gray-600">
                 {service?.description}
               </div>
             </div>
           </div>
-          <Tabs defaultValue="info" className="w-full ">
+          <Tabs defaultValue="comments" className="w-full ">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="info">Información </TabsTrigger>
+              <TabsTrigger value="review">Reseña </TabsTrigger>
               <TabsTrigger value="comments">Comentarios</TabsTrigger>
             </TabsList>
-            <TabsContent value="info">
+            {service?.status === "FINISHED" && <TabsContent value="info">
               <Card>
                 <CardHeader>
-                  <CardTitle>Presupuestos</CardTitle>
-                  <CardDescription>Información</CardDescription>
+                  <CardTitle>Reseña</CardTitle>
+                  <CardDescription>Porfavor deja una reseña sobre el servicio del solucionador</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-2 py-2">
                   {service?.status === "FINISHED" && (
@@ -93,6 +102,7 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                 <CardFooter></CardFooter>
               </Card>
             </TabsContent>
+            }
             <TabsContent value="comments">
               <Card className="bg-slate-100">
                 <CardHeader className="rounded-t-lg bg-white">

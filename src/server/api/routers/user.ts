@@ -61,14 +61,13 @@ export const userRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.auth.userId;
-      console.log(userId);
 
       const user = await ctx.prisma.user.update({
         where: {
-          id: userId,
+          id: ctx.auth.userId,
         },
         data: {
+          externalId: ctx.auth.userId,
           phone: input.phone,
           dni: input?.dni,
           address: input?.address,
@@ -84,6 +83,8 @@ export const userRouter = createTRPCRouter({
           },
         },
       });
+      console.log(user);
+
       return user;
     }),
 });

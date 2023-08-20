@@ -28,6 +28,7 @@ model User {
   notificationId       String?
   birthDate            DateTime?
   emailAddressId       String?
+  mpCode               Json?
   serviceRequests      ServiceRequest[]
   categories           Category[]
   comentsmade          Comment[]        @relation("comentAuthor")
@@ -159,11 +160,11 @@ model Comment {
   content          String
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
-  userId           String
+  userId           String?
   authorId         String
   serviceRequestId String?
   serviceId        String?
-  user             User            @relation("comentUser", fields: [userId], references: [externalId])
+  user             User?           @relation("comentUser", fields: [userId], references: [externalId])
   author           User            @relation("comentAuthor", fields: [authorId], references: [externalId])
   serviceRequest   ServiceRequest? @relation(fields: [serviceRequestId], references: [id])
   service          Service?        @relation(fields: [serviceId], references: [id])

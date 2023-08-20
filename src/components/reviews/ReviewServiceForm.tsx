@@ -37,7 +37,7 @@ export const ReviewServiceForm = () => {
       <>
         <Form {...form}>
           <div className="flex w-full flex-col gap-2">
-            <h2 className="text-xl font-bold sm:text-2xl">Dejar una reseña</h2>
+
             <form action="" className="flex flex-col gap-2">
               <FormField
                 control={form.control}

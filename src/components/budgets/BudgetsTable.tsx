@@ -53,6 +53,7 @@ type Author = {
   id: string;
   first_name: string | null;
   last_name: string | null;
+  mpCode?: Record<string, string>;
   image_url: string | null;
 };
 export const columns: ColumnDef<BudgetsTableProps>[] = [

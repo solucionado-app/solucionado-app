@@ -109,82 +109,12 @@ export function RegisterUser() {
             </FormItem>
           )}
         />
-        {/* <FormField
-                    control={form.control}
-                    name="province"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Provincia</FormLabel>
-                            <FormControl>
-                                <Select
-                                    {...field}
-                                    styles={{
-                                        control: (styles) => ({
-                                            ...styles,
-                                            backgroundColor: 'white',
-                                        }),
-                                        menuList: (provided) => ({
-                                            ...provided,
-                                            backgroundColor: 'white',
-                                        }),
-                                    }}
-                                    isLoading={queryprovinces.isLoading}
-                                    placeholder='Ingresa la provincias' options={queryprovinces.data?.provincias as Province[]}
-                                    getOptionLabel={(option: Province) => option?.nombre}
-                                    getOptionValue={(option: Province) => option?.id}
-                                    onChange={(option) => {
 
-                                        // console.log("option", option)
-                                        option && form.setValue("province", { id: option.id, nombre: option.nombre })
-                                        form.setValue("city", { id: "", nombre: "" })
-                                        querycitys.refetch()
-                                    }}
-                                />
-                            </FormControl>
-                            <FormDescription>
-
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                /> */}
         <ProvinceAndCityOptions
           formControl={form.control}
           formSetValue={form.setValue}
           formGetValues={form.getValues}
         />
-        {/* <FormField
-                    control={form.control}
-                    name="city"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Ciudad</FormLabel>
-                            <FormControl>
-                                <Select
-                                    {...field}
-                                    styles={{
-                                        control: (styles) => ({
-                                            ...styles,
-                                            backgroundColor: 'white',
-                                        }),
-                                        menuList: (provided) => ({
-                                            ...provided,
-                                            backgroundColor: 'white',
-                                        }),
-                                    }}
-                                    isLoading={querycitys.isLoading || querycitys.isFetching}
-                                    placeholder='Ingresa la ciudad' options={querycitys.data?.municipios as City[]}
-                                    getOptionLabel={(option: City) => option?.nombre}
-                                    getOptionValue={(option: City) => option?.id}
-                                />
-                            </FormControl>
-                            <FormDescription>
-
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                /> */}
 
         <Button type="submit">Registrarse</Button>
       </form>
