@@ -39,7 +39,7 @@ const SolucionadorProfilePage = ({ id }: Props) => {
     <div className="flex w-full flex-col items-center">
       <div className="flex w-full max-w-6xl flex-col justify-center gap-2 p-4">
         {/* Card User */}
-        <SolucionadorProfileCard profile={profile} />
+        <SolucionadorProfileCard profile={profile.user} countReviews={profile.countReviews} average={profile.rating} />
         {/* Tabs */}
         <SolucionadorTabs userId={id} />
       </div>

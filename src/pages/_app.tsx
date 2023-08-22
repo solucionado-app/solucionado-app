@@ -19,7 +19,7 @@ function MyApp({ Component, pageProps }: MyAppProps) {
   const Layout = Layouts[Component.Layout] ?? ((page: MyPage) => page);
 
   return (
-    <main className={inter.className}>
+    <main className={inter.className + ' flex h-screen   flex-col items-center text-slate-900 bg-gradient-to-b from-slate-50 to-slate-100'}>
       <ClerkProvider {...pageProps}>
         <Layout>
           <Component {...pageProps} />

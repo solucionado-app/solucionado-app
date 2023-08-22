@@ -23,7 +23,7 @@ export const userRouter = createTRPCRouter({
   getSolucionadorProfileInfoById: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
-      const userSolucionador = await ctx.prisma.user.findUnique({
+      const user = await ctx.prisma.user.findUnique({
         where: { id: input.id, role: "SOLUCIONADOR" },
         select: {
           email: true,
@@ -33,11 +33,26 @@ export const userRouter = createTRPCRouter({
           image_url: true,
           phone: true,
         },
+
       });
-      if (!userSolucionador) {
+      const {_avg: {rating : average}} = await ctx.prisma.review.aggregate({
+        where: {
+          userId: input.id,
+        },
+        _avg: {
+          rating: true,
+        },
+      });
+      const rating = Number(average);
+      const countReviews = await ctx.prisma.review.count({
+        where: {
+          userId: input.id,
+        },
+      });
+      if (!user) {
         throw new TRPCError({ code: "NOT_FOUND" });
       }
-      return userSolucionador;
+      return { user, rating, countReviews};
     }),
   update: protectedProcedure
     .input(

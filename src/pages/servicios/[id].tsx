@@ -23,11 +23,11 @@ import { api } from "~/utils/api";
 import ServiceComents from "~/components/servicesComponents/ServiceComents";
 
 import CommentServiceForm from "~/components/servicesComponents/CommentServiceForm";
-import { ReviewServiceForm } from "~/components/reviews/ReviewServiceForm";
 import { Badge } from "~/components/ui/badge";
 import { AvatarSolucionador } from "~/components/ui/avatarSolucionador";
 import { ConfirmServiceFinishedDialog } from "~/components/servicesComponents/confirmServiceFinishedDialog";
 import { useUser } from "@clerk/nextjs";
+import ReviewComponent from "~/components/reviews/ReviewComponent";
 
 const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   id,
@@ -56,7 +56,7 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                 Información del Servicio
               </h1>
               {/* <Button variant="destructive">Finalizar</Button> */}
-              {user && service && user?.id !== service?.budget.author.id && < ConfirmServiceFinishedDialog serviceId={service.id} />}
+              {user && service && user?.id !== service?.budget.author.id && service.status !== "FINISHED" && < ConfirmServiceFinishedDialog serviceId={service.id} />}
             </div>
             <div className="flex flex-col gap-2">
               <div>
@@ -80,26 +80,20 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
               </div>
             </div>
           </div>
-          <Tabs defaultValue="comments" className="w-full ">
+          <Tabs defaultValue={service?.status === "FINISHED" ? "review" : "comments"} className="w-full ">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="review">Reseña </TabsTrigger>
-              <TabsTrigger value="comments">Comentarios</TabsTrigger>
+              <TabsTrigger value="comments">Mensajes</TabsTrigger>
+              {user && service?.status === "FINISHED" && <TabsTrigger value="review">Reseña </TabsTrigger>}
             </TabsList>
-            {service?.status === "FINISHED" && <TabsContent value="info">
+            {user && service && service?.status === "FINISHED" && <TabsContent value="review">
               <Card>
                 <CardHeader>
                   <CardTitle>Reseña</CardTitle>
                   <CardDescription>Porfavor deja una reseña sobre el servicio del solucionador</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-2 py-2">
-                  {service?.status === "FINISHED" && (
-                    <div className="space-y-1">
-                      {/* <DynamicMercadoPago /> */}
-                      <ReviewServiceForm />
-                    </div>
-                  )}
+                  <ReviewComponent serviceId={service.id} budgetAuthorId={service.budget.author.id} />
                 </CardContent>
-                <CardFooter></CardFooter>
               </Card>
             </TabsContent>
             }
@@ -111,7 +105,7 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                       userId={service.budget.author.id}
                       image={service.budget.author.image_url as string ?? ""}
                     />
-                    <h2>Mensajes</h2>
+                    Mensajes
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2 p-0">
@@ -120,11 +114,11 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                   </div>
                 </CardContent>
                 <CardFooter className="rounded-b-lg border-t-gray-300 bg-white py-4">
-                  <CommentServiceForm
+                  {service && service.status !== "FINISHED" && <CommentServiceForm
                     service={service}
                     serviceId={id}
                     categoryName={service?.category.name}
-                  />
+                  />}
                 </CardFooter>
               </Card>
             </TabsContent>

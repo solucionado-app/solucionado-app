@@ -5,10 +5,12 @@ import type { Profile } from "../types/solucionador";
 
 interface SolucionadorProfileCardProps {
   profile: Profile;
+  countReviews: number;
+  average: number;
 }
 export const SolucionadorProfileCard: React.FC<
   SolucionadorProfileCardProps
-> = ({ profile }) => {
+> = ({ profile, countReviews, average }) => {
   const { first_name, last_name, image_url, address } = profile;
   return (
     <div className="min-h-[15rem] w-full rounded border border-gray-300">
@@ -28,8 +30,8 @@ export const SolucionadorProfileCard: React.FC<
               </div>
               <div className="flex items-center gap-2">
                 <StarIcon className="text-solYellow" />
-                <p className="text-xs font-bold sm:text-sm">5.0</p>
-                <p className="text-xs sm:text-sm ">(129 reseñas)</p>
+                <p className="text-xs font-bold sm:text-sm">{average}</p>
+                <p className="text-xs sm:text-sm ">{`(${countReviews})`}</p>
               </div>
             </div>
             <div className="flex items-center gap-2">

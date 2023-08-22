@@ -3,6 +3,7 @@ import React from "react";
 import { CommentSkeleton } from "~/components/comments/CommentSkeleton";
 import { TabsContent } from "~/components/ui/tabs";
 import { api } from "~/utils/api";
+import SolucionadorReviewComponent from "./SolucionadorReviewComponent";
 
 type ReviewsTabProps = {
   userId: string;
@@ -39,7 +40,21 @@ const ReviewsTab: React.FC<ReviewsTabProps> = ({ userId }) => {
   }
   return (
     <TabsContent value="reviews" className="px-2">
-      ReviewsTab
+      {
+        reviews.map((review) => {
+          const { rating } = review;
+          const newreview = { ...review, rating: Number(rating) }
+          return (
+            <div
+              className="flex w-full flex-col gap-2 rounded border border-gray-200 bg-white p-4"
+              key={review.id}
+            >
+              <SolucionadorReviewComponent review={newreview} />
+
+            </div>
+          )
+        })
+      }
     </TabsContent>
   );
 };

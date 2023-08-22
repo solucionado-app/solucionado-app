@@ -7,14 +7,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import { ReviewServiceForm } from "../reviews/ReviewServiceForm";
+// import { ReviewServiceForm } from "../reviews/ReviewServiceForm";
 import { Button } from "../ui/button";
 
 type ServiceReviewModalProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
-export const ServiceReviewModal = ({
+const ServiceReviewModal = ({
   open,
   setOpen,
 }: ServiceReviewModalProps) => {
@@ -35,8 +35,9 @@ export const ServiceReviewModal = ({
             </p>
           </DialogDescription>
         </DialogHeader>
-        <ReviewServiceForm />
+        {/* <ReviewServiceForm /> */}
       </DialogContent>
     </Dialog>
   );
 };
+export default ServiceReviewModal;

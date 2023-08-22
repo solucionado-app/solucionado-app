@@ -36,6 +36,7 @@ import format from "date-fns/format";
 import { es } from "date-fns/locale";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import AlertCompleteBudgetDialog from "./AlertCompleteBudgetDialog";
+import { JSONObject, JSONValue } from "superjson/dist/types";
 
 
 export interface BudgetsTableProps {
@@ -53,7 +54,7 @@ type Author = {
   id: string;
   first_name: string | null;
   last_name: string | null;
-  mpCode?: Record<string, string>;
+  mpCode?: JSONValue | JSONObject | undefined;
   image_url: string | null;
 };
 export const columns: ColumnDef<BudgetsTableProps>[] = [

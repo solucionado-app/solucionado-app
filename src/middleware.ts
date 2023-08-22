@@ -1,7 +1,7 @@
 import { authMiddleware } from '@clerk/nextjs/server';
 export default authMiddleware({
-    publicRoutes: ["/", "/contacto", "/(solucionar)(.*)", "/(api|trpc)(.*)", "/api/webhooks/mercadopago/autorization"],
-    ignoredRoutes: ["/api/webhooks/mercadopago/autorization"],
+    publicRoutes: ["/", "/contacto", '/(login)(.*)','/(registro)(.*)', "/(solucionar/)(.*)", "/(api|trpc)(.*)", "/api/webhooks/mercadopago/autorization"],
+    ignoredRoutes: ["/api/webhooks/mercadopago/autorization", "/api/webhooks/user"],
 });
 
 

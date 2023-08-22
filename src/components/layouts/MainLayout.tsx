@@ -9,7 +9,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
     return (
         <>
             <Nav />
-            <main className="flex min-h-screen flex-col items-center text-slate-900 bg-gradient-to-b from-slate-50 to-slate-100">{children}</main>
+            <div className="flex h-full flex-col items-center text-slate-900 bg-gradient-to-b from-slate-50 to-slate-100">{children}</div>
         </>
     );
 }
