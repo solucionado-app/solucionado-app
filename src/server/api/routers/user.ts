@@ -1,6 +1,10 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
@@ -16,6 +20,40 @@ export const userRouter = createTRPCRouter({
     });
     return currentUser;
   }),
+  getSolucionadorProfileInfoById: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.prisma.user.findUnique({
+        where: { id: input.id, role: "SOLUCIONADOR" },
+        select: {
+          email: true,
+          address: true,
+          first_name: true,
+          last_name: true,
+          image_url: true,
+          phone: true,
+        },
+
+      });
+      const {_avg: {rating : average}} = await ctx.prisma.review.aggregate({
+        where: {
+          userId: input.id,
+        },
+        _avg: {
+          rating: true,
+        },
+      });
+      const rating = Number(average);
+      const countReviews = await ctx.prisma.review.count({
+        where: {
+          userId: input.id,
+        },
+      });
+      if (!user) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+      return { user, rating, countReviews};
+    }),
   update: protectedProcedure
     .input(
       z.object({
@@ -38,14 +76,13 @@ export const userRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const userId = input.userId;
-      // console.log(userId);
 
       const user = await ctx.prisma.user.update({
         where: {
-          externalId: userId,
+          id: ctx.auth.userId,
         },
         data: {
+          externalId: ctx.auth.userId,
           phone: input.phone,
           dni: input?.dni,
           address: input?.address,
@@ -61,6 +98,8 @@ export const userRouter = createTRPCRouter({
           },
         },
       });
+      console.log(user);
+
       return user;
     }),
 });

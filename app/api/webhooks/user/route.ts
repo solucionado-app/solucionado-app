@@ -10,6 +10,7 @@ const webhookSecret = process.env.WEBHOOK_SECRET || "";
 
 async function handler(request: Request) {
   const payload = await request.json() as Record<string, unknown>;
+  console.log(payload);
   const headersList = headers();
   if (!headersList) {
     // console.error("Headers not found");
@@ -30,8 +31,8 @@ async function handler(request: Request) {
       heads as IncomingHttpHeaders & WebhookRequiredHeaders
     ) as Event;
   } catch (err) {
-    // console.log("error")
-    // console.error("err", (err as Error).message);
+     console.log("error")
+     console.error("err", (err as Error).message);
     return NextResponse.json({}, { status: 400 });
   }
 
@@ -51,7 +52,7 @@ async function handler(request: Request) {
 
 
     }
-     console.log("user created or updated", id, first_name, last_name, email, primary_email_address_id, image_url );
+    console.log("user created or updated", id, first_name, last_name, email, primary_email_address_id, image_url );
     const user = {
       id: id as string,
       externalId: id as string,

@@ -62,7 +62,6 @@ export const Testimonials = () => {
             role="button"
             data-slide="prev"
           >
-            <i className="fa fa-chevron-left" aria-hidden="true"></i>
           </a>
           <a
             className="carousel-control-next"
@@ -70,7 +69,6 @@ export const Testimonials = () => {
             role="button"
             data-slide="next"
           >
-            <i className="fa fa-chevron-right" aria-hidden="true"></i>
           </a>
         </div>
       </div>

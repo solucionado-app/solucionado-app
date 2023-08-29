@@ -74,7 +74,6 @@ export default function CommentsForm({ serviceRequest, serviceRequestId, categor
         mutateComment.mutate({
             serviceRequestId: serviceRequestId,
             description: data.description,
-            userId: serviceRequest?.userId as string
         }, {
             onSuccess: () => {
                 void utils.notification.getAll.invalidate()

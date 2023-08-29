@@ -1,6 +1,7 @@
 import React from "react";
 import HomeSelect from "~/components/formularios/HomeSelect";
 import type { CategoriesQueryResponse } from "~/components/types/common";
+import Spinner from "~/components/ui/spinner";
 
 interface ViewProps {
   categories: CategoriesQueryResponse[] | undefined;
@@ -15,19 +16,14 @@ export const Hero: React.FC<ViewProps> = ({ categories, isLoading }) => {
           <div className="flex w-full items-center justify-center md:w-1/2 md:justify-between">
             <div className="flex flex-col items-center py-10 md:items-start md:text-start">
               <h1 className="py-5 text-center text-4xl font-bold sm:text-5xl md:text-start lg:text-6xl">
-                Solucionadores <br className="hidden  sm:block" />y soluciones
+                Soluciones para tu hogar
               </h1>
-              <span className="text-3xl text-solYellow">Para tu hogar</span>
-              <p className="py-3 pb-16  text-lg">Trabajos garantidos</p>
-              {/* <div className="flex flex-col sm:flex-row sm:items-center gap-2 justify-center sm:justify-start"><a href="#" className="text-2xl ">Sobre nosotros</a>
-          <p className="mt-2 border-t border-solid border-solYellow h-px w-16"></p></div> */}
+              <p className="py-3 pb-16  text-3xl text-solYellow">Trabajos garantizados</p>
             </div>
           </div>
           <div className="flex w-full  items-center justify-center md:w-1/2 md:justify-end">
             <div className="flex w-full max-w-lg justify-center rounded-xl bg-white px-4 py-6">
-              {isLoading && (
-                <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
-              )}
+              {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
               {categories && (
                 <>
                   <HomeSelect categories={categories} isLoading={isLoading} />{" "}

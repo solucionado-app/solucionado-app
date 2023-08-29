@@ -29,6 +29,7 @@ export const budgetRouter = createTRPCRouter({
                         first_name: true,
                         last_name: true,
                         image_url: true,
+                        mpCode: true,
                     }
                 },
             }
@@ -68,6 +69,7 @@ export const budgetRouter = createTRPCRouter({
                         first_name: true,
                         last_name: true,
                         image_url: true,
+                        mpCode: true,
                     }
                 },
             }

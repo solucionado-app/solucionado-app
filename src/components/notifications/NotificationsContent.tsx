@@ -30,7 +30,7 @@ export default function NotificationsContent({ notificationsNumber, ...props }: 
     let i = 0
     while (++i <= len) rows.push(i);
     return (
-        <Card className={"w-[380px] "} {...props}>
+        <Card className={"w-[380px] h-[580px] overflow-y-auto "} {...props}>
             <CardHeader className='p-4 pb-0'>
                 <CardTitle>Notificaciones</CardTitle>
                 <CardDescription>{`tienes ${notificationsNumber} notificaciones sin abrir`}</CardDescription>

@@ -16,6 +16,7 @@ export default function Nav() {
     undefined,
     {
       enabled: !!user.isSignedIn,
+      staleTime: Infinity,
     }
   );
   const handleBurgerClick = () => {
@@ -202,7 +203,7 @@ export default function Nav() {
                 }  hover:text-sol_lightBLue`}
               href="/"
             >
-              Home
+              Inicio
             </Link>
           </li>
 
@@ -235,18 +236,24 @@ export default function Nav() {
         <div className="flex items-center  gap-4">
           {!user.isSignedIn && (
             <>
-              <Link
-                className="hidden rounded-xl bg-gray-50 px-4 py-2 text-sm font-bold text-gray-900 transition  duration-200 hover:bg-gray-100 lg:inline-block"
-                href="/login"
+              <span
+                className="hidden rounded-xl bg-gray-50 px-4 py-2 text-sm font-bold text-gray-900 transition  duration-200 hover:bg-gray-100 lg:inline-block cursor-pointer"
+                onClick={() => void router.push({
+                  pathname: '/login',
+                  query: { redirect: router.asPath }
+                })}
               >
                 Iniciar Sesión
-              </Link>
-              <Link
+              </span>
+              <span
                 className="hidden rounded-xl bg-blue-500 px-4 py-2 text-sm font-bold text-white transition duration-200 hover:bg-blue-600 lg:inline-block"
-                href="/registro"
+                onClick={() => void router.push({
+                  pathname: '/registro',
+                  query: { redirect: router.asPath }
+                })}
               >
                 Registrarse
-              </Link>
+              </span>
             </>
           )}
           {!!user.isSignedIn && (
@@ -325,7 +332,7 @@ export default function Nav() {
                   className="block rounded p-4 text-sm font-semibold text-zinc-900 hover:bg-slate-300"
                   href="/"
                 >
-                  Home
+                  Inicio
                 </Link>
               </li>
               <li className="mb-1">
@@ -351,7 +358,7 @@ export default function Nav() {
               <div className="pt-6">
                 <Link
                   className="mb-3 block rounded-xl bg-gray-50 px-4 py-3 text-center text-xs  font-semibold leading-loose shadow hover:bg-gray-100"
-                  href="/login"
+                  href={`/login?redirect=${router.asPath}`}
                 >
                   Iniciar Sesión
                 </Link>

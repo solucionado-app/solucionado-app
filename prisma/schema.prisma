@@ -13,7 +13,6 @@ model User {
   externalId           String           @unique
   first_name           String?
   last_name            String?
-  emailAddressId       String?
   email                String           @unique
   phone                String?          @unique
   address              String?
@@ -22,12 +21,14 @@ model User {
   image_url            String?
   cbu                  String?
   cuit                 String?
-  birthDate            DateTime?
   createdAt            DateTime         @default(now())
   updatedAt            DateTime         @updatedAt
   roleId               Int
   role                 Role             @default(USER)
   notificationId       String?
+  birthDate            DateTime?
+  emailAddressId       String?
+  mpCode               Json?
   serviceRequests      ServiceRequest[]
   categories           Category[]
   comentsmade          Comment[]        @relation("comentAuthor")
@@ -45,7 +46,7 @@ model User {
 
 model Review {
   id        String   @id @default(cuid())
-  content   String
+  content   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   rating    Decimal
@@ -62,23 +63,22 @@ model Review {
 }
 
 model Notification {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id               String          @id @default(cuid())
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
   authorId         String
-  author           User            @relation("notificador", fields: [authorId], references: [externalId], onDelete: Cascade)
-  users            User[]          @relation("notificado")
   title            String
   content          String
   link             String?
   read             Boolean         @default(false)
   serviceRequestId String?
-  serviceRequest   ServiceRequest? @relation(fields: [serviceRequestId], references: [id])
   serviceId        String?
+  bugdetId         String?
+  author           User            @relation("notificador", fields: [authorId], references: [externalId], onDelete: Cascade)
+  users            User[]          @relation("notificado")
+  serviceRequest   ServiceRequest? @relation(fields: [serviceRequestId], references: [id])
   service          Service?        @relation(fields: [serviceId], references: [id])
   readBy           User[]          @relation("readBy")
-  bugdetId         String?
   budget           Budget[]
 
   @@index([serviceRequestId])
@@ -122,6 +122,7 @@ model Budget {
   userId           String
   authorId         String
   estimatedAt      DateTime
+  status_detail    String?
   paidAt           DateTime?
   serviceRequestId String
   user             User           @relation(fields: [userId], references: [externalId])
@@ -159,11 +160,11 @@ model Comment {
   content          String
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
-  userId           String
+  userId           String?
   authorId         String
   serviceRequestId String?
   serviceId        String?
-  user             User            @relation("comentUser", fields: [userId], references: [externalId])
+  user             User?           @relation("comentUser", fields: [userId], references: [externalId])
   author           User            @relation("comentAuthor", fields: [authorId], references: [externalId])
   serviceRequest   ServiceRequest? @relation(fields: [serviceRequestId], references: [id])
   service          Service?        @relation(fields: [serviceId], references: [id])

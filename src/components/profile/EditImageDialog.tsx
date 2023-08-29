@@ -1,4 +1,4 @@
-import React, { SetStateAction } from "react";
+import React, { type SetStateAction } from "react";
 import {
   Dialog,
   DialogContent,
@@ -6,7 +6,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+
 } from "~/components/ui/dialog";
 import { Button } from "../ui/button";
 import Image from "next/image";

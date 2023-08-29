@@ -81,11 +81,11 @@ export const FormStepsProvider = ({ children }: Props) => {
                 void utils.notification.getAll.invalidate()
                 void utils.notification.countUnRead.invalidate()
 
-                // void router.push("/solicitudes-de-servicio")
+                void router.push("/solicitudes-de-servicio")
                 const slug = router.query.slug as string
-                // localStorageRequests.set({
-                //     ...localStorageRequests.get(), [slug]: {}
-                // })
+                localStorageRequests.set({
+                    ...localStorageRequests.get(), [slug]: {}
+                })
             }
         })
 

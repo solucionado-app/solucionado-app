@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
+import Spinner from "~/components/ui/spinner";
 
 interface ViewProps {
   categories: CategoriesQueryResponse[] | undefined;
@@ -24,52 +25,40 @@ export const About: React.FC<ViewProps> = ({ categories, isLoading }) => {
       >
         <div className="w-full max-w-7xl">
           <div className="grid items-center lg:flex ">
-            <div className="">
+            <div className="w-[60%]">
               <div className="about_box space-y-6 pb-2">
                 <div className="titlepage ">
-                  <strong className="text-lg font-semibold uppercase text-sol_lightBlue">
-                    Quienes somos
+                  <strong className="text-lg font-semibold uppercase text-sol_lightBlue ">
+                    ¿Qué podemos ofrecerte?
                   </strong>
-                  <h2 className="text-2xl font-bold  uppercase text-black md:text-3xl lg:text-4xl">
-                    {" "}
-                    Te ayudamos a que puedas necesitar en tu casa
+                  <h2 className="text-2xl font-bold pt-5 uppercase text-black md:text-3xl lg:text-4xl">
+                    Te ofrecemos ayuda en todo lo que puedas necesitar en tu hogar
                   </h2>
                 </div>
                 <h3 className=" text-xl font-bold text-gray-600 sm:text-2xl">
                   TODO LO QUE NECESITAS, TIENE SOLUCIÓN
                 </h3>
-                <span className=" text-lg text-black ">
-                  Ponemos a disposición una cartera de profesionales <br />
-                  garantizando el trabajo.
-                </span>
+                <p className=" text-lg text-black">
+                  Ponemos a tu disposición una cartera de profesionales <br /> para garantizar el trabajo.
+                </p>
                 <p className=" text-left text-lg text-black">
                   Carga tu inquietud, solicita presupuestos y selecciona el que
                   más te guste.
                 </p>
 
-                <a
-                  href="{{ url('/dashboard') }}"
-                  className="hidden text-sm text-gray-700 underline dark:text-gray-500"
-                >
-                  Panel del Usuario
-                </a>
-
                 <div className="flex flex-wrap items-center gap-6">
                   <span className="try uppercase text-sol_lightBlue">
                     Registrate y comienza
                   </span>
-                  <a className="read_morea" href="{{ route('register') }}">
+                  <Link className="read_morea" href="/registro">
                     <Button className="bg-sol_lightBlue px-5 py-2 text-center text-lg font-bold text-white hover:bg-sol_lightBlue/80">
-                      Registrarme{" "}
+                      Registrarme
                     </Button>
-
-                    <i className="fa fa-angle-right" aria-hidden="true"></i>
-                    <br />
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
-            <div className="hidden lg:block">
+            <div className="hidden lg:block w-[40%]">
               <div className="about_img">
                 <figure>
                   <Image
@@ -97,21 +86,17 @@ export const About: React.FC<ViewProps> = ({ categories, isLoading }) => {
               </h2>
             </div>
             <p className="text-white sm:text-xl">
-              Tenes alguna especialidad, registrate y comenza a recibir
-              solicitudes
+              ¿Tienes alguna especialidad? Regístrate y comienza a recibir solicitudes
             </p>
             <div className="flex flex-wrap items-center gap-6">
               <span className="try uppercase text-solYellow">
                 Registrate y comienza
               </span>
-              <a className="read_morea" href="{{ route('register') }}">
+              <Link className="" href="/registro">
                 <Button className="bg-solYellow px-5 py-2 text-center text-lg font-bold text-black hover:bg-solYellow/80">
-                  Registrarme{" "}
+                  Registrarme
                 </Button>
-
-                <i className="fa fa-angle-right" aria-hidden="true"></i>
-                <br />
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -130,9 +115,7 @@ export const About: React.FC<ViewProps> = ({ categories, isLoading }) => {
             </div>
           </div>
           <div className="flex w-full items-center justify-center">
-            {isLoading && (
-              <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
-            )}
+            {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
             {categories && (
               <>
                 <HomeSelect categories={categories} isLoading={isLoading} />{" "}
@@ -141,9 +124,7 @@ export const About: React.FC<ViewProps> = ({ categories, isLoading }) => {
           </div>
 
           <div className="flex flex-row flex-wrap justify-center gap-4">
-            {isLoading && (
-              <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-gray-900"></div>
-            )}
+            {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
             {categories?.map((categorie) => (
               <Link key={categorie.id} href={"/solucionar/" + categorie.slug}>
                 <div className="relative h-52 w-[319px]  ">

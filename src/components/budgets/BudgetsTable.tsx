@@ -1,5 +1,5 @@
 /* eslint-disable */
-import * as React from "react"
+import * as React from "react";
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -11,10 +11,10 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+} from "@tanstack/react-table";
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
-import { Button } from "~/components/ui/button"
+import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -23,8 +23,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu"
-import { Input } from "~/components/ui/input"
+} from "~/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -32,36 +31,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "~/components/ui/table"
-import { api } from "~/utils/api"
-import format from "date-fns/format"
-import { es } from "date-fns/locale"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
-import { useAcceptBudget } from "./acceptBudget"
-import { string } from "zod"
+} from "~/components/ui/table";
+import format from "date-fns/format";
+import { es } from "date-fns/locale";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import AlertCompleteBudgetDialog from "./AlertCompleteBudgetDialog";
+import { JSONObject, JSONValue } from "superjson/dist/types";
 
-const data: Payment[] = [
-  {
-    id: "m5gr84i9",
-    price: 316,
-    description: "ken99@yahoo.com",
-    fechaEstimada: "28/7/2023",
-  },
-  {
-    id: "3u1reuv4",
-    price: 242,
-    description: "Abe45@gmail.com",
-    fechaEstimada: "28/7/2023",
-  },
-]
 
-export type Payment = {
-  id: string
-  price: number
-  description: string
-  fechaEstimada: string,
-}
-interface BudgetsTableProps {
+export interface BudgetsTableProps {
   id: string;
   description: string;
   price: number;
@@ -76,80 +54,86 @@ type Author = {
   id: string;
   first_name: string | null;
   last_name: string | null;
+  mpCode?: JSONValue | JSONObject | undefined;
   image_url: string | null;
-}
+};
 export const columns: ColumnDef<BudgetsTableProps>[] = [
   {
     accessorKey: "price",
     header: ({ column }) => {
       return (
-        <Button className=""
+        <Button
+          className=""
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Precio
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => {
-      const price = parseFloat(row.getValue("price"))
+      const price = parseFloat(row.getValue("price"));
 
       // Format the price as a dollar price
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
-      }).format(price)
+      }).format(price);
 
-      return <div className="font-medium">{formatted}</div>
+      return <div className="font-medium">{formatted}</div>;
     },
   },
   {
     accessorKey: "description",
     header: () => <div className="">Descripcion</div>,
-    cell: ({ row }) => <div className="lowercase">{row.getValue("description")}</div>,
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("description")}</div>
+    ),
   },
   {
     accessorKey: "estimatedAt",
     header: "fecha Estimada",
     cell: ({ row }) => (
-      <div className="capitalize">{format(row.getValue("estimatedAt"), "PPP", { locale: es })}</div>
+      <div className="capitalize">
+        {format(row.getValue("estimatedAt"), "PPP", { locale: es })}
+      </div>
     ),
   },
   {
     accessorKey: "author",
     header: "Autor",
     cell: ({ row }) => {
-      const author: Author = row.getValue("author")
+      const author: Author = row.getValue("author");
 
       return (
         <div className="flex items-center space-x-2">
-          <Avatar className="cursor-pointer" >
-            <AvatarImage src={author?.image_url ? author?.image_url : undefined} />
-            <AvatarFallback><div className="animate-spin rounded-full  border-b-2 border-gray-900"></div></AvatarFallback>
+          <Avatar className="cursor-pointer">
+            <AvatarImage
+              src={author?.image_url ? author?.image_url : undefined}
+            />
+            <AvatarFallback>
+              <div className="animate-spin rounded-full  border-b-2 border-gray-900"></div>
+            </AvatarFallback>
           </Avatar>
           <div className="text-sm font-medium">
             {author.first_name} {author.last_name}
           </div>
         </div>
-      )
-    }
+      );
+    },
   },
   {
     accessorKey: "status",
     header: "Estado",
     cell: ({ row }) => {
-      return (
-        <div className="capitalize">{row.getValue("status")}</div>
-      )
-    }
+      return <div className="capitalize">{row.getValue("status")}</div>;
+    },
   },
   {
     id: "actions",
-    enableHiding: false,
     cell: ({ row }) => {
-      const budget = row.original
-      const acceptBudget = useAcceptBudget()
+      const budget = row.original;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -166,28 +150,36 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
               Copy payment ID
             </DropdownMenuItem> */}
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => acceptBudget(budget.id, budget.serviceRequestId)} >Aceptar</DropdownMenuItem>
+            <AlertCompleteBudgetDialog budget={budget} />
+            {/* <DropdownMenuItem
+              onClick={() => acceptBudget(budget.id, budget.serviceRequestId)}
+            >
+              Aceptar
+            </DropdownMenuItem> */}
             <DropdownMenuItem>Rechazar</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      )
+      );
     },
   },
-]
+];
+type Status = "PENDING" | "ACEPTED" | "REJECTED" | "FINISHED"
 
 interface Props {
   budgets: BudgetsTableProps[] | undefined;
+  status: Status;
+  isSolucionador?: boolean;
 }
 
-
-export default function BudgetsTable({ budgets }: Props) {
-  const [sorting, setSorting] = React.useState<SortingState>([])
+export default function BudgetsTable({ budgets, status, isSolucionador }: Props) {
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
-  )
+  );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
+  if (status === 'ACEPTED' || isSolucionador) columnVisibility["actions"] = false;
   const table = useReactTable({
     data: budgets ?? [],
     columns,
@@ -205,7 +197,8 @@ export default function BudgetsTable({ budgets }: Props) {
       columnVisibility,
       rowSelection,
     },
-  })
+  });
+
 
   return (
     <div className="w-full">
@@ -229,6 +222,7 @@ export default function BudgetsTable({ budgets }: Props) {
               .getAllColumns()
               .filter((column) => column.getCanHide())
               .map((column) => {
+                if (column.id === 'actions' && status === 'ACEPTED') return null;
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
@@ -240,7 +234,7 @@ export default function BudgetsTable({ budgets }: Props) {
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
-                )
+                );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -260,7 +254,7 @@ export default function BudgetsTable({ budgets }: Props) {
                           header.getContext()
                         )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -272,14 +266,17 @@ export default function BudgetsTable({ budgets }: Props) {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+                  {row.getVisibleCells().map((cell) => {
+                    return (
+
+                      (cell.id === 'actions' && status === 'ACEPTED') ? null : <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    )
+                  })}
                 </TableRow>
               ))
             ) : (
@@ -296,7 +293,7 @@ export default function BudgetsTable({ budgets }: Props) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        <div className="text-muted-foreground flex-1 text-sm">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} Fila(s) seleccionadas.
         </div>
@@ -320,5 +317,5 @@ export default function BudgetsTable({ budgets }: Props) {
         </div>
       </div>
     </div>
-  )
+  );
 }

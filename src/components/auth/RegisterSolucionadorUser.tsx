@@ -29,7 +29,6 @@ const formSchema = z.object({
     dni: z.string().min(1, { message: "El dni es requerido" }),
     address: z.string().min(1, { message: "La direccion es requerida" }),
     cuit: z.string().min(1, { message: "El cuit es requerido" }),
-    cbu: z.string().min(1, { message: "El cbu es requerido" }),
     province: z.object({
         id: z.string(),
         nombre: z.string(),
@@ -65,9 +64,12 @@ export function RegisterSolucionadorUser() {
             dni: values.dni,
             address: values.address,
             cuit: values.cuit,
-            cbu: values.cbu,
             categories: values.categories,
             role: 'SOLUCIONADOR',
+        }, {
+            onSuccess: () => {
+                window.location.replace(`https://auth.mercadopago.com/authorization?client_id=${process.env.NEXT_PUBLIC_MP_CLIENT_ID as string}&response_type=code&platform_id=mp&state=${id}&redirect_uri=${process.env.NEXT_PUBLIC_DOMAIN as string}/api/webhooks/mercadopago/autorization`)
+            }
         })
         // console.log(values)
     }
@@ -168,22 +170,6 @@ export function RegisterSolucionadorUser() {
                         </FormItem>
                     )}
                 />
-                <FormField
-                    control={form.control}
-                    name="cbu"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>CBU o CVU</FormLabel>
-                            <FormControl>
-                                <Input placeholder="" {...field} />
-                            </FormControl>
-                            <FormDescription>
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
 
                 <Button type="submit">Registrarse</Button>
             </form>
