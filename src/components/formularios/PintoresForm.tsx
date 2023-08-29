@@ -122,7 +122,7 @@ export function PintoresForm() {
                                 <FormControl>
                                     <Select onValueChange={(e) => {
                                         // console.log(e)
-                                        field.onChange
+                                        field.onChange(e)
                                     }} defaultValue={field.value}>
                                         <SelectTrigger className="w-[180px]">
                                             <SelectValue placeholder="Seleccione un opción" />

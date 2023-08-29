@@ -209,7 +209,7 @@ export default function Nav() {
 
 
           <li>
-            <a
+            <Link
               className={`text-sm sm:text-lg ${router.asPath === "/sobre-nosotros"
                 ? "font-bold text-solYellow"
                 : "text-gray-200 transition-colors hover:text-solYellow hover:underline"
@@ -217,7 +217,7 @@ export default function Nav() {
               href="/sobre-nosotros"
             >
               Sobre nosotros
-            </a>
+            </Link>
           </li>
 
 

@@ -3,7 +3,6 @@ import { type MyPage } from "~/components/types/types";
 import MainHead from "~/components/layouts/head/MainHead";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -12,9 +11,9 @@ import {
 import { Button } from "~/components/ui/button";
 import Image from "next/image";
 import SantiagoImage from "../../../public/about_dev_image/santiago.webp";
-import { Avatar, AvatarImage } from "~/components/ui/avatar";
+import { Avatar } from "~/components/ui/avatar";
 import Link from "next/link";
-import { Globe, Linkedin, LinkedinIcon, WholeWordIcon } from "lucide-react";
+import { Globe, Linkedin } from "lucide-react";
 const About: MyPage = () => {
   return (
     <>
@@ -23,24 +22,20 @@ const About: MyPage = () => {
         <div className="grid auto-rows-auto grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           <Card className="w-[350px]">
             <CardHeader className="flex flex-col items-center gap-4">
-              <CardTitle>
-                <div className="flex flex-col space-y-1.5">
-                  <Avatar className="h-32 w-32">
-                    <Image
-                      src={SantiagoImage}
-                      className="object-cover"
-                      alt="Santiago Pacini Frontend Developer"
-                    />
-                  </Avatar>
-                </div>
+              <div className="flex flex-col space-y-1.5">
+                <Avatar className="h-32 w-32">
+                  <Image
+                    src={SantiagoImage}
+                    className="object-cover"
+                    alt="Santiago Pacini Frontend Developer"
+                  />
+                </Avatar>
+              </div>
+              <CardTitle className="text-2xl font-extrabold tracking-tight text-black">
+                Santiago Pacini
               </CardTitle>
-              <CardDescription>
-                <h2 className="text-2xl font-extrabold tracking-tight text-black">
-                  Santiago Pacini
-                </h2>
-                <p className="text-center text-sm font-medium text-gray-600">
-                  Desarrollador Frontend
-                </p>
+              <CardDescription className="text-center text-sm font-medium text-gray-600">
+                Desarrollador Frontend
               </CardDescription>
             </CardHeader>
             <CardFooter className="flex justify-between gap-2">
@@ -54,7 +49,7 @@ const About: MyPage = () => {
                   className="flex items-center gap-2"
                 >
                   <Linkedin />
-                  <h2>Linkedin</h2>
+                  <span>Linkedin</span>
                 </Link>
               </Button>
               <Button className="w-full">
@@ -64,7 +59,7 @@ const About: MyPage = () => {
                   className="flex items-center gap-2"
                 >
                   <Globe />
-                  <h2>Visitar Web</h2>
+                  <span>Visitar Web</span>
                 </Link>
               </Button>
             </CardFooter>
