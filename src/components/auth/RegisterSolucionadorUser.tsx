@@ -68,8 +68,7 @@ export function RegisterSolucionadorUser() {
             role: 'SOLUCIONADOR',
         }, {
             onSuccess: () => {
-                window.location.replace(`https://auth.mercadopago.com/authorization?client_id=4889351975321151
-&response_type=code&platform_id=mp&state=${id}&redirect_uri=${process.env.NEXT_PUBLIC_MP_REDIRECT_URL as string}`)
+                window.location.replace(`https://auth.mercadopago.com/authorization?client_id=${process.env.NEXT_PUBLIC_MP_CLIENT_ID as string}&response_type=code&platform_id=mp&state=${id}&redirect_uri=${process.env.NEXT_PUBLIC_DOMAIN as string}/api/webhooks/mercadopago/autorization`)
             }
         })
         // console.log(values)
