@@ -246,7 +246,7 @@ export default function Nav() {
                 Iniciar Sesión
               </span>
               <span
-                className="hidden rounded-xl bg-blue-500 px-4 py-2 text-sm font-bold text-white transition duration-200 hover:bg-blue-600 lg:inline-block"
+                className="hidden rounded-xl bg-blue-500 px-4 py-2 text-sm font-bold text-white transition duration-200 hover:bg-blue-600 lg:inline-block cursor-pointer"
                 onClick={() => void router.push({
                   pathname: '/registro',
                   query: { redirect: router.asPath }
