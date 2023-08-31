@@ -29,7 +29,7 @@ async function handler(request: NextRequest) {
         );
         console.log(token)
         if(token.status !== 200){
-            throw new Error(`HTTP error! status: ${token.status} `);
+            throw new Error(`HTTP error! status: ${token.status}  ${JSON.stringify(token)}  `);
         }
 
         const data = await token.json() as { access_token: string, refresh_token: string, user_id: string, public_key: string, live_mode: boolean, token_type: string, expires_in: number };
@@ -45,6 +45,7 @@ async function handler(request: NextRequest) {
                     refresh_token,
                     public_key,
                     expires_in,
+                    user_id,
                 }
             }
         })
@@ -53,7 +54,8 @@ async function handler(request: NextRequest) {
     }
     catch (error){
         console.log('erorr', error)
-        redirect('/completar-perfil')
+        return error
+        // redirect(`/completar-perfil?`)
     }
 
 }
