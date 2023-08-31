@@ -54,8 +54,7 @@ async function handler(request: NextRequest) {
     }
     catch (error){
         console.log('erorr', error)
-        return JSON.stringify(error)
-        // redirect(`/completar-perfil?`)
+        redirect(`/completar-perfil?`)
     }
 
 }
