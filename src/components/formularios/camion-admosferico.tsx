@@ -15,24 +15,58 @@ import {
 import { Input } from "~/components/ui/input"
 
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router"
+import { useUser } from "@clerk/nextjs"
+import { useFormSteps } from "./ContextForm"
+import { type FormValues, localStorageRequests } from "~/lib/localStorage"
+import { useState } from "react"
+import DialogAuthConfirmation from "../auth/DialogAuthConfirmation"
+
 
 const formSchema = z.object({
-    cantidadDePozos: z
-        .coerce.number().min(1, {
-            message: "Deben ir al menos 1 caracter mayor o igual a 1.",
-        }),
+    cantidadDePozos: z.coerce.number(({ required_error: "Debes introducir un numero de pozos", }))
 });
+
+
 export function CamionAdmosfericoForm() {
+
+    const router = useRouter()
+    const { isSignedIn } = useUser()
+    const { handleSubmition } = useFormSteps()
+    const slug = router.query.slug as string
+    const local: FormValues = localStorageRequests.get()
+    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug) && JSON.stringify(local[`${slug}`]) !== '{}' && local[`${slug}`]?.details;
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema)
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            cantidadDePozos: hasCategoryInLocal && local[`${slug}`]?.details?.cantidadDePozos
+                ? local[`${slug}`]?.details?.cantidadDePozos as number
+                : undefined,
+        }
+
     })
+
+    const [open, setOpen] = useState(false)
+
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
 
-        // console.log(values)
+        if (!isSignedIn) {
+            localStorageRequests.set({
+                ...localStorageRequests.get(), [slug]: {
+                    ...local[`${slug}`],
+                    details: { ...values },
+                }
+            })
+            setOpen(true)
+            return
+        }
+        else {
+            handleSubmition(local[`${slug}`])
+        }
     }
     // ...
 
@@ -57,6 +91,8 @@ export function CamionAdmosfericoForm() {
 
 
                 <Button type="submit">Cotizar</Button>
+                <DialogAuthConfirmation open={open} setOpen={setOpen} />
+
             </form>
         </Form>
     )

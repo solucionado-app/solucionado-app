@@ -28,9 +28,9 @@ import { Input } from "../ui/input";
 
 const formSchema = z.object({
     cantidadDePrendas: z
-    .coerce.number().min(1, {
-        message: "Deben ir al menos 1 caracter mayor o igual a 1.",
-    }),
+        .coerce.number().min(1, {
+            message: "Deben ir al menos 1 caracter mayor o igual a 1.",
+        }),
     TienePlanchaYAromatizante: z.enum(["Si", "No"], {
         required_error: "Debe elegir una opcion",
     }),
@@ -45,7 +45,8 @@ export default function PlanchadoresForm() {
     const slug = router.query.slug as string
     const local: FormValues = localStorageRequests.get()
     const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug);
-
+    const [open, setOpen] = useState(false)
+    const { handleSubmition } = useFormSteps();
     // console.log(local[`${slug}`]?.details)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -59,23 +60,19 @@ export default function PlanchadoresForm() {
         },
     });
 
-    const [open, setOpen] = useState(false)
-
-    const { handleSubmition } = useFormSteps();
-
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
         // localStorageRequests.set(prev => [...prev, { details: values }])
 
-        localStorageRequests.set({
-            ...localStorageRequests.get(), [slug]: {
-                ...local[`${slug}`],
-                details: { ...values },
-            }
-        })
         if (!isSignedIn) {
+            localStorageRequests.set({
+                ...localStorageRequests.get(), [slug]: {
+                    ...local[`${slug}`],
+                    details: { ...values },
+                }
+            })
             setOpen(true)
             return
         }
@@ -141,7 +138,7 @@ export default function PlanchadoresForm() {
                             </FormItem>
                         )}
                     />
-                    
+
                     <FormField
                         control={form.control}
                         name="detallesDeCotizacion"
@@ -156,11 +153,11 @@ export default function PlanchadoresForm() {
                                     />
                                 </FormControl>
                                 <FormDescription className="text-xs bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-2">
-                                
-                                    
+
+
                                     <p className="font-bold">Nota:</p>
                                     <p>En caso de no responder corre por cuenta del solucionador optar por una de las 2 opciones.</p>
-                                
+
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
