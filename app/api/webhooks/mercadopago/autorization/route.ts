@@ -23,7 +23,7 @@ async function handler(request: NextRequest) {
                     client_secret: process.env.NEXT_PUBLIC_MP_CLIENT_SECRET as string,
                     grant_type: 'authorization_code',
                     code: code,
-                    redirect_uri: process.env.NEXT_PUBLIC_MP_REDIRECT_URL as string,
+                    redirect_uri: `${process.env.NEXT_PUBLIC_MP_DOMAIN as string}/api/webhooks/mercadopago/autorization`,
                 })
             }
         );
