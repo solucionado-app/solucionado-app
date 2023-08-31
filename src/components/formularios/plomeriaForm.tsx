@@ -21,6 +21,12 @@ import {
     SelectTrigger,
     SelectValue
 } from "../ui/select"
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/router";
+import { type FormValues, localStorageRequests } from "~/lib/localStorage";
+import { useState } from "react";
+import { useFormSteps } from "./ContextForm";
+import DialogAuthConfirmation from "../auth/DialogAuthConfirmation";
 
 const formSchema = z.object({
     tipoSuperficie: z
@@ -30,8 +36,21 @@ const formSchema = z.object({
 });
 export default function PlomerosForm() {
     // 1. Define your form.
+
+    const { isSignedIn } = useUser()
+    const router = useRouter()
+    const slug = router.query.slug as string
+    const local: FormValues = localStorageRequests.get()
+    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug);
+    const [open, setOpen] = useState(false)
+    const { handleSubmition } = useFormSteps()
+
     const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema)
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            tipoSuperficie: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.tipoSuperficie ?
+                local[`${slug}`]?.details?.tipoSuperficie as string : undefined,
+        }
     })
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
@@ -39,6 +58,19 @@ export default function PlomerosForm() {
         // ✅ This will be type-safe and validated.
 
         // console.log(values)
+        if (!isSignedIn) {
+            localStorageRequests.set({
+                ...localStorageRequests.get(), [slug]: {
+                    ...local[`${slug}`],
+                    details: { ...values },
+                }
+            })
+            setOpen(true)
+            return
+        }
+        else {
+            handleSubmition(local[`${slug}`])
+        }
     }
     // ...
 
@@ -72,6 +104,8 @@ export default function PlomerosForm() {
                     )}
                 />
                 <Button type="submit">Cotizar</Button>
+                <DialogAuthConfirmation open={open} setOpen={setOpen} />
+
             </form>
         </Form>
     )

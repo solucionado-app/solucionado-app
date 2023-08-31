@@ -15,16 +15,35 @@ import {
 
 import { useForm } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
+import { useState } from "react";
+import { type FormValues, localStorageRequests } from "~/lib/localStorage";
+import { useFormSteps } from "./ContextForm";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/router";
+import DialogAuthConfirmation from "../auth/DialogAuthConfirmation";
 
 const formSchema = z.object({
     elementosPintura: z.enum(["Si", "No"], {
         required_error: "Debe elegir una opcion",
     }),
 });
+type elementosPintura = z.infer<typeof formSchema>['elementosPintura']
+
 export default function ArmadoresDeMueblesForm() {
+
+    const router = useRouter()
+    const { isSignedIn } = useUser()
+    const { handleSubmition } = useFormSteps()
+    const slug = router.query.slug as string
+    const local: FormValues = localStorageRequests.get()
+    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug) && JSON.stringify(local[`${slug}`]) !== '{}' && local[`${slug}`]?.details;
+    const [open, setOpen] = useState(false)
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema)
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            elementosPintura: hasCategoryInLocal && local[`${slug}`]?.details?.elementosPintura ? local[`${slug}`]?.details?.elementosPintura as elementosPintura : undefined,
+        }
     })
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
@@ -32,6 +51,19 @@ export default function ArmadoresDeMueblesForm() {
         // ✅ This will be type-safe and validated.
 
         // console.log(values)
+        if (!isSignedIn) {
+            localStorageRequests.set({
+                ...localStorageRequests.get(), [slug]: {
+                    ...local[`${slug}`],
+                    details: { ...values },
+                }
+            })
+            setOpen(true)
+            return
+        }
+        else {
+            handleSubmition(local[`${slug}`])
+        }
     }
     // ...
 
@@ -81,6 +113,8 @@ export default function ArmadoresDeMueblesForm() {
                 />
 
                 <Button type="submit">Cotizar</Button>
+                <DialogAuthConfirmation open={open} setOpen={setOpen} />
+
             </form>
         </Form>
     )

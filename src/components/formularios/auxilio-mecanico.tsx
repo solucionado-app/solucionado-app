@@ -17,6 +17,14 @@ import { useForm } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+import { useRouter } from "next/router";
+import { useUser } from "@clerk/nextjs";
+import { useFormSteps } from "./ContextForm";
+import { type FormValues, localStorageRequests } from "~/lib/localStorage";
+import { useState } from "react";
+import DialogAuthConfirmation from "../auth/DialogAuthConfirmation";
+
+type tipoDeProblemaMecanico = "Camilla" | "Bateria"
 
 const formSchema = z.object({
     tipoDeProblemaMecanico: z.enum(["Camilla", "Bateria"], {
@@ -64,16 +72,48 @@ const formSchema = z.object({
             message: "Debe tener maximo 130 caracteres.",
         }),
 });
+
+
+type camilla = z.infer<typeof formSchema>['tipoDeProblemaMecanico']
 export function AuxilioMecanicoForm() {
     // 1. Define your form.
+    const router = useRouter()
+    const { isSignedIn } = useUser()
+    const { handleSubmition } = useFormSteps()
+    const slug = router.query.slug as string
+    const local: FormValues = localStorageRequests.get()
+    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug) && JSON.stringify(local[`${slug}`]) !== '{}' && local[`${slug}`]?.details;
+    const [open, setOpen] = useState(false)
+
     const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema)
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            tipoDeProblemaMecanico: hasCategoryInLocal && local[`${slug}`]?.details?.tipoDeProblemaMecanico ? local[`${slug}`]?.details?.tipoDeProblemaMecanico as camilla : undefined,
+            modeloDeCamilla: hasCategoryInLocal && local[`${slug}`]?.details?.modeloDeCamilla ? local[`${slug}`]?.details?.modeloDeCamilla as string : undefined,
+            ubicacionDelVehiculo: hasCategoryInLocal && local[`${slug}`]?.details?.ubicacionDelVehiculo ? local[`${slug}`]?.details?.ubicacionDelVehiculo as string : undefined,
+            destinoDelVehiculo: hasCategoryInLocal && local[`${slug}`]?.details?.destinoDelVehiculo ? local[`${slug}`]?.details?.destinoDelVehiculo as string : undefined,
+            modeloAnioDelVehiculo: hasCategoryInLocal && local[`${slug}`]?.details?.modeloAnioDelVehiculo ? local[`${slug}`]?.details?.modeloAnioDelVehiculo as string : undefined,
+        }
     })
+
+
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-
+        if (!isSignedIn) {
+            localStorageRequests.set({
+                ...localStorageRequests.get(), [slug]: {
+                    ...local[`${slug}`],
+                    details: { ...values },
+                }
+            })
+            setOpen(true)
+            return
+        }
+        else {
+            handleSubmition(local[`${slug}`])
+        }
         // console.log(values)
     }
     // ...
@@ -214,6 +254,7 @@ export function AuxilioMecanicoForm() {
                 />
 
                 <Button type="submit">Cotizar</Button>
+                <DialogAuthConfirmation open={open} setOpen={setOpen} />
             </form>
         </Form>
     )
