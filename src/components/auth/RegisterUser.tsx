@@ -18,6 +18,8 @@ import { useForm } from "react-hook-form";
 import { useUser } from "@clerk/nextjs";
 import { api } from "~/utils/api";
 import ProvinceAndCityOptions from "../formularios/ProvinceAndCityOptions";
+import { router } from "@trpc/server";
+import { useRouter } from "next/router";
 
 const phoneRegex = new RegExp(
   /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
@@ -45,6 +47,7 @@ export function RegisterUser() {
   });
 
   const { user, isSignedIn } = useUser();
+  const router = useRouter();
   if (!isSignedIn) return null;
   const { id } = user;
   const { mutate } = api.user.update.useMutation();
@@ -59,6 +62,10 @@ export function RegisterUser() {
       dni: values.dni,
       address: values.address,
       role: "USER",
+    },{
+      onSuccess: () => {
+        router.push("/perfil");
+      }
     });
     // console.log("values", values)
   }
