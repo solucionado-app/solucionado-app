@@ -25,6 +25,7 @@ import { cn } from "~/lib/utils"
 import { format } from "date-fns"
 import { api } from "~/utils/api";
 import { trpc } from '~/utils/trpc'
+import AlertMercadoPagoIntegrate from './AlertMercadoPagoIntegrate'
 
 
 
@@ -79,8 +80,14 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
     })
     const notification = api.notification.createBudgetNotification.useMutation()
 
+    const [open, setOpen] = React.useState(false)
     const utils = trpc.useContext()
     function onSubmit(data: z.infer<typeof FormSchema>) {
+
+        const { data: userData, refetch } = api.user.getById.useQuery();
+        if (userData?.mpCode === null || userData?.mpCode === undefined) {
+            setOpen(true)
+        }
         mutateBugdet.mutate({
             serviceRequestId: serviceRequestId,
             price: data.price,
@@ -187,6 +194,7 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
                         )}
                     />
                     <Button disabled={!isSignedIn} type="submit">Generar Presupuesto</Button>
+                    <AlertMercadoPagoIntegrate open={open} />
                 </form>
             </Form>
         </>
