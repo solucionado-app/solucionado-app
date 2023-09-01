@@ -20,7 +20,7 @@ interface Props {
 
 export const ConfirmServiceFinishedDialog = ({ serviceId }: Props) => {
 
-  const { mutate, isLoading } = api.service.finish.useMutation()
+  const { mutate } = api.service.finish.useMutation()
   const utils = trpc.useContext()
   const handleFinishService = () => {
     mutate({ serviceId: serviceId }, {

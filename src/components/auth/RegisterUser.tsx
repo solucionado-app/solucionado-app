@@ -18,7 +18,6 @@ import { useForm } from "react-hook-form";
 import { useUser } from "@clerk/nextjs";
 import { api } from "~/utils/api";
 import ProvinceAndCityOptions from "../formularios/ProvinceAndCityOptions";
-import { router } from "@trpc/server";
 import { useRouter } from "next/router";
 
 const phoneRegex = new RegExp(
@@ -64,7 +63,7 @@ export function RegisterUser() {
       role: "USER",
     },{
       onSuccess: () => {
-        router.push("/perfil");
+        void router.push("/perfil");
       }
     });
     // console.log("values", values)

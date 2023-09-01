@@ -4,14 +4,7 @@ import { RegisterSolucionadorUser } from "~/components/auth/RegisterSolucionador
 import RegisterUserDialog from "~/components/auth/RegisterUserDialog";
 import { type MyPage } from "~/components/types/types";
 
-import {
-    Dialog,
-    DialogContent,
 
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "~/components/ui/dialog"
 const Page: MyPage = () => {
 
     return (
