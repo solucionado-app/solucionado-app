@@ -24,7 +24,6 @@ import { type FormValues, localStorageRequests } from "~/lib/localStorage";
 import { useState } from "react";
 import DialogAuthConfirmation from "../auth/DialogAuthConfirmation";
 
-type tipoDeProblemaMecanico = "Camilla" | "Bateria"
 
 const formSchema = z.object({
     tipoDeProblemaMecanico: z.enum(["Camilla", "Bateria"], {
@@ -74,7 +73,7 @@ const formSchema = z.object({
 });
 
 
-type camilla = z.infer<typeof formSchema>['tipoDeProblemaMecanico']
+type tipoDeProblemaMecanico = z.infer<typeof formSchema>['tipoDeProblemaMecanico']
 export function AuxilioMecanicoForm() {
     // 1. Define your form.
     const router = useRouter()
@@ -88,7 +87,7 @@ export function AuxilioMecanicoForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            tipoDeProblemaMecanico: hasCategoryInLocal && local[`${slug}`]?.details?.tipoDeProblemaMecanico ? local[`${slug}`]?.details?.tipoDeProblemaMecanico as camilla : undefined,
+            tipoDeProblemaMecanico: hasCategoryInLocal && local[`${slug}`]?.details?.tipoDeProblemaMecanico ? local[`${slug}`]?.details?.tipoDeProblemaMecanico as tipoDeProblemaMecanico : undefined,
             modeloDeCamilla: hasCategoryInLocal && local[`${slug}`]?.details?.modeloDeCamilla ? local[`${slug}`]?.details?.modeloDeCamilla as string : undefined,
             ubicacionDelVehiculo: hasCategoryInLocal && local[`${slug}`]?.details?.ubicacionDelVehiculo ? local[`${slug}`]?.details?.ubicacionDelVehiculo as string : undefined,
             destinoDelVehiculo: hasCategoryInLocal && local[`${slug}`]?.details?.destinoDelVehiculo ? local[`${slug}`]?.details?.destinoDelVehiculo as string : undefined,
