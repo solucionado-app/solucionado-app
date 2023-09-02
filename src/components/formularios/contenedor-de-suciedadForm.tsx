@@ -34,8 +34,6 @@ const formSchema = z.object({
     }).max(10, {
         message: "La cantidad debe ser menor a 10"
     }),
-
-    detalles: z.string(),
 });
 export default function ContenedorDeSuciedadForm() {
     // 1. Define your form.
@@ -144,7 +142,7 @@ export default function ContenedorDeSuciedadForm() {
                         name="cantidad"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>¿Cuánto tiempo lo desea?</FormLabel>
+                                <FormLabel>¿Cuantos contenedores necesita remover?</FormLabel>
                                 <FormControl >
                                     <Input type="number" placeholder="" {...field} />
                                 </FormControl>
@@ -154,7 +152,7 @@ export default function ContenedorDeSuciedadForm() {
                             </FormItem>
                         )}
                     />
-                    
+
                     <div className="text-sm bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4"
                         role="alert">
                         <p className="font-bold">Nota:</p>
