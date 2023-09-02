@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { type NextRequest, NextResponse } from "next/server";
+import { type NextRequest } from "next/server";
 import { prisma } from "~/server/db";
 
 
@@ -33,7 +33,7 @@ async function handler(request: NextRequest) {
         }
 
         const data = await token.json() as { access_token: string, refresh_token: string, user_id: string, public_key: string, live_mode: boolean, token_type: string, expires_in: number };
-        const { access_token, refresh_token, user_id, public_key, live_mode, token_type, expires_in } = data;
+        const { access_token, refresh_token, user_id, public_key, expires_in } = data;
         console.log(data)
         await prisma.user.update({
             where: {
