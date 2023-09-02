@@ -34,6 +34,9 @@ export default function NotificationsContent({ notificationsNumber, ...props }: 
             <CardHeader className='p-4 pb-0'>
                 <CardTitle>Notificaciones</CardTitle>
                 <CardDescription>{`tienes ${notificationsNumber} notificaciones sin abrir`}</CardDescription>
+                <Button onClick={handelMarkAllAsRead} className="w-full">
+                    <Check className="mr-2 h-4 w-4" /> Marcar todos como leido
+                </Button>
             </CardHeader>
             <CardContent className="grid gap-2 px-0 w-[380px]  ">
 
@@ -54,13 +57,9 @@ export default function NotificationsContent({ notificationsNumber, ...props }: 
 
                         </DropdownMenuItem>
                     ))}
-                    {/* -----ejemplo----- */}
                 </div>
             </CardContent>
             <CardFooter>
-                <Button onClick={handelMarkAllAsRead} className="w-full">
-                    <Check className="mr-2 h-4 w-4" /> Marcar todos como leido
-                </Button>
             </CardFooter>
         </Card>
     )
