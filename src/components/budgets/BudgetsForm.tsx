@@ -84,7 +84,7 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
     const utils = trpc.useContext()
     function onSubmit(data: z.infer<typeof FormSchema>) {
 
-        const { data: userData, refetch } = api.user.getById.useQuery();
+        const { data: userData } = api.user.getById.useQuery();
         if (userData?.mpCode === null || userData?.mpCode === undefined) {
             setOpen(true)
         }
