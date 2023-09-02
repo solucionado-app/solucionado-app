@@ -21,13 +21,18 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 import DialogAuthConfirmation from "../auth/DialogAuthConfirmation"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
-import { Textarea } from "../ui/textarea"
 import { useFormSteps } from "./ContextForm"
 import { type FormValues, localStorageRequests } from "~/lib/localStorage"
+import { Input } from "../ui/input";
 
 const formSchema = z.object({
-    instrumentos: z.enum(["Si", "No"], {
+    tipoDeDesechos: z.enum(["Escombros", "Basura", "Tierra", "Varios"], {
         required_error: "Debe elegir una opcion",
+    }),
+    cantidad: z.coerce.number().min(1, {
+        message: "La cantidad debe ser uno o mas"
+    }).max(10, {
+        message: "La cantidad debe ser menor a 10"
     }),
 
     detalles: z.string(),
@@ -45,10 +50,10 @@ export default function ContenedorDeSuciedadForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            instrumentos: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.instrumentos ?
-                local[`${slug}`]?.details?.instrumentos : undefined,
-            detalles: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.detalles ?
-                local[`${slug}`]?.details?.detalles : " ",
+            tipoDeDesechos: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.tipoDeDesechos ?
+                local[`${slug}`]?.details?.tipoDeDesechos : undefined,
+            cantidad: hasCategoryInLocal && local[`${slug}`]?.details && local[`${slug}`]?.details?.cantidad ?
+                local[`${slug}`]?.details?.cantidad : "",
         },
     });
 
@@ -83,7 +88,7 @@ export default function ContenedorDeSuciedadForm() {
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                     <FormField
                         control={form.control}
-                        name="instrumentos"
+                        name="tipoDeDesechos"
                         render={({ field }) => (
                             <FormItem className="space-y-3">
                                 <FormLabel>¿Qué es lo que desea arrojar en los mismos?</FormLabel>
@@ -133,31 +138,23 @@ export default function ContenedorDeSuciedadForm() {
                             </FormItem>
                         )}
                     />
-                    
+
                     <FormField
                         control={form.control}
-                        name="detalles"
+                        name="cantidad"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>¿Cómo le interesa que presupuesten el trabajo? en base a tiempo, espacio, etc.</FormLabel>
-                                <FormControl>
-                                    <Textarea
-                                        placeholder="Escriba los detalles aquí..."
-                                        className="resize-none"
-                                        {...field}
-                                    />
+                                <FormLabel>¿Cuánto tiempo lo desea?</FormLabel>
+                                <FormControl >
+                                    <Input type="number" placeholder="" {...field} />
                                 </FormControl>
-                                <FormDescription className="text-xs bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-2">
-                                
-                                    
-                                    <p className="font-bold">Nota:</p>
-                                    <p>Opcional, si el cliente no desea detallar esto, corre por cuenta del solucionador en base a que medida establecerá el precio de su servicio. </p>
-                                
+                                <FormDescription>
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
+                    
                     <div className="text-sm bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4"
                         role="alert">
                         <p className="font-bold">Nota:</p>
