@@ -33,7 +33,7 @@ const formSchema = z.object({
         message: "Debe tener maximo 130 caracteres.",
     }),
     cantidadDeObjetos: z.coerce.number().min(1, {
-        message: "El ancho es requerido"
+        message: "La cantidad de objetos es requerido"
     }),
     elementoDeEmbalaje: z.enum(["Cajas", "Diario", "Papel film"], {
         required_error: "Debe elegir una opcion",
