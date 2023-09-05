@@ -41,10 +41,10 @@ const getDynamicProvices = () => dynamic(() => import("./ProvinceAndCityOptions"
 
 const formSchema = z.object({
     address: z
-        .string({ required_error: "La direccion es requerida" }).min(10, { message: "Debe tener por lo menos 10 caracteres" }),
+        .string({ required_error: "La direccion es requerida" }).min(1, { message: "Debe tener por lo menos 1 caracter" }),
     description: z
         .string({ required_error: "el description es requerido" })
-        .min(10, { message: "Debe tener al menos 10 caracteres." })
+        .min(10, { message: "Debe tener al menos 10 caracter." })
         .max(160, {
             message: "Debe tener maximo 130 caracteres.",
         }),
