@@ -21,7 +21,7 @@ import { useFormSteps } from "./ContextForm"
 import dynamic from "next/dynamic";
 import { FormValues, localStorageRequests } from "~/lib/localStorage";
 import { useRouter } from "next/router";
-
+import CurrencyInput from "react-currency-input-field";
 
 
 const formSchema = z.object({
@@ -46,7 +46,6 @@ const getDynamicCurrencyInput = () => dynamic(() => import('input-currency-react
 
 
 export default function SecondStep() {
-    const { formValues, setFormValues } = useFormSteps();
     const { currentStep, setCurrentStep } = useFormSteps();
 
     // 1. Define your form.
@@ -194,21 +193,31 @@ export default function SecondStep() {
                                 <FormLabel>Monto Dispuesto a pagar (opcional)</FormLabel>
                                 <FormControl>
 
-                                    <DynamicCurrencyInput
+                                    {/* <DynamicCurrencyInput
                                         {...field}
                                         className="flex h-10 w-full rounded-md border border-gray-200  bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-800  dark:bg-gray-950 dark:ring-offset-gray-950 dark:placeholder:text-gray-400 dark:focus-visible:ring-gray-800"
                                         // Initial value
                                         value={field.value || "000"}
-                                        onChangeEvent={(_, maskedValue) => {
+                                        onChangeEvent={(_e, maskedValue) => {
                                             field.onChange(maskedValue);
                                         }}
-                                        autoFocus={false}
+                                        autoFocus={true}
                                         options={{
                                             precision: 2,
                                             style: "currency",
                                             allowNegative: false, // Format Type
                                             i18nCurrency: "ARG" // Symbol
-                                        }} />
+                                        }} /> */}
+                                        <CurrencyInput
+                                        placeholder="ej: $2000"
+                                        allowDecimals={false}
+                                        step={1000}
+                                        allowNegativeValue={false}
+                                        className="flex h-10 w-full rounded-md border border-gray-200  bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-800  dark:bg-gray-950 dark:ring-offset-gray-950 dark:placeholder:text-gray-400 dark:focus-visible:ring-gray-800"
+                                        onValueChange={field.onChange}
+                                        intlConfig={{"locale":"en-US","currency":"USD"}}
+
+                                        ></CurrencyInput>
 
                                 </FormControl>
                                 <FormDescription>
