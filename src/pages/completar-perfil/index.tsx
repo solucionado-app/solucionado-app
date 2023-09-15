@@ -68,4 +68,6 @@ const Page: MyPage = () => {
 
 
 export default Page;
-Page.Layout = "Auth";
+Page.Layout = "Main";
+Page.Title = "Completar perfil";
+Page.Description = "Registrate";

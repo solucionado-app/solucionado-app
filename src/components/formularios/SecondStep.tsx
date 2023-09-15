@@ -192,32 +192,16 @@ export default function SecondStep() {
                             <FormItem>
                                 <FormLabel>Monto Dispuesto a pagar (opcional)</FormLabel>
                                 <FormControl>
-
-                                    {/* <DynamicCurrencyInput
-                                        {...field}
-                                        className="flex h-10 w-full rounded-md border border-gray-200  bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-800  dark:bg-gray-950 dark:ring-offset-gray-950 dark:placeholder:text-gray-400 dark:focus-visible:ring-gray-800"
-                                        // Initial value
-                                        value={field.value || "000"}
-                                        onChangeEvent={(_e, maskedValue) => {
-                                            field.onChange(maskedValue);
-                                        }}
-                                        autoFocus={true}
-                                        options={{
-                                            precision: 2,
-                                            style: "currency",
-                                            allowNegative: false, // Format Type
-                                            i18nCurrency: "ARG" // Symbol
-                                        }} /> */}
-                                        <CurrencyInput
+                                    <CurrencyInput
                                         placeholder="ej: $2000"
                                         allowDecimals={false}
                                         step={1000}
                                         allowNegativeValue={false}
                                         className="flex h-10 w-full rounded-md border border-gray-200  bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-800  dark:bg-gray-950 dark:ring-offset-gray-950 dark:placeholder:text-gray-400 dark:focus-visible:ring-gray-800"
                                         onValueChange={field.onChange}
-                                        intlConfig={{"locale":"en-US","currency":"USD"}}
+                                        intlConfig={{ "locale": "en-US", "currency": "USD" }}
 
-                                        ></CurrencyInput>
+                                    ></CurrencyInput>
 
                                 </FormControl>
                                 <FormDescription>

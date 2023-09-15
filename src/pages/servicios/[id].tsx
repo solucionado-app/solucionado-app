@@ -131,6 +131,8 @@ const ServicePage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
 export default ServicePage;
 ServicePage.Layout = "Main";
+ServicePage.Title = "Servicio";
+ServicePage.Description = "Servicio";
 
 export const getStaticPaths: GetStaticPaths = () => {
   return {

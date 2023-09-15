@@ -76,3 +76,5 @@ const ServiceRequest: MyPage = () => {
 
 export default ServiceRequest;
 ServiceRequest.Layout = "Main";
+ServiceRequest.Title = "Servicios";
+ServiceRequest.Description = "Servicio";

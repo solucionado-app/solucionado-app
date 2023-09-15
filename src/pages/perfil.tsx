@@ -21,5 +21,7 @@ const MyProfile: MyPage = () => {
 };
 
 MyProfile.Layout = "Main";
+MyProfile.Title = "Perfil";
+MyProfile.Description = "perfil";
 
 export default MyProfile;

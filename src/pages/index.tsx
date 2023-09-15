@@ -18,7 +18,6 @@ const Home: MyPage = () => {
   // // console.log(apitrcp);
   return (
     <>
-      <MainHead title="Solucionado App" description="app solucionado" />
       <main className="flex min-h-screen w-full flex-col items-center  ">
         <Hero categories={categories} isLoading={isLoading} />
         <About categories={categories} isLoading={isLoading} />
@@ -32,6 +31,8 @@ const Home: MyPage = () => {
 
 export default Home;
 Home.Layout = "Main";
+Home.Title = "Solucionado | Encuentra expertos para resolver problemas en tu hogar";
+Home.Description = "Conectamos a quienes necesitan ayuda con expertos que pueden solucionar sus inconvenientes domésticos";
 
 // export function getStaticProps() {
 

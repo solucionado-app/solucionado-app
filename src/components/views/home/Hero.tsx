@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 import HomeSelect from "~/components/formularios/HomeSelect";
 import type { CategoriesQueryResponse } from "~/components/types/common";
@@ -10,26 +11,33 @@ interface ViewProps {
 
 export const Hero: React.FC<ViewProps> = ({ categories, isLoading }) => {
   return (
-    <section className="banner_main flex min-h-[45vh] w-full justify-center bg-[url('/banner.jpg')] bg-cover bg-no-repeat px-5 py-10 text-white md:py-0 ">
+    <section className="banner_main flex min-h-screen bg-gray-50 w-full justify-center items-center  px-5 py-5 text-white md:py-0 ">
       <div className="w-full max-w-7xl">
-        <div className="flex h-full flex-col  items-center md:flex-row md:justify-between 2xl:justify-center">
-          <div className="flex w-full items-center justify-center md:w-1/2 md:justify-between">
-            <div className="flex flex-col items-center py-10 md:items-start md:text-start">
-              <h1 className="py-5 text-center text-4xl font-bold sm:text-5xl md:text-start lg:text-6xl">
-                Soluciones para tu hogar
+        <div className="flex h-full flex-col  w-full items-center md:flex-row md:justify-between ">
+          <div className="flex order-2 w-full items-center justify-center md:w-8/12 md:justify-between">
+            <div className="flex flex-col gap-2 md:gap-5  py-5 items-start md:text-start ">
+              <h1 className="md:py-5 pb-2 text-start  text-4xl font-semibold sm:text-5xl md:text-start text-azul lg:text-7xl xl:text-8xl lg:leading-[0.7] ">
+                Conectamos problemas con soluciones: <span>   Tu hogar,</span> <span className="font-bold text-transparent  text-5xl sm:text-5xl lg:text-7xl  xl:text-8xl  bg-gradient-to-r bg-clip-text   from-[#ee7752] via-solYellow to-[#e73c7e] animate-bg-animation bg-no-repeat bg-[500%,500%]">Solucionado.</span>
               </h1>
-              <p className="py-3 pb-16  text-3xl text-solYellow">Trabajos garantizados</p>
+
+
+              <div className="flex w-full  justify-start rounded-xl   ">
+
+                {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
+                {categories && (
+                  <>
+                    <HomeSelect categories={categories} isLoading={isLoading} />{" "}
+                  </>
+                )}
+              </div>
             </div>
           </div>
-          <div className="flex w-full  items-center justify-center md:w-1/2 md:justify-end">
-            <div className="flex w-full max-w-lg justify-center rounded-xl bg-white px-4 py-6">
-              {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
-              {categories && (
-                <>
-                  <HomeSelect categories={categories} isLoading={isLoading} />{" "}
-                </>
-              )}
-            </div>
+          <div className="  relative w-56 order-1 md:order-2 flex-col md:w-3/12 items-center justify-center  md:justify-end">
+            <div className=" absolute bg-turquesa w-full h-full rotate-6 rounded-md"></div>
+            <Image quality={100} className="bg-white rounded-md -rotate-6 " src="/trabajador-construccion-telefono-movil-trabajo.jpg" width={400} height={600} alt="solucionador" />
+
+
+
           </div>
         </div>
       </div>

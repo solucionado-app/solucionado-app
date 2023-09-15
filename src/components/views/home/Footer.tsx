@@ -9,7 +9,7 @@ export const Footer = () => {
           <div className="col-md-12">
             <a className="logo2" href="#">
               <Image
-                src="/solucionado-transparente.png"
+                src="/solucionado-logo-horizontal.png"
                 width={248}
                 height={81}
                 alt="#"

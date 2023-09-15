@@ -58,31 +58,119 @@ export default function HomeSelect({ categories, isLoading }: props) {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex w-full max-w-md items-end justify-between gap-2 max-[400px]:flex-wrap"
+          className=" flex w-full max-w-3xl items-center justify-between md:border border-0 md:border-1 border-slate-600
+          md:px-2 py-2 rounded-full gap-2 max-[400px]:flex-wrap"
         >
           <FormField
             control={form.control}
             name="category"
             render={({ field }) => (
-              <FormItem className="w-full self-end">
+              <FormItem className="w-full space-y-1 ">
                 <FormControl>
                   <Select
                     {...field}
                     styles={{
                       control: (styles) => ({
                         ...styles,
-                        backgroundColor: "white",
-                        color: "black",
+                        boxShadow: '0px 0px 0px 0px rgb(0 170 170)',
+                        borderWidth: '0',
+                        backgroundColor: 'rgb(0 0 0 0 0)',
+                        color: 'rgb(2 2 2)',
+                        '&:hover': {
+                          boxShadow: '0px 0px 0px 0px rgb(0 170 225)',
+                        },
                       }),
-                      menuList: (provided) => ({
+                      container: (styles) => ({
+                        ...styles,
+                        borderWidth: '2px',
+                        borderColor: '#475569',
+                        borderRadius: '100rem',
+                        '@media (min-width: 768px)': {
+                          borderWidth: '0px',
+                        }
+                      }),
+                      menuList: (base) => ({
+                        ...base,
+                        borderWidth: '0px',
+                        backgroundColor: '#1f2937',
+                        color: 'rgb(255 255 255)',
+                        '&:hover': {
+                          backgroundColor: '#cbd5e1',
+                          color: 'rgb(255 255 255)',
+                        },
+
+                        "::-webkit-scrollbar": {
+                          width: "6px",
+                          height: "0px",
+                        },
+                        "::-webkit-scrollbar-track": {
+                          background: "#f1f1f1"
+                        },
+                        "::-webkit-scrollbar-thumb": {
+                          background: "#888"
+                        },
+                        "::-webkit-scrollbar-thumb:hover": {
+                          background: "#cbd5e1"
+                        }
+                      }),
+                      option: (provided, { isSelected, isFocused }) => ({
                         ...provided,
-                        backgroundColor: "white",
-                        color: "black",
+                        backgroundColor: isFocused || isSelected ? '#cbd5e1' : '#f8fafc',
+                        color: 'rgb(2 2 2)',
+                        '&:hover': {
+                          backgroundColor: '#cbd5e1',
+                          color: 'rgb(2 2 2)',
+                        },
+                        '&:focus': {
+                          backgroundColor: '#cbd5e1',
+                          color: 'rgb(2 2 2)',
+                        },
+                      }),
+                      placeholder: (provided) => ({
+                        ...provided,
+                        color: 'rgb(2 2 2)',
+
+                      }),
+                      singleValue: (provided) => ({
+                        ...provided,
+                        color: 'rgb(2 2 2)',
+                      }),
+                      input: (provided) => ({
+                        ...provided,
+                        color: 'rgb(2 2 2))',
+                        borderColor: '#64748b',
+                        borderRadius: '100rem',
+                      }),
+                      indicatorSeparator: (provided) => ({
+                        ...provided,
+                        backgroundColor: 'rgb(255 255 2 0)'
+
+                      }),
+                      clearIndicator: (provided) => ({
+                        ...provided,
+                        color: 'rgb(2 2 2)',
+                        '&:hover': {
+                          color: '#93c5fd',
+                        },
+                      }),
+                      dropdownIndicator: (provided) => ({
+                        ...provided,
+                        backgroundColor: 'rgb(255 255 255 0)',
+
+                        color: 'rgb(2 2 2)',
+                        '&:hover': {
+                          color: '#475569',
+                        },
+                        '@media (min-width: 768px)': {
+                          borderRightWidth: '2px',
+                          borderRightColor: '#475569',
+                        }
                       }),
                     }}
-                    className="w-full "
+                    className="w-full mt-1"
                     isLoading={isLoading}
-                    placeholder="Elige una categoria"
+                    isClearable
+                    placeholder="Necesito ayuda con..."
                     options={categories}
                     getOptionLabel={(option) => option.name}
                     getOptionValue={(option) => option.id.toString()}
@@ -95,7 +183,7 @@ export default function HomeSelect({ categories, isLoading }: props) {
           />
 
           <Button
-            className="mb-[9px] bg-solBlue hover:bg-solBlue/80 max-[400px]:w-full"
+            className=" bg-azul rounded-full hover:bg-azul/80 max-[400px]:w-full"
             type="submit"
           >
             Buscar
