@@ -23,7 +23,10 @@ const formSchema = z.object({
     name: z.string(),
     description: z.string(),
     slug: z.string(),
-  }),
+
+
+  },
+    { required_error: "la categoria es requerida.", }),
 });
 
 interface props {
@@ -58,8 +61,8 @@ export default function HomeSelect({ categories, isLoading }: props) {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className=" flex w-full max-w-3xl items-center justify-between md:border border-0 md:border-1 border-slate-600
-          md:px-2 py-2 rounded-full gap-2 max-[400px]:flex-wrap"
+          className=" flex w-full max-w-3xl items-baseline justify-between  border-slate-600
+          md:px-2 py-2  gap-2 max-[400px]:flex-wrap"
         >
           <FormField
             control={form.control}
@@ -73,22 +76,20 @@ export default function HomeSelect({ categories, isLoading }: props) {
                       control: (styles) => ({
                         ...styles,
                         boxShadow: '0px 0px 0px 0px rgb(0 170 170)',
-                        borderWidth: '0',
-                        backgroundColor: 'rgb(0 0 0 0 0)',
+                        borderWidth: '2px',
+                        borderColor: '#f8fafc',
+                        backgroundColor: 'white',
                         color: 'rgb(2 2 2)',
                         '&:hover': {
-                          boxShadow: '0px 0px 0px 0px rgb(0 170 225)',
+                          boxShadow: '0px 0px 3px 0px rgb(100 116 139)',
+                          borderColor: '#64748b',
                         },
-                      }),
-                      container: (styles) => ({
-                        ...styles,
-                        borderWidth: '2px',
-                        borderColor: '#475569',
-                        borderRadius: '100rem',
-                        '@media (min-width: 768px)': {
-                          borderWidth: '0px',
+                        '&:after': {
+                          boxShadow: '0px 0px 3px 0px rgb(100 116 139)',
+                          borderColor: '#64748b',
                         }
                       }),
+
                       menuList: (base) => ({
                         ...base,
                         borderWidth: '0px',
@@ -128,16 +129,16 @@ export default function HomeSelect({ categories, isLoading }: props) {
                       }),
                       placeholder: (provided) => ({
                         ...provided,
-                        color: 'rgb(2 2 2)',
+                        color: '#020617',
 
                       }),
                       singleValue: (provided) => ({
                         ...provided,
-                        color: 'rgb(2 2 2)',
+                        color: '#020617',
                       }),
                       input: (provided) => ({
                         ...provided,
-                        color: 'rgb(2 2 2))',
+                        color: '#020617',
                         borderColor: '#64748b',
                         borderRadius: '100rem',
                       }),
@@ -155,21 +156,12 @@ export default function HomeSelect({ categories, isLoading }: props) {
                       }),
                       dropdownIndicator: (provided) => ({
                         ...provided,
-                        backgroundColor: 'rgb(255 255 255 0)',
-
-                        color: 'rgb(2 2 2)',
-                        '&:hover': {
-                          color: '#475569',
-                        },
-                        '@media (min-width: 768px)': {
-                          borderRightWidth: '2px',
-                          borderRightColor: '#475569',
-                        }
+                        display: 'none',
                       }),
                     }}
                     className="w-full mt-1"
                     isLoading={isLoading}
-                    isClearable
+
                     placeholder="Necesito ayuda con..."
                     options={categories}
                     getOptionLabel={(option) => option.name}
@@ -183,7 +175,7 @@ export default function HomeSelect({ categories, isLoading }: props) {
           />
 
           <Button
-            className=" bg-azul rounded-full hover:bg-azul/80 max-[400px]:w-full"
+            className=" bg-solYellow text-black rounded-lg shadow-md hover:bg-solYellow/80 transition-colors   max-[400px]:w-full"
             type="submit"
           >
             Buscar

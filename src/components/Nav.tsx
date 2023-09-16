@@ -73,7 +73,7 @@ export default function Nav() {
   return (
     <>
 
-      <nav className=" sticky top-0 left-0 flex w-full items-center justify-between bg-azul z-20 px-4 py-4 text-white sm:px-12 ">
+      <nav className=" fixed top-0 left-0 flex w-full items-center justify-between bg-transparent  z-20 px-4 py-4 text-white sm:px-12 ">
         <Link
           className="flex items-center gap-2 text-3xl font-bold leading-none"
           href="/"
