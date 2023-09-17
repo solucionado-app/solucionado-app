@@ -61,20 +61,21 @@ export default function HomeSelect({ categories, isLoading }: props) {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className=" flex w-full max-w-3xl items-baseline justify-between  border-slate-600
-          md:px-2 py-2  gap-2 max-[400px]:flex-wrap"
+          className=" flex w-full h-14 max-w-3xl items-baseline justify-between  border-slate-600
+            gap-3 max-[640px]:flex-wrap"
         >
           <FormField
             control={form.control}
             name="category"
             render={({ field }) => (
-              <FormItem className="w-full space-y-1 ">
+              <FormItem className="w-full space-y-1 h-14 shadow-md">
                 <FormControl>
                   <Select
                     {...field}
                     styles={{
                       control: (styles) => ({
                         ...styles,
+                        height: '3.5rem',
                         boxShadow: '0px 0px 0px 0px rgb(0 170 170)',
                         borderWidth: '2px',
                         borderColor: '#f8fafc',
@@ -113,6 +114,11 @@ export default function HomeSelect({ categories, isLoading }: props) {
                         "::-webkit-scrollbar-thumb:hover": {
                           background: "#cbd5e1"
                         }
+                      }),
+                      container: (provided) => ({
+                        ...provided,
+                        width: '100%',
+                        height: '100%',
                       }),
                       option: (provided, { isSelected, isFocused }) => ({
                         ...provided,
@@ -159,7 +165,8 @@ export default function HomeSelect({ categories, isLoading }: props) {
                         display: 'none',
                       }),
                     }}
-                    className="w-full mt-1"
+
+                    className="w-full m-0 p-0 "
                     isLoading={isLoading}
 
                     placeholder="Necesito ayuda con..."
@@ -175,7 +182,8 @@ export default function HomeSelect({ categories, isLoading }: props) {
           />
 
           <Button
-            className=" bg-solYellow text-black rounded-lg shadow-md hover:bg-solYellow/80 transition-colors   max-[400px]:w-full"
+            size={"lg"}
+            className=" bg-solYellow text-lg  h-14 font-semibold text-black rounded-lg shadow-md hover:bg-solYellow/80 transition-colors w-full md:w-auto   max-[640px]:w-full"
             type="submit"
           >
             Buscar

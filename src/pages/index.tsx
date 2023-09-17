@@ -18,13 +18,12 @@ const Home: MyPage = () => {
   // // console.log(apitrcp);
   return (
     <>
-      <main className="flex min-h-screen w-full flex-col items-center  ">
-        <Hero categories={categories} isLoading={isLoading} />
-        <About categories={categories} isLoading={isLoading} />
-        <Testimonials />
-        <Contact />
-        <Footer />
-      </main>
+      <Hero categories={categories} isLoading={isLoading} />
+      <About categories={categories} isLoading={isLoading} />
+      <Testimonials />
+      <Contact />
+      <Footer />
+
     </>
   );
 };

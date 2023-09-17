@@ -40,6 +40,26 @@ export default function Nav() {
   function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
+
+  const handleColorChange = () => {
+    const navBar = document.getElementById('navBar');
+    if (!!window && !!navBar) {
+      const classnav = navBar.classList;
+      if (window.scrollY >= 100) {
+        if (!classnav.contains('bg-black/90')) {
+          console.log("cambio de color");
+          classnav?.add('bg-black/90', 'text-white')
+          classnav?.remove('bg-transparent', 'text-gray-950')
+        }
+      } else {
+        if (!classnav.contains('bg-transparent')) {
+          console.log("transparente");
+          classnav?.add('bg-transparent', 'text-gray-950')
+          classnav?.remove('bg-black/90', 'text-white')
+        }
+      }
+    }
+  }
   useEffect(() => {
     /**
      * close the popover if clicked on outside of the element
@@ -64,6 +84,7 @@ export default function Nav() {
       }
     }
     // Bind the event listener
+    window.addEventListener("scroll", handleColorChange);
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       // Unbind the event listener on clean up
@@ -73,7 +94,7 @@ export default function Nav() {
   return (
     <>
 
-      <nav className=" fixed top-0 left-0 flex w-full items-center justify-between bg-transparent  z-20 px-4 py-4 text-white sm:px-12 ">
+      <nav id="navBar" className=" fixed top-0 left-0 flex w-full transition-colors duration-300 items-center justify-between bg-transparent  z-20 px-4 py-4 text-gray-950 sm:px-12 ">
         <Link
           className="flex items-center gap-2 text-3xl font-bold leading-none"
           href="/"
@@ -93,9 +114,9 @@ export default function Nav() {
           <li>
             <Link
               className={`text-sm sm:text-lg ${router.asPath === "/"
-                ? "font-bold underline decoration-solYellow 	underline-offset-4	decoration-from-font	"
-                : "text-gray-50 transition-colors hover:text-solYellow hover:underline"
-                }  hover:text-sol_lightBLue`}
+                ? "font-bold underline decoration-solYellow  		"
+                : "  hover:underline  hover:decoration-solYellow"
+                } decoration-4   underline-offset-8 `}
               href="/"
             >
               Inicio
@@ -106,9 +127,9 @@ export default function Nav() {
           <li>
             <a
               className={`text-sm sm:text-lg ${router.asPath === "/sobre-nosotros"
-                ? "font-bold text-solYellow"
-                : "text-gray-200 transition-colors hover:text-solYellow hover:underline"
-                } hover:text-sol_lightBLue`}
+                ? "font-bold underline decoration-solYellow  	"
+                : " hover:underline  hover:decoration-solYellow"
+                } decoration-4  underline-offset-8 `}
               href="/sobre-nosotros"
             >
               Sobre nosotros
@@ -119,9 +140,9 @@ export default function Nav() {
           <li>
             <Link
               className={`text-sm sm:text-lg ${router.asPath === "/contacto"
-                ? "font-bold text-solYellow"
-                : "text-gray-200 transition-colors hover:text-solYellow hover:underline"
-                }  hover:text-sol_lightBLue`}
+                ? "font-bold underline decoration-solYellow  		"
+                : "  hover:underline  hover:decoration-solYellow"
+                } decoration-4   underline-offset-8 `}
               href="/contacto"
             >
               Contacto

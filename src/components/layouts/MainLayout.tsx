@@ -13,10 +13,10 @@ export default function MainLayout({ title = "Solucionado App", description = "S
         <>
             <MainHead title={title} description={description} />
 
-            <div className=" min-h-screen flex justify-start flex-col">
+            <main className=" min-h-screen flex justify-start flex-col">
                 <Nav />
-                <div className="flex h-full flex-col items-center text-slate-900 bg-gradient-to-b from-slate-50 to-slate-100">{children}</div>
-            </div>
+                <div className="flex h-full flex-col items-center text-slate-900 bg-slate-50 ">{children}</div>
+            </main>
         </>
     );
 }
