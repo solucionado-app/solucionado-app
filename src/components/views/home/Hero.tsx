@@ -14,11 +14,11 @@ interface ViewProps {
 export const Hero: React.FC<ViewProps> = ({ categories, isLoading }) => {
   return (
     <>
-      <section className="banner_main flex flex-col h-screen sm:justify-center md:pt-0  px-6 md:px-12 pt-28 w-full bg-[url('/trabajadoroficio.png')] bg-no-repeat bg-cover  ">
+      <section className="banner_main flex flex-col h-screen justify-center md:pt-0  px-6 md:px-12 pt-28 w-full bg-[url('/trabajador-oficio-sm.png')] lg:bg-[url('/trabajadoroficio.png')] bg-no-repeat bg-cover  ">
 
         {/* <div className="flex w-full items-center justify-center md:w-8/12 md:justify-between"> */}
         <div className="flex flex-col gap-2 md:gap-5 md:w-8/12  py-5 items-start md:text-start ">
-          <h1 className="md:py-5 pb-2 text-start  text-4xl sm:text-5xl md:text-6xl font-semibold  md:text-start text-white  ">
+          <h1 className="md:py-5 drop-shadow-xl shadow-black pb-2 text-start  text-4xl sm:text-5xl md:text-6xl font-semibold  md:text-start text-white  ">
             Conectamos problemas con soluciones: <span> Tu hogar,</span> <span className="font-bold text-transparent   bg-gradient-to-r bg-clip-text  from-[#ee7752] via-solYellow to-[#e73c7e] animate-bg-animation bg-no-repeat bg-[500%,500%]">Solucionado.</span>
           </h1>
 
@@ -34,8 +34,8 @@ export const Hero: React.FC<ViewProps> = ({ categories, isLoading }) => {
         </div>
         {/* </div> */}
       </section>
-      <div className="h-h-[calc(30dvh)] flex flex-col items-center md:flex-row gap-10 p-5 sm:p-10 w-full ">
-        <Card className="rounded-2xl  group md:flex-[1_1_40%] lg:flex-[1_1_40%] text-2xl transition hover:bg-black/10 duration-200 hover:-translate-y-4 border border-white/10 bg-white p-1 sm:p-2  shadow-lg">
+      <div className="h-full flex flex-col  items-center lg:flex-row gap-10 p-5 sm:p-10 w-full ">
+        <Card className="rounded-2xl  group  lg:flex-[1_1_40%] w-full text-2xl transition hover:bg-black/10 duration-200 hover:-translate-y-4 border border-white/10 bg-white p-1 sm:p-2  shadow-lg">
           <CardHeader >
             <CardTitle className="text-2xl  sm:mb-4 text-[#0ea5e9] font-semibold">Pide Presupuesto</CardTitle>
             <CardDescription className=" text-black text-base opacity-80 sm:text-xl ">
@@ -43,7 +43,7 @@ export const Hero: React.FC<ViewProps> = ({ categories, isLoading }) => {
             </CardDescription>
           </CardHeader>
         </Card>
-        <Card className="rounded-2xl  group md:flex-[1_1_40%] lg:flex-[1_1_40%] text-2xl transition hover:bg-black/10 duration-200 hover:-translate-y-4 border border-white/10 bg-white p-1 sm:p-2  shadow-lg">
+        <Card className="rounded-2xl  group  lg:flex-[1_1_40%] text-2xl transition hover:bg-black/10 duration-200 hover:-translate-y-4 border border-white/10 bg-white p-1 sm:p-2  shadow-lg">
           <CardHeader >
             <CardTitle className="text-2xl  sm:mb-4 text-[#0ea5e9] font-semibold">Recibí múltiples presupuestos</CardTitle>
             <CardDescription className=" text-black text-base opacity-80 sm:text-xl ">
@@ -51,7 +51,7 @@ export const Hero: React.FC<ViewProps> = ({ categories, isLoading }) => {
             </CardDescription>
           </CardHeader>
         </Card>
-        <Card className="rounded-2xl  group md:flex-[1_1_40%] lg:flex-[1_1_40%] text-2xl transition hover:bg-black/10 duration-200 hover:-translate-y-4 border border-white/10 bg-white p-1 sm:p-2  shadow-lg">
+        <Card className="rounded-2xl  group  lg:flex-[1_1_40%] text-2xl transition hover:bg-black/10 duration-200 hover:-translate-y-4 border border-white/10 bg-white p-1 sm:p-2  shadow-lg">
           <CardHeader >
             <CardTitle className="text-2xl  sm:mb-4 text-[#0ea5e9] font-semibold">Contratá y calificá</CardTitle>
             <CardDescription className=" text-black text-base opacity-80 sm:text-xl ">
