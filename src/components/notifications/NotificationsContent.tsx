@@ -30,7 +30,7 @@ export default function NotificationsContent({ notificationsNumber, ...props }: 
     let i = 0
     while (++i <= len) rows.push(i);
     return (
-        <Card className={"w-[380px] h-[580px] overflow-y-auto "} {...props}>
+        <Card className={"w-72 h-[calc(70vh)] md:w-96 overflow-y-auto"} {...props}>
             <CardHeader className='p-4 pb-0'>
                 <CardTitle>Notificaciones</CardTitle>
                 <CardDescription>{`tienes ${notificationsNumber} notificaciones sin abrir`}</CardDescription>
@@ -38,7 +38,7 @@ export default function NotificationsContent({ notificationsNumber, ...props }: 
                     <Check className="mr-2 h-4 w-4" /> Marcar todos como leido
                 </Button>
             </CardHeader>
-            <CardContent className="grid gap-2 px-0 w-[380px]  ">
+            <CardContent className="grid gap-2 px-2 w-full ">
 
                 <div>
                     <DropdownMenuSeparator className='mt-3  bg-slate-900/30' />
