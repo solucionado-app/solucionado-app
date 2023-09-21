@@ -3,7 +3,14 @@ import Image from "next/image";
 import React from "react";
 import HomeSelect from "~/components/formularios/HomeSelect";
 import type { CategoriesQueryResponse } from "~/components/types/common";
-import { Card, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
+
 import Spinner from "~/components/ui/spinner";
 
 interface ViewProps {
@@ -14,15 +21,15 @@ interface ViewProps {
 export const Hero: React.FC<ViewProps> = ({ categories, isLoading }) => {
   return (
     <>
-      <section className="banner_main flex flex-col h-screen justify-center md:pt-0  px-6 md:px-12 pt-28 w-full bg-[url('/trabajador-oficio-sm.png')] lg:bg-[url('/trabajadoroficio.png')] bg-no-repeat bg-cover  ">
-
+      <section className="banner_main flex h-screen w-full flex-col justify-center  bg-[url('/trabajador-oficio-sm.png')] bg-cover bg-no-repeat px-6 pt-28 md:px-12 md:pt-0 lg:bg-[url('/trabajadoroficio.png')]  ">
         {/* <div className="flex w-full items-center justify-center md:w-8/12 md:justify-between"> */}
-        <div className="flex flex-col gap-2 md:gap-5 md:w-8/12  py-5 items-start md:text-start ">
-          <h1 className="md:py-5 drop-shadow-xl shadow-black pb-2 text-start  text-4xl sm:text-5xl md:text-6xl font-semibold  md:text-start text-white  ">
-            Conectamos problemas con soluciones: <span> Tu hogar,</span> <span className="font-bold text-transparent   bg-gradient-to-r bg-clip-text  from-[#ee7752] via-solYellow to-[#e73c7e] animate-bg-animation bg-no-repeat bg-[500%,500%]">Solucionado.</span>
+        <div className="flex flex-col items-start gap-2 py-5  md:w-8/12 md:gap-5 md:text-start ">
+          <h1 className="pb-2 text-start text-4xl font-semibold text-white  shadow-black drop-shadow-xl sm:text-5xl md:py-5  md:text-start md:text-6xl  ">
+            Conectamos problemas con soluciones: <span> Tu hogar,</span>{" "}
+            <span className="animate-bg-animation bg-gradient-to-r   from-[#ee7752] via-solYellow  to-[#e73c7e] bg-[500%,500%] bg-clip-text bg-no-repeat font-bold text-transparent">
+              Solucionado.
+            </span>
           </h1>
-
-
 
           {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
           {categories && (
@@ -30,36 +37,134 @@ export const Hero: React.FC<ViewProps> = ({ categories, isLoading }) => {
               <HomeSelect categories={categories} isLoading={isLoading} />{" "}
             </>
           )}
-
         </div>
         {/* </div> */}
       </section>
-      <div className="h-full flex flex-col  items-center lg:flex-row gap-10 p-5 sm:p-10 w-full ">
-        <Card className="rounded-2xl  group  lg:flex-[1_1_40%] w-full text-2xl transition hover:bg-black/10 duration-200 hover:-translate-y-4 border border-white/10 bg-white p-1 sm:p-2  shadow-lg">
-          <CardHeader >
-            <CardTitle className="text-2xl  sm:mb-4 text-[#0ea5e9] font-semibold">Pide Presupuesto</CardTitle>
-            <CardDescription className=" text-black text-base opacity-80 sm:text-xl ">
+      <div className="flex container w-full h-full items-stretch flex-wrap gap-16 p-10  ">
+        <div
+          className="flex-1 group  h-full w-full rounded-2xl border border-white/10
+         bg-white text-2xl  shadow-lg transition duration-200 hover:bg-black/30 lg:flex-[1_1_20%]"
+        >
+          <div className="relative h-full  aspect-[3/4]">
+            <Image
+              className=" rounded-2xl object-cover pb-5 
+        transition-all duration-200 ease-in-out group-hover:-translate-y-2  
+        group-hover:translate-x-4 group-hover:rotate-3 group-hover:scale-105"
+              src={"/hombre-tenencia-telefono-taza.jpg"}
+              alt="pide presupuesto"
+              layout="fill"
+            />
+          </div>
+          <div className="p-4">
+            <span className="text-2xl  font-semibold text-turquesa sm:mb-4">
+              Pide Presupuesto
+            </span>
+            <p className=" text-blg:flex-[1_1_20%]
+              lg:flex-[1_1_20%]ase text-black opacity-80 sm:text-xl ">
               Este le llegará a cientos de trabajadores de manera automática..
-            </CardDescription>
-          </CardHeader>
-        </Card>
-        <Card className="rounded-2xl  group  lg:flex-[1_1_40%] text-2xl transition hover:bg-black/10 duration-200 hover:-translate-y-4 border border-white/10 bg-white p-1 sm:p-2  shadow-lg">
-          <CardHeader >
-            <CardTitle className="text-2xl  sm:mb-4 text-[#0ea5e9] font-semibold">Recibí múltiples presupuestos</CardTitle>
-            <CardDescription className=" text-black text-base opacity-80 sm:text-xl ">
-              Todos los trabajadores validados presupuestarán el trabajo y vas a poder elegir al que prefieras.
-            </CardDescription>
-          </CardHeader>
-        </Card>
-        <Card className="rounded-2xl  group  lg:flex-[1_1_40%] text-2xl transition hover:bg-black/10 duration-200 hover:-translate-y-4 border border-white/10 bg-white p-1 sm:p-2  shadow-lg">
-          <CardHeader >
-            <CardTitle className="text-2xl  sm:mb-4 text-[#0ea5e9] font-semibold">Contratá y calificá</CardTitle>
-            <CardDescription className=" text-black text-base opacity-80 sm:text-xl ">
-              Una vez que estés seguro, contratá a quien prefieras y luego de realizado el trabajo calificalo.
-            </CardDescription>
-          </CardHeader>
-        </Card>
+            </p>
+          </div>
+        </div>
+        <div
+          className="group  h-full w-full rounded-2xl border border-white/10
+         bg-white text-2xl  shadow-lg transition duration-200 hover:bg-black/30  lg:flex-[1_1_20%]"
+        >
+          <div className="relative   aspect-[3/4]">
+            <Image
+              className=" rounded-2xl object-cover pb-5 
+        transition-all duration-200 ease-in-out group-hover:-translate-y-2  
+        group-hover:translate-x-4 group-hover:rotate-3 group-hover:scale-105"
+              src={"/hombre-tenencia-telefono-taza.jpg"}
+              alt="pide presupuesto"
+              layout="fill"
+            />
+          </div>
+          <div className="p-4">
+            <span className="text-2xl  font-semibold text-turquesa sm:mb-4">
+              Recibí múltiples presupuestos
+            </span>
+            <p className=" text-blg:flex-[1_1_20%]
+            lg:flex-[1_1_20%]ase text-black opacity-80 sm:text-xl ">
+              Todos los trabajadores validados presupuestarán el trabajo y vas a
+              poder elegir al que prefieras.
+            </p>
+          </div>
+        </div>
+        <div
+          className=" w-full md:w-1/3 group h-full rounded-2xl border border-white/10
+         bg-white text-2xl shadow-lg transition duration-200 hover:bg-black/30 "
+        >
+          <div className="relative h-full  aspect-[3/4]">
+            <Image
+              className=" rounded-2xl object-cover pb-5 
+        transition-all duration-200 ease-in-out group-hover:-translate-y-2  
+        group-hover:translate-x-4 group-hover:rotate-3 group-hover:scale-105"
+              src={"/hombre-tenencia-telefono-taza.jpg"}
+              alt="pide presupuesto"
+              layout="fill"
+            />
+          </div>
+          <div className="p-4">
+            <span className="text-2xl  font-semibold text-turquesa sm:mb-4">
+              Contratá y calificá
+            </span>
+            <p className=" text-blg:flex-[1_1_20%]
+lg:flex-[1_1_20%]ase text-black opacity-80 sm:text-xl ">
+              Una vez que estés seguro, contratá a quien prefieras y luego de
+              realizado el trabajo calificalo.
+            </p>
+          </div>
+        </div>
       </div>
+      <div className="container mx-auto p-6">
+        <div className="flex items-stretch -mx-4">
+          <div className="flex-1 p-4">
+            <div className="block bg-white overflow-hidden border-2 h-full">
+              <div className="p-4">
+                <h2 className="mt-2 mb-2 font-bold text-2xl font-Headingg">
+                  Card Name
+                </h2>
+                <div className="mb-4 flex flex-wrap">
+                  <span className="mr-2">Link 1</span>
+                  <span>Link 2</span>
+                </div>
+
+                <p className="text-md text-justify">Some Description</p>
+              </div>
+              <div className="p-4 flex flex-wrap items-center">
+                <p className="px-1 py-2 tracking-wide text-xs mr-2 mb-2">Tag #1</p>
+                <p className="px-1 py-2 tracking-wide text-xs mr-2 mb-2">Tag #2</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex-1 p-4">
+            <div className="block bg-white overflow-hidden border-2 h-full">
+              <div className="relative h-full  aspect-[3/4]">
+                <Image
+                  className=" rounded-2xl object-cover pb-5 
+        transition-all duration-200 ease-in-out group-hover:-translate-y-2  
+        group-hover:translate-x-4 group-hover:rotate-3 group-hover:scale-105"
+                  src={"/hombre-tenencia-telefono-taza.jpg"}
+                  alt="pide presupuesto"
+                  layout="fill"
+                />
+              </div>
+              <div className="p-4">
+                <span className="text-2xl  font-semibold text-turquesa sm:mb-4">
+                  Contratá y calificá
+                </span>
+                <p className=" text-blg:flex-[1_1_20%]
+lg:flex-[1_1_20%]ase text-black opacity-80 sm:text-xl ">
+                  Una vez que estés seguro, contratá a quien prefieras y luego de
+                  realizado el trabajo calificalo.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </>
   );
 };

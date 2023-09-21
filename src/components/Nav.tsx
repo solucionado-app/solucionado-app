@@ -162,7 +162,7 @@ export default function Nav() {
                 Iniciar Sesión
               </span>
               <span
-                className="hidden rounded-xl bg-blue-500 px-4 py-2 text-sm font-bold text-white transition duration-200 hover:bg-blue-600 lg:inline-block cursor-pointer"
+                className="hidden rounded-xl bg-turquesa px-4 py-2 text-sm font-bold text-white transition duration-200 hover:bg-blue-600 lg:inline-block cursor-pointer"
                 onClick={() => void router.push({
                   pathname: '/registro',
                   query: { redirect: router.asPath }
@@ -288,7 +288,7 @@ export default function Nav() {
             )}
             {!!user.isSignedIn && (
               <SignOutButton>
-                <button className="  rounded-xl bg-blue-500 px-6 py-2 text-sm font-bold text-white transition duration-200 hover:bg-blue-600">
+                <button className="  rounded-xl bg-turquesa px-6 py-2 text-sm font-bold text-white transition duration-200 hover:bg-blue-600">
                   Cerrar Sesion
                 </button>
               </SignOutButton>
