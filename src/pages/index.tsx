@@ -20,8 +20,8 @@ const Home: MyPage = () => {
     <>
       <Hero categories={categories} isLoading={isLoading} />
       <About categories={categories} isLoading={isLoading} />
-      <Testimonials />
-      <Contact />
+      {/* <Testimonials />
+      <Contact /> */}
       <Footer />
 
     </>

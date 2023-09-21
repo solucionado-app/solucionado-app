@@ -3,7 +3,6 @@ import Link from "next/link";
 import React from "react";
 import HomeSelect from "~/components/formularios/HomeSelect";
 import type { CategoriesQueryResponse } from "~/components/types/common";
-import { Button } from "~/components/ui/button";
 import {
   Card,
   CardDescription,
@@ -17,31 +16,31 @@ import { CheckCircle, ShieldCheck, Home, PiggyBank, WrenchIcon } from 'lucide-re
 
 const BeneficiosSection: React.FC = () => {
   return (
-    <section className="bg-gray-100 py-12">
-      <div className="container mx-auto  px-4">
+    <section className="bg-gray-100 py-12 w-full">
+      <div className="container   px-4">
         <h2 className="text-3xl font-semibold text-center mb-6">Beneficios de Solucionado</h2>
-        <div className="flex flex-wrap justify-center gap-6">
-          <div className="bg-white p-6 rounded-lg shadow-md w-full md:w-1/4">
+        <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4">
+          <div className="bg-white p-6 rounded-lg shadow-md w-full md:w-1/3 lg:w-1/4 transition duration-200 ease-in-out transform hover:bg-gray-200 hover:-translate-y-1  hover:shadow-lg cursor-pointer">
             <CheckCircle className="h-10 w-10 text-turquesa mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-center mb-2">Rapidez</h3>
             <p className="text-gray-700 text-center">Obtén ayuda en minutos, no en horas o días.</p>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md w-full md:w-1/4">
+          <div className="bg-white p-6 rounded-lg shadow-md w-full md:w-1/3 lg:w-1/4 transition duration-200 ease-in-out transform hover:bg-gray-200 hover:-translate-y-1  hover:shadow-lg cursor-pointer">
             <ShieldCheck className="h-10 w-10 text-turquesa mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-center mb-2">Confianza</h3>
             <p className="text-gray-700 text-center">Profesionales altamente calificados y verificados.</p>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md w-full md:w-1/4">
+          <div className="bg-white p-6 rounded-lg shadow-md w-full md:w-1/3 lg:w-1/4 transition duration-200 ease-in-out transform hover:bg-gray-200 hover:-translate-y-1  hover:shadow-lg cursor-pointer">
             <WrenchIcon className="h-10 w-10 text-turquesa mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-center mb-2">Variedad</h3>
             <p className="text-gray-700 text-center">Amplia gama de servicios para todas tus necesidades domésticas.</p>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md w-full md:w-1/4">
+          <div className="bg-white p-6 rounded-lg shadow-md w-full md:w-1/3 lg:w-1/4 transition duration-200 ease-in-out transform hover:bg-gray-200 hover:-translate-y-1  hover:shadow-lg cursor-pointer">
             <Home className="h-10 w-10 text-turquesa mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-center mb-2">Comodidad</h3>
             <p className="text-gray-700 text-center">Solicita servicios desde tu hogar, en cualquier momento.</p>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md w-full md:w-1/4">
+          <div className="bg-white p-6 rounded-lg shadow-md w-full md:w-1/3 lg:w-1/4 transition duration-200 ease-in-out transform hover:bg-gray-200 hover:-translate-y-1  hover:shadow-lg cursor-pointer">
             <PiggyBank className="h-10 w-10  text-turquesa mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-center mb-2">Garantía</h3>
             <p className="text-gray-700 text-center">Satisfacción garantizada o te devolvemos tu dinero.</p>
@@ -62,7 +61,7 @@ export const About: React.FC<ViewProps> = ({ categories, isLoading }) => {
     <>
 
       <BeneficiosSection />
-      <div className="solucion flex w-full justify-center bg-sol_darkBlue px-5 py-10">
+      {/* <div className="solucion flex w-full justify-center bg-sol_darkBlue px-5 py-10">
         <div className="w-full max-w-7xl ">
           <div className="titlepage space-y-6">
             <div>
@@ -88,22 +87,22 @@ export const About: React.FC<ViewProps> = ({ categories, isLoading }) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="container flex flex-col items-center justify-center gap-12 px-5 py-10 ">
         <div className="w-full max-w-7xl space-y-6">
           <div className="titlepage w-full space-y-6 text-left">
             <div>
-              <strong className="text-lg font-semibold uppercase text-sol_lightBlue">
+              <strong className="text-lg font-semibold uppercase text-black">
                 Categorias
               </strong>
-              <h2 className="text-2xl font-bold text-solBlue sm:text-3xl md:text-4xl">
+              <h2 className="text-2xl font-bold text-turquesa sm:text-3xl md:text-4xl">
                 TODO LO QUE BUSCAS
               </h2>
             </div>
           </div>
           <div className="flex w-full items-center justify-center">
-            {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
+            {isLoading && <Spinner className="h-12 w-12 text-turquesa" />}
             {categories && (
               <>
                 <HomeSelect categories={categories} isLoading={isLoading} />{" "}
@@ -111,22 +110,22 @@ export const About: React.FC<ViewProps> = ({ categories, isLoading }) => {
             )}
           </div>
 
-          <div className="flex flex-row flex-wrap justify-center gap-4">
-            {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
+          <div className="flex  flex-wrap justify-center gap-4">
+            {isLoading && <Spinner className="h-12 w-12 text-turquesa" />}
             {categories?.map((categorie) => (
-              <Link key={categorie.id} href={"/solucionar/" + categorie.slug}>
-                <div className="relative h-52 w-[319px]  ">
-                  {categorie.image_url && (
-                    <Image
-                      className="rounded-none rounded-t-sm"
-                      src={categorie.image_url}
-                      alt={categorie.description}
-                      fill={true}
-                    />
-                  )}
-                </div>
+              <Link key={categorie.id} className="w-full md:w-1/4  group rounded-lg overflow-hidden text-gray-900 shadow-md col-span-1 transition duration-300 ease-in-out transform bg-white shad hover:bg-gray-200 hover:-translate-y-1  hover:shadow-lg cursor-pointer " href={"/solucionar/" + categorie.slug}>
+                <Card className="shadow-none bg-inherit border-0">
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    {categorie.image_url && (
+                      <Image
+                        className="rounded-t-lg group-hover:scale-105  transform duration-300 ease-in-out transition "
+                        src={categorie.image_url}
+                        alt={categorie.description}
+                        fill={true}
+                      />
+                    )}
+                  </div>
 
-                <Card className="h-36 w-[320px] rounded-sm rounded-t-none border-2 bg-slate-50 text-gray-900 shadow-md">
                   <CardHeader>
                     <CardTitle>{categorie.name}</CardTitle>
                     <CardDescription>{categorie.description}</CardDescription>
