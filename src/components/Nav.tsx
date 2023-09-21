@@ -43,19 +43,26 @@ export default function Nav() {
 
   const handleColorChange = () => {
     const navBar = document.getElementById('navBar');
+    const logo = document.getElementById('logo');
     if (!!window && !!navBar) {
       const classnav = navBar.classList;
+      const classLogo = logo?.classList;
+
       if (window.scrollY >= 100) {
-        if (!classnav.contains('bg-black/90')) {
+        if (!classnav.contains('bg-solBlue/90')) {
           console.log("cambio de color");
-          classnav?.add('bg-black/90', 'text-white')
+          classLogo?.add('bg-transparent')
+          classLogo?.remove('bg-turquesa/80')
+          classnav?.add('bg-solBlue/90', 'text-white', 'backdrop-blur-md')
           classnav?.remove('bg-transparent', 'text-gray-950')
         }
       } else {
         if (!classnav.contains('bg-transparent')) {
           console.log("transparente");
+          classLogo?.remove('bg-transparent')
+          classLogo?.add('bg-turquesa/80')
           classnav?.add('bg-transparent', 'text-gray-950')
-          classnav?.remove('bg-black/90', 'text-white')
+          classnav?.remove('bg-solBlue/90', 'text-white', 'backdrop-blur-md')
         }
       }
     }
@@ -94,18 +101,21 @@ export default function Nav() {
   return (
     <>
 
-      <nav id="navBar" className=" fixed top-0 left-0 flex w-full transition-colors duration-300 items-center justify-between bg-transparent  z-20 px-4 py-4 text-gray-950 sm:px-12 ">
+      <nav id="navBar" className=" fixed top-0 left-0 flex w-full transition-colors duration-300 items-center justify-between bg-transparent  z-20 md:px-4 py-0 text-gray-950 sm:px-12 backdrop-filter   ">
         <Link
-          className="flex items-center gap-2 text-3xl font-bold leading-none"
+          id='logo'
+          className="bg-turquesa/80 p-4 z-10"
           href="/"
         >
           <Image
-            src="/solucionado-logo-horizontal.png"
+
+            src="/solucionado.svg"
             height={35}
             width={140}
-            className="object-contain"
+            className={`object-contain `}
             alt="logo solucionado"
           />
+
         </Link>
 
         <ul
@@ -114,7 +124,7 @@ export default function Nav() {
           <li>
             <Link
               className={`text-sm sm:text-lg ${router.asPath === "/"
-                ? "font-bold underline decoration-solYellow  		"
+                ? "font-semibold underline decoration-solYellow  		"
                 : "  hover:underline  hover:decoration-solYellow"
                 } decoration-4   underline-offset-8 `}
               href="/"
@@ -127,7 +137,7 @@ export default function Nav() {
           <li>
             <a
               className={`text-sm sm:text-lg ${router.asPath === "/sobre-nosotros"
-                ? "font-bold underline decoration-solYellow  	"
+                ? "font-semibold underline decoration-solYellow  	"
                 : " hover:underline  hover:decoration-solYellow"
                 } decoration-4  underline-offset-8 `}
               href="/sobre-nosotros"
@@ -140,7 +150,7 @@ export default function Nav() {
           <li>
             <Link
               className={`text-sm sm:text-lg ${router.asPath === "/contacto"
-                ? "font-bold underline decoration-solYellow  		"
+                ? "font-semibold underline decoration-solYellow  		"
                 : "  hover:underline  hover:decoration-solYellow"
                 } decoration-4   underline-offset-8 `}
               href="/contacto"
@@ -153,7 +163,7 @@ export default function Nav() {
           {!user.isSignedIn && (
             <>
               <span
-                className="hidden rounded-xl bg-gray-50 px-4 py-2 text-sm font-bold text-gray-900 transition  duration-200 hover:bg-gray-100 lg:inline-block cursor-pointer"
+                className="hidden rounded-xl bg-gray-50 px-4 py-2 text-sm font-semibold text-gray-900 transition  duration-200 hover:bg-gray-200 lg:inline-block cursor-pointer"
                 onClick={() => void router.push({
                   pathname: '/login',
                   query: { redirect: router.asPath }
@@ -162,7 +172,7 @@ export default function Nav() {
                 Iniciar Sesión
               </span>
               <span
-                className="hidden rounded-xl bg-turquesa px-4 py-2 text-sm font-bold text-white transition duration-200 hover:bg-blue-600 lg:inline-block cursor-pointer"
+                className="hidden rounded-xl bg-turquesa px-4 py-2 text-sm font-semibold  transition duration-200 hover:bg-solYellow text-white hover:text-black lg:inline-block cursor-pointer"
                 onClick={() => void router.push({
                   pathname: '/registro',
                   query: { redirect: router.asPath }
@@ -215,7 +225,7 @@ export default function Nav() {
       >
         <nav className="fixed bottom-0 left-0 top-0 flex w-9/12 max-w-sm flex-col overflow-y-auto border-r border-gray-400 bg-gray-200 px-4 py-4 opacity-0 transition-all duration-500">
           <div className="mb-9 flex items-center ">
-            <Link className="mr-auto text-3xl font-bold leading-none" href="/">
+            <Link className="mr-auto text-3xl font-semibold leading-none" href="/">
               <Image
                 src="/solucionado-logo-horizontal.png"
                 height={35}
@@ -273,13 +283,13 @@ export default function Nav() {
             {!user.isSignedIn && (
               <div className="pt-6">
                 <Link
-                  className="mb-3 block rounded-xl bg-gray-50 px-4 py-3 text-center text-xs  font-semibold leading-loose shadow hover:bg-gray-100"
+                  className="mb-3 block rounded-xl bg-gray-50 px-4 py-3 text-center text-xs  font-semibold leading-loose shadow hover:bg-gray-200"
                   href={`/login?redirect=${router.asPath}`}
                 >
                   Iniciar Sesión
                 </Link>
                 <Link
-                  className="mb-2 block rounded-xl bg-blue-600 px-4 py-3 text-center text-xs font-semibold leading-loose text-white  hover:bg-blue-700"
+                  className="mb-2 block rounded-xl bg-turquesa px-4 py-3 text-center text-xs font-semibold leading-loose text-black  hover:bg-solYellow"
                   href="/registro"
                 >
                   Registrarse
@@ -288,7 +298,7 @@ export default function Nav() {
             )}
             {!!user.isSignedIn && (
               <SignOutButton>
-                <button className="  rounded-xl bg-turquesa px-6 py-2 text-sm font-bold text-white transition duration-200 hover:bg-blue-600">
+                <button className="  rounded-xl bg-turquesa px-6 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-solYellow hover:text-black">
                   Cerrar Sesion
                 </button>
               </SignOutButton>
