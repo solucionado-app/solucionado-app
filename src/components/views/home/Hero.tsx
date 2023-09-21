@@ -34,75 +34,74 @@ export const Hero: React.FC<ViewProps> = ({ categories, isLoading }) => {
       </section>
 
       <div className="container p-6">
-        <h2 className="text-4xl font-semibold text-turquesa text-center mb-6">Beneficios de Solucionado</h2>
+        <h2 className="text-4xl font-semibold text-black text-center mb-6">¿Como Funciona?</h2>
 
-        <div className="flex flex-col md:flex-row items-stretch  gap-6">
-          <div className="flex-1 p-0 w-full py-4 md:p-4 cursor-pointer">
-            <div className="block  h-full group  rounded-2xl
-         bg-white text-2xl shadow-md transition duration-200 hover:bg-gray-200 hover:-translate-y-1 hover:shadow-lg  ">
-              <div className="relative aspect-square overflow-hidden">
+        <div className="flex flex-col md:flex-row justify-center items-center md:items-stretch  gap-6">
+          <div className="flex-1 max-w-sm p-0 w-full py-4 md:p-4 cursor-pointer ">
+            <div className="block group">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
                 <Image
-                  className="rounded-2xl object-cover rounded-b-none
+                  className="rounded-2xl object-cover
         transition-all duration-200 ease-in-out group-hover:scale-105"
                   src={"/hombre-tenencia-telefono-taza.jpg"}
                   alt="pide presupuesto"
                   layout="fill"
                 />
               </div>
-              <div className="p-4 flex flex-col gap-4">
-                <span className="text-2xl  font-semibold text-black ">
+              <div className="pt-2 flex flex-col gap-1">
+                <span className="text-xl group-hover:text-turquesa  font-semibold text-black ">
                   Pide Presupuesto
                 </span>
-                <p className=" text-base lg:flex-[1_1_20%]
-               text-black opacity-80 sm:text-lg ">
+                <p className="text-sm lg:flex-[1_1_20%]
+                    text-black opacity-80 sm:text-md ">
                   Este le llegará a cientos de trabajadores de manera automática..
                 </p>
               </div>
             </div>
           </div>
-          <div className="flex-1 p-0 w-full py-4 md:p-4 cursor-pointer">
-            <div className="block  h-full group  rounded-2xl
-         bg-white text-2xl shadow-md transition duration-200 hover:bg-gray-200 hover:-translate-y-1 hover:shadow-lg  ">
-              <div className="relative aspect-square overflow-hidden">
+          <div className="flex-1 max-w-sm p-0 w-full py-4 md:p-4 cursor-pointer ">
+            <div className="block group rounded-2xl
+          text-2xl  ">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
                 <Image
-                  className="rounded-2xl object-cover rounded-b-none
+                  className="rounded-2xl object-cover
         transition-all duration-200 ease-in-out group-hover:scale-105"
                   src={"/hombre-tenencia-telefono-taza.jpg"}
                   alt="pide presupuesto"
                   layout="fill"
                 />
               </div>
-              <div className="p-4 flex flex-col gap-4">
-                <span className="text-2xl  font-semibold text-black ">
+              <div className="pt-2 flex flex-col gap-1">
+                <span className="text-xl group-hover:text-turquesa  font-semibold text-black ">
                   Recibí múltiples presupuestos
                 </span>
-                <p className="text-base lg:flex-[1_1_20%]
-            text-black opacity-80 sm:text-lg ">
+                <p className="text-sm lg:flex-[1_1_20%]
+                    text-black opacity-80 sm:text-md ">
                   Todos los trabajadores validados presupuestarán el trabajo y vas a
                   poder elegir al que prefieras.
                 </p>
               </div>
             </div>
+
           </div>
 
-          <div className="flex-1 p-0 w-full py-4 md:p-4 cursor-pointer">
-            <div className="block  h-full group  rounded-2xl
-         bg-white text-2xl shadow-md transition duration-200 hover:bg-gray-200 hover:-translate-y-1 hover:shadow-lg  ">
-              <div className="relative aspect-square overflow-hidden">
+          <div className="flex-1 max-w-sm p-0 w-full py-4 md:p-4 cursor-pointer ">
+            <div className="block  group">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
                 <Image
-                  className="rounded-2xl object-cover rounded-b-none
+                  className="rounded-2xl object-cover
         transition-all duration-200 ease-in-out group-hover:scale-105"
                   src={"/hombre-tenencia-telefono-taza.jpg"}
                   alt="pide presupuesto"
                   layout="fill"
                 />
               </div>
-              <div className="p-4 flex flex-col gap-4">
-                <span className="text-2xl  font-semibold text-black ">
+              <div className="pt-2 flex flex-col gap-1">
+                <span className="text-xl group-hover:text-turquesa  font-semibold text-black ">
                   Contratá y calificá
                 </span>
-                <p className=" text-base  lg:flex-[1_1_20%]
- text-black opacity-80 sm:text-lg ">
+                <p className="text-sm lg:flex-[1_1_20%]
+                    text-black opacity-80 sm:text-md ">
                   Una vez que estés seguro, contratá a quien prefieras y luego de
                   realizado el trabajo calificalo.
                 </p>

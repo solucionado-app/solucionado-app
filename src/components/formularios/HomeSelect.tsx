@@ -61,7 +61,7 @@ export default function HomeSelect({ categories, isLoading }: props) {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className=" flex w-full h-14 max-w-3xl items-baseline justify-between  border-slate-600
+          className=" flex w-full h-full max-w-3xl items-baseline justify-between  border-slate-600
             gap-3 max-[640px]:flex-wrap"
         >
           <FormField
