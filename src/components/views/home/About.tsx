@@ -19,7 +19,7 @@ const BeneficiosSection: React.FC = () => {
     <section className="bg-gray-100 py-12 w-full">
       <div className="container   px-4">
         <h2 className="text-3xl font-semibold text-center mb-6">Beneficios de Solucionado</h2>
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="flex flex-wrap justify-center gap-6">
           <div className="bg-white p-6 max-w-sm rounded-lg shadow-md w-full md:w-1/3 lg:w-1/4 transition duration-200 ease-in-out transform hover:bg-gray-200 hover:-translate-y-1  hover:shadow-lg cursor-pointer">
             <CheckCircle className="h-10 w-10 text-turquesa mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-center mb-2">Rapidez</h3>
@@ -110,7 +110,7 @@ export const About: React.FC<ViewProps> = ({ categories, isLoading }) => {
             )}
           </div>
 
-          <div className="flex  flex-wrap justify-center gap-4">
+          <div className="flex  flex-wrap justify-center gap-6">
             {isLoading && <Spinner className="h-12 w-12 text-turquesa" />}
             {categories?.map((categorie) => (
               <Link key={categorie.id} className="w-80 lg:w-96  group rounded-lg overflow-hidden text-gray-900 shadow-md col-span-1 transition duration-300 ease-in-out transform bg-white shad hover:bg-gray-200 hover:-translate-y-1  hover:shadow-lg cursor-pointer " href={"/solucionar/" + categorie.slug}>

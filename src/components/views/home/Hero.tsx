@@ -37,9 +37,9 @@ export const Hero: React.FC<ViewProps> = ({ categories, isLoading }) => {
         <h2 className="text-4xl font-semibold text-black text-center mb-6">¿Como Funciona?</h2>
 
         <div className="flex flex-col md:flex-row justify-center items-center md:items-stretch  gap-6">
-          <div className="flex-1 max-w-sm p-0 w-full py-4 md:p-4 cursor-pointer ">
+          <div className="flex-1 max-w-sm p-0 w-full py-4  cursor-pointer ">
             <div className="block group">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md">
                 <Image
                   className="rounded-2xl object-cover
         transition-all duration-200 ease-in-out group-hover:scale-105"
@@ -59,10 +59,10 @@ export const Hero: React.FC<ViewProps> = ({ categories, isLoading }) => {
               </div>
             </div>
           </div>
-          <div className="flex-1 max-w-sm p-0 w-full py-4 md:p-4 cursor-pointer ">
+          <div className="flex-1 max-w-sm p-0 w-full py-4  cursor-pointer ">
             <div className="block group rounded-2xl
           text-2xl  ">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md">
                 <Image
                   className="rounded-2xl object-cover
         transition-all duration-200 ease-in-out group-hover:scale-105"
@@ -85,9 +85,9 @@ export const Hero: React.FC<ViewProps> = ({ categories, isLoading }) => {
 
           </div>
 
-          <div className="flex-1 max-w-sm p-0 w-full py-4 md:p-4 cursor-pointer ">
+          <div className="flex-1 max-w-sm p-0 w-full py-4  cursor-pointer ">
             <div className="block  group">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md">
                 <Image
                   className="rounded-2xl object-cover
         transition-all duration-200 ease-in-out group-hover:scale-105"
