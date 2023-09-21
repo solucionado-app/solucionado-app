@@ -52,7 +52,7 @@ export default function Nav() {
         if (!classnav.contains('bg-solBlue/90')) {
           console.log("cambio de color");
           classLogo?.add('bg-transparent')
-          classLogo?.remove('bg-turquesa/80')
+          classLogo?.remove('bg-solBlue')
           classnav?.add('bg-solBlue/90', 'text-white', 'backdrop-blur-md')
           classnav?.remove('bg-transparent', 'text-gray-950')
         }
@@ -60,7 +60,7 @@ export default function Nav() {
         if (!classnav.contains('bg-transparent')) {
           console.log("transparente");
           classLogo?.remove('bg-transparent')
-          classLogo?.add('bg-turquesa/80')
+          classLogo?.add('bg-solBlue')
           classnav?.add('bg-transparent', 'text-gray-950')
           classnav?.remove('bg-solBlue/90', 'text-white', 'backdrop-blur-md')
         }
@@ -104,7 +104,7 @@ export default function Nav() {
       <nav id="navBar" className=" fixed top-0 left-0 flex w-full transition-colors duration-300 items-center justify-between bg-transparent  z-20 md:px-4 py-0 text-gray-950 sm:px-12 backdrop-filter   ">
         <Link
           id='logo'
-          className="bg-turquesa/80 p-4 z-10"
+          className="bg-solBlue p-4 z-10"
           href="/"
         >
           <Image
@@ -172,7 +172,7 @@ export default function Nav() {
                 Iniciar Sesión
               </span>
               <span
-                className="hidden rounded-xl bg-turquesa px-4 py-2 text-sm font-semibold  transition duration-200 hover:bg-solYellow text-white hover:text-black lg:inline-block cursor-pointer"
+                className="hidden rounded-xl bg-turquesa px-4 py-2 text-sm font-semibold  transition duration-200 hover:bg-solYellow text-black hover:text-black lg:inline-block cursor-pointer"
                 onClick={() => void router.push({
                   pathname: '/registro',
                   query: { redirect: router.asPath }
