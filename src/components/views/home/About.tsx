@@ -12,6 +12,47 @@ import {
 } from "~/components/ui/card";
 import Spinner from "~/components/ui/spinner";
 
+
+import { CheckCircle, ShieldCheck, Home, PiggyBank, WrenchIcon } from 'lucide-react';
+
+const BeneficiosSection: React.FC = () => {
+  return (
+    <section className="bg-gray-100 py-12">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-semibold text-center mb-6">Beneficios de Solucionado</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-center">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <CheckCircle className="h-10 w-10 text-turquesa mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-center mb-2">Rapidez</h3>
+            <p className="text-gray-700 text-center">Obtén ayuda en minutos, no en horas o días.</p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <ShieldCheck className="h-10 w-10 text-turquesa mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-center mb-2">Confianza</h3>
+            <p className="text-gray-700 text-center">Profesionales altamente calificados y verificados.</p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <WrenchIcon className="h-10 w-10 text-turquesa mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-center mb-2">Variedad</h3>
+            <p className="text-gray-700 text-center">Amplia gama de servicios para todas tus necesidades domésticas.</p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <Home className="h-10 w-10 text-turquesa mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-center mb-2">Comodidad</h3>
+            <p className="text-gray-700 text-center">Solicita servicios desde tu hogar, en cualquier momento.</p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <PiggyBank className="h-10 w-10  text-turquesa mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-center mb-2">Garantía</h3>
+            <p className="text-gray-700 text-center">Satisfacción garantizada o te devolvemos tu dinero.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+
 interface ViewProps {
   categories: CategoriesQueryResponse[] | undefined;
   isLoading: boolean;
@@ -19,75 +60,8 @@ interface ViewProps {
 export const About: React.FC<ViewProps> = ({ categories, isLoading }) => {
   return (
     <>
-      <div
-        id="about"
-        className="flex w-full justify-center bg-white px-5 py-10"
-      >
-        <div className="w-full max-w-7xl">
-          <div className="grid items-center lg:flex ">
-            <div className="w-[60%]">
-              <div className="about_box space-y-6 pb-2">
-                <div className="titlepage ">
-                  <strong className="text-lg font-semibold uppercase text-sol_lightBlue ">
-                    ¿Qué podemos ofrecerte?
-                  </strong>
-                  <div className="rounded-2xl group md:flex-[1_1_40%] lg:flex-[1_1_40%] text-2xl transition hover:bg-white/5 duration-200 hover:-translate-y-4 border border-white/10 bg-black/40 p-6 sm:p-12">
-                    <div>
-                      <h3 className="text-2xl md:text-4xl sm:mb-4 text-[#0ea5e9] font-semibold" >Expertos confiables</h3>
-                      <p className="text-lg opacity-80 sm:text-2xl">Contamos con una red de expertos confiables y calificados para resolver cualquier problema en tu hogar.</p>
-                    </div>
-                  </div>
-                  <Card className="rounded-2xl  group md:flex-[1_1_40%] lg:flex-[1_1_40%] text-2xl transition hover:bg-black/10 duration-200 hover:-translate-y-4 border border-white/10 bg-white p-6 sm:p-5 ">
-                    <CardHeader >
-                      <CardTitle className="text-2xl md:text-4xl sm:mb-4 text-[#0ea5e9] font-semibold">Expertos confiables</CardTitle>
-                      <CardDescription className=" text-black text-lg opacity-80 sm:text-2xl ">
-                        Contamos con una red de expertos confiables y calificados para resolver cualquier problema en tu hogar.
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                  <h2 className="text-2xl font-bold pt-5 uppercase text-black md:text-3xl lg:text-4xl">
-                    Te ofrecemos ayuda en todo lo que puedas necesitar en tu hogar
-                  </h2>
-                </div>
-                <h3 className=" text-xl font-bold text-gray-600 sm:text-2xl">
-                  TODO LO QUE NECESITAS, TIENE SOLUCIÓN
-                </h3>
-                <p className=" text-lg text-black">
-                  Ponemos a tu disposición una cartera de profesionales <br /> para garantizar el trabajo.
-                </p>
-                <p className=" text-left text-lg text-black">
-                  Carga tu inquietud, solicita presupuestos y selecciona el que
-                  más te guste.
-                </p>
 
-                <div className="flex flex-wrap items-center gap-6">
-                  <span className="try uppercase text-sol_lightBlue">
-                    Registrate y comienza
-                  </span>
-                  <Link className="read_morea" href="/registro">
-                    <Button className="bg-sol_lightBlue px-5 py-2 text-center text-lg font-bold text-white hover:bg-sol_lightBlue/80">
-                      Registrarme
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="hidden lg:block w-[40%]">
-              <div className="about_img">
-                <figure>
-                  <Image
-                    src="/about_img2.jpg"
-                    width={517}
-                    height={346}
-                    alt="#"
-                  />
-                </figure>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <BeneficiosSection />
       <div className="solucion flex w-full justify-center bg-sol_darkBlue px-5 py-10">
         <div className="w-full max-w-7xl ">
           <div className="titlepage space-y-6">
