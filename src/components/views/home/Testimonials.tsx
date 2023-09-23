@@ -53,7 +53,7 @@ export const Testimonials = () => {
               <img className="w-6 h-6 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png" alt="profile picture" />
               <div className="flex items-center divide-x-2 divide-gray-500">
                 <cite className="pr-3 font-medium text-gray-900 ">Micheal Gough</cite>
-                <cite className="pl-3 text-sm text-gray-500">CEO at Google</cite>
+                <cite className="pl-3 text-sm text-gray-500">Cliente Satisfecho</cite>
               </div>
             </figcaption>
           </figure>
