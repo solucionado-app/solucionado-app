@@ -23,7 +23,10 @@ const formSchema = z.object({
     name: z.string(),
     description: z.string(),
     slug: z.string(),
-  }),
+
+
+  },
+    { required_error: "la categoria es requerida.", }),
 });
 
 interface props {
@@ -58,31 +61,115 @@ export default function HomeSelect({ categories, isLoading }: props) {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex w-full max-w-md items-end justify-between gap-2 max-[400px]:flex-wrap"
+          className=" flex w-full h-full max-w-3xl items-baseline justify-between  border-slate-600
+            gap-3 max-[640px]:flex-wrap"
         >
           <FormField
             control={form.control}
             name="category"
             render={({ field }) => (
-              <FormItem className="w-full self-end">
+              <FormItem className="w-full space-y-1 h-14 shadow-md">
                 <FormControl>
                   <Select
                     {...field}
                     styles={{
                       control: (styles) => ({
                         ...styles,
-                        backgroundColor: "white",
-                        color: "black",
+                        height: '3.5rem',
+                        boxShadow: '0px 0px 0px 0px rgb(0 170 170)',
+                        borderWidth: '2px',
+                        borderColor: '#f8fafc',
+                        backgroundColor: 'white',
+                        color: 'rgb(2 2 2)',
+                        '&:hover': {
+                          boxShadow: '0px 0px 3px 0px rgb(100 116 139)',
+                          borderColor: '#64748b',
+                        },
+                        '&:after': {
+                          boxShadow: '0px 0px 3px 0px rgb(100 116 139)',
+                          borderColor: '#64748b',
+                        }
                       }),
-                      menuList: (provided) => ({
+
+                      menuList: (base) => ({
+                        ...base,
+                        borderWidth: '0px',
+                        backgroundColor: '#1f2937',
+                        color: 'rgb(255 255 255)',
+                        '&:hover': {
+                          backgroundColor: '#cbd5e1',
+                          color: 'rgb(255 255 255)',
+                        },
+
+                        "::-webkit-scrollbar": {
+                          width: "6px",
+                          height: "0px",
+                        },
+                        "::-webkit-scrollbar-track": {
+                          background: "#f1f1f1"
+                        },
+                        "::-webkit-scrollbar-thumb": {
+                          background: "#888"
+                        },
+                        "::-webkit-scrollbar-thumb:hover": {
+                          background: "#cbd5e1"
+                        }
+                      }),
+                      container: (provided) => ({
                         ...provided,
-                        backgroundColor: "white",
-                        color: "black",
+                        width: '100%',
+                        height: '100%',
+                      }),
+                      option: (provided, { isSelected, isFocused }) => ({
+                        ...provided,
+                        backgroundColor: isFocused || isSelected ? '#cbd5e1' : '#f8fafc',
+                        color: 'rgb(2 2 2)',
+                        '&:hover': {
+                          backgroundColor: '#cbd5e1',
+                          color: 'rgb(2 2 2)',
+                        },
+                        '&:focus': {
+                          backgroundColor: '#cbd5e1',
+                          color: 'rgb(2 2 2)',
+                        },
+                      }),
+                      placeholder: (provided) => ({
+                        ...provided,
+                        color: '#020617',
+
+                      }),
+                      singleValue: (provided) => ({
+                        ...provided,
+                        color: '#020617',
+                      }),
+                      input: (provided) => ({
+                        ...provided,
+                        color: '#020617',
+                        borderColor: '#64748b',
+                        borderRadius: '100rem',
+                      }),
+                      indicatorSeparator: (provided) => ({
+                        ...provided,
+                        backgroundColor: 'rgb(255 255 2 0)'
+
+                      }),
+                      clearIndicator: (provided) => ({
+                        ...provided,
+                        color: 'rgb(2 2 2)',
+                        '&:hover': {
+                          color: '#93c5fd',
+                        },
+                      }),
+                      dropdownIndicator: (provided) => ({
+                        ...provided,
+                        display: 'none',
                       }),
                     }}
-                    className="w-full "
+
+                    className="w-full m-0 p-0 "
                     isLoading={isLoading}
-                    placeholder="Elige una categoria"
+
+                    placeholder="Necesito ayuda con..."
                     options={categories}
                     getOptionLabel={(option) => option.name}
                     getOptionValue={(option) => option.id.toString()}
@@ -95,7 +182,8 @@ export default function HomeSelect({ categories, isLoading }: props) {
           />
 
           <Button
-            className="mb-[9px] bg-solBlue hover:bg-solBlue/80 max-[400px]:w-full"
+            size={"lg"}
+            className=" bg-solYellow text-lg  h-14 font-semibold text-black rounded-lg shadow-md hover:bg-solYellow/80 transition-colors w-full md:w-auto   max-[640px]:w-full"
             type="submit"
           >
             Buscar

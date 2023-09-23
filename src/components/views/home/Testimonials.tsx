@@ -1,77 +1,66 @@
 import Image from "next/image";
-import React from "react";
 
 export const Testimonials = () => {
   return (
-    <div id="client" className="flex w-full justify-center bg-white px-5 py-10">
-      <div className="w-full max-w-7xl">
-        <div className="titlepage text-start text-4xl font-bold uppercase">
-          <h2 className="text-2xl font-bold  uppercase text-black md:text-3xl lg:text-4xl">
-            <strong className="yellow text-lg font-semibold text-solYellow">
-              Testimonios
-            </strong>
-            <br />
-            de Nuestros Clientes
-          </h2>
+    <section className=" py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="lg:text-center">
+          <h2 className="text-base text-solYellow font-semibold tracking-wide uppercase">Testimonios</h2>
+          <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+            Lo que dicen nuestros clientes
+          </p>
         </div>
 
-        <div
-          id="testimo"
-          className="carousel slide testimonial_Carousel "
-          data-ride="carousel"
-        >
-          <ol className="carousel-indicators">
-            <li
-              data-target="#testimo"
-              data-slide-to="0"
-              className="active"
-            ></li>
-            <li data-target="#testimo" data-slide-to="1"></li>
-            <li data-target="#testimo" data-slide-to="2"></li>
-          </ol>
-          <div className="carousel-inner">
-            <div className="carousel-item active">
-              <div className="carousel-caption ">
-                <div className="row">
-                  <div className="col-md-6 offset-md-3">
-                    <div className="test_box p-3 pt-14 sm:px-[10%] md:px-[25%]">
-                      <p className="border-solYbg-solYellow border p-3 text-[#383737] md:p-5">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua. Ut enim ad minim veniam, quis{" "}
-                      </p>
-                      <div className="flex items-center space-x-2 pt-7 text-[15px] font-semibold uppercase text-solYellow">
-                        <Image
-                          src="/cos.jpg"
-                          width={83}
-                          height={79}
-                          alt="foto de prefil"
-                          className="rounded-full"
-                        />
-                        <h1>Usuario</h1>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+        <div className="mt-20 max-w-lg mx-auto grid gap-10 sm:gap-6 lg:grid-cols-3 lg:max-w-none">
+          <figure className="max-w-screen-md mx-auto text-center">
+            <svg className="w-10 h-10 mx-auto mb-3 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 14">
+              <path d="M6 0H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3H2a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Zm10 0h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3h-1a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Z" />
+            </svg>
+            <blockquote>
+              <p className="text-2xl italic font-medium text-gray-900 ">{"¡Increíble! Solucionado me sacó de apuros en un abrir y cerrar de ojos. No puedo creer lo fácil que fue. ¡Altamente recomendado"}</p>
+            </blockquote>
+            <figcaption className="flex items-center justify-center mt-6 space-x-3">
+              <img className="w-6 h-6 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png" alt="profile picture" />
+              <div className="flex items-center divide-x-2 divide-gray-500">
+                <cite className="pr-3 font-medium text-gray-900 ">Juan Pérez</cite>
+                <cite className="pl-3 text-sm text-gray-500">Cliente Satisfecho</cite>
               </div>
-            </div>
-          </div>
-          <a
-            className="carousel-control-prev"
-            href="#testimo"
-            role="button"
-            data-slide="prev"
-          >
-          </a>
-          <a
-            className="carousel-control-next"
-            href="#testimo"
-            role="button"
-            data-slide="next"
-          >
-          </a>
+            </figcaption>
+          </figure>
+          <figure className="max-w-screen-md mx-auto text-center">
+            <svg className="w-10 h-10 mx-auto mb-3 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 14">
+              <path d="M6 0H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3H2a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Zm10 0h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3h-1a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Z" />
+            </svg>
+            <blockquote>
+              <p className="text-2xl italic font-medium text-gray-900 ">{"¡Wow! Nunca había sido tan fácil solucionar problemas domésticos. Gracias a Solucionado, mi casa está en perfecto estado otra vez."}</p>
+            </blockquote>
+            <figcaption className="flex items-center justify-center mt-6 space-x-3">
+              <img className="w-6 h-6 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png" alt="profile picture" />
+              <div className="flex items-center divide-x-2 divide-gray-500">
+                <cite className="pr-3 font-medium text-gray-900 ">Carlos Rodríguez</cite>
+                <cite className="pl-3 text-sm text-gray-500">Solucionador</cite>
+              </div>
+            </figcaption>
+          </figure>
+          <figure className="max-w-screen-md mx-auto text-center">
+            <svg className="w-10 h-10 mx-auto mb-3 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 14">
+              <path d="M6 0H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3H2a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Zm10 0h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3h-1a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Z" />
+            </svg>
+            <blockquote>
+              <p className="text-2xl italic font-medium text-gray-900 ">{"Me encanta la comodidad que ofrece Solucionado. Puedo solicitar ayuda desde mi sofá y recibir presupuestos en minutos. ¡Asombroso!"}</p>
+            </blockquote>
+            <figcaption className="flex items-center justify-center mt-6 space-x-3">
+              <img className="w-6 h-6 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png" alt="profile picture" />
+              <div className="flex items-center divide-x-2 divide-gray-500">
+                <cite className="pr-3 font-medium text-gray-900 ">Micheal Gough</cite>
+                <cite className="pl-3 text-sm text-gray-500">Cliente Satisfecho</cite>
+              </div>
+            </figcaption>
+          </figure>
+
+
         </div>
       </div>
-    </div>
+    </section>
   );
 };

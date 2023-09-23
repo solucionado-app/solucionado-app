@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="558.06775"
+   height="566.32306"
+   viewBox="0 0 147.65548 149.83965"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="solucionado - copia.svg"
+   inkscape:export-filename="E:\solucionado\solucionadoisologo.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="false"
+     lock-margins="true"
+     fit-margin-top="5"
+     fit-margin-left="5"
+     fit-margin-right="5"
+     fit-margin-bottom="5"
+     inkscape:zoom="0.48697917"
+     inkscape:cx="725.90374"
+     inkscape:cy="68.791443"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <rect
+       x="597.56152"
+       y="178.6524"
+       width="486.6738"
+       height="342.93048"
+       id="rect36847" />
+    <rect
+       x="1135.5721"
+       y="308.02139"
+       width="494.8877"
+       height="53.390373"
+       id="rect35929" />
+  </defs>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-70.83003,-18.389129)">
+    <path
+       style="fill:none;fill-opacity:1;stroke:#ffb21e;stroke-width:13.2556;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 78.780747,160.27808 V 102.14332 L 143.9786,29.610695 210.53476,103.22995 v 56.77647 h -96.98182 v -45.91016 l 55.55401,-55.554015"
+       id="path869"
+       inkscape:export-filename="E:\solucionado\logo-recto.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       sodipodi:nodetypes="cccccccc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:'Gill Sans Ultra Bold';-inkscape-font-specification:'Gill Sans Ultra Bold, ';stroke-width:0.264583"
+       x="234.95804"
+       y="99.944443"
+       id="text9765"><tspan
+         sodipodi:role="line"
+         id="tspan9763"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Gill Sans Ultra Bold';-inkscape-font-specification:'Gill Sans Ultra Bold, ';stroke-width:0.264583"
+         x="234.95804"
+         y="99.944443" /></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10.5833px;line-height:1.25;font-family:Montserrat;-inkscape-font-specification:Montserrat;stroke-width:0.264583"
+       x="295.80939"
+       y="23.880259"
+       id="text14079"><tspan
+         sodipodi:role="line"
+         id="tspan14077"
+         style="stroke-width:0.264583"
+         x="295.80939"
+         y="23.880259" /></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10.5833px;line-height:1.25;font-family:Montserrat;-inkscape-font-specification:Montserrat;stroke-width:0.264583"
+       x="290.91956"
+       y="87.991501"
+       id="text24763"><tspan
+         sodipodi:role="line"
+         id="tspan24761"
+         style="stroke-width:0.264583"
+         x="290.91956"
+         y="87.991501" /></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10.5833px;line-height:1.25;font-family:Montserrat;-inkscape-font-specification:Montserrat;stroke-width:0.264583"
+       x="319.17197"
+       y="154.276"
+       id="text30005"><tspan
+         sodipodi:role="line"
+         id="tspan30003"
+         style="stroke-width:0.264583"
+         x="319.17197"
+         y="154.276" /></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458338,0,0,0.26458338,58.923778,9.7540527)"
+       id="text35927"
+       style="font-size:40px;line-height:1.25;font-family:Montserrat;-inkscape-font-specification:Montserrat;white-space:pre;shape-inside:url(#rect35929)" />
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458338,0,0,0.26458338,58.923778,9.7540527)"
+       id="text36845"
+       style="font-size:40px;line-height:1.25;font-family:Montserrat;-inkscape-font-specification:Montserrat;white-space:pre;shape-inside:url(#rect36847)" />
+  </g>
+</svg>

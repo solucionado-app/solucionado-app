@@ -19,3 +19,5 @@ const Page: MyPage = () => {
 
 export default Page;
 Page.Layout = "Main";
+Page.Title = "Registro";
+Page.Description = "registro";

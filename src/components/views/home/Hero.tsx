@@ -1,6 +1,6 @@
-import React from "react";
 import HomeSelect from "~/components/formularios/HomeSelect";
 import type { CategoriesQueryResponse } from "~/components/types/common";
+
 import Spinner from "~/components/ui/spinner";
 
 interface ViewProps {
@@ -8,48 +8,31 @@ interface ViewProps {
   isLoading: boolean;
 }
 
-export const Hero: React.FC<ViewProps> = ({ categories, isLoading }) => {
+export function Hero({ categories, isLoading }: ViewProps) {
   return (
-    <section className="banner_main flex min-h-[45vh] w-full justify-center bg-[url('/banner.jpg')] bg-cover bg-no-repeat px-5 py-10 text-white md:py-0 ">
-      <div className="w-full max-w-7xl">
-        <div className="flex h-full flex-col  items-center md:flex-row md:justify-between 2xl:justify-center">
-          <div className="flex w-full items-center justify-center md:w-1/2 md:justify-between">
-            <div className="flex flex-col items-center py-10 md:items-start md:text-start">
-              <h1 className="py-5 text-center text-4xl font-bold sm:text-5xl md:text-start lg:text-6xl">
-                Soluciones para tu hogar
-              </h1>
-              <p className="py-3 pb-16  text-3xl text-solYellow">Trabajos garantizados</p>
-            </div>
-          </div>
-          <div className="flex w-full  items-center justify-center md:w-1/2 md:justify-end">
-            <div className="flex w-full max-w-lg justify-center rounded-xl bg-white px-4 py-6">
-              {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
-              {categories && (
-                <>
-                  <HomeSelect categories={categories} isLoading={isLoading} />{" "}
-                </>
-              )}
-            </div>
-          </div>
+    <>
+      <section className="banner_main flex h-screen w-full flex-col justify-center  bg-[url('/trabajador-oficio-sm.png')] bg-cover bg-no-repeat px-6 pt-28 md:px-12 md:pt-0 lg:bg-[url('/trabajadoroficio.png')]  ">
+        {/* <div className="flex w-full items-center justify-center md:w-8/12 md:justify-between"> */}
+        <div className=" flex flex-col items-start gap-2 py-5  md:w-8/12 md:gap-5 md:text-start ">
+          <h1 className="pb-2 text-start text-4xl font-semibold text-white  shadow-black drop-shadow-xl sm:text-5xl md:py-5  md:text-start md:text-6xl  ">
+            Conectamos problemas con soluciones: <span> Tu hogar,</span>{" "}
+            <span className="animate-bg-animation bg-gradient-to-r   from-solYellow via-turquesa  to-sol_lightBlue bg-[500%,500%] bg-clip-text bg-no-repeat font-bold text-transparent">
+              Solucionado.
+            </span>
+          </h1>
+
+          {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
+          {categories && (
+            <>
+              <HomeSelect categories={categories} isLoading={isLoading} />{" "}
+            </>
+          )}
         </div>
-      </div>
-    </section>
+
+      </section>
+
+
+    </>
   );
-};
-{
-  /* <div className="row d_flex flex items-center justify-around w-full py-11 bg-sol-yellow">
-          <div className="hidden md:block text-lg font-semibold">
-            <ul className="conta_icon">
-              <li><a href="http://wa.me/5492994014514">Contacto: +01 1234567890</a> </li>
-            </ul>
-          </div>
-          <div className="col-md-4 col-sm-4 ">
-            <a className="logo" href="#"><Image src="/solucionado-transparente.png" width={248} height={81} alt="#" /></a>
-          </div>
-          <div className="hidden md:block text-lg font-semibold">
-            <ul className="conta_icon ">
-              <li><a href="#">info@solucionado.com.ar</a></li>
-            </ul>
-          </div>
-        </div> */
 }
+

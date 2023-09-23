@@ -4,12 +4,12 @@ import React from "react";
 export const Footer = () => {
   return (
     <footer className="w-full pt-5">
-      <div className=" mx-auto bg-[url('/footer_bg.jpg')] bg-cover bg-no-repeat pt-[90px] text-[#fff]">
+      <div className=" mx-auto bg-solBlue  pt-[90px] text-gray-50">
         <div className="container">
           <div className="col-md-12">
             <a className="logo2" href="#">
               <Image
-                src="/solucionado-transparente.png"
+                src="/solucionado-logo-horizontal.png"
                 width={248}
                 height={81}
                 alt="#"

@@ -16,10 +16,18 @@ module.exports = {
       },
     },
     extend: {
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+      },
       fontFamily: {
         sans: ["var(--font-inter)"],
       },
       keyframes: {
+        "bg-animation":{
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
         "accordion-down": {
           from: { height: 0 },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -30,10 +38,13 @@ module.exports = {
         },
       },
       animation: {
+        "bg-animation": "bg-animation 8s ease infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       colors: {
+        azul: '#0081A7',
+        turquesa: '#01AFBA',
         solYellow: "#ecbb2c",
         solBlue: "#154492",
         sol_lightBlue: "#3090D6",
