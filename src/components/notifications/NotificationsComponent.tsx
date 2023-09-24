@@ -24,12 +24,12 @@ const NotificationsComponent = ({ notificationsNumber }: props) => {
 
             <DropdownMenuTrigger className="group relative" >
                 <>
-                    {notificationsNumber > 0 && <div className="absolute inline-flex items-center justify-center  w-4 h-4 text-xs font-bold text-white bg-red-500  rounded-full
+                    {notificationsNumber > 0 && <div className="absolute inline-flex items-center justify-center text-white w-4 h-4 text-xs font-bold  bg-red-500  rounded-full
                      -top-2 -right-2 dark:border-gray-900">{notificationsNumber}</div>}
-                    <BellRing className="group-data-[state=open]:fill-white text-white group-data-[state=closed]:fill-none   w-7 h-7 " />
+                    <BellRing className="group-data-[state=open]:fill-white  group-data-[state=closed]:fill-none  w-7 h-7 " />
                 </>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="p-0 mr-2 md:mr-6" >
+            <DropdownMenuContent id="dropcontent" className="p-0 mr-2 md:mr-6 " >
                 <NotificationsContent notificationsNumber={notificationsNumber} />
 
             </DropdownMenuContent>

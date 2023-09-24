@@ -15,7 +15,7 @@ export default function MainLayout({ title = "Solucionado App", description = "S
 
             <main className=" min-h-screen flex justify-start flex-col">
                 <Nav />
-                <div className="flex h-full min-h-screen flex-col justify-center items-center text-slate-900 bg-slate-50 ">{children}</div>
+                <div className="flex h-full min-h-screen flex-col justify-center items-center text-slate-900 bg-gray-50 ">{children}</div>
             </main>
         </>
     );

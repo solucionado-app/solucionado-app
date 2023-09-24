@@ -43,7 +43,7 @@ export function About({ categories, isLoading }: ViewProps) {
           <div className="flex  flex-wrap justify-center gap-6">
             {isLoading && <Spinner className="h-12 w-12 text-turquesa" />}
             {categories?.map((categorie) => (
-              <Link key={categorie.id} className="w-80 lg:w-96  group rounded-lg overflow-hidden text-gray-900 shadow-md col-span-1 transition duration-300 ease-in-out transform bg-white shad hover:bg-gray-100 hover:-translate-y-1  hover:shadow-lg cursor-pointer " href={"/solucionar/" + categorie.slug}>
+              <Link key={categorie.id} className="w-80 lg:w-96  group rounded-lg overflow-hidden text-gray-900 shadow-md col-span-1 transition duration-300 ease-in-out transform bg-white hover:-translate-y-1 hover:shadow-xl cursor-pointer " href={"/solucionar/" + categorie.slug}>
                 <Card className="shadow-none bg-inherit border-0">
                   <div className="relative aspect-[4/3] overflow-hidden">
                     {categorie.image_url && (

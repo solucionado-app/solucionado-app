@@ -17,7 +17,7 @@ export default function SolucionadorCTA() {
                 </div>
 
                 <div className="mt-20 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                    <div className="bg-white group overflow-hidden shadow rounded-lg transition duration-200 ease-in-out transform hover:bg-gray-100 hover:-translate-y-1  hover:shadow-lg cursor-pointer">
+                    <div className="bg-white group overflow-hidden shadow-lg rounded-lg transition duration-200 ease-in-out transform hover:-translate-y-1  hover:shadow-xl cursor-pointer">
                         <div className="px-4 py-5 sm:p-6">
                             <h3 className="text-lg leading-6 font-medium text-gray-900 group-hover:text-turquesa">Crea tu perfil</h3>
                             <div className="mt-2 text-sm text-gray-700">
@@ -28,7 +28,7 @@ export default function SolucionadorCTA() {
                         </div>
                     </div>
 
-                    <div className="bg-white group overflow-hidden shadow rounded-lg transition duration-200 ease-in-out transform hover:bg-gray-100 hover:-translate-y-1  hover:shadow-lg cursor-pointer">
+                    <div className="bg-white group overflow-hidden shadow-lg rounded-lg transition duration-200 ease-in-out transform hover:-translate-y-1  hover:shadow-xl cursor-pointer">
                         <div className="px-4 py-5 sm:p-6">
                             <h3 className="text-lg leading-6 font-medium text-gray-900 group-hover:text-turquesa">Recibe solicitudes de trabajo</h3>
                             <div className="mt-2 text-sm text-gray-700">
@@ -39,7 +39,7 @@ export default function SolucionadorCTA() {
                         </div>
                     </div>
 
-                    <div className="bg-white group overflow-hidden shadow rounded-lg transition duration-200 ease-in-out transform hover:bg-gray-100 hover:-translate-y-1  hover:shadow-lg cursor-pointer">
+                    <div className="bg-white group overflow-hidden shadow-lg rounded-lg transition duration-200 ease-in-out transform hover:-translate-y-1  hover:shadow-xl cursor-pointer">
                         <div className="px-4 py-5 sm:p-6">
                             <h3 className="text-lg leading-6 font-medium text-gray-900 group-hover:text-turquesa">Cobra por tu trabajo</h3>
                             <div className="mt-2 text-sm text-gray-700">
@@ -52,7 +52,7 @@ export default function SolucionadorCTA() {
                 </div>
 
                 {!user && <div className="mt-10 flex justify-center">
-                    <Link href="/registro" className="bg-solYellow border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                    <Link href="/registro" className="bg-solYellow border border-transparent rounded-md py-3 px-8 font-medium text-gray-900 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
                         Regístrate como solucionador
                     </Link>
                 </div>}

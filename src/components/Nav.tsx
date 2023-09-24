@@ -41,32 +41,43 @@ export default function Nav() {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  const handleColorChange = () => {
-    const navBar = document.getElementById('navBar');
-    const logo = document.getElementById('logo');
-    if (!!window && !!navBar) {
-      const classnav = navBar.classList;
-      const classLogo = logo?.classList;
 
-      if (window.scrollY >= 100) {
-        if (!classnav.contains('bg-solBlue/90')) {
-          console.log("cambio de color");
-          classLogo?.add('bg-transparent')
-          classLogo?.remove('bg-solBlue')
-          classnav?.add('bg-solBlue/90', 'text-white', 'backdrop-blur-md')
-          classnav?.remove('bg-transparent', 'text-gray-950')
-        }
-      } else {
-        if (!classnav.contains('bg-transparent')) {
-          console.log("transparente");
-          classLogo?.remove('bg-transparent')
-          classLogo?.add('bg-solBlue')
-          classnav?.add('bg-transparent', 'text-gray-950')
-          classnav?.remove('bg-solBlue/90', 'text-white', 'backdrop-blur-md')
+  useEffect(() => {
+    const handleColorChange = () => {
+      const navBar = document.getElementById('navBar');
+      const logo = document.getElementById('logo');
+      if (!!window && !!navBar) {
+        const classnav = navBar.classList;
+        const classLogo = logo?.classList;
+
+        if (window.scrollY >= 100) {
+          if (!classnav.contains('bg-solBlue/90')) {
+            console.log("cambio de color");
+            classLogo?.add('bg-transparent')
+            classLogo?.remove('bg-solBlue')
+            classnav?.add('bg-solBlue/90', 'text-white', 'backdrop-blur-md')
+            classnav?.remove('bg-transparent', 'text-gray-950')
+          }
+        } else {
+          if (!classnav.contains('bg-transparent')) {
+            console.log("transparente");
+            classLogo?.remove('bg-transparent')
+            classLogo?.add('bg-solBlue')
+            if (router.asPath === '/') {
+              classnav?.add('bg-transparent', 'text-white')
+              classnav?.remove('bg-solBlue/90', 'backdrop-blur-md')
+            }
+            else {
+              classnav?.add('bg-transparent', 'text-gray-950')
+              classnav?.remove('bg-solBlue/90', 'text-white', 'backdrop-blur-md')
+            }
+          }
         }
       }
     }
-  }
+    window.addEventListener("scroll", handleColorChange);
+
+  }, [router.asPath])
   useEffect(() => {
     /**
      * close the popover if clicked on outside of the element
@@ -91,7 +102,6 @@ export default function Nav() {
       }
     }
     // Bind the event listener
-    window.addEventListener("scroll", handleColorChange);
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       // Unbind the event listener on clean up
@@ -101,7 +111,7 @@ export default function Nav() {
   return (
     <>
 
-      <nav id="navBar" className=" fixed top-0 left-0 flex w-full transition-colors duration-300 items-center justify-between bg-transparent  z-20 md:px-4 py-0 text-gray-950 sm:px-12 backdrop-filter   ">
+      <nav id="navBar" className={`fixed top-0 left-0 flex w-full transition-colors duration-300 items-center justify-between bg-transparent  z-20 md:px-4 py-0 ${router.asPath === '/' ? "text-white" : "text-gray-950"} sm:px-12 backdrop-filter`}>
         <Link
           id='logo'
           className="bg-solBlue py-4 px-2 md:p-4 z-10"
@@ -205,7 +215,7 @@ export default function Nav() {
             </SignedIn>
           )}
           <div id="burger" onClick={handleBurgerClick} className="lg:hidden">
-            <button className="navbar-burger flex items-center p-3 text-white transition-colors hover:text-solYellow">
+            <button className="navbar-burger flex items-center p-3  hover:text-solYellow">
               <svg
                 className="block h-4 w-4 fill-current"
                 viewBox="0 0 20 20"
@@ -223,7 +233,7 @@ export default function Nav() {
         ref={popover}
         className="transition-2 top-0 z-50 mb-0  ml-0 mt-0 h-screen w-0 max-w-sm p-0 "
       >
-        <nav className="fixed bottom-0 left-0 top-0 flex w-9/12 max-w-sm flex-col overflow-y-auto border-r border-gray-400 bg-gray-200 px-4 py-4 opacity-0 transition-all duration-500">
+        <nav className="fixed bottom-0 left-0 top-0 flex w-9/12 max-w-sm flex-col overflow-y-auto  bg-solBlue px-4 py-4 opacity-0 transition-all duration-500">
           <div className="mb-9 flex items-center ">
             <Link className="mr-auto text-3xl font-semibold leading-none" href="/">
               <Image
@@ -236,7 +246,7 @@ export default function Nav() {
             </Link>
             <button onClick={closeDialog} className="navbar-close">
               <svg
-                className="h-6 w-6 cursor-pointer text-black hover:text-sol_darkBlue"
+                className="h-6 w-6 cursor-pointer text-gray-50 hover:text-sol_darkBlue"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -255,7 +265,7 @@ export default function Nav() {
             <ul>
               <li className="mb-1">
                 <Link
-                  className="block rounded p-4 text-sm font-semibold text-zinc-900 hover:bg-slate-300"
+                  className="block rounded p-4 text-sm font-semibold text-gray-50 hover:bg-slate-300"
                   href="/"
                 >
                   Inicio
@@ -263,7 +273,7 @@ export default function Nav() {
               </li>
               <li className="mb-1">
                 <Link
-                  className="block rounded p-4 text-sm font-semibold text-zinc-900 hover:bg-slate-300"
+                  className="block rounded p-4 text-sm font-semibold text-gray-50 hover:bg-slate-300"
                   href="/"
                 >
                   Sobre Nosotros
@@ -271,7 +281,7 @@ export default function Nav() {
               </li>
               <li className="mb-1">
                 <Link
-                  className="block rounded p-4 text-sm font-semibold text-zinc-900 hover:bg-slate-300"
+                  className="block rounded p-4 text-sm font-semibold text-gray-50 hover:bg-slate-300"
                   href="/contacto"
                 >
                   Contacto
@@ -279,7 +289,7 @@ export default function Nav() {
               </li>
             </ul>
           </div>
-          <div className="mt-auto">
+          <div className="mt-auto mx-auto">
             {!user.isSignedIn && (
               <div className="pt-6">
                 <Link
@@ -298,13 +308,13 @@ export default function Nav() {
             )}
             {!!user.isSignedIn && (
               <SignOutButton>
-                <button className="  rounded-xl bg-turquesa px-6 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-solYellow hover:text-black">
+                <button className="  rounded-xl bg-turquesa px-6 py-2 text-sm font-semibold text-gray-900 transition duration-200 hover:bg-solYellow hover:text-black">
                   Cerrar Sesion
                 </button>
               </SignOutButton>
             )}
 
-            <p className="my-4 text-center text-xs text-zinc-900">
+            <p className="my-4 text-center text-xs text-gray-50">
               <span>Copyright © 2021</span>
             </p>
           </div>
