@@ -1,5 +1,5 @@
 import { Ban, User2 } from "lucide-react";
-import React from "react";
+
 import { CommentProfileForm } from "~/components/comments/CommentProfileForm";
 import { CommentSkeleton } from "~/components/comments/CommentSkeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";

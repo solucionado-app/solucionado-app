@@ -1,5 +1,5 @@
 import { Ban } from "lucide-react";
-import React from "react";
+
 import { CommentSkeleton } from "~/components/comments/CommentSkeleton";
 import { TabsContent } from "~/components/ui/tabs";
 import { api } from "~/utils/api";

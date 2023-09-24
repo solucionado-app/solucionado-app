@@ -25,7 +25,8 @@ const getDynamicMercadoPago = () => dynamic(() => import(`~/components/budgets/M
 interface Props {
     budget: BudgetsTableProps
 }
-
+import { enableReactUse } from "@legendapp/state/config/enableReactUse";
+enableReactUse();
 
 export default function AlertDialogDemo({ budget }: Props) {
 

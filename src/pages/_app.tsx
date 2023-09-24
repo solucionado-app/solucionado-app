@@ -3,7 +3,7 @@ import { type MyPage, type MyAppProps } from "~/components/types/types";
 import { Layouts } from "~/components/layouts/Layouts";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
-import React from "react";
+
 
 import { Poppins } from "@next/font/google";
 
@@ -17,9 +17,6 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
-
-import { enableReactUse } from "@legendapp/state/config/enableReactUse";
-enableReactUse();
 function MyApp({ Component, pageProps }: MyAppProps) {
   const Layout = Layouts[Component.Layout] ?? ((page: MyPage) => page);
   const title = Component.Title || "Solucionado App";

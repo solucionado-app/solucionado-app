@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 
-export function ComoSection() {
+export default function ComoSection() {
     return (
         <section className="container p-6">
             <h2 className="text-4xl font-semibold text-black text-center mb-6">¿Como Funciona?</h2>

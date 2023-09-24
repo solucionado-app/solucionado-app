@@ -1,4 +1,4 @@
-import React from "react";
+
 import { type MyPage } from "~/components/types/types";
 import { RedirectToSignIn, SignedIn, SignedOut } from "@clerk/nextjs";
 import { ProfileData } from "~/components/auth/ProfileData";

@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import Link from "next/link";
 type AvatarSolucionadorProps = {

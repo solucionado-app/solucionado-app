@@ -1,12 +1,11 @@
 import Head from "next/head";
-import { type PropsWithChildren } from 'react'
 
 type props = {
     title: string;
     description: string;
 }
 
-export default function MainHead({ title, description }: PropsWithChildren<props>) {
+export default function MainHead({ title, description }: props) {
     return (
         <Head>
             {/* <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />

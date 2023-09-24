@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import HomeSelect from "~/components/formularios/HomeSelect";
-import type { CategoriesQueryResponse } from "~/components/types/common";
 import {
   Card,
   CardDescription,
@@ -9,13 +8,12 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import Spinner from "~/components/ui/spinner";
+import { api } from "~/utils/api";
 
 
-interface ViewProps {
-  categories: CategoriesQueryResponse[] | undefined;
-  isLoading: boolean;
-}
-export function About({ categories, isLoading }: ViewProps) {
+export default function About() {
+  const apitrcp = api.categories.getAll.useQuery();
+  const { data: categories, isLoading } = apitrcp;
   return (
     <section className="bg-gray-200  w-full ">
 
