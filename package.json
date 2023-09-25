@@ -20,7 +20,6 @@
     "@legendapp/state": "^1.8.0",
     "@mercadopago/sdk-react": "^0.0.13",
     "@mui/material": "^5.14.5",
-    "@next/bundle-analyzer": "^13.5.2",
     "@next/font": "^13.4.12",
     "@prisma/client": "^5.0.0",
     "@radix-ui/react-alert-dialog": "^1.0.4",

@@ -1,13 +1,14 @@
 import dynamic from "next/dynamic";
+import { type CategoriesQueryResponse } from "~/components/types/common";
 
 import Spinner from "~/components/ui/spinner";
-import { api } from "~/utils/api";
 
 
-
-export default function Hero() {
-  const apitrcp = api.categories.getAll.useQuery();
-  const { data: categories, isLoading } = apitrcp;
+interface Props {
+  categories: CategoriesQueryResponse[] | undefined;
+  isLoading: boolean;
+}
+export default function Hero({ categories, isLoading }: Props) {
   const HomeSelect = dynamic(() => import(`~/components/formularios/HomeSelect`), {
     loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
   })

@@ -20,12 +20,7 @@ const config = {
     defaultLocale: "en",
   },
 };
-import withBundleAnalyzer from '@next/bundle-analyzer';
 
 
-const bundleAnalyzerConfig = withBundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-});
 
-
-export default bundleAnalyzerConfig(config);
+export default config;

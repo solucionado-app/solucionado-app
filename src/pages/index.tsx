@@ -4,13 +4,15 @@ import {
 } from "~/components/views/home";
 import SolucionadorCTA from "~/components/views/home/SolucionadorCTA";
 import dynamic from "next/dynamic";
+import { api } from "~/utils/api";
 
 const getComosection = () => dynamic(() => import(`~/components/views/home/ComoSection`), {
   loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
 })
 // HomePage.Layout = "OtherLayout"; -> error Type '"OtherLayout"' is not assignable to type '"Main" | "Admin" | undefined'.
 const Home: MyPage = () => {
-
+  const apitrcp = api.categories.getAll.useQuery();
+  const { data: categories, isLoading } = apitrcp;
   const Hero = dynamic(() => import(`~/components/views/home/Hero`), {
     loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
   })
@@ -27,15 +29,12 @@ const Home: MyPage = () => {
   })
   return (
     <>
-      <Hero />
+      <Hero categories={categories} isLoading={isLoading} />
       <ComoSection />
       <SolucionadorCTA />
       <BeneficiosSection />
-
-      <About />
+      <About categories={categories} isLoading={isLoading} />
       <Testimonials />
-      {/* <Testimonials />
-      <Contact /> */}
       <Footer />
 
     </>
