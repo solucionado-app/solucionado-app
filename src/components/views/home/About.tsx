@@ -43,22 +43,22 @@ export default function About({ categories, isLoading }: Props) {
           <div className="flex  flex-wrap justify-center gap-6">
             {isLoading && <Spinner className="h-12 w-12 text-turquesa" />}
             {categories?.map((categorie) => (
-              <Link key={categorie.id} className="w-80 lg:w-96  group rounded-lg overflow-hidden text-gray-900 shadow-md col-span-1 transition duration-300 ease-in-out transform bg-white hover:-translate-y-1 hover:shadow-xl cursor-pointer " href={"/solucionar/" + categorie.slug}>
+              <Link key={categorie.id} className="w-80 lg:w-96  group rounded-lg text-gray-900 shadow-md col-span-1 transition duration-300 ease-in-out transform bg-white hover:-translate-y-1 hover:shadow-xl cursor-pointer " href={"/solucionar/" + categorie.slug}>
                 <Card className="shadow-none bg-inherit border-0">
-                  <div className="relative aspect-[4/3]">
-                    {categorie.image_url && (
-                      <Image
-                        className="rounded-t-lg group-hover:scale-105  transform duration-300 ease-in-out transition "
-                        src={categorie.image_url}
-                        objectFit="cover"
-                        objectPosition="center"
-                        placeholder="blur"
-                        alt={categorie.description}
-                        fill
-                      />
-                    )}
+                  <div className="overflow-hidden">
+                    <div className="relative aspect-[4/3]">
+                      {categorie.image_url && (
+                        <Image
+                          className="rounded-t-lg group-hover:scale-105  transform duration-300 ease-in-out transition "
+                          src={categorie.image_url}
+                          objectFit="cover"
+                          objectPosition="center"
+                          alt={categorie.description}
+                          fill
+                        />
+                      )}
+                    </div>
                   </div>
-
                   <CardHeader>
                     <CardTitle className="group-hover:text-turquesa ">{categorie.name}</CardTitle>
                     <CardDescription>{categorie.description}</CardDescription>
