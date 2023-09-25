@@ -1,6 +1,4 @@
-import { DialogPortal } from "@radix-ui/react-dialog";
 import DialogRegisterSolucionador from "~/components/auth/DialogRegisterSolucionador";
-import { RegisterSolucionadorUser } from "~/components/auth/RegisterSolucionadorUser";
 import RegisterUserDialog from "~/components/auth/RegisterUserDialog";
 import { type MyPage } from "~/components/types/types";
 

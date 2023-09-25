@@ -1,7 +1,7 @@
 import Image from "next/image";
-import React from "react";
 
-export const Footer = () => {
+
+export default function Footer() {
   return (
     <footer className="w-full pt-5">
       <div className=" mx-auto bg-solBlue  pt-[90px] text-gray-50">
@@ -182,4 +182,4 @@ export const Footer = () => {
       </div>
     </footer>
   );
-};
+}

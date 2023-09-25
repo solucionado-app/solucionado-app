@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Card } from "../ui/card";
 import { useUser } from "@clerk/nextjs";
 import { getDateAsTwitterFormat } from "~/helpers/date";

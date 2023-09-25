@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { MapPin, StarIcon, VerifiedIcon } from "lucide-react";
 import type { Profile } from "../types/solucionador";

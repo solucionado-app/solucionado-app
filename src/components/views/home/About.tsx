@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import HomeSelect from "~/components/formularios/HomeSelect";
-import type { CategoriesQueryResponse } from "~/components/types/common";
+import { type CategoriesQueryResponse } from "~/components/types/common";
 import {
   Card,
   CardDescription,
@@ -10,12 +10,12 @@ import {
 } from "~/components/ui/card";
 import Spinner from "~/components/ui/spinner";
 
-
-interface ViewProps {
+interface Props {
   categories: CategoriesQueryResponse[] | undefined;
   isLoading: boolean;
 }
-export function About({ categories, isLoading }: ViewProps) {
+export default function About({ categories, isLoading }: Props) {
+
   return (
     <section className="bg-gray-200  w-full ">
 
@@ -43,7 +43,7 @@ export function About({ categories, isLoading }: ViewProps) {
           <div className="flex  flex-wrap justify-center gap-6">
             {isLoading && <Spinner className="h-12 w-12 text-turquesa" />}
             {categories?.map((categorie) => (
-              <Link key={categorie.id} className="w-80 lg:w-96  group rounded-lg overflow-hidden text-gray-900 shadow-md col-span-1 transition duration-300 ease-in-out transform bg-white shad hover:bg-gray-100 hover:-translate-y-1  hover:shadow-lg cursor-pointer " href={"/solucionar/" + categorie.slug}>
+              <Link key={categorie.id} className="w-80 lg:w-96  group rounded-lg overflow-hidden text-gray-900 shadow-md col-span-1 transition duration-300 ease-in-out transform bg-white hover:-translate-y-1 hover:shadow-xl cursor-pointer " href={"/solucionar/" + categorie.slug}>
                 <Card className="shadow-none bg-inherit border-0">
                   <div className="relative aspect-[4/3] overflow-hidden">
                     {categorie.image_url && (

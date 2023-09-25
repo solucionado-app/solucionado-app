@@ -1,5 +1,5 @@
 import { api } from "~/utils/api";
-import React from "react";
+
 import { type MyPage } from "~/components/types/types";
 import MainHead from "~/components/layouts/head/MainHead";
 import { useUser } from "@clerk/nextjs";
