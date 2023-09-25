@@ -1,3 +1,5 @@
+import { Avatar } from "@radix-ui/react-avatar";
+import { AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
 export const Testimonials = () => {
   return (
@@ -19,7 +21,10 @@ export const Testimonials = () => {
               <p className="text-2xl italic font-medium text-gray-900 ">{"¡Increíble! Solucionado me sacó de apuros en un abrir y cerrar de ojos. No puedo creer lo fácil que fue. ¡Altamente recomendado"}</p>
             </blockquote>
             <figcaption className="flex items-center justify-center mt-6 space-x-3">
-              <img className="w-6 h-6 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png" alt="profile picture" />
+              <Avatar>
+                <AvatarImage className="w-8 rounded-full" src="https://github.com/shadcn.png" alt="@shadcn" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
               <div className="flex items-center divide-x-2 divide-gray-500">
                 <cite className="pr-3 font-medium text-gray-900 ">Juan Pérez</cite>
                 <cite className="pl-3 text-sm text-gray-500">Cliente Satisfecho</cite>
@@ -34,7 +39,10 @@ export const Testimonials = () => {
               <p className="text-2xl italic font-medium text-gray-900 ">{"¡Wow! Nunca había sido tan fácil solucionar problemas domésticos. Gracias a Solucionado, mi casa está en perfecto estado otra vez."}</p>
             </blockquote>
             <figcaption className="flex items-center justify-center mt-6 space-x-3">
-              <img className="w-6 h-6 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png" alt="profile picture" />
+              <Avatar>
+                <AvatarImage className="w-8 rounded-full" src="https://github.com/shadcn.png" alt="@shadcn" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
               <div className="flex items-center divide-x-2 divide-gray-500">
                 <cite className="pr-3 font-medium text-gray-900 ">Carlos Rodríguez</cite>
                 <cite className="pl-3 text-sm text-gray-500">Solucionador</cite>
@@ -49,7 +57,10 @@ export const Testimonials = () => {
               <p className="text-2xl italic font-medium text-gray-900 ">{"Me encanta la comodidad que ofrece Solucionado. Puedo solicitar ayuda desde mi sofá y recibir presupuestos en minutos. ¡Asombroso!"}</p>
             </blockquote>
             <figcaption className="flex items-center justify-center mt-6 space-x-3">
-              <img className="w-6 h-6 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png" alt="profile picture" />
+              <Avatar>
+                <AvatarImage className="w-8 rounded-full" src="https://github.com/shadcn.png" alt="@shadcn" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
               <div className="flex items-center divide-x-2 divide-gray-500">
                 <cite className="pr-3 font-medium text-gray-900 ">Micheal Gough</cite>
                 <cite className="pl-3 text-sm text-gray-500">Cliente Satisfecho</cite>

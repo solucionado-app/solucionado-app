@@ -11,6 +11,7 @@ export default function ComoSection() {
                     <div className="md:block grid grid-cols-3 items-center group gap-4">
                         <div className="relative col-span-1 aspect-[3/4] md:aspect-[4/3] rounded-2xl overflow-hidden shadow-md">
                             <Image
+
                                 className="rounded-2xl  object-cover
         transition-all duration-200 ease-in-out group-hover:scale-105"
                                 src={"/hombre-tenencia-telefono-taza.jpg"}
@@ -34,9 +35,10 @@ export default function ComoSection() {
 
                         <div className="relative aspect-[3/4] md:aspect-[4/3] rounded-2xl overflow-hidden shadow-md">
                             <Image
+
                                 className="rounded-2xl object-cover
         transition-all duration-200 ease-in-out group-hover:scale-105"
-                                src={"/mujer-smartphone-moderno-auriculares-casa.jpg"}
+                                src={"/mujer-smartphone.png"}
                                 alt="Elegir presupuestos"
                                 layout="fill"
                             />
@@ -59,6 +61,7 @@ export default function ComoSection() {
                     <div className="md:block grid grid-cols-3 items-center group gap-4">
                         <div className="relative aspect-[3/4] md:aspect-[4/3] rounded-2xl overflow-hidden shadow-md">
                             <Image
+
                                 className="rounded-2xl object-cover
         transition-all duration-200 ease-in-out group-hover:scale-105"
                                 src={"/retroalimentacion-comentario-encuesta-soporte-respuesta-barra-palabra.jpg"}

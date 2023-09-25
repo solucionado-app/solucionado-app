@@ -5,6 +5,7 @@ import {
 import SolucionadorCTA from "~/components/views/home/SolucionadorCTA";
 import dynamic from "next/dynamic";
 import { api } from "~/utils/api";
+import Hero from "~/components/views/home/Hero";
 
 const getComosection = () => dynamic(() => import(`~/components/views/home/ComoSection`), {
   loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
@@ -13,9 +14,6 @@ const getComosection = () => dynamic(() => import(`~/components/views/home/ComoS
 const Home: MyPage = () => {
   const apitrcp = api.categories.getAll.useQuery();
   const { data: categories, isLoading } = apitrcp;
-  const Hero = dynamic(() => import(`~/components/views/home/Hero`), {
-    loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
-  })
   // // console.log(apitrcp);
   const ComoSection = getComosection()
   const BeneficiosSection = dynamic(() => import(`~/components/views/home/BeneficiosSection`), {

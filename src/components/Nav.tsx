@@ -111,7 +111,7 @@ export default function Nav() {
   return (
     <>
 
-      <nav id="navBar" className={`fixed top-0 left-0 flex w-full transition-colors duration-300 items-center justify-between bg-transparent  z-20 md:px-4 py-0 ${router.asPath === '/' ? "text-white" : "text-gray-950"} sm:px-12 backdrop-filter`}>
+      <nav id="navBar" className={`fixed top-0 left-0 flex w-full transition-colors duration-300 items-center justify-between bg-transparent z-20 py-0 ${router.asPath === '/' ? "text-white" : "text-gray-950"} sm:px-12 backdrop-filter`}>
         <Link
           id='logo'
           className="bg-solBlue py-4 px-2 md:p-4 z-10"
@@ -289,7 +289,7 @@ export default function Nav() {
               </li>
             </ul>
           </div>
-          <div className="mt-auto mx-auto">
+          <div className="mt-auto mx-4">
             {!user.isSignedIn && (
               <div className="pt-6">
                 <Link
