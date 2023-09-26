@@ -28,6 +28,7 @@ model User {
   notificationId       String?
   birthDate            DateTime?
   emailAddressId       String?
+  mpId                 Int?
   mpCode               Json?
   serviceRequests      ServiceRequest[]
   categories           Category[]
@@ -41,6 +42,7 @@ model User {
   budgetsMade          Budget[]         @relation("solucionador")
   notificationsReaded  Notification[]   @relation("readBy")
 
+  @@unique([externalId, mpId])
   @@index([roleId], map: "roleId")
 }
 

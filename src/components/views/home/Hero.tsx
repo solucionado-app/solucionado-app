@@ -13,7 +13,7 @@ export default function Hero({ categories, isLoading }: Props) {
 
   return (
     <>
-      <section className="banner_main flex min-hscreen h-screen w-full flex-col justify-center   px-6 pt-28 md:px-12 md:pt-0  ">
+      <section className="relative banner_main flex min-hscreen h-screen w-full flex-col justify-center z-10  px-6 pt-28 md:px-12 md:pt-0  ">
         {/* <div className="flex w-full items-center justify-center md:w-8/12 md:justify-between"> */}
         <Background />
         <div className=" flex flex-col items-start gap-2 py-5  md:w-8/12 md:gap-5 md:text-start ">

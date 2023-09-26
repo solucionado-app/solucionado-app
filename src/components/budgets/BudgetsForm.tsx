@@ -82,9 +82,10 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
 
     const [open, setOpen] = React.useState(false)
     const utils = trpc.useContext()
+    const { data: userData } = api.user.getById.useQuery();
     function onSubmit(data: z.infer<typeof FormSchema>) {
 
-        const { data: userData } = api.user.getById.useQuery();
+
         if (userData?.mpCode === null || userData?.mpCode === undefined) {
             setOpen(true)
         }
@@ -180,9 +181,7 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
                                             mode="single"
                                             selected={field.value}
                                             onSelect={field.onChange}
-                                            disabled={(date) =>
-                                                date === new Date() || date < new Date()
-                                            }
+                                            disabled={{ before: new Date() }}
                                             initialFocus
                                         />
                                     </PopoverContent>
