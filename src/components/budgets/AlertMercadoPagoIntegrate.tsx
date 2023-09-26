@@ -14,9 +14,7 @@ export default function AlertMercadoPagoIntegrate({ open }: Props) {
 
     return (
         <AlertDialog open={open} >
-            <AlertDialogTrigger asChild >
-                <Button className="w-full" variant={"ghost"} > Aceptar</Button>
-            </AlertDialogTrigger>
+
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>Completa tu perfil!</AlertDialogTitle>
