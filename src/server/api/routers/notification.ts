@@ -152,7 +152,7 @@ export const notificationRouter = createTRPCRouter({
         clerkClient.emails.createEmail({
             fromEmailName: "info",
             body: `hola ${user?.first_name || ""} ${user?.last_name || ""} el usuario  ${input.authorName} ${input.authorLastName} ha enviado un presupuesto para tu solicitud de servicio
-            Entra a este link para ver los detalles de la solicitud: solucionado-app.vercel.app/${input.link || "solicitudes-de-servicio"}/${input.serviceRequestId}
+            Entra a este link para ver los detalles de la solicitud: ${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'https://solucionado.com.ar'}/${input.link || "solicitudes-de-servicio"}/${input.serviceRequestId}
             `,
             subject: `Nuevo presupuesto para tu solicitud de servicio`,
             emailAddressId: user?.emailAddressId as string,
@@ -218,7 +218,7 @@ export const notificationRouter = createTRPCRouter({
         clerkClient.emails.createEmail({
             fromEmailName: "info",
             body: `hola ${user?.first_name || ""} ${user?.last_name || ""} el usuario  ${input.authorName} ${input.authorLastName} ha aceptado tu presupuesto para su solicitud de servicio
-            Entra a este link para ver los detalles de la solicitud: solucionado-app.vercel.app/${input.link || "solicitudes-de-servicio"}/${input.serviceRequestId}
+            Entra a este link para ver los detalles de la solicitud: ${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'https://solucionado.com.ar'}/${input.link || "solicitudes-de-servicio"}/${input.serviceRequestId}
             `,
             subject: `Presupuesto aceptado para tu solicitud de servicio`,
             emailAddressId: user?.emailAddressId as string,
@@ -322,7 +322,7 @@ export const notificationRouter = createTRPCRouter({
             clerkClient.emails.createEmail({
                 fromEmailName: "info",
                 body: `${input.authorName} ${input.authorLastName} ha comentado la solicitud de servicio de ${input.categoryName}
-                    Entra a este link para ver los detalles de la solicitud: solucionado-app.vercel.app/${input.link || "solicitudes-de-servicio"}/${input.serviceRequestId}
+                    Entra a este link para ver los detalles de la solicitud: ${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'https://solucionado.com.ar'}/${input.link || "solicitudes-de-servicio"}/${input.serviceRequestId}
                     `,
                 subject: `Nuevo comenario en Solicitud de servicio en ${input.categoryName}`,
                 emailAddressId: user.emailAddressId as string,
@@ -344,7 +344,7 @@ export const notificationRouter = createTRPCRouter({
                 users: {
                     connect: filteredUsers?.length > 0 ? filteredUsers?.map((user?) => {
                         return {
-                            id: user.id,
+                            id: user?.id,
                         };
                     }
                     ) : [],
@@ -389,7 +389,7 @@ export const notificationRouter = createTRPCRouter({
                 users: {
                     connect: users?.length > 0 ? users?.map((user?) => {
                         return {
-                            id: user.id,
+                            id: user?.id,
                         };
                     }) : [],
                 },
@@ -432,7 +432,7 @@ export const notificationRouter = createTRPCRouter({
             clerkClient.emails.createEmail({
                 fromEmailName: "info",
                 body: `hola ${user?.first_name || ""} ${user?.last_name || ""} el usuario  ${input.authorName} ${input.authorLastName} ha creado un nuevo servicio
-            Entra a este link para ver los detalles del servicio: solucionado-app.vercel.app${input.link || "servicios"}/${input.serviceId}
+            Entra a este link para ver los detalles del servicio: ${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'https://solucionado.com.ar'}${input.link || "servicios"}/${input.serviceId}
             `,
                 subject: `Nuevo servicio creado`,
                 emailAddressId: user?.emailAddressId as string,
