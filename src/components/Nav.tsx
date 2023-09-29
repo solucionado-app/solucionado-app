@@ -60,14 +60,16 @@ export default function Nav() {
           }
         } else {
           if (!classnav.contains('bg-transparent')) {
-            console.log("transparente");
+            console.log("transparente", router.asPath);
             classLogo?.remove('bg-transparent')
             classLogo?.add('bg-solBlue')
             if (router.asPath === '/') {
+              console.log("transparente en home");
               classnav?.add('bg-transparent', 'text-white')
               classnav?.remove('bg-solBlue/90', 'backdrop-blur-md')
             }
             else {
+              console.log("transparente fuera de home");
               classnav?.add('bg-transparent', 'text-gray-950')
               classnav?.remove('bg-solBlue/90', 'text-white', 'backdrop-blur-md')
             }
@@ -84,12 +86,14 @@ export default function Nav() {
      */
 
     const { current: el } = popover;
+    const linksmobile = document.getElementById("linksmobile");
     const burger = document.getElementById("burger");
     function handleClickOutside(event: MouseEvent) {
       if (
         el &&
         !el.contains(event.target as Node) &&
-        burger?.contains(event.target as Node) === false
+        !burger?.contains(event.target as Node) ||
+        linksmobile?.contains(event.target as Node)
       ) {
         (el?.firstChild as HTMLDivElement)?.classList.remove(
           "w-9/12",
@@ -261,34 +265,33 @@ export default function Nav() {
               </svg>
             </button>
           </div>
-          <div>
-            <ul>
-              <li className="mb-1">
-                <Link
-                  className="block rounded p-4 text-sm font-semibold text-gray-50 hover:bg-slate-300"
-                  href="/"
-                >
-                  Inicio
-                </Link>
-              </li>
-              <li className="mb-1">
-                <Link
-                  className="block rounded p-4 text-sm font-semibold text-gray-50 hover:bg-slate-300"
-                  href="/"
-                >
-                  Sobre Nosotros
-                </Link>
-              </li>
-              <li className="mb-1">
-                <Link
-                  className="block rounded p-4 text-sm font-semibold text-gray-50 hover:bg-slate-300"
-                  href="/contacto"
-                >
-                  Contacto
-                </Link>
-              </li>
-            </ul>
-          </div>
+
+          <ul id="linksmobile">
+            <li className="mb-1">
+              <Link
+                className="block rounded p-4 text-sm font-semibold text-gray-50 hover:bg-slate-300"
+                href="/"
+              >
+                Inicio
+              </Link>
+            </li>
+            <li className="mb-1">
+              <Link
+                className="block rounded p-4 text-sm font-semibold text-gray-50 hover:bg-slate-300"
+                href="/"
+              >
+                Sobre Nosotros
+              </Link>
+            </li>
+            <li className="mb-1">
+              <Link
+                className="block rounded p-4 text-sm font-semibold text-gray-50 hover:bg-slate-300"
+                href="/contacto"
+              >
+                Contacto
+              </Link>
+            </li>
+          </ul>
           <div className="mt-auto mx-4">
             {!user.isSignedIn && (
               <div className="pt-6">

@@ -1,5 +1,6 @@
-import Link from "next/link";
 import { type MyPage } from "~/components/types/types";
+import ContactForm from "~/components/views/contact/ContactForm";
+import { Contact } from "~/components/views/home";
 
 const Contacto: MyPage = () => {
 
@@ -7,34 +8,16 @@ const Contacto: MyPage = () => {
         <>
             <main className="flex min-h-screen flex-col items-center justify-center ">
                 <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-                    <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-                        Contacto
-                    </h1>
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-                        <Link
-                            className="flex max-w-xs flex-col gap-4 rounded-xl bg-gray-800/10 p-4 hover:bg-gray-800/20"
-                            href="https://create.t3.gg/en/usage/first-steps"
-                            target="_blank"
-                        >
-                            <h3 className="text-2xl font-bold">First Steps →</h3>
-                            <div className="text-lg">
-                                Just the basics - Everything you need to know to set up your
-                                database and authentication.
-                            </div>
-                        </Link>
-
-                        <Link
-                            className="flex max-w-xs flex-col gap-4 rounded-xl bg-gray-800/10 p-4 hover:bg-gray-800/20"
-                            href="https://create.t3.gg/en/introduction"
-                            target="_blank"
-                        >
-                            <h3 className="text-2xl font-bold">Documentation →</h3>
-                            <div className="text-lg">
-                                Learn more about Create T3 App, the libraries it uses, and how
-                                to deploy it.
-                            </div>
-                        </Link>
+                    <div className="titlepage py-5 text-start text-4xl font-bold  uppercase">
+                        <h1 className="text-3xl font-bold  uppercase text-black md:text-3xl lg:text-4xl">
+                            <strong className="yellow text-2xl font-semibold text-solYellow">
+                                Contactenos
+                            </strong>
+                            <br />
+                            Respondemos a la brevedad
+                        </h1>
                     </div>
+                    <ContactForm />
 
                 </div>
             </main>
