@@ -78,6 +78,7 @@ export default function AlertDialogDemo({ budget }: Props) {
                     'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_MP_DOMAIN ?? '*',
                     "Content-Type": "application/json",
                 },
+                mode: 'no-cors',
                 body: JSON.stringify(requestData),
             });
             const data = await response.json();
