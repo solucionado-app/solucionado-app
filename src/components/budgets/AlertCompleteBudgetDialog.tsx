@@ -75,7 +75,7 @@ export default function AlertDialogDemo({ budget }: Props) {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${budget.author.mpCode && typeof budget.author.mpCode === 'object' && 'access_token' in budget.author.mpCode ? JSON.stringify(budget.author.mpCode?.access_token) : ""}`,
-
+                    'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_MP_DOMAIN ?? '*',
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(requestData),
