@@ -59,12 +59,12 @@ export default function Footer() {
                 <li>
                   <a href="#"></a> Rivadavia 206, Neuquen
                 </li>
-                <li>
+                {/* <li>
                   <a href="#"></a>info@solucionado.com.ar
                 </li>
                 <li>
                   <a href="#"></a>+54 1234567890
-                </li>
+                </li> */}
                 <li>
                   <ul className="social_icon flex space-x-3 py-5 md:py-0 md:pt-3">
                     <li>
