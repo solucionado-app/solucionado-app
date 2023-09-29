@@ -1,0 +1,6 @@
+{
+    "extends": "./tsconfig.json",
+    "include": [
+        "next-sitemap.config.js"
+    ]
+}
