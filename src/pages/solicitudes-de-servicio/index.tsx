@@ -23,8 +23,6 @@ const ServiceRequest: MyPage = () => {
 
   return (
     <>
-      <MainHead title="Solucionado App" description="app solucionado" />
-
       <main className="flex min-h-screen w-full flex-col  items-center">
         <div className="flex w-full max-w-7xl flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-5xl font-extrabold tracking-tight">
