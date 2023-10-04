@@ -5,6 +5,9 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 export const notificationRouter = createTRPCRouter({
     getAll: protectedProcedure.query(({ ctx }) => {
         return ctx.prisma.notification.findMany({
+            orderBy: {
+                createdAt: 'desc',
+            },
             where: {
                 users: {
                     some: {
