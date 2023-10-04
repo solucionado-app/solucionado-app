@@ -74,13 +74,12 @@ export default function AlertDialogDemo({ budget }: Props) {
             const response = await fetch(`https://api.mercadopago.com/checkout/preferences`, {
                 method: "POST",
                 headers: {
-                    Authorization: `Bearer ${budget.author.mpCode && typeof budget.author.mpCode === 'object' && 'access_token' in budget.author.mpCode ? JSON.stringify(budget.author.mpCode?.access_token) : ""}`,
-                    'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_MP_DOMAIN ?? '*',
+                    Authorization: `Bearer ${budget.author.mpCode && typeof budget.author.mpCode === 'object' && 'access_token' in budget.author.mpCode ? budget.author.mpCode?.access_token as string : ""}`,
                     "Content-Type": "application/json",
                 },
-                mode: 'no-cors',
                 body: JSON.stringify(requestData),
             });
+            console.log(response)
             const data = await response.json();
             const { id } = data
             console.log(data);
@@ -124,7 +123,7 @@ export default function AlertDialogDemo({ budget }: Props) {
             {preference$.get().id !== "" && <DynamicMercadoPago
                 open={isOpen}
                 publickey={budget.author.mpCode && typeof budget.author.mpCode === 'object' && 'public_key' in budget.author.mpCode ?
-                    JSON.stringify(budget.author.mpCode?.public_key) : ''}
+                    budget.author.mpCode?.public_key as string : ''}
                 isLoading={isLoading}
                 setIsloading={() => setisLoading(false)}
                 onClose={() => setIsOpen(false)}
