@@ -58,7 +58,7 @@ export default function CommentsForm({ serviceRequest, serviceRequestId, categor
                 notification.mutate({
                     title: "Nueva solicitud de servicio",
                     content: `${user?.firstName ? user?.firstName : ""} ${user?.lastName ? user.lastName : ""} ha comentado tu solicitud de servicio`,
-                    link: `/solicitudes-de-servicio/${serviceRequestId}#${data.id}`,
+                    link: `/solicitudes-de-servicio/${serviceRequestId}?tab=comments#${data.id}`,
                     serviceRequestId: serviceRequestId,
                     userId: serviceRequest?.userId as string,
                     authorName: user?.firstName || "",

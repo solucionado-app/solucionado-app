@@ -7,30 +7,24 @@ import {
 } from "next";
 import { ssgHelper } from "~/server/api/ssgHelper";
 import { type JwtPayload, type ServerGetTokenOptions } from "@clerk/types";
-import Head from "next/head";
 import { type MyPage } from "~/components/types/types";
-import { Button } from "~/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+
 
 import { api } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
-import BudgetsForm from "~/components/budgets/BudgetsForm";
-import CommentsForm from "~/components/comments/CommentForm";
-import CommentsServiceRequest from "~/components/comments/CommentsServiceRequest";
+
 
 import dynamic from "next/dynamic";
 import Spinner from "~/components/ui/spinner";
 
+
 const budgetTableDynamic = () =>
   dynamic(() => import(`~/components/budgets/BudgetsTable`), {
+    loading: () => <Spinner className="h-12 w-12 text-solBlue" />,
+  });
+
+const tabsDynamic = () =>
+  dynamic(() => import(`~/components/servicerequest/ServiceRequestTabs`), {
     loading: () => <Spinner className="h-12 w-12 text-solBlue" />,
   });
 
@@ -42,7 +36,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
     staleTime: Infinity,
   });
   const { data: serviceRequest } = request;
-
+  const DynamicTabs = tabsDynamic();
   const DynamicBudgetTable = budgetTableDynamic();
 
   const { data: budgets, isLoading: budgetsIsLoading } =
@@ -56,7 +50,11 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
       enabled: Boolean(user && user?.id !== serviceRequest?.userId),
     }
   );
+
+
   const rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+
+
   return (
     <>
       <div className="container flex flex-col items-center justify-center gap-8 px-4 py-16 ">
@@ -84,60 +82,8 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
               </p>
             ))}
         </div>
-        <Tabs defaultValue="account" className="w-full p-5">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="account">Presupuestos</TabsTrigger>
-            <TabsTrigger value="password">Comentarios</TabsTrigger>
-          </TabsList>
-          <TabsContent value="account">
-            <Card>
-              <CardHeader>
-                <CardTitle>Presupuestos</CardTitle>
-                <CardDescription>aca van los presupuestos</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="space-y-1">
-                  {/* <Budgets /> */}
-                  {budgetListSolucionador && serviceRequest && (
-                    <DynamicBudgetTable budgets={budgetListSolucionador} status={serviceRequest?.status} isSolucionador={true} />
-                  )}
-                  {user?.id !== serviceRequest?.userId && serviceRequest?.status !== 'ACEPTED' && (
-                    <BudgetsForm
-                      serviceRequest={serviceRequest}
-                      serviceRequestId={id}
-                    />
-                  )}
 
-                  {user?.id === serviceRequest?.userId &&
-                    !budgetsIsLoading &&
-                    budgets && serviceRequest && <DynamicBudgetTable budgets={budgets} status={serviceRequest?.status} />}
-                </div>
-              </CardContent>
-              <CardFooter>{/* <Button>ver mas</Button> */}</CardFooter>
-            </Card>
-          </TabsContent>
-          <TabsContent value="password">
-            <Card>
-              <CardHeader>
-                <CardTitle>Comentarios</CardTitle>
-                <CardDescription>aca van los comentarios</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="space-y-1">
-                  {serviceRequest?.status !== 'ACEPTED' && <CommentsForm
-                    serviceRequest={serviceRequest}
-                    serviceRequestId={id}
-                    categoryName={serviceRequest?.category.name}
-                  />}
-                  <CommentsServiceRequest serviceRequestId={id} />
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button>Ver Más</Button>
-              </CardFooter>
-            </Card>
-          </TabsContent>
-        </Tabs>
+        <DynamicTabs id={id} />
       </div>
     </>
   );
