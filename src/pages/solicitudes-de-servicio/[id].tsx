@@ -11,17 +11,12 @@ import { type MyPage } from "~/components/types/types";
 
 
 import { api } from "~/utils/api";
-import { useUser } from "@clerk/nextjs";
 
 
 import dynamic from "next/dynamic";
 import Spinner from "~/components/ui/spinner";
 
 
-const budgetTableDynamic = () =>
-  dynamic(() => import(`~/components/budgets/BudgetsTable`), {
-    loading: () => <Spinner className="h-12 w-12 text-solBlue" />,
-  });
 
 const tabsDynamic = () =>
   dynamic(() => import(`~/components/servicerequest/ServiceRequestTabs`), {
@@ -31,25 +26,12 @@ const tabsDynamic = () =>
 const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   id,
 }) => {
-  const { user } = useUser();
   const request = api.serviceRequest.findById.useQuery({ id }, {
     staleTime: Infinity,
   });
   const { data: serviceRequest } = request;
   const DynamicTabs = tabsDynamic();
-  const DynamicBudgetTable = budgetTableDynamic();
 
-  const { data: budgets, isLoading: budgetsIsLoading } =
-    api.budget.getAll.useQuery({ serviceRequestId: id }, {
-      staleTime: Infinity,
-    });
-
-  const { data: budgetListSolucionador } = api.budget.findByRequestId.useQuery(
-    { serviceRequestId: id },
-    {
-      enabled: Boolean(user && user?.id !== serviceRequest?.userId),
-    }
-  );
 
 
   const rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
