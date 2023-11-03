@@ -133,7 +133,7 @@ export default function Nav() {
         </Link>
 
         <ul
-          className={`absolute  left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 transform lg:mx-auto lg:flex  lg:w-auto lg:items-center lg:space-x-6`}
+          className={`xl:absolute  xl:left-1/2 xl:top-1/2 hidden xl:-translate-x-1/2 xl:-translate-y-1/2 transform lg:mx-auto lg:flex  lg:w-auto lg:items-center lg:space-x-6`}
         >
           <li>
             <Link
@@ -192,7 +192,7 @@ export default function Nav() {
                   query: { redirect: router.asPath }
                 })}
               >
-                Registrarse
+                Quiero ser solucionador
               </span>
             </>
           )}
@@ -305,7 +305,7 @@ export default function Nav() {
                   className="mb-2 block rounded-xl bg-turquesa px-4 py-3 text-center text-xs font-semibold leading-loose text-black  hover:bg-solYellow"
                   href="/registro"
                 >
-                  Registrarse
+                  Quiero ser solucionador
                 </Link>
               </div>
             )}

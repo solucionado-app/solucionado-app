@@ -8,7 +8,7 @@ import "~/styles/globals.css";
 import { Poppins } from "@next/font/google";
 
 import { Toaster } from "~/components/ui/toaster";
-
+import { esES } from "~/utils/es-ES";
 
 const poppins = Poppins({
   display: "swap",
@@ -16,6 +16,7 @@ const poppins = Poppins({
   style: "normal",
   subsets: ["latin"],
 });
+
 
 function MyApp({ Component, pageProps }: MyAppProps) {
   const Layout = Layouts[Component.Layout] ?? ((page: MyPage) => page);
@@ -25,7 +26,7 @@ function MyApp({ Component, pageProps }: MyAppProps) {
 
   return (
     <main className={poppins.className}>
-      <ClerkProvider {...pageProps}>
+      <ClerkProvider localization={esES} {...pageProps}>
         <Layout title={title} description={description}>
           <Component {...pageProps} />
           <Toaster />
