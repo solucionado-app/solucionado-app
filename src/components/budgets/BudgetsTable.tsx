@@ -61,6 +61,33 @@ type Author = {
 };
 export const columns: ColumnDef<BudgetsTableProps>[] = [
   {
+    id: "Precio",
+    accessorKey: "price",
+    header: ({ column }) => {
+      return (
+        <Button
+
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Precio
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const price = parseFloat(row.getValue("Precio"));
+
+      // Format the price as a dollar price
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(price);
+
+      return <div className="font-medium whitespace-nowrap ">{formatted}</div>;
+    },
+  },
+  {
     id: 'rating',
     accessorKey: 'rating',
     header: 'Rating',
@@ -121,33 +148,7 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
       return <div className="capitalize"> <StatusTranslate status={row.getValue("Estado")} /></div>;
     },
   },
-  {
-    id: "Precio",
-    accessorKey: "price",
-    header: ({ column }) => {
-      return (
-        <Button
-          className="place-self-end"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Precio
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const price = parseFloat(row.getValue("Precio"));
 
-      // Format the price as a dollar price
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(price);
-
-      return <div className="font-medium whitespace-nowrap ">{formatted}</div>;
-    },
-  },
   {
 
     id: "Acciones",
@@ -274,13 +275,13 @@ export default function BudgetsTable({ budgets, status, isSolucionador }: Props)
           </DropdownMenu>
         </div>
         <div className="rounded-md border w-auto ">
-          <Table className="w-full">
+          <Table className="w-full ">
             <TableHeader className="">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     return (
-                      <TableHead className="px-2" key={header.id}>
+                      <TableHead className="px-2 w-fit" key={header.id}>
                         {header.isPlaceholder
                           ? null
                           : flexRender(
