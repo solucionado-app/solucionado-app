@@ -35,7 +35,7 @@ export default function AlertDialogDemo({ budget }: Props) {
     const [isLoading, setisLoading] = useState(true)
     const DynamicMercadoPago = getDynamicMercadoPago()
     const preference$ = useObservable({ id: "" })
-
+    const validartoken = budget.author.mpCode && typeof budget.author.mpCode === 'object' && 'access_token' in budget.author.mpCode ? budget.author.mpCode?.access_token as string : ""
     const createPreference = async () => {
         const requestData = {
             items: [
@@ -70,11 +70,12 @@ export default function AlertDialogDemo({ budget }: Props) {
             },
             differential_pricing: {},
         };
+
         try {
             const response = await fetch(`https://api.mercadopago.com/checkout/preferences`, {
                 method: "POST",
                 headers: {
-                    Authorization: `Bearer ${budget.author.mpCode && typeof budget.author.mpCode === 'object' && 'access_token' in budget.author.mpCode ? budget.author.mpCode?.access_token as string : ""}`,
+                    Authorization: `Bearer ${validartoken}`,
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(requestData),
@@ -125,6 +126,8 @@ export default function AlertDialogDemo({ budget }: Props) {
                 publickey={budget.author.mpCode && typeof budget.author.mpCode === 'object' && 'public_key' in budget.author.mpCode ?
                     budget.author.mpCode?.public_key as string : ''}
                 isLoading={isLoading}
+                amount={budget.price}
+                token={validartoken}
                 setIsloading={() => setisLoading(false)}
                 onClose={() => setIsOpen(false)}
                 preferenceId={preference$.get().id} />}

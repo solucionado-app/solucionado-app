@@ -45,7 +45,7 @@ export default function ServiceRequestTabs({ id }: Props) {
     const searchParams = useSearchParams();
     const tab = searchParams?.get("tab");
     return (
-        <Tabs defaultValue={tab ?? 'budget'} className="w-full p-5">
+        <Tabs defaultValue={tab ?? 'budget'} className="w-full">
             <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="budget"  >Presupuestos</TabsTrigger>
                 <TabsTrigger value="comments" >Comentarios</TabsTrigger>
@@ -56,7 +56,7 @@ export default function ServiceRequestTabs({ id }: Props) {
                         <CardTitle>Presupuestos</CardTitle>
                         <CardDescription>aca van los presupuestos</CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-2">
+                    <CardContent className="space-y-2 p-2">
                         <div className="space-y-1">
                             {/* <Budgets /> */}
                             {budgetListSolucionador && serviceRequest && (

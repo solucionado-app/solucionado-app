@@ -15,6 +15,7 @@ import { api } from "~/utils/api";
 
 import dynamic from "next/dynamic";
 import Spinner from "~/components/ui/spinner";
+import StatusTranslate from "~/components/servicerequest/StatusTranslate";
 
 
 
@@ -47,9 +48,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
           <p className="text-2xl font-bold tracking-tight">
             {serviceRequest?.category.name}
           </p>
-          <p className="text-2xl font-bold tracking-tight">
-            {serviceRequest?.status}
-          </p>
+          <StatusTranslate status={serviceRequest?.status} />
           {serviceRequest?.details &&
             Object.keys(serviceRequest?.details).map((key: string, i) => (
               <p key={i}>
