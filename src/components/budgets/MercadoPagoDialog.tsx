@@ -21,7 +21,7 @@ interface Props {
 
 export default function MercadoPago({ publickey, open, onClose, preferenceId, amount, token, setIsloading, isLoading }: Props) {
 
-    initMercadoPago(process.env.NEXT_PUBLIC_MP_PUBLIC_KEY as string, { locale: 'es-AR' });
+    initMercadoPago(publickey, { locale: 'es-AR' });
 
     const isloading$ = observable(true)
 
@@ -98,8 +98,8 @@ export default function MercadoPago({ publickey, open, onClose, preferenceId, am
                         }}
                         customization={{
                             paymentMethods: {
-                                mercadoPago: ['wallet_purchase'],
                                 debitCard: 'all',
+                                creditCard: 'all',
                             },
 
                         }}

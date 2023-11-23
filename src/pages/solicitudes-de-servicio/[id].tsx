@@ -37,17 +37,73 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
   const rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
 
-
+  const price = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(parseFloat(serviceRequest?.amount ?? ''));
   return (
     <>
-      <div className="container flex flex-col items-center justify-center gap-8 px-4 py-16 ">
-        <div className="relative border p-5  text-xl font-semibold  shadow-sm">
-          <h1 className="text-4xl font-extrabold tracking-tight">
+      <div className="container flex flex-col items-center justify-center gap-8 px-4 pt-24 w-full ">
+
+        <div className="flex w-full flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row  hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+          <img className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-1/4 md:rounded-none md:rounded-s-lg" src="https://flowbite.com/docs/images/blog/image-4.jpg" alt="" />
+          <div className="flex flex-col justify-between p-4 leading-normal">
+            <h1 className="text-2xl lg:text-4xl font-extrabold tracking-tight">
+              Información de Solicitud
+            </h1>
+            <p className="text-lg font-bold tracking-tight">
+              {serviceRequest?.category.name}
+            </p>
+            <p className="text-md font-medium tracking-tight">
+              {serviceRequest?.address}
+            </p>
+            <p className="text-md font-medium tracking-tight">
+              {serviceRequest?.description}
+            </p>
+            <p className="text-xl text-green-500 font-medium tracking-tight">
+              {price}
+            </p>
+            <p className="text-md font-medium tracking-tight">
+              {serviceRequest?.schedule}
+            </p>
+
+            <StatusTranslate status={serviceRequest?.status} />
+            {serviceRequest?.details &&
+              Object.keys(serviceRequest?.details).map((key: string, i) => (
+                <p key={i}>
+                  <span> {key.replace(rex, "$1$4 $2$3$5")}</span>
+                  <span>
+                    {" "}
+                    {serviceRequest?.details &&
+                      serviceRequest?.details[
+                      key as keyof typeof serviceRequest.details
+                      ]}
+                  </span>
+                </p>
+              ))}
+          </div>
+        </div>
+
+        <div className="relative border p-5  text-xl font-semibold  w-full shadow-sm">
+          <h1 className="text-2xl lg:text-4xl font-extrabold tracking-tight">
             Información de Solicitud
           </h1>
-          <p className="text-2xl font-bold tracking-tight">
+          <p className="text-lg font-bold tracking-tight">
             {serviceRequest?.category.name}
           </p>
+          <p className="text-md font-medium tracking-tight">
+            {serviceRequest?.address}
+          </p>
+          <p className="text-md font-medium tracking-tight">
+            {serviceRequest?.description}
+          </p>
+          <p className="text-xl text-green-500 font-medium tracking-tight">
+            {price}
+          </p>
+          <p className="text-md font-medium tracking-tight">
+            {serviceRequest?.schedule}
+          </p>
+
           <StatusTranslate status={serviceRequest?.status} />
           {serviceRequest?.details &&
             Object.keys(serviceRequest?.details).map((key: string, i) => (

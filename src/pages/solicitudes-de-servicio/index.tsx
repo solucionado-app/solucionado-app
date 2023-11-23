@@ -28,7 +28,7 @@ const ServiceRequest: MyPage = () => {
   return (
     <>
       <main className="flex min-h-screen w-full flex-col  items-center ">
-        <div className="flex w-full max-w-7xl flex-col items-center justify-center gap-12 px-4 py-24 ">
+        <div className="flex w-full max-w-screen-xl flex-col items-center justify-center gap-4 px-4 py-24 ">
           <h1 className="text-5xl font-extrabold tracking-tight">
             Solicitudes de Servicio
           </h1>
@@ -36,14 +36,14 @@ const ServiceRequest: MyPage = () => {
           {services && services?.map((service) => (
 
             <div key={service.id} className="w-full">
-              <Link href={`/solicitudes-de-servicio/${service.id}`}>
-                <Card className="relative flex flex-row p-4 gap-4 hover:bg-slate-200 ">
+              <Link className="flex flex-col" href={`/solicitudes-de-servicio/${service.id}`}>
+                <Card className="relative flex flex-row justify-between  gap-4 hover:bg-slate-200 ">
                   {/* Agregar la imagen en la parte izquierda y hacer que ocupe todo el alto de la tarjeta */}
-                  <div className="w-2/5">
-                    <img src={'https://flowbite.com/docs/images/blog/image-1.jpg'} alt={service.category.name} className="object-cover h-full" />
+                  <div className="w-24 p-3 mt-5 ">
+                    <img src={' https://flowbite.com/docs/images/blog/image-1.jpg'} alt={service.category.name} className="object-cover aspect-square rounded-md h-auto " />
                   </div>
                   {/* Mover el resto de los elementos a la derecha de la tarjeta */}
-                  <div className="w-3/5">
+                  <div className=" p-3">
                     {/* Mover la fecha al inicio del componente */}
                     {service?.date && <div className="text-sm text-gray-500">
                       {format(service?.date, "PPP", { locale: es })}
@@ -60,6 +60,17 @@ const ServiceRequest: MyPage = () => {
                     {service.amount && <div className="text-sm text-gray-500">
                       {service.amount}
                     </div>}
+
+                    {/* {
+                      service?.details && Object.keys(service?.details).map((key: string, i) => (
+                        <p key={i}>
+                          <span> {key.replace(rex, '$1$4 $2$3$5')}</span>
+                          <span> {service?.details && service?.details[key as keyof typeof service.details]}</span>
+                        </p>
+                      ))
+                    } */}
+                  </div>
+                  <div className=" p-3">
                     {service.schedule && <div className="text-sm hidden md:block text-gray-500">
                       <span className="font-semibold">Horario: </span> {service.schedule}
                     </div>}
@@ -71,16 +82,8 @@ const ServiceRequest: MyPage = () => {
                       {'Pendiente'}
                     </div>}
                     {service?.status === 'ACEPTED' && <div className="text-md text-green-500 font-semibold">
-                      {'Aceptado'}
+                      {'Finalizada'}
                     </div>}
-                    {/* {
-                      service?.details && Object.keys(service?.details).map((key: string, i) => (
-                        <p key={i}>
-                          <span> {key.replace(rex, '$1$4 $2$3$5')}</span>
-                          <span> {service?.details && service?.details[key as keyof typeof service.details]}</span>
-                        </p>
-                      ))
-                    } */}
                   </div>
                 </Card>
               </Link>
