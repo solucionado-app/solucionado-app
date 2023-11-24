@@ -9,9 +9,11 @@ import { Card } from "~/components/ui/card";
 import { format } from "date-fns";
 
 import es from "date-fns/locale/es";
-
+import { Button } from "~/components/ui/button";
+import { useRouter } from "next/navigation";
 // HomePage.Layout = "OtherLayout"; -> error Type '"OtherLayout"' is not assignable to type '"Main" | "Admin" | undefined'.
 const ServiceRequest: MyPage = () => {
+  const router = useRouter();
   const { isLoaded, isSignedIn } = useUser();
   if (!isLoaded && isSignedIn)
     return <Spinner className="h-12 w-12 text-solBlue" />;
@@ -32,79 +34,84 @@ const ServiceRequest: MyPage = () => {
           <h1 className="text-5xl font-extrabold tracking-tight">
             Solicitudes de Servicio
           </h1>
-          {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
-          {services && services?.map((service) => (
+          <div className="w-full md:px-28 py-4 flex flex-col  gap-3">
+            {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
+            {services && services?.map((service) => (
 
-            <div key={service.id} className="w-full">
-              <Link className="flex flex-col" href={`/solicitudes-de-servicio/${service.id}`}>
-                <Card className="relative flex flex-row gap-2 hover:bg-slate-200 ">
-                  {/* Agregar la imagen en la parte izquierda y hacer que ocupe todo el alto de la tarjeta */}
-                  <div className="w-1/4 md:w-1/12 p-2 mt-5 ">
-                    <img src={' https://flowbite.com/docs/images/blog/image-1.jpg'} alt={service.category.name} className="object-cover w-16 aspect-square rounded-md " />
-                  </div>
-                  {/* Mover el resto de los elementos a la derecha de la tarjeta */}
-                  <div className=" p-3 flex flex-row gap-2 md:w-8/12 justify-stretch">
-                    <div className="md:w-7/10">
+              <div key={service.id} className="w-full">
+                <Card className="relative flex flex-col gap-3 hover:bg-slate-200 p-3 ">
+                  <div className="flex flex-row gap-3 md:gap-10" >
 
-                    {/* Mover la fecha al inicio del componente */}
-                    {service?.date && <div className="text-sm text-gray-500">
-                      {format(service?.date, "PPP", { locale: es })}
-                    </div>}
-                    <div className="font-bold">
-                      {service.category.name}
+                    {/* Agregar la imagen en la parte izquierda y hacer que ocupe todo el alto de la tarjeta */}
+                    <div className="w-4/12  mt-5 ">
+                      <img src={' https://flowbite.com/docs/images/blog/image-1.jpg'} alt={service.category.name} className="object-cover w-16 md:w-full aspect-square rounded-md " />
                     </div>
-                      {service.address && <div className="text-sm hidden md:block text-gray-500">
-                      {service.address}
-                    </div>}
+                    {/* Mover el resto de los elementos a la derecha de la tarjeta */}
+                    <div className="  flex flex-col md:flex-row gap-4 w-full justify-between">
+                      <div className="md:w-7/10">
+                        {service?.status === 'PENDING' && <div className="text-md text-solYellow font-semibold">
+                          {'Pendiente'}
+                        </div>}
+                        {service?.status === 'ACEPTED' && <div className="text-md text-green-500 font-semibold">
+                          {'Finalizada'}
+                        </div>}
+                        {service.amount && <div className="text-sm text-lime-500">
+                          {service.amount}
+                        </div>}
+                        {/* Mover la fecha al inicio del componente */}
+                        {service?.date && <div className="text-sm text-gray-500 whitespace-break-spaces">
+                          {format(service?.date, "PPP", { locale: es })}
+                        </div>}
+                        <div className="font-bold">
+                          {service.category.name}
+                        </div>
+                        {service.address && <div className="text-sm  text-gray-500">
+                          {service.address}
+                        </div>}
+                        <div className="flex flex-col gap-2 ">
+                          <p className="text-md font-semibold">Descripción</p>
+                          {service?.description && <div className="text-sm  text-gray-500">
+                            {service?.description}
+                          </div>}
+
+                          {service.schedule && <div className="text-sm text-gray-500">
+                            <span className="font-semibold">Horario: </span> {service.schedule}
+                          </div>}
+                          {service.urgency && <div className="text-sm text-gray-500">
+                            {'Urgente: ' + service.urgency}
+                          </div>}
+
+
+                        </div>
+                      </div>
+
+
+                      <div className="justify-self-end	flex-col md:flex gap-3 hidden ">
+                        <Button onClick={() => router.push(`/solicitudes-de-servicio/${service.id}`)} className="bg-solBlue text-white font-semibold w-full">Ver presupuestos</Button>
+                        <Button onClick={() => router.push(`/solicitudes-de-servicio/${service.id}?tab=comments`)} className="bg-solBlue/10 text-sol_lightBlue font-semibold w-full">Ver comentarios</Button>
+                      </div>
+
                     </div>
-                    <div className="hidden md:block ">
 
-                      {service?.description && <div className="text-sm hidden md:block text-gray-500">
-                      {service?.description}
-                      </div>}
 
-                    {service.schedule && <div className="text-sm hidden md:block text-gray-500">
-                      <span className="font-semibold">Horario: </span> {service.schedule}
-                    </div>}
-                    {service.urgency && <div className="text-sm hidden md:block text-gray-500">
-                      {'Urgente: ' + service.urgency}
-                    </div>}
 
-                      {service?.status === 'PENDING' && <div className="text-md hidden md:block text-solYellow font-semibold">
-                      {'Pendiente'}
-                    </div>}
-                      {service?.status === 'ACEPTED' && <div className="text-md hidden md:block text-green-500 font-semibold">
-                      {'Finalizada'}
-                      </div>}
-                    </div>
+
 
 
                   </div>
-                  <div className="w-3/12 flex justify-end pt-3 pr-3">
-                    {service.amount && <div className="text-sm text-green-500">
-                      {service.amount}
-                    </div>}
+                  <div className="w-full flex flex-col gap-2 md:hidden">
+                    <Button onClick={() => router.push(`/solicitudes-de-servicio/${service.id}`)} className="bg-solBlue text-white font-semibold w-full">Ver presupuestos</Button>
+                    <Button onClick={() => router.push(`/solicitudes-de-servicio/${service.id}?tab=comments`)} className="bg-solBlue/10 text-sol_lightBlue font-semibold w-full">Ver comentarios</Button>
                   </div>
-
-                  {/* {
-                      service?.details && Object.keys(service?.details).map((key: string, i) => (
-                        <p key={i}>
-                          <span> {key.replace(rex, '$1$4 $2$3$5')}</span>
-                          <span> {service?.details && service?.details[key as keyof typeof service.details]}</span>
-                        </p>
-                      ))
-                    } */}
-
-
                 </Card>
-              </Link>
-            </div>
-          ))
-          }
-          {/* {services && <ServiceRequestTable serviceRequests={services} />} */}
-          {isFetched && !services && (
-            <div className="text-2xl">No hay servicios</div>
-          )}
+              </div>
+            ))
+            }
+            {/* {services && <ServiceRequestTable serviceRequests={services} />} */}
+            {isFetched && !services && (
+              <div className="text-2xl">No hay servicios</div>
+            )}
+          </div>
         </div>
       </main>
     </>

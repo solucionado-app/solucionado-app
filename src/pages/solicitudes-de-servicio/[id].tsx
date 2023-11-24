@@ -84,7 +84,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
           </div>
         </div>
 
-        <div className="relative border p-5  text-xl font-semibold  w-full shadow-sm">
+        {/* <div className="relative border p-5  text-xl font-semibold  w-full shadow-sm">
           <h1 className="text-2xl lg:text-4xl font-extrabold tracking-tight">
             Información de Solicitud
           </h1>
@@ -118,7 +118,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                 </span>
               </p>
             ))}
-        </div>
+        </div> */}
 
         <DynamicTabs id={id} />
       </div>

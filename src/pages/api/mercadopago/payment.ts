@@ -23,6 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             payment_method_id: req.body.formData.payment_method_id || "visa",
             installments: req.body.formData.installments || 1,
             payer: req.body.formData.payer,
+            token: req.body.formData.token,
             transaction_amount: req.body.formData.transaction_amount || 0,
             capture: false,
             // ...
