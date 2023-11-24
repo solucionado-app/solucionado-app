@@ -23,7 +23,12 @@ const ServiceRequest: MyPage = () => {
     isFetched,
   } = apitrcp.getUserRequest.useQuery();
   // console.log(user);
-
+  const priceFormat = (price: string) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(parseFloat(price));
+  }
   return (
     <>
       <main className="flex min-h-screen w-full flex-col  items-center ">
@@ -52,8 +57,8 @@ const ServiceRequest: MyPage = () => {
                         {service?.status === 'ACEPTED' && <div className="text-md text-green-500 font-semibold">
                           {'Finalizada'}
                         </div>}
-                        {service.amount && <div className="text-sm text-lime-500">
-                          {service.amount}
+                        {!!service?.amount && <div className="text-sm text-lime-500">
+                          {priceFormat(service?.amount)}
                         </div>}
                         {/* Mover la fecha al inicio del componente */}
                         {service?.date && <div className="text-sm text-gray-500 whitespace-break-spaces">
@@ -86,8 +91,8 @@ const ServiceRequest: MyPage = () => {
 
 
                       <div className="justify-self-end	flex-col md:flex gap-3 hidden ">
-                        <Button onClick={() => router.push(`/solicitudes-de-servicio/${service.id}`)} className="bg-solBlue text-white font-semibold w-full">Ver presupuestos</Button>
-                        <Button onClick={() => router.push(`/solicitudes-de-servicio/${service.id}?tab=comments`)} className="bg-solBlue/10 text-sol_lightBlue font-semibold w-full">Ver comentarios</Button>
+                        <Button onClick={() => router.push(`/solicitudes-de-servicio/${service.id}`)} className="bg-solBlue text-white font-semibold w-full hover:bg-solYellow hover:text-gray-900">Ver presupuestos</Button>
+                        <Button onClick={() => router.push(`/solicitudes-de-servicio/${service.id}?tab=comments`)} className="bg-solBlue/10 text-sol_lightBlue font-semibold w-full hover:bg-solYellow hover:text-gray-900">Ver comentarios</Button>
                       </div>
 
                     </div>
@@ -99,8 +104,8 @@ const ServiceRequest: MyPage = () => {
 
                   </div>
                   <div className="w-full flex flex-col gap-2 md:hidden">
-                    <Button onClick={() => router.push(`/solicitudes-de-servicio/${service.id}`)} className="bg-solBlue text-white font-semibold w-full">Ver presupuestos</Button>
-                    <Button onClick={() => router.push(`/solicitudes-de-servicio/${service.id}?tab=comments`)} className="bg-solBlue/10 text-sol_lightBlue font-semibold w-full">Ver comentarios</Button>
+                    <Button onClick={() => router.push(`/solicitudes-de-servicio/${service.id}`)} className="bg-solBlue text-white font-semibold w-full hover:bg-solYellow hover:text-gray-900">Ver presupuestos</Button>
+                    <Button onClick={() => router.push(`/solicitudes-de-servicio/${service.id}?tab=comments`)} className="bg-solBlue/10 text-sol_lightBlue font-semibold w-full hover:bg-solYellow hover:text-gray-900">Ver comentarios</Button>
                   </div>
                 </Card>
               </div>
