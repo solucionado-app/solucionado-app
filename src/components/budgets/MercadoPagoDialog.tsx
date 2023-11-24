@@ -17,11 +17,13 @@ interface Props {
     setIsloading: () => void
     amount: number
     token: string
+    metadata: any
+
 }
 
-export default function MercadoPago({ publickey, open, onClose, preferenceId, amount, token, setIsloading, isLoading }: Props) {
+export default function MercadoPago({ publickey, open, onClose, preferenceId, metadata, amount, token, setIsloading, isLoading }: Props) {
 
-    initMercadoPago(publickey, { locale: 'es-AR' });
+    initMercadoPago(process.env.NEXT_PUBLIC_MP_PUBLIC_KEY as string, { locale: 'es-AR' });
 
     const isloading$ = observable(true)
 
@@ -31,6 +33,7 @@ export default function MercadoPago({ publickey, open, onClose, preferenceId, am
         // callback llamado al hacer clic en el botón enviar datos
         console.log(formData);
         formData.formData.access_token = token
+        formData.formData.metadata = metadata
         if (formData.formData) {
             return new Promise<void>((resolve, reject) => {
                 fetch("/api/mercadopago/payment", {

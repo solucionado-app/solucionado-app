@@ -2,9 +2,7 @@ import { api } from "~/utils/api";
 
 import { type MyPage } from "~/components/types/types";
 import { useUser } from "@clerk/nextjs";
-import ServiceRequestTable from "~/components/servicerequest/ServiceRequestTable";
 import Spinner from "~/components/ui/spinner";
-import Link from "next/link";
 import { Card } from "~/components/ui/card";
 import { format } from "date-fns";
 
@@ -25,7 +23,6 @@ const ServiceRequest: MyPage = () => {
     isFetched,
   } = apitrcp.getUserRequest.useQuery();
   // console.log(user);
-  const rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
 
   return (
     <>
@@ -66,7 +63,9 @@ const ServiceRequest: MyPage = () => {
                           {service.category.name}
                         </div>
                         {service.address && <div className="text-sm  text-gray-500">
-                          {service.address}
+                          <p className="text-md font-medium tracking-tight">
+                            <span>Direccion: {service?.address} </span>
+                          </p>
                         </div>}
                         <div className="flex flex-col gap-2 ">
                           <p className="text-md font-semibold">Descripción</p>

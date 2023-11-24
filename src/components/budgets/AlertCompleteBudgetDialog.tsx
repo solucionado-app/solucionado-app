@@ -35,6 +35,12 @@ export default function AlertDialogDemo({ budget }: Props) {
     const [isLoading, setisLoading] = useState(true)
     const DynamicMercadoPago = getDynamicMercadoPago()
     const preference$ = useObservable({ id: "" })
+    const metadata = {
+        user_id: user?.id as string,
+        budget_id: budget.id,
+        description: budget.description,
+        price: budget.price,
+    }
     const validartoken = budget.author.mpCode && typeof budget.author.mpCode === 'object' && 'access_token' in budget.author.mpCode ? budget.author.mpCode?.access_token as string : ""
     const createPreference = async () => {
         const requestData = {
@@ -123,6 +129,7 @@ export default function AlertDialogDemo({ budget }: Props) {
 
             {preference$.get().id !== "" && <DynamicMercadoPago
                 open={isOpen}
+                metadata={metadata}
                 publickey={budget.author.mpCode && typeof budget.author.mpCode === 'object' && 'public_key' in budget.author.mpCode ?
                     budget.author.mpCode?.public_key as string : ''}
                 isLoading={isLoading}
