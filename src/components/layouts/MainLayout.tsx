@@ -1,9 +1,11 @@
 
+
+import { ClerkProvider } from "@clerk/nextjs";
 import Nav from "../Nav";
 import MainHead from "./head/MainHead";
 
 interface MainLayoutProps {
-    children: React.ReactNode;
+    children: React.ReactNode | React.JSX.Element;
     title: string;
     description: string;
 }
@@ -11,6 +13,7 @@ interface MainLayoutProps {
 export default function MainLayout({ title = "Solucionado App", description = "Solucionado App", children }: MainLayoutProps) {
     return (
         <>
+
             <MainHead title={title} description={description} />
 
             <main className=" min-h-screen flex justify-start flex-col">
@@ -19,6 +22,7 @@ export default function MainLayout({ title = "Solucionado App", description = "S
             </main>
 
         </>
+
     );
 }
 

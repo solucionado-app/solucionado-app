@@ -1,24 +1,24 @@
+"use client"
+
 import React, { useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { SignOutButton, SignedIn, useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { SignOutButton, SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import Image from "next/image";
 import NotificationsComponent from "./notifications/NotificationsComponent";
 import ProfileDropdown from "./auth/ProfileDropdown";
 import { api } from "~/utils/api";
+import { usePathname } from "next/navigation";
 
 export default function Nav() {
   const router = useRouter();
+  const pathName = usePathname();
   const user = useUser();
+  console.log(user);
+
   const popover = React.useRef<HTMLDialogElement>(null);
-  const { data: numberOfNotifications } = api.notification.countUnRead.useQuery(
-    undefined,
-    {
-      enabled: !!user.isSignedIn,
-      staleTime: Infinity,
-    }
-  );
+  const { data: numberOfNotifications } = 1
   const handleBurgerClick = () => {
     const { current: el } = popover;
     el?.show();
@@ -60,10 +60,10 @@ export default function Nav() {
           }
         } else {
           if (!classnav.contains('bg-transparent')) {
-            console.log("transparente", router.asPath);
+            console.log("transparente", pathName);
             classLogo?.remove('bg-transparent')
             classLogo?.add('bg-solBlue')
-            if (router.asPath === '/') {
+            if (pathName === '/') {
               console.log("transparente en home");
               classnav?.add('bg-transparent', 'text-white')
               classnav?.remove('bg-solBlue/90', 'backdrop-blur-md')
@@ -79,7 +79,7 @@ export default function Nav() {
     }
     window.addEventListener("scroll", handleColorChange);
 
-  }, [router.asPath])
+  }, [pathName])
   useEffect(() => {
     /**
      * close the popover if clicked on outside of the element
@@ -115,7 +115,7 @@ export default function Nav() {
   return (
     <>
 
-      <nav id="navBar" className={`fixed top-0 left-0 flex w-[calc(100vw)] transition-colors duration-300 items-center justify-between bg-transparent z-20 py-0 ${router.asPath === '/' ? "text-white" : "text-gray-950"} sm:px-12 backdrop-filter`}>
+      <nav id="navBar" className={`fixed top-0 left-0 flex w-[calc(100vw)] transition-colors duration-300 items-center justify-between bg-transparent z-20 py-0 ${pathName === '/' ? "text-white" : "text-gray-950"} sm:px-12 backdrop-filter`}>
         <Link
           id='logo'
           className="bg-solBlue py-4 px-2 md:p-4 z-10"
@@ -137,7 +137,7 @@ export default function Nav() {
         >
           <li>
             <Link
-              className={`text-sm sm:text-lg ${router.asPath === "/"
+              className={`text-sm sm:text-lg ${pathName === "/"
                 ? "font-semibold underline decoration-solYellow  		"
                 : "  hover:underline  hover:decoration-solYellow"
                 } decoration-4   underline-offset-8 `}
@@ -150,7 +150,7 @@ export default function Nav() {
 
           <li>
             <a
-              className={`text-sm sm:text-lg ${router.asPath === "/sobre-nosotros"
+              className={`text-sm sm:text-lg ${pathName === "/sobre-nosotros"
                 ? "font-semibold underline decoration-solYellow  	"
                 : " hover:underline  hover:decoration-solYellow"
                 } decoration-4  underline-offset-8 `}
@@ -163,7 +163,7 @@ export default function Nav() {
 
           <li>
             <Link
-              className={`text-sm sm:text-lg ${router.asPath === "/contacto"
+              className={`text-sm sm:text-lg ${pathName === "/contacto"
                 ? "font-semibold underline decoration-solYellow  		"
                 : "  hover:underline  hover:decoration-solYellow"
                 } decoration-4   underline-offset-8 `}
@@ -174,29 +174,31 @@ export default function Nav() {
           </li>
         </ul>
         <div className="flex items-center  gap-4">
-          {!user.isSignedIn && (
-            <>
-              <span
+          {(
+            <SignedOut >
+              <Link
                 className="hidden rounded-xl bg-gray-50 px-4 py-2 text-sm font-semibold text-gray-900 transition  duration-200 hover:bg-gray-200 lg:inline-block cursor-pointer"
-                onClick={() => void router.push({
-                  pathname: '/login',
-                  query: { redirect: router.asPath }
-                })}
+                href={{
+                  pathname: "/login",
+                  query: {
+                    redirect: pathName as string,
+                  },
+                }}
+
               >
                 Iniciar Sesión
-              </span>
+              </Link>
               <span
                 className="hidden rounded-xl bg-turquesa px-4 py-2 text-sm font-semibold  transition duration-200 hover:bg-solYellow text-black hover:text-black lg:inline-block cursor-pointer"
-                onClick={() => void router.push({
-                  pathname: '/registro',
-                  query: { redirect: router.asPath }
+                onClick={() => void router.replace(`/registro?redirect=${pathName as string}`, {
+                  scroll: false,
                 })}
               >
                 Quiero ser solucionador
               </span>
-            </>
+            </SignedOut>
           )}
-          {!!user.isSignedIn && (
+          {(
             <SignedIn>
               {
                 <NotificationsComponent
@@ -207,10 +209,11 @@ export default function Nav() {
                 <Avatar
                   className="cursor-pointer"
                   onClick={() => {
-                    void router.push("/perfil");
+                    void router.replace("/perfil");
                   }}
                 >
-                  <AvatarImage src={user.user.imageUrl} />
+
+                  <AvatarImage src={user?.user?.imageUrl ?? undefined} />
                   <AvatarFallback>
                     <div className="animate-spin rounded-full  border-b-2 border-gray-900"></div>
                   </AvatarFallback>
@@ -297,7 +300,7 @@ export default function Nav() {
               <div className="pt-6">
                 <Link
                   className="mb-3 block rounded-xl bg-gray-50 px-4 py-3 text-center text-xs  font-semibold leading-loose shadow hover:bg-gray-200"
-                  href={`/login?redirect=${router.asPath}`}
+                  href={`/login?redirect=${pathName as string}`}
                 >
                   Iniciar Sesión
                 </Link>

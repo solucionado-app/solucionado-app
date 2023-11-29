@@ -22,6 +22,18 @@
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
     "paths": {
+      "@/*": [
+        "./*"
+      ],
+      "@components*": [
+        "./*"
+      ],
+      "@/app*": [
+        "./app/*"
+      ],
+      "@/lib*": [
+        "./src/lib/*"
+      ],
       "~/*": [
         "./src/*"
       ]
