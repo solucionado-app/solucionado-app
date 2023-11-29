@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { type SignedInAuthObject } from "@clerk/nextjs/server";
 import {
   type GetStaticPropsContext,
@@ -19,6 +19,7 @@ import Spinner from "~/components/ui/spinner";
 import StatusTranslate from "~/components/servicerequest/StatusTranslate";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
 import { ArrowLeftIcon, MoveLeft, MoveLeftIcon, StepBackIcon } from "lucide-react";
+import { Button } from "~/components/ui/button";
 
 
 
@@ -56,26 +57,26 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   return (
     <>
       <div className="container relative flex flex-col items-center justify-center gap-8 px-4 pt-24 w-full ">
-        <a href="/solicitudes-de-servicio"
+        <Button
           className=" self-start cursor-pointer bg-solBlue text-white px-4 py-2 rounded"
           onClick={handleGoToSolicitudes}
         >
           <ArrowLeftIcon className="inline-block w-6 h-6" /> Volver a solicitudes
-        </a>
+        </Button>
 
         <div className="flex w-full flex-col  items-center bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 ">
           <div className=" flex flex-col md:flex-row w-full  ">
             <img className="object-cover w-full aspect-square rounded-t-lg md:w-40 md:rounded-none md:rounded-l-lg " src="https://flowbite.com/docs/images/blog/image-4.jpg" alt="" />
             <div className="flex flex-col md:flex-row gap-4 justify-between w-full p-4 leading-normal">
               <div>
-              <h1 className="text-2xl lg:text-4xl font-extrabold tracking-tight">
-                Información de Solicitud
-              </h1>
-              <StatusTranslate status={serviceRequest?.status} />
+                <h1 className="text-2xl lg:text-4xl font-extrabold tracking-tight">
+                  Información de Solicitud
+                </h1>
+                <StatusTranslate status={serviceRequest?.status} />
 
-              <p className="text-lg font-bold tracking-tight">
-                {serviceRequest?.category.name}
-              </p>
+                <p className="text-lg font-bold tracking-tight">
+                  {serviceRequest?.category.name}
+                </p>
               </div>
               {!!serviceRequest?.amount && <span className="text-xl text-green-500 font-medium tracking-tight">
                 {price}
@@ -103,20 +104,20 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                 <p className="text-md font-normal tracking-tight">
                   <span className="font-medium">Horario :</span> {serviceRequest?.schedule}
                 </p>
-              {serviceRequest?.details &&
-                Object.keys(serviceRequest?.details).map((key: string, i) => (
-                  <p key={i}>
-                    <span className="font-medium"> {key.replace(rex, "$1$4 $2$3$5").replace(/^(.)/, (match) => match.toUpperCase()) + ': '}</span>
-                    <span>
-                      {" "}
-                      {serviceRequest?.details &&
-                        serviceRequest?.details[
-                        key as keyof typeof serviceRequest.details
-                        ]}
-                    </span>
-                  </p>
-                ))}
-              </div>              
+                {serviceRequest?.details &&
+                  Object.keys(serviceRequest?.details).map((key: string, i) => (
+                    <p key={i}>
+                      <span className="font-medium"> {key.replace(rex, "$1$4 $2$3$5").replace(/^(.)/, (match) => match.toUpperCase()) + ': '}</span>
+                      <span>
+                        {" "}
+                        {serviceRequest?.details &&
+                          serviceRequest?.details[
+                          key as keyof typeof serviceRequest.details
+                          ]}
+                      </span>
+                    </p>
+                  ))}
+              </div>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
