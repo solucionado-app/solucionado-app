@@ -18,7 +18,7 @@ import dynamic from "next/dynamic";
 import Spinner from "~/components/ui/spinner";
 import StatusTranslate from "~/components/servicerequest/StatusTranslate";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
-import { ArrowLeftIcon, MoveLeft, MoveLeftIcon, StepBackIcon } from "lucide-react";
+import { ArrowLeftIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
 
 

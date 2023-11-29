@@ -1,6 +1,5 @@
 import { type MyPage } from "~/components/types/types";
 import ContactForm from "~/components/views/contact/ContactForm";
-import { Contact } from "~/components/views/home";
 
 const Contacto: MyPage = () => {
 
