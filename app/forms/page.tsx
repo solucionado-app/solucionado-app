@@ -2,7 +2,6 @@
 
 import { Separator } from "@/app/ui/separator"
 import { ProfileForm } from "@/app/forms/profile-form"
-import { serverClient } from "../_trpc/serverClient";
 import { api } from "@/src/utils/api";
 
 export default function SettingsProfilePage() {
