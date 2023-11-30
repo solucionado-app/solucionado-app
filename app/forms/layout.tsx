@@ -12,7 +12,6 @@ export const metadata: Metadata = {
   description: "Advanced form example using react-hook-form and Zod.",
 }
 
-import { Poppins } from "next/font/google";
 
 const sidebarNavItems = [
   {
@@ -46,12 +45,6 @@ import { esES } from "~/utils/es-ES";
 import { currentUser } from '@clerk/nextjs';
 import Nav from "@/src/components/Nav";
 
-const poppins = Poppins({
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
-  style: "normal",
-  subsets: ["latin"],
-});
 
 export default async function SettingsLayout({ children }: SettingsLayoutProps) {
   const user = await currentUser();
@@ -60,7 +53,7 @@ export default async function SettingsLayout({ children }: SettingsLayoutProps) 
 
   return (
 
-    <main className={poppins.className}>
+    <>
       {/* <div className="md:hidden">
         <Image
           src="/forms-light.png"
@@ -98,7 +91,7 @@ export default async function SettingsLayout({ children }: SettingsLayoutProps) 
         </div>
 
       </div>
-    </main>
+    </>
 
   )
 }

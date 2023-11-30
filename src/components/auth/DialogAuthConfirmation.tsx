@@ -1,7 +1,8 @@
 import React from 'react'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog'
 import { Button } from '../ui/button'
-import { useRouter } from 'next/router'
+import { usePathname, useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 interface DialogAuthConfirmationProps {
     open: boolean
@@ -10,7 +11,7 @@ interface DialogAuthConfirmationProps {
 }
 
 export default function DialogAuthConfirmation({ open, setOpen, }: DialogAuthConfirmationProps) {
-    const router = useRouter()
+    const pathName = usePathname()
     return (
         <>
             <Dialog open={open} onOpenChange={setOpen}>
@@ -24,12 +25,15 @@ export default function DialogAuthConfirmation({ open, setOpen, }: DialogAuthCon
                     </DialogHeader>
 
                     <DialogFooter>
-                        <Button onClick={() => void router.push({
-                            pathname: "/login",
-                            query: {
-                                redirect: router.asPath,
-                            }
-                        })} type="button">Continuar</Button>
+                        <Link
+                            href={{
+                                pathname: "/login",
+                                query: {
+                                    redirect: pathName,
+                                }   
+                            }}>
+                            <Button type="button">Continuar</Button>
+                        </Link>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>

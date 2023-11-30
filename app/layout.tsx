@@ -5,7 +5,7 @@ import { Separator } from "@/app/ui/separator"
 import { SidebarNav } from "@/app/forms/components/sidebar-nav"
 import "~/styles/globals.css";
 import MainLayout from "@/src/components/layouts/MainLayout";
-import { ClerkLoaded, ClerkProvider, auth } from "@clerk/nextjs";
+import { ClerkProvider, auth } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "Forms",
@@ -44,6 +44,7 @@ interface SettingsLayoutProps {
 import { esES } from "~/utils/es-ES";
 
 import { currentUser } from '@clerk/nextjs';
+import Provider from "./_trpc/Provider";
 
 const poppins = Poppins({
   display: "swap",
@@ -61,12 +62,13 @@ export default async function RootLayout({ children }: SettingsLayoutProps) {
       <body>
         <main className={poppins.className}>
           <ClerkProvider {...user}  >
-
+            <Provider>
 
 
             <main className=" min-h-screen flex justify-start flex-col">
               {children}
             </main>
+            </Provider>   
 
 
 

@@ -26,8 +26,8 @@ import { clerkClient } from "@clerk/nextjs";
 
 type CreateContextOptions = {
 
-  auth: SignedInAuthObject | SignedOutAuthObject;
-  revalidateSSG:
+  auth?: SignedInAuthObject | SignedOutAuthObject;
+  revalidateSSG?:
   | ((
     urlPath: string,
     opts?:
@@ -113,7 +113,7 @@ export const publicProcedure = t.procedure;
 
 const isAuthed = t.middleware(({ next, ctx }) => {
   // console.log(ctx.auth)
-  if (!ctx.auth.userId) {
+  if (!ctx?.auth?.userId) {
     throw new TRPCError({ code: 'UNAUTHORIZED' })
   }
   return next({

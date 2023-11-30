@@ -15,10 +15,17 @@ export default function Nav() {
   const router = useRouter();
   const pathName = usePathname();
   const user = useUser();
-  console.log(user);
 
   const popover = React.useRef<HTMLDialogElement>(null);
-  const { data: numberOfNotifications } = 1
+  const { data: numberOfNotifications } = api.notification.countUnRead.useQuery(
+    undefined,
+    {
+      enabled: !!user.isSignedIn,
+      staleTime: Infinity,
+    }
+  );
+  console.log(numberOfNotifications);
+
   const handleBurgerClick = () => {
     const { current: el } = popover;
     el?.show();

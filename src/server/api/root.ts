@@ -7,6 +7,7 @@ import { budgetRouter } from "./routers/budget";
 import { commentRouter } from "./routers/comment";
 import { serviceRouter } from "./routers/service";
 import { reviewRouter } from "./routers/review";
+import { router } from "../trpcApprouter";
 
 /**
  * This is the primary router for your server.
@@ -26,3 +27,18 @@ export const appRouter = createTRPCRouter({
 
 // export type definition of API
 export type AppRouter = typeof appRouter;
+
+
+export const appRouteRrouter = router({
+  categories: categorieRouter,
+  user: userRouter,
+  serviceRequest: serviceRequestRouter,
+  notification: notificationRouter,
+  budget: budgetRouter,
+  comment: commentRouter,
+  service: serviceRouter,
+  review: reviewRouter,
+});
+
+// export type definition of API
+export type AppRouteRrouter = typeof appRouteRrouter;

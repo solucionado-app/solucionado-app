@@ -13,6 +13,11 @@
     "lint": "next lint",
     "start": "next start"
   },
+  "browser": {
+    "fs": false,
+    "os": false,
+    "path": false
+  },
   "dependencies": {
     "@clerk/localizations": "^1.26.8",
     "@clerk/nextjs": "^4.27.2",
