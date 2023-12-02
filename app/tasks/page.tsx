@@ -46,7 +46,7 @@ export default async function TaskPage() {
           className="hidden dark:block"
         />
       </div>
-      <div className=" h-full flex-1 flex-col space-y-8 p-2 md:p-8 flex">
+      <div className=" md:rounded-[0.5rem] md:border md:bg-background md:shadow h-full flex-1 flex-col space-y-8 p-2 md:p-8 flex">
         <div className="flex items-center justify-between space-y-2">
           <div>
             <h2 className="text-2xl font-bold tracking-tight">Welcome back!</h2>

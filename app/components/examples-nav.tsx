@@ -10,56 +10,39 @@ import { ScrollArea, ScrollBar } from "@/app/ui/scroll-area"
 const examples = [
   {
     name: "Dashboard",
-    href: "/examples/dashboard",
+    href: "/dashboard",
     code: "https://github.com/shadcn/ui/tree/main/apps/www/app/examples/dashboard",
   },
   {
-    name: "Cards",
-    href: "/examples/cards",
-    code: "https://github.com/shadcn/ui/tree/main/apps/www/app/examples/cards",
-  },
-  {
     name: "Tasks",
-    href: "/examples/tasks",
+    href: "/tasks",
     code: "https://github.com/shadcn/ui/tree/main/apps/www/app/examples/tasks",
-  },
-  {
-    name: "Playground",
-    href: "/examples/playground",
-    code: "https://github.com/shadcn/ui/tree/main/apps/www/app/examples/playground",
   },
   {
     name: "Forms",
     href: "/forms",
     code: "https://github.com/shadcn/ui/tree/main/apps/www/app/examples/forms",
   },
-  {
-    name: "Music",
-    href: "/examples/music",
-    code: "https://github.com/shadcn/ui/tree/main/apps/www/app/examples/music",
-  },
-  {
-    name: "Authentication",
-    href: "/examples/authentication",
-    code: "https://github.com/shadcn/ui/tree/main/apps/www/app/examples/authentication",
-  },
 ]
 
-interface ExamplesNavProps extends React.HTMLAttributes<HTMLDivElement> { }
+interface ExamplesNavProps {
+  className?: string;
+}
+
 
 export function ExamplesNav({ className, ...props }: ExamplesNavProps) {
   const pathname = usePathname()
 
   return (
     <div className="relative">
-      <ScrollArea className="max-w-[600px] lg:max-w-none">
-        <div className={cn("mb-4 flex items-center", className)} {...props}>
+      <ScrollArea className="max-w-[600px] lg:max-w-none px-4 md:px-8">
+        <div className={cn("mb-4 flex items-center gap-4", className)} {...props}>
           {examples.map((example) => (
             <Link
               href={example.href}
               key={example.href}
               className={cn(
-                "flex items-center px-4",
+                "flex items-center",
                 pathname?.startsWith(example.href)
                   ? "font-bold text-primary"
                   : "font-medium text-muted-foreground"

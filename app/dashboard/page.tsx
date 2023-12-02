@@ -31,24 +31,9 @@ export const metadata: Metadata = {
 export default function DashboardPage() {
   return (
     <>
-      <div className="md:hidden">
-        <Image
-          src="/dashboard-light.png"
-          width={1280}
-          height={866}
-          alt="Dashboard"
-          className="block dark:hidden"
-        />
-        <Image
-          src="/dashboard-dark.png"
-          width={1280}
-          height={866}
-          alt="Dashboard"
-          className="hidden dark:block"
-        />
-      </div>
-      <div className="hidden flex-col md:flex">
-        <div className="border-b">
+
+      <div className="flex flex-col ">
+        {/* <div className="border-b">
           <div className="flex h-16 items-center px-4">
             <TeamSwitcher />
             <MainNav className="mx-6" />
@@ -57,17 +42,17 @@ export default function DashboardPage() {
               <UserNav />
             </div>
           </div>
-        </div>
-        <div className="flex-1 space-y-4 p-8 pt-6">
-          <div className="flex items-center justify-between space-y-2">
+        </div> */}
+        <div className="flex-1 space-y-4  md:p-8 pt-6 ">
+          <div className="flex flex-wrap items-center justify-between space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-            <div className="flex items-center space-x-2">
+            <div className="flex flex-wrap items-center  gap-6 ">
               <CalendarDateRangePicker />
               <Button>Download</Button>
             </div>
           </div>
           <Tabs defaultValue="overview" className="space-y-4">
-            <TabsList>
+            <TabsList className="grid grid-cols-2 md:inline-flex h-auto">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="analytics" disabled>
                 Analytics
@@ -81,7 +66,7 @@ export default function DashboardPage() {
             </TabsList>
             <TabsContent value="overview" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <Card>
+                <Card >
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                       Total Revenue
@@ -99,7 +84,7 @@ export default function DashboardPage() {
                       <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                     </svg>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent >
                     <div className="text-2xl font-bold">$45,231.89</div>
                     <p className="text-xs text-muted-foreground">
                       +20.1% from last month
@@ -183,16 +168,16 @@ export default function DashboardPage() {
                   </CardContent>
                 </Card>
               </div>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+              <div className="flex flex-col md:grid gap-4 md:grid-cols-2  lg:grid-cols-7">
                 <Card className="col-span-4">
                   <CardHeader>
                     <CardTitle>Overview</CardTitle>
                   </CardHeader>
-                  <CardContent className="pl-2">
+                  <CardContent className="p-3 pr-6 pl-0 md:pl-2">
                     <Overview />
                   </CardContent>
                 </Card>
-                <Card className="col-span-3">
+                <Card className="w-full col-span-3">
                   <CardHeader>
                     <CardTitle>Recent Sales</CardTitle>
                     <CardDescription>

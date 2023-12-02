@@ -53,7 +53,7 @@ export default function Nav() {
     const handleColorChange = () => {
       const navBar = document.getElementById('navBar');
       const logo = document.getElementById('logo');
-      if (!!window && !!navBar) {
+      if (!!window && !!navBar && pathName === '/') {
         const classnav = navBar.classList;
         const classLogo = logo?.classList;
 
@@ -122,7 +122,7 @@ export default function Nav() {
   return (
     <>
 
-      <nav id="navBar" className={`fixed top-0 left-0 flex w-[calc(100vw)] transition-colors duration-300 items-center justify-between bg-transparent z-20 py-0 ${pathName === '/' ? "text-white" : "text-gray-950"} sm:px-12 backdrop-filter`}>
+      <nav id="navBar" className={`fixed top-0 left-0 flex w-[calc(100vw)] transition-colors duration-300 items-center justify-between z-20 py-0 ${pathName === '/' ? "  bg-transparent text-white  " : "bg-solBlue text-white"} sm:px-12 backdrop-filter`}>
         <Link
           id='logo'
           className="bg-solBlue py-4 px-2 md:p-4 z-10"

@@ -9,30 +9,7 @@ import { ClerkProvider, auth } from "@clerk/nextjs";
 
 
 
-import { Inter } from "next/font/google";
-
-const sidebarNavItems = [
-  {
-    title: "Profile",
-    href: "/examples/forms",
-  },
-  {
-    title: "Account",
-    href: "/examples/forms/account",
-  },
-  {
-    title: "Appearance",
-    href: "/examples/forms/appearance",
-  },
-  {
-    title: "Notifications",
-    href: "/examples/forms/notifications",
-  },
-  {
-    title: "Display",
-    href: "/examples/forms/display",
-  },
-]
+import { Poppins } from "next/font/google";
 
 
 export const metadata: Metadata = {
@@ -45,7 +22,7 @@ interface SettingsLayoutProps {
 }
 import { esES } from "~/utils/es-ES";
 
-import { currentUser } from '@clerk/nextjs';
+
 import Provider from "./_trpc/Provider";
 import Nav from "@/src/components/Nav";
 import Link from "next/link";
@@ -54,27 +31,26 @@ import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { cn } from "@/src/lib/utils";
 import { buttonVariants } from "./ui/button";
 import { ExamplesNav } from "./components/examples-nav";
+import { usePathname } from "next/navigation";
 
-const inter = Inter({
+const inter = Poppins({
   display: "swap",
   weight: ["400", "500", "600", "700"],
   style: "normal",
   subsets: ["latin"],
 });
 
-export default async function RootLayout({ children }: SettingsLayoutProps) {
-  const user = await currentUser();
-  const { userId }: { userId: string | null } = auth();
+export default function RootLayout({ children }: SettingsLayoutProps) {
   // console.log(user, userId);
   return (
     <html lang="es" suppressHydrationWarning>
       <body className={inter.className}>
-        <ClerkProvider {...user}  >
+        <ClerkProvider  >
           <Provider>
             <main className=" min-h-screen flex justify-start flex-col">
               <Nav />
 
-              <div className="flex h-full min-h-screen flex-col justify-center items-center text-slate-900 bg-gray-50 pt-20 ">
+              <div className="flex h-full min-h-screen flex-col justify-center items-center text-slate-900 bg-gray-50 py-20 ">
                 <div className="container relative">
                   <PageHeader className="page-header pb-8">
                     <Link
@@ -116,7 +92,7 @@ export default async function RootLayout({ children }: SettingsLayoutProps) {
                   </PageHeader>
                   <section>
                     <ExamplesNav />
-                    <div className="overflow-hidden rounded-[0.5rem] border bg-background shadow">
+                    <div className="overflow-hidden ">
                       {children}
                     </div>
                   </section>
