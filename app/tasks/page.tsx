@@ -48,7 +48,7 @@ export default async function TaskPage() {
           </div>
         </div>
         <Services />
-        <DataTable columns={columns} data={tasks} />
+        {/* <DataTable columns={columns} data={tasks} /> */}
       </div>
     </>
   )

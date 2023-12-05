@@ -80,7 +80,7 @@ export const serviceColumns: ColumnDef<Service>[] = [
         ),
         cell: ({ row }) => {
             const label = row.original.category.name
-
+            console.log(row.getValue("description"))
             return (
                 <div className="flex space-x-2">
                     {label && <Badge variant="outline">{label}</Badge>}

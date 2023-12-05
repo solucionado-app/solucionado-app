@@ -10,6 +10,7 @@ import { DataTableViewOptions } from "@/app/tasks/components/data-table-view-opt
 import { priorities, statuses } from "../data/data"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 import { api } from "@/src/utils/api"
+import { ServiceTableFacetedFilter } from "./service-table-faceted-filter"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
@@ -22,6 +23,10 @@ export function DataTableToolbar<TData>({
   const { data: categories } = api.categories.getAll.useQuery(undefined, {
     staleTime: 1000 * 60 * 5,
   })
+  console.log(table.getColumn("category")?.columns)
+
+
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center flex-wrap space-x-2">
@@ -40,11 +45,11 @@ export function DataTableToolbar<TData>({
             options={statuses}
           />
         )}
-        {table.getColumn("category") && (
-          <DataTableFacetedFilter
+        {table.getColumn("category") && categories && (
+          <ServiceTableFacetedFilter
             column={table.getColumn("category")}
             title="category"
-            options={statuses}
+            options={categories}
           />
         )}
         {table.getColumn("priority") && (
