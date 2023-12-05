@@ -1,12 +1,12 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
+import { type ColumnDef } from "@tanstack/react-table"
 
 import { Badge } from "@/app/ui/badge"
 import { Checkbox } from "@/app/ui/checkbox"
 
 import { labels, priorities, statuses } from "../data/data"
-import { Task } from "../data/schema"
+import { type Task } from "../data/schema"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { DataTableRowActions } from "./data-table-row-actions"
 

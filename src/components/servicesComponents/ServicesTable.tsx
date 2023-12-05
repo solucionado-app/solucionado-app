@@ -37,7 +37,7 @@ import { api } from "~/utils/api";
 import format from "date-fns/format";
 import { es } from "date-fns/locale";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export const columns: ColumnDef<Service>[] = [
   {
@@ -145,7 +145,7 @@ export const columns: ColumnDef<Service>[] = [
 
 type Status = "PENDING" | "ACEPTED" | "REJECTED" | "FINISHED";
 
-interface Service {
+export interface Service {
   id: string;
   status: Status;
   description: string;
@@ -161,6 +161,8 @@ interface Author {
   first_name: string | null;
   last_name: string | null;
   image_url: string | null;
+  cbu: string | null;
+  cuit: string | null;
 }
 interface Budget {
   id: string;
@@ -250,9 +252,9 @@ export default function ServicesTable({ services }: Props) {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
