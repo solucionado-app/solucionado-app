@@ -54,25 +54,23 @@ export default function RootLayout({ children }: SettingsLayoutProps) {
                 <div className="container relative">
                   <PageHeader className="page-header pb-8">
                     <Link
-                      href="/docs/changelog"
+                      href="/solicitudes de servicio"
                       className="inline-flex items-center rounded-lg bg-muted px-3 py-1 text-sm font-medium"
                     >
                       🎉 <Separator className="mx-2 h-4 " orientation="vertical" />{" "}
                       <span className="sm:hidden">Style, a new CLI and more.</span>
                       <span className="hidden sm:inline">
-                        Introducing Style, a new CLI and more.
+                        Hemos actualizado la apariencia de las solicitudes, puedes agregar imagenes y mucho más.
                       </span>
                       <ArrowRightIcon className="ml-1 h-4 w-4" />
                     </Link>
-                    <PageHeaderHeading className="hidden md:block">
-                      Check out some examples.
+                    <PageHeaderHeading className="">
+                      Panel de control.
                     </PageHeaderHeading>
-                    <PageHeaderHeading className="md:hidden">Examples</PageHeaderHeading>
                     <PageHeaderDescription>
-                      Dashboard, cards, authentication. Some examples built using the
-                      components. Use this as a guide to build your own.
+                      Aca podras ver mas informacion sobre tu cuenta, rendimientos y estadisticas avanzadas.
                     </PageHeaderDescription>
-                    <section className="flex w-full items-center space-x-4 pb-8 pt-4 md:pb-10">
+                    {/* <section className="flex w-full items-center space-x-4 pb-8 pt-4 md:pb-10">
                       <Link
                         href="/docs"
                         className={cn(buttonVariants(), "rounded-[6px]")}
@@ -88,7 +86,7 @@ export default function RootLayout({ children }: SettingsLayoutProps) {
                       >
                         Components
                       </Link>
-                    </section>
+                    </section> */}
                   </PageHeader>
                   <section>
                     <ExamplesNav />

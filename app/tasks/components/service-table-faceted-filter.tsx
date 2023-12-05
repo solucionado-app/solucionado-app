@@ -1,6 +1,6 @@
 import * as React from "react"
 import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons"
-import { Column } from "@tanstack/react-table"
+import { type Column } from "@tanstack/react-table"
 
 import { cn } from "@/lib/utils"
 import { Badge } from "@/app/ui/badge"
@@ -20,14 +20,15 @@ import {
     PopoverTrigger,
 } from "@/app/ui/popover"
 import { Separator } from "@/app/ui/separator"
+import { Category, CategoryPayload } from "@prisma/client"
 
 interface DataTableFacetedFilterProps<TData, TValue> {
     column?: Column<TData, TValue>
     title?: string
-    options: {
-        name: string
-    }[]
+    options: Category[]
 }
+
+
 
 export function ServiceTableFacetedFilter<TData, TValue>({
     column,
@@ -36,6 +37,10 @@ export function ServiceTableFacetedFilter<TData, TValue>({
 }: DataTableFacetedFilterProps<TData, TValue>) {
     const facets = column?.getFacetedUniqueValues()
     const selectedValues = new Set(column?.getFilterValue() as string[])
+    console.log(facets?.get('Electricistas'))
+    facets?.forEach((value, key) => {
+        console.log(key, value)
+    })
 
     return (
         <Popover>
@@ -66,7 +71,7 @@ export function ServiceTableFacetedFilter<TData, TValue>({
                                         .map((option) => (
                                             <Badge
                                                 variant="secondary"
-                                                key={option.name}
+                                                key={option.id}
                                                 className="rounded-sm px-1 font-normal"
                                             >
                                                 {option.name}

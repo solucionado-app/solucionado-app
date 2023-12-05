@@ -15,6 +15,7 @@ import { ServiceDataTableRowActions } from "./service-table-row-actions"
 import { format } from "date-fns"
 import { es } from "date-fns/locale";
 import { Avatar, AvatarFallback, AvatarImage } from "@/src/components/ui/avatar"
+import { normalizePaymentStatus, normalizeStatus } from "../data/serviceData"
 
 export const serviceColumns: ColumnDef<Service>[] = [
     {
@@ -69,7 +70,7 @@ export const serviceColumns: ColumnDef<Service>[] = [
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Servicio" />
         ),
-        cell: ({ row }) => <div className="w-[80px] truncate">{row.getValue("id")}</div>,
+        cell: ({ row }) => <div className="w-14 truncate">{row.getValue("id")}</div>,
         enableSorting: false,
         enableHiding: false,
     },
@@ -79,17 +80,21 @@ export const serviceColumns: ColumnDef<Service>[] = [
             <DataTableColumnHeader column={column} title="category" />
         ),
         cell: ({ row }) => {
-            const label = row.original.category.name
-            console.log(row.getValue("description"))
+            const label = row.getValue("category")
+            console.log(row.getValue("category"))
             return (
                 <div className="flex space-x-2">
                     {label && <Badge variant="outline">{label}</Badge>}
-                    <span className="max-w-[500px] truncate font-medium">
-                        {row.getValue("description")}
-                    </span>
+                    {/* <span className="max-w-[500px] truncate font-medium">
+                        {row.getValue("category").name}
+                    </span> */}
                 </div>
             )
         },
+        accessorFn: row => row.category.name,
+        filterFn: (row, id, value) => {
+            return value.includes(row.getValue(id))
+        }
     },
     // {
     //     accessorKey: "status",
@@ -178,6 +183,39 @@ export const serviceColumns: ColumnDef<Service>[] = [
         cell: ({ row }) => {
             return <div className="capitalize">{row.getValue("status")}</div>;
         },
+        accessorFn: row => {
+            console.log(row.status)
+            return normalizeStatus(row.status)
+        },
+        filterFn: (row, id, value) => {
+            return value.includes(row.getValue(id))
+        }
+    },
+    {
+        accessorKey: "payment",
+        header: "Pago",
+        cell: ({ row }) => {
+            return <div className="capitalize">{row.getValue("payment")}</div>;
+        },
+        accessorFn: row => {
+            return normalizePaymentStatus(row.paymentStatus)
+        },
+        filterFn: (row, id, value) => {
+            return value.includes(row.getValue(id))
+        }
+    },
+    {
+        accessorKey: "cbu",
+        header: "cbu",
+        cell: ({ row }) => {
+            return <div className="">{row.getValue("cbu")}</div>;
+        },
+        accessorFn: row => {
+            return row.budget.author.cbu
+        },
+        filterFn: (row, id, value) => {
+            return value.includes(row.getValue(id))
+        }
     },
 
     // {

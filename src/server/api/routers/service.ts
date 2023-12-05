@@ -61,7 +61,7 @@ export const serviceRouter = createTRPCRouter({
       const userIsAdmin = organizationMemberships.some((org) => org.organization.slug === 'admin')
       console.log(userIsAdmin)
       if(!userIsAdmin) throw new Error("No tienes permisos para realizar esta acción")
-      return ctx.prisma.service.findMany({
+      const services = ctx.prisma.service.findMany({
         orderBy: {
             createdAt: "desc",
         },
@@ -70,6 +70,7 @@ export const serviceRouter = createTRPCRouter({
           id: true,
           description: true,
           status: true,
+          paymentStatus: true,
           budget: {
             select: {
               id: true,
@@ -95,6 +96,7 @@ export const serviceRouter = createTRPCRouter({
           },
         },
       });
+      return services
     } ),
   getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.service.findMany({

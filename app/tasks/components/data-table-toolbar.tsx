@@ -7,7 +7,7 @@ import { Button } from "@/app/ui/button"
 import { Input } from "@/app/ui/input"
 import { DataTableViewOptions } from "@/app/tasks/components/data-table-view-options"
 
-import { priorities, statuses } from "../data/data"
+import { priorities, statuses } from "../data/serviceData"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 import { api } from "@/src/utils/api"
 import { ServiceTableFacetedFilter } from "./service-table-faceted-filter"
@@ -52,13 +52,13 @@ export function DataTableToolbar<TData>({
             options={categories}
           />
         )}
-        {table.getColumn("priority") && (
+        {/* {table.getColumn("priority") && (
           <DataTableFacetedFilter
             column={table.getColumn("priority")}
             title="Priority"
             options={priorities}
           />
-        )}
+        )} */}
         {isFiltered && (
           <Button
             variant="ghost"

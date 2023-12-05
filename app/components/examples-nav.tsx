@@ -14,12 +14,12 @@ const examples = [
     code: "https://github.com/shadcn/ui/tree/main/apps/www/app/examples/dashboard",
   },
   {
-    name: "Tasks",
+    name: "Servicios",
     href: "/tasks",
     code: "https://github.com/shadcn/ui/tree/main/apps/www/app/examples/tasks",
   },
   {
-    name: "Forms",
+    name: "Cuenta",
     href: "/forms",
     code: "https://github.com/shadcn/ui/tree/main/apps/www/app/examples/forms",
   },
@@ -54,9 +54,9 @@ export function ExamplesNav({ className, ...props }: ExamplesNavProps) {
         </div>
         <ScrollBar orientation="horizontal" className="invisible" />
       </ScrollArea>
-      <ExampleCodeLink
+      {/* <ExampleCodeLink
         pathname={pathname === "/" ? "/examples/dashboard" : pathname}
-      />
+      /> */}
     </div>
   )
 }

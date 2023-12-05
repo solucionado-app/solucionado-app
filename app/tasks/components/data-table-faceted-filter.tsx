@@ -39,6 +39,8 @@ export function DataTableFacetedFilter<TData, TValue>({
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues()
   const selectedValues = new Set(column?.getFilterValue() as string[])
+  console.log(facets?.get('En proceso'))
+  console.log(Array.from(selectedValues))
 
   return (
     <Popover>
@@ -72,7 +74,8 @@ export function DataTableFacetedFilter<TData, TValue>({
                         key={option.value}
                         className="rounded-sm px-1 font-normal"
                       >
-                        {option.name}
+
+                        {option.label}
                       </Badge>
                     ))
                 )}

@@ -144,10 +144,12 @@ export const columns: ColumnDef<Service>[] = [
 ];
 
 type Status = "PENDING" | "ACEPTED" | "REJECTED" | "FINISHED";
+type paymentStatus = 'ACREDITADO' | 'ENVIADO' | 'PENDIENTE' | 'RECHAZADO' | '' | null;
 
 export interface Service {
   id: string;
   status: Status;
+  paymentStatus: paymentStatus;
   description: string;
   budget: Budget;
   category: {
