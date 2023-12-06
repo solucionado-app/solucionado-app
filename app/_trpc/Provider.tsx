@@ -5,6 +5,11 @@ import { httpBatchLink } from "@trpc/client";
 import React, { useState } from "react";
 import SuperJSON from "superjson";
 
+export const getBaseUrl = () => {
+    if (typeof window !== "undefined") return ""; // browser should use relative url
+    if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
+    return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
+};
 
 export default function Provider({ children }: { children: React.ReactNode }) {
     const [queryClient] = useState(() => new QueryClient({}));
@@ -12,7 +17,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
         trpc.createClient({
             links: [
                 httpBatchLink({
-                    url: "http://localhost:3000/api/trpc",
+                    url: `${getBaseUrl()}/api/trpc`,
                 }),
 
             ],
