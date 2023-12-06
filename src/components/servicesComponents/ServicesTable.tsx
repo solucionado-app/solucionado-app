@@ -149,6 +149,17 @@ type paymentStatus = 'ACREDITADO' | 'ENVIADO' | 'PENDIENTE' | 'RECHAZADO' | '' |
 export interface Service {
   id: string;
   status: Status;
+  description: string;
+  budget: Budget;
+  category: {
+    id: number;
+    name: string;
+  };
+}
+
+export interface ServiceAdmin {
+  id: string;
+  status: Status;
   paymentStatus: paymentStatus;
   description: string;
   budget: Budget;
@@ -163,8 +174,8 @@ interface Author {
   first_name: string | null;
   last_name: string | null;
   image_url: string | null;
-  cbu: string | null;
-  cuit: string | null;
+  cbu?: string | null;
+  cuit?: string | null;
 }
 interface Budget {
   id: string;

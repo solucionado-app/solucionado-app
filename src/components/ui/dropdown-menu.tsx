@@ -2,7 +2,7 @@ import * as React from "react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { Check, ChevronRight, Circle } from "lucide-react";
 import { cn } from "~/lib/utils";
-import { Inter } from "@next/font/google";
+import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 export const DropdownMenuArrow = DropdownMenuPrimitive.Arrow;
 const DropdownMenu = DropdownMenuPrimitive.Root;

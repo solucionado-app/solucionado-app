@@ -18,18 +18,17 @@ import {
     DropdownMenuTrigger,
 } from "@/app/ui/dropdown-menu"
 
-import { labels } from "../data/data"
-import { taskSchema } from "../data/schema"
+import { type ServiceAdmin } from "@/src/components/servicesComponents/ServicesTable"
+import { paymentStatuses } from "../data/serviceData"
 
-interface DataTableRowActionsProps<TData> {
-    row: Row<TData>
+interface DataTableRowActionsProps {
+    row: Row<ServiceAdmin>
 }
 
-export function ServiceDataTableRowActions<TData>({
+export function ServiceDataTableRowActions({
     row,
-}: DataTableRowActionsProps<TData>) {
+}: DataTableRowActionsProps) {
     const task = row.original
-
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -43,14 +42,21 @@ export function ServiceDataTableRowActions<TData>({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
 
-                <DropdownMenuRadioGroup value={task.label}>
-                    {labels.map((label) => (
-                        <DropdownMenuRadioItem key={label.value} value={label.value}>
-                            {label.label}
+                <DropdownMenuRadioGroup value={task.paymentStatus ?? 'PENDIENTE'}>
+                    {paymentStatuses.map((status) => (
+                        <DropdownMenuRadioItem key={status.value} value={status.value}>
+                            {status.label}
                         </DropdownMenuRadioItem>
                     ))}
                 </DropdownMenuRadioGroup>
-
+                <DropdownMenuItem>
+                    Delete
+                    <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    Delete
+                    <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                     Delete

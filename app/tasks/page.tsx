@@ -18,20 +18,20 @@ export const metadata: Metadata = {
 }
 
 // Simulate a database read for tasks.
-async function getTasks() {
-  const data = await fs.readFile(
-    path.join(process.cwd(), "app/tasks/data/tasks.json")
-  )
+// async function getTasks() {
+//   const data = await fs.readFile(
+//     path.join(process.cwd(), "app/tasks/data/tasks.json")
+//   )
+//   // disable @typescript-eslint/no-unsafe-assignment
+//   const tasks = JSON.parse(data.toString())
 
-  const tasks = JSON.parse(data.toString())
-
-  return z.array(taskSchema).parse(tasks)
-}
+//   return z.array(taskSchema).parse(tasks)
+// }
 
 
 
-export default async function TaskPage() {
-  const tasks = await getTasks()
+export default function TaskPage() {
+  // const tasks = await getTasks()
   return (
     <>
 

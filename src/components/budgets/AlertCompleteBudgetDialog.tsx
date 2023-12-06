@@ -81,7 +81,7 @@ export default function AlertDialogDemo({ budget }: Props) {
             const response = await fetch(`https://api.mercadopago.com/checkout/preferences`, {
                 method: "POST",
                 headers: {
-                    Authorization: `Bearer ${validartoken}`,
+                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_MP_SECRET_TOKEN as string}`,
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(requestData),

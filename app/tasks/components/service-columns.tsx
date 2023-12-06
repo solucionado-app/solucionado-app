@@ -8,7 +8,7 @@ import { Checkbox } from "@/app/ui/checkbox"
 import { labels, priorities, statuses } from "../data/data"
 import { type Task } from "../data/schema"
 import { DataTableColumnHeader } from "./data-table-column-header"
-import { type Service } from "@/src/components/servicesComponents/ServicesTable"
+import { ServiceAdmin, type Service } from "@/src/components/servicesComponents/ServicesTable"
 import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/src/components/ui/button"
 import { ServiceDataTableRowActions } from "./service-table-row-actions"
@@ -17,7 +17,7 @@ import { es } from "date-fns/locale";
 import { Avatar, AvatarFallback, AvatarImage } from "@/src/components/ui/avatar"
 import { normalizePaymentStatus, normalizeStatus } from "../data/serviceData"
 
-export const serviceColumns: ColumnDef<Service>[] = [
+export const serviceColumns: ColumnDef<ServiceAdmin>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -92,9 +92,9 @@ export const serviceColumns: ColumnDef<Service>[] = [
             )
         },
         accessorFn: row => row.category.name,
-        filterFn: (row, id, value) => {
-            return value.includes(row.getValue(id))
-        }
+        filterFn: (row: { getValue: (id: string) => string }, id: string, value: string[]) => {
+            return value.includes(row.getValue(id));
+        },
     },
     // {
     //     accessorKey: "status",
@@ -187,9 +187,9 @@ export const serviceColumns: ColumnDef<Service>[] = [
             console.log(row.status)
             return normalizeStatus(row.status)
         },
-        filterFn: (row, id, value) => {
-            return value.includes(row.getValue(id))
-        }
+        filterFn: (row: { getValue: (id: string) => string }, id: string, value: string[]) => {
+            return value.includes(row.getValue(id));
+        },
     },
     {
         accessorKey: "payment",
@@ -200,9 +200,9 @@ export const serviceColumns: ColumnDef<Service>[] = [
         accessorFn: row => {
             return normalizePaymentStatus(row.paymentStatus)
         },
-        filterFn: (row, id, value) => {
-            return value.includes(row.getValue(id))
-        }
+        filterFn: (row: { getValue: (id: string) => string }, id: string, value: string[]) => {
+            return value.includes(row.getValue(id));
+        },
     },
     {
         accessorKey: "cbu",
@@ -213,9 +213,9 @@ export const serviceColumns: ColumnDef<Service>[] = [
         accessorFn: row => {
             return row.budget.author.cbu
         },
-        filterFn: (row, id, value) => {
-            return value.includes(row.getValue(id))
-        }
+        filterFn: (row: { getValue: (id: string) => string }, id: string, value: string[]) => {
+            return value.includes(row.getValue(id));
+        },
     },
 
     // {

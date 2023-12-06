@@ -1,4 +1,4 @@
-import { type SignedInAuthObject } from "@clerk/nextjs/server";
+import { SignedOutAuthObject, type SignedInAuthObject } from "@clerk/nextjs/server";
 import { type GetStaticPropsContext, type GetStaticPaths, type InferGetStaticPropsType, } from "next";
 import { ssgHelper } from "~/server/api/ssgHelper";
 import { type JwtPayload, type ServerGetTokenOptions } from "@clerk/types";
@@ -62,25 +62,28 @@ export async function getStaticProps(context: GetStaticPropsContext<{ slug: stri
             },
         };
     }
-    const auth: SignedInAuthObject = {
-        sessionId: '123',
-        session: undefined,
-        actor: undefined,
-        userId: '123',
-        user: undefined,
-        orgId: undefined,
-        orgRole: undefined,
-        orgSlug: undefined,
-        sessionClaims: {} as JwtPayload,
-        organization: undefined,
+    const auth: SignedOutAuthObject = {
+        experimental__has: () => false,
+        sessionId: null,
+        session: null,
+        actor: null,
+        userId: null,
+        user: null,
+        orgId: null,
+        orgRole: null,
+        orgSlug: null,
+        sessionClaims: null,
+        organization: null,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        getToken: function (options?: ServerGetTokenOptions | undefined): Promise<string | null> {
+        getToken: function (
+            _options?: ServerGetTokenOptions | undefined
+        ): Promise<string | null> {
             throw new Error("Function not implemented.");
         },
         debug: function (): unknown {
             throw new Error("Function not implemented.");
-        }
-    }
+        },
+    };
     const ssg = ssgHelper(auth);
     await ssg.categories.findBySlug.prefetch({ slug });
     return {

@@ -85,8 +85,8 @@ export const columns: ColumnDef<Task>[] = [
         </div>
       )
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
+    filterFn: (row: { getValue: (id: string) => string }, id: string, value: string[]) => {
+      return value.includes(row.getValue(id));
     },
   },
   {
@@ -112,8 +112,8 @@ export const columns: ColumnDef<Task>[] = [
         </div>
       )
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
+    filterFn: (row: { getValue: (id: string) => string }, id: string, value: string[]) => {
+      return value.includes(row.getValue(id));
     },
   },
   {
