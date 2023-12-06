@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from "@/app/ui/form"
 import { RadioGroup, RadioGroupItem } from "@/app/ui/radio-group"
-import { Switch } from "@/app/ui/switch"
+// import { Switch } from "@/app/ui/switch"
 import { toast } from "@/app/ui/use-toast"
 
 const notificationsFormSchema = z.object({
@@ -101,7 +101,7 @@ export function NotificationsForm() {
             </FormItem>
           )}
         />
-        <div>
+        {/* <div>
           <h3 className="mb-4 text-lg font-medium">Email Notifications</h3>
           <div className="space-y-4">
             <FormField
@@ -191,7 +191,7 @@ export function NotificationsForm() {
               )}
             />
           </div>
-        </div>
+        </div> */}
         <FormField
           control={form.control}
           name="mobile"

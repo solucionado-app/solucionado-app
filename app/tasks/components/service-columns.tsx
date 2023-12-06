@@ -80,7 +80,7 @@ export const serviceColumns: ColumnDef<Service>[] = [
             <DataTableColumnHeader column={column} title="category" />
         ),
         cell: ({ row }) => {
-            const label = row.getValue("category")
+            const label = row.original.category.name
             console.log(row.getValue("category"))
             return (
                 <div className="flex space-x-2">
