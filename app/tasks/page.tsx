@@ -1,15 +1,14 @@
 
-import { promises as fs } from "fs"
-import path from "path"
+// import { promises as fs } from "fs"
+// import path from "path"
 import { type Metadata } from "next"
 import Image from "next/image"
 import { z } from "zod"
 
-import { columns } from "./components/columns"
-import { DataTable } from "./components/data-table"
+// import { columns } from "./components/columns"
+// import { DataTable } from "./components/data-table"
 import { UserNav } from "./components/user-nav"
-import { taskSchema } from "./data/schema"
-import { api } from "@/src/utils/api"
+// import { taskSchema } from "./data/schema"
 import Services from "./components/Services"
 
 export const metadata: Metadata = {
@@ -17,7 +16,7 @@ export const metadata: Metadata = {
   description: "A task and issue tracker build using Tanstack Table.",
 }
 
-// Simulate a database read for tasks.
+// //Simulate a database read for tasks.
 // async function getTasks() {
 //   const data = await fs.readFile(
 //     path.join(process.cwd(), "app/tasks/data/tasks.json")

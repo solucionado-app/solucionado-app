@@ -103,6 +103,7 @@ export default function MercadoPago({ publickey, open, onClose, preferenceId, me
                             paymentMethods: {
                                 debitCard: 'all',
                                 creditCard: 'all',
+                                mercadoPago: 'all',
                             },
 
                         }}

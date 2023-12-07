@@ -23,7 +23,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/app/ui/table"
+} from "@/app/ui/table";
 
 import { DataTablePagination } from "./data-table-pagination"
 import { DataTableToolbar } from "./data-table-toolbar"
@@ -71,7 +71,7 @@ export function ServiceDataTable<TData, TValue>({
     <div className="space-y-4">
       <DataTableToolbar table={table} />
       <div className="rounded-md border">
-        <Table className=" ">
+        <Table className="overflow-auto relative ">
           <TableHeader className="">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow className="" key={headerGroup.id}>

@@ -50,7 +50,7 @@ export default function RootLayout({ children }: SettingsLayoutProps) {
             <main className=" min-h-screen flex justify-start flex-col">
               <Nav />
 
-              <div className="flex h-full min-h-screen flex-col justify-center items-center text-slate-900 bg-gray-50 py-20 ">
+              <div className="flex h-full min-h-screen flex-col justify-center items-center text-slate-900 bg-gray-50 py-20 md:py-10">
                 <div className="container relative">
                   <PageHeader className="page-header pb-8">
                     <Link
