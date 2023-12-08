@@ -1,13 +1,15 @@
+import { useUser } from "@clerk/nextjs";
 import DialogRegisterSolucionador from "~/components/auth/DialogRegisterSolucionador";
 import RegisterUserDialog from "~/components/auth/RegisterUserDialog";
 import { type MyPage } from "~/components/types/types";
+import { Button } from "~/components/ui/button";
 
 
 const Page: MyPage = () => {
-
+    const { user } = useUser()
     return (
         <>
-            <div className=" flex items-baseline w-full min-h-screen justify-between ">
+            <div className=" flex items-baseline w-full min-h-screen pt-20 justify-between ">
                 <div className="w-full p-2  md:max-w-2xl lg:max-w-4xl  md:mx-auto">
                     <div className="items-center w-full">
 
@@ -56,7 +58,7 @@ const Page: MyPage = () => {
                             </Dialog> */}
                             <DialogRegisterSolucionador />
                         </div>
-
+                        <Button onClick={() => window.location.replace(`https://auth.mercadopago.com/authorization?client_id=${process.env.NEXT_PUBLIC_MP_CLIENT_ID ?? ''}&response_type=code&platform_id=mp&state=${user ? user.id : ''}&redirect_uri=${process.env.NEXT_PUBLIC_MP_DOMAIN ?? ''}/api/webhooks/mercadopago/autorization`)}> Mercado pago </Button>
                     </div >
                 </div>
             </div>

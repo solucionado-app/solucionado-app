@@ -6,7 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '../ui/dr
 import { CheckCheck, Circle, MoreVertical, Trash2 } from 'lucide-react'
 import { api } from '~/utils/api'
 import { trpc } from '~/utils/trpc'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 
 interface NotficationItemProps extends Notification {

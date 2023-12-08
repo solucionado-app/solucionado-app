@@ -1,6 +1,8 @@
+"use client"
+
 import { SignOutButton, SignedIn } from "@clerk/nextjs";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,70 +11,75 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { Dialog } from "../ui/dialog";
 type Props = {
   children: React.ReactNode;
 };
 
 const ProfileDropdown = ({ children }: Props) => {
-  const router = useRouter();
+  const pathName = usePathname();
+  console.log(pathName);
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
-      <DropdownMenuContent className="lg:mr-8">
-        <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          {" "}
-          <Link
-            className={`text-sm ${router.asPath === "/perfil"
-                ? "font-semibold text-sol_lightBlue"
-                : ""
-              }`}
-            href="/perfil"
-          >
-            Mi Perfil
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Link
-            className={`text-sm ${router.asPath === "/completar-perfil"
-                ? "font-semibold text-sol_lightBlue"
-                : ""
-              }`}
-            href="/completar-perfil"
-          >
-            Completar Perfil
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Link
-            className={`text-sm ${router.asPath === "/servicios"
-              ? "font-semibold text-sol_lightBlue"
-              : ""
-              }`}
-            href="/servicios"
-          >
-            Mis servicios
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <SignedIn>
+    <Dialog>
+      <DropdownMenu>
+        <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
+        <DropdownMenuContent className="lg:mr-8">
+          <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            {" "}
             <Link
-              className={`text-sm ${router.asPath === "/solicitudes-de-servicio"
+              className={`text-sm ${pathName === "/perfil"
+                ? "font-semibold text-sol_lightBlue"
+                : ""
+                }`}
+              href="/perfil"
+            >
+              Mi Perfil
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link
+              className={`text-sm ${pathName === "/completar-perfil"
+                ? "font-semibold text-sol_lightBlue"
+                : ""
+                }`}
+              href="/completar-perfil"
+            >
+              Completar Perfil
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link
+              className={`text-sm ${pathName === "/servicios"
+                ? "font-semibold text-sol_lightBlue"
+                : ""
+                }`}
+              href="/servicios"
+            >
+              Mis servicios
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <SignedIn>
+              <Link
+                className={`text-sm ${pathName === "/solicitudes-de-servicio"
                   ? "font-semibold text-sol_lightBlue"
                   : ""
-                }`}
-              href="/solicitudes-de-servicio"
-            >
-              Solicitudes de Servicio
-            </Link>
-          </SignedIn>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <SignOutButton>Cerrar Sesion</SignOutButton>{" "}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+                  }`}
+                href="/solicitudes-de-servicio"
+              >
+                Solicitudes de Servicio
+              </Link>
+            </SignedIn>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <SignOutButton>Cerrar Sesion</SignOutButton>{" "}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </Dialog>
   );
 };
 

@@ -143,6 +143,7 @@ model Service {
   name          String
   description   String
   status        Status         @default(PENDING)
+  paymentStatus paymentStatus?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   categoryId    Int
@@ -155,6 +156,13 @@ model Service {
 
   @@index([categoryId])
   @@index([budgetId])
+}
+
+enum paymentStatus {
+  ACREDITADO
+  ENVIADO
+  PENDIENTE
+  RECHAZADO
 }
 
 model Comment {

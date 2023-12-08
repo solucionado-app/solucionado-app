@@ -35,7 +35,13 @@ export default function AlertDialogDemo({ budget }: Props) {
     const [isLoading, setisLoading] = useState(true)
     const DynamicMercadoPago = getDynamicMercadoPago()
     const preference$ = useObservable({ id: "" })
-
+    const metadata = {
+        user_id: user?.id as string,
+        budget_id: budget.id,
+        description: budget.description,
+        price: budget.price,
+    }
+    const validartoken = budget.author.mpCode && typeof budget.author.mpCode === 'object' && 'access_token' in budget.author.mpCode ? budget.author.mpCode?.access_token as string : ""
     const createPreference = async () => {
         const requestData = {
             items: [
@@ -60,8 +66,6 @@ export default function AlertDialogDemo({ budget }: Props) {
                 description: budget.description,
                 price: budget.price,
             },
-            marketplace: process.env.NEXT_PUBLIC_MP_CLIENT_ID as string,
-            marketplace_fee: budget.price * 0.1,
             notification_url: `${process.env.NEXT_PUBLIC_MP_DOMAIN as string}/api/webhooks/mercadopago/notificacion`,
             back_urls: {
                 success: `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}/servicios`,
@@ -70,11 +74,12 @@ export default function AlertDialogDemo({ budget }: Props) {
             },
             differential_pricing: {},
         };
+
         try {
             const response = await fetch(`https://api.mercadopago.com/checkout/preferences`, {
                 method: "POST",
                 headers: {
-                    Authorization: `Bearer ${budget.author.mpCode && typeof budget.author.mpCode === 'object' && 'access_token' in budget.author.mpCode ? budget.author.mpCode?.access_token as string : ""}`,
+                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_MP_SECRET_TOKEN as string}`,
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(requestData),
@@ -122,9 +127,12 @@ export default function AlertDialogDemo({ budget }: Props) {
 
             {preference$.get().id !== "" && <DynamicMercadoPago
                 open={isOpen}
+                metadata={metadata}
                 publickey={budget.author.mpCode && typeof budget.author.mpCode === 'object' && 'public_key' in budget.author.mpCode ?
                     budget.author.mpCode?.public_key as string : ''}
                 isLoading={isLoading}
+                amount={budget.price}
+                token={validartoken}
                 setIsloading={() => setisLoading(false)}
                 onClose={() => setIsOpen(false)}
                 preferenceId={preference$.get().id} />}

@@ -7,7 +7,6 @@ import { Skeleton } from '../ui/skeleton';
 import { observable } from '@legendapp/state';
 import { Reactive } from "@legendapp/state/react"
 import { enableReactComponents } from "@legendapp/state/config/enableReactComponents"
-import { trpc } from '~/utils/trpc';
 enableReactComponents()
 interface Props {
     publickey: string
@@ -16,11 +15,15 @@ interface Props {
     preferenceId: string
     isLoading?: boolean
     setIsloading: () => void
+    amount: number
+    token: string
+    metadata: any
+
 }
 
-export default function MercadoPago({ publickey, open, onClose, preferenceId, setIsloading, isLoading }: Props) {
+export default function MercadoPago({ publickey, open, onClose, preferenceId, metadata, amount, token, setIsloading, isLoading }: Props) {
 
-    initMercadoPago(publickey, { locale: 'es-AR' });
+    initMercadoPago(process.env.NEXT_PUBLIC_MP_PUBLIC_KEY as string, { locale: 'es-AR' });
 
     const isloading$ = observable(true)
 
@@ -29,6 +32,8 @@ export default function MercadoPago({ publickey, open, onClose, preferenceId, se
     const onSubmit = async (formData: any) => {
         // callback llamado al hacer clic en el botón enviar datos
         console.log(formData);
+        formData.formData.access_token = token
+        formData.formData.metadata = metadata
         if (formData.formData) {
             return new Promise<void>((resolve, reject) => {
                 fetch("/api/mercadopago/payment", {
@@ -61,6 +66,7 @@ export default function MercadoPago({ publickey, open, onClose, preferenceId, se
         // callback llamado para todos los casos de error de Brick
         console.log(error);
 
+
     };
     const onReady = () => {
         /*
@@ -68,40 +74,45 @@ export default function MercadoPago({ publickey, open, onClose, preferenceId, se
           Aquí puede ocultar cargamentos de su sitio, por ejemplo.
         */
         isloading$.set(false);
-        console.log()
+        console.log('inicalizado')
     };
 
 
 
     return (
-        <Dialog defaultOpen={true} >
-            <DialogContent>
+        <Dialog defaultOpen={true}  >
+            <DialogContent >
 
                 {/* <div>
                         <h1 className="text-5xl font-extrabold tracking-tight">Pagar presupuesto</h1>
 
                     </div> */}
-                <Reactive.div
+                {/* <Reactive.div
                     $style={() => ({ display: isloading$.get() ? 'block' : 'none' })}
                 >
                     {<Skeleton className='h-96' />}
-                </Reactive.div>
-                <Payment
-                    initialization={{
-                        amount: 10000,
-                        preferenceId: preferenceId,
-                    }}
-                    customization={{
-                        paymentMethods: {
-                            mercadoPago: ['wallet_purchase'],
-                            debitCard: 'all',
-                        },
+                </Reactive.div> */}
+                <div className='overflow-y-auto max-h-[650px]'>
+                    <Payment
+                        initialization={{
+                            amount: amount,
+                            preferenceId: preferenceId,
+                            marketplace: true,
+                        }}
+                        customization={{
+                            paymentMethods: {
+                                debitCard: 'all',
+                                creditCard: 'all',
+                                mercadoPago: 'all',
+                            },
 
-                    }}
-                    onSubmit={onSubmit}
-                    onReady={onReady}
-                    onError={onError}
-                />
+                        }}
+                        onSubmit={onSubmit}
+                        onReady={onReady}
+                        onError={onError}
+                    />
+                </div>
+
 
 
             </DialogContent>

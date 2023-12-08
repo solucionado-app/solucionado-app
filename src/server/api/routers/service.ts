@@ -1,3 +1,4 @@
+import { clerkClient } from "@clerk/nextjs";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
@@ -54,6 +55,49 @@ export const serviceRouter = createTRPCRouter({
         },
       });
     }),
+    getEvery: protectedProcedure.query(async ({ ctx }) => {
+
+      const organizationMemberships = await clerkClient.users.getOrganizationMembershipList({userId: ctx.auth.userId});
+      const userIsAdmin = organizationMemberships.some((org) => org.organization.slug === 'admin')
+      console.log(userIsAdmin)
+      if(!userIsAdmin) throw new Error("No tienes permisos para realizar esta acción")
+      const services = ctx.prisma.service.findMany({
+        orderBy: {
+            createdAt: "desc",
+        },
+
+        select: {
+          id: true,
+          description: true,
+          status: true,
+          paymentStatus: true,
+          budget: {
+            select: {
+              id: true,
+              price: true,
+              estimatedAt: true,
+              author: {
+                select: {
+                  id: true,
+                  first_name: true,
+                  last_name: true,
+                  image_url: true,
+                  cbu:true ,
+                  cuit:true ,
+                },
+              },
+            },
+          },
+          category: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      });
+      return services
+    } ),
   getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.service.findMany({
       orderBy: {

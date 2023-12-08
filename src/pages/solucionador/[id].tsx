@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Ban, Loader2 } from "lucide-react";
-import type { SignedInAuthObject } from "@clerk/nextjs/dist/types/server";
+import type { SignedInAuthObject, SignedOutAuthObject } from "@clerk/nextjs/dist/types/server";
 import type { GetStaticPaths, GetStaticPropsContext } from "next";
-import type { JwtPayload } from "@clerk/types";
+import { type JwtPayload, type ServerGetTokenOptions } from "@clerk/types";
 
 import { SolucionadorProfileCard } from "~/components/profile/SolucionadorProfileCard";
 import { SolucionadorTabs } from "~/components/profile/SolucionadorTabs";
@@ -69,19 +69,22 @@ export async function getStaticProps(
       },
     };
   }
-  const auth: SignedInAuthObject = {
-    sessionId: "123",
-    session: undefined,
-    actor: undefined,
-    userId: "123",
-    user: undefined,
-    orgId: undefined,
-    orgRole: undefined,
-    orgSlug: undefined,
-    sessionClaims: {} as JwtPayload,
-    organization: undefined,
+  const auth: SignedOutAuthObject = {
+    experimental__has: () => false,
+    sessionId: null,
+    session: null,
+    actor: null,
+    userId: null,
+    user: null,
+    orgId: null,
+    orgRole: null,
+    orgSlug: null,
+    sessionClaims: null,
+    organization: null,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getToken: function (): Promise<string | null> {
+    getToken: function (
+      _options?: ServerGetTokenOptions | undefined
+    ): Promise<string | null> {
       throw new Error("Function not implemented.");
     },
     debug: function (): unknown {
