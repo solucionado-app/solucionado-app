@@ -5,17 +5,15 @@ import { type ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/app/ui/badge"
 import { Checkbox } from "@/app/ui/checkbox"
 
-import { labels, priorities, statuses } from "../data/data"
-import { type Task } from "../data/schema"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { ServiceAdmin, type Service } from "@/src/components/servicesComponents/ServicesTable"
 import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/src/components/ui/button"
 import { ServiceDataTableRowActions } from "./service-table-row-actions"
-import { format } from "date-fns"
+import { differenceInMilliseconds, format } from "date-fns"
 import { es } from "date-fns/locale";
-import { Avatar, AvatarFallback, AvatarImage } from "@/src/components/ui/avatar"
-import { normalizePaymentStatus, normalizeStatus } from "../data/serviceData"
+import { normalizePaymentStatus, normalizeStatus, paymentStatuses, statuses } from "../data/serviceData"
+import { Row } from "react-day-picker"
 
 export const serviceColumns: ColumnDef<ServiceAdmin>[] = [
     {
@@ -64,6 +62,10 @@ export const serviceColumns: ColumnDef<ServiceAdmin>[] = [
             // console.log(row.getValue("amount"))
             return <div className="font-medium">{formatted}</div>;
         },
+        accessorFn: row => {
+
+            return row.budget.price
+        },
     },
     {
         accessorKey: "id",
@@ -77,7 +79,7 @@ export const serviceColumns: ColumnDef<ServiceAdmin>[] = [
     {
         accessorKey: "category",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="category" />
+            <DataTableColumnHeader column={column} title="Categoria" />
         ),
         cell: ({ row }) => {
             const label = row.original.category.name
@@ -96,74 +98,27 @@ export const serviceColumns: ColumnDef<ServiceAdmin>[] = [
             return value.includes(row.getValue(id));
         },
     },
-    // {
-    //     accessorKey: "status",
-    //     header: ({ column }) => (
-    //         <DataTableColumnHeader column={column} title="Status" />
-    //     ),
-    //     cell: ({ row }) => {
-    //         const status = statuses.find(
-    //             (status) => status.value === row.getValue("status")
-    //         )
-
-    //         if (!status) {
-    //             return null
-    //         }
-
-    //         return (
-    //             <div className="flex w-[100px] items-center">
-    //                 {status.icon && (
-    //                     <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-    //                 )}
-    //                 <span>{status.label}</span>
-    //             </div>
-    //         )
-    //     },
-    //     filterFn: (row, id, value) => {
-    //         return value.includes(row.getValue(id))
-    //     },
-    // },
-    // {
-    //     accessorKey: "priority",
-    //     header: ({ column }) => (
-    //         <DataTableColumnHeader column={column} title="Priority" />
-    //     ),
-    //     cell: ({ row }) => {
-    //         const priority = priorities.find(
-    //             (priority) => priority.value === row.getValue("priority")
-    //         )
-
-    //         if (!priority) {
-    //             return null
-    //         }
-
-    //         return (
-    //             <div className="flex items-center">
-    //                 {priority.icon && (
-    //                     <priority.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-    //                 )}
-    //                 <span>{priority.label}</span>
-    //             </div>
-    //         )
-    //     },
-    //     filterFn: (row, id, value) => {
-    //         return value.includes(row.getValue(id))
-    //     },
-    // },
     {
         accessorKey: "date",
-        header: "fecha Estimada",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Fecha estimada" />
+        ),
         cell: ({ row }) => {
             return (
                 <div className="capitalize">
-                    {format(row.original.budget.estimatedAt, "PPP", { locale: es })}
+                    {format(row.original.budget.estimatedAt, "P", { locale: es })}
                 </div>
             );
+        },
+        sortingFn: (rowA, rowB) => {
+            return differenceInMilliseconds(rowA.original.budget.estimatedAt, rowB.original.budget.estimatedAt)
         },
     },
     {
         accessorKey: "author",
-        header: "Solucionador",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Solucionador" />
+        ),
         cell: ({ row }) => {
             const author = row.original.budget.author;
 
@@ -176,18 +131,43 @@ export const serviceColumns: ColumnDef<ServiceAdmin>[] = [
                 </div>
             );
         },
+        accessorFn: row => {
+            const author = row.budget.author
+            const name = (author.first_name ? author.first_name : ' ') + (author.last_name ? author.last_name : ' ')
+            console.log(name)
+            return (author.first_name ? author.first_name : ' ') + (author.last_name ? author.last_name : ' ')
+        },
+        sortingFn: (rowA, rowB) => {
+            const nameA: string = rowA.getValue("author")
+            const nameB: string = rowB.getValue("author")
+
+
+            return nameA.localeCompare(nameB)
+        }
     },
     {
         accessorKey: "status",
         header: "Estado",
         cell: ({ row }) => {
-            return <div className="capitalize">{row.getValue("status")}</div>;
+            const status = statuses.find(
+                (status) => status.value === row.getValue("status")
+            )
+            if (!status) {
+                return null
+            }
+
+            return (
+                <div className="flex  items-center">
+                    {status.icon && (
+                        <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                    )}
+                    <span>{status.label}</span>
+                </div>
+            )
         },
-        accessorFn: row => {
-            console.log(row.status)
-            return normalizeStatus(row.status)
-        },
+
         filterFn: (row: { getValue: (id: string) => string }, id: string, value: string[]) => {
+            console.log(value, row.getValue(id))
             return value.includes(row.getValue(id));
         },
     },
@@ -195,7 +175,21 @@ export const serviceColumns: ColumnDef<ServiceAdmin>[] = [
         accessorKey: "payment",
         header: "Pago",
         cell: ({ row }) => {
-            return <div className="capitalize">{row.getValue("payment")}</div>;
+            const paymetStatus = paymentStatuses.find(
+                (status) => status.value === row.getValue("payment")
+            )
+            if (!paymetStatus) {
+                return null
+            }
+
+            return (
+                <div className="flex  items-center">
+                    {paymetStatus.icon && (
+                        <paymetStatus.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                    )}
+                    <span>{paymetStatus.label}</span>
+                </div>
+            )
         },
         accessorFn: row => {
             return normalizePaymentStatus(row.paymentStatus)

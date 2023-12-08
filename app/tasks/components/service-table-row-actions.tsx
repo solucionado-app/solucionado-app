@@ -44,24 +44,21 @@ export function ServiceDataTableRowActions({
 
                 <DropdownMenuRadioGroup value={task.paymentStatus ?? 'PENDIENTE'}>
                     {paymentStatuses.map((status) => (
-                        <DropdownMenuRadioItem key={status.value} value={status.value}>
-                            {status.label}
-                        </DropdownMenuRadioItem>
+                        <>
+
+                            <DropdownMenuRadioItem key={status.value} value={status.value}>
+                                <div className="flex w-[100px] items-center">
+                                    {status.icon && (
+                                        <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                                    )}
+                                    <span>{status.label}</span>
+                                </div>
+                            </DropdownMenuRadioItem>
+                        </>
+
                     ))}
                 </DropdownMenuRadioGroup>
-                <DropdownMenuItem>
-                    Delete
-                    <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                    Delete
-                    <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                    Delete
-                    <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-                </DropdownMenuItem>
+
             </DropdownMenuContent>
         </DropdownMenu>
     )
