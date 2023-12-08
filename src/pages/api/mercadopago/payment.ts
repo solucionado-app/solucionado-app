@@ -25,8 +25,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             payer: req.body.formData.payer,
             token: req.body.formData.token,
             transaction_amount: req.body.formData.transaction_amount || 0,
-            capture: false,
-            application_fee: req.body.formData.transaction_amount* 0.1 || 0,
             notification_url: `https://solucionado-app-git-dev-solucionado-app.vercel.app/api/webhooks/mercadopago/notificacion`,
             metadata: req.body.formData.metadata || {},
             // ...

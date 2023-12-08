@@ -66,8 +66,6 @@ export default function AlertDialogDemo({ budget }: Props) {
                 description: budget.description,
                 price: budget.price,
             },
-            marketplace: process.env.NEXT_PUBLIC_MP_CLIENT_ID as string,
-            marketplace_fee: budget.price * 0.1,
             notification_url: `${process.env.NEXT_PUBLIC_MP_DOMAIN as string}/api/webhooks/mercadopago/notificacion`,
             back_urls: {
                 success: `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}/servicios`,
