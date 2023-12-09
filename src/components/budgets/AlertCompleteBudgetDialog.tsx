@@ -106,7 +106,7 @@ export default function AlertDialogDemo({ budget }: Props) {
         <>
             <AlertDialog>
                 <AlertDialogTrigger asChild >
-                    <Button className="w-full" variant={"ghost"} > Aceptar</Button>
+                    <Button className="w-full bg-solYellow" variant={"ghost"} > Aceptar</Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>

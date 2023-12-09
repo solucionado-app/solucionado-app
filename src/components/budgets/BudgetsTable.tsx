@@ -155,30 +155,7 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
     cell: ({ row }) => {
       const budget = row.original;
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-            {/* <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
-            </DropdownMenuItem> */}
-            <DropdownMenuSeparator />
-            <AlertCompleteBudgetDialog budget={budget} />
-            {/* <DropdownMenuItem
-              onClick={() => acceptBudget(budget.id, budget.serviceRequestId)}
-            >
-              Aceptar
-            </DropdownMenuItem> */}
-            <DropdownMenuItem>Rechazar</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <AlertCompleteBudgetDialog budget={budget} />
       );
     },
   },

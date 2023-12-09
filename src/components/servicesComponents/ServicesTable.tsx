@@ -65,14 +65,14 @@ export const columns: ColumnDef<Service>[] = [
   },
   {
     accessorKey: "description",
-    header: () => <div className="">Descripcion</div>,
+    header: () => <div className="">Descripción</div>,
     cell: ({ row }) => (
       <div className="lowercase">{row.getValue("description")}</div>
     ),
   },
   {
     accessorKey: "date",
-    header: "fecha Estimada",
+    header: "Fecha estimada",
     cell: ({ row }) => {
       return (
         <div className="capitalize">
