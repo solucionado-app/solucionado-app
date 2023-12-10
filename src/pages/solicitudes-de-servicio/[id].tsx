@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useRouter } from "next/navigation";
-import { SignedOutAuthObject, type SignedInAuthObject } from "@clerk/nextjs/server";
+import { type SignedOutAuthObject } from "@clerk/nextjs/server";
 import {
   type GetStaticPropsContext,
   type GetStaticPaths,
   type InferGetStaticPropsType,
 } from "next";
 import { ssgHelper } from "~/server/api/ssgHelper";
-import { type JwtPayload, type ServerGetTokenOptions } from "@clerk/types";
+import { type ServerGetTokenOptions } from "@clerk/types";
 import { type MyPage } from "~/components/types/types";
 
 
@@ -65,6 +65,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
         <div className="flex w-full flex-col  items-center bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 ">
           <div className=" flex flex-col md:flex-row w-full  ">
+            {/*  eslint-disable-next-line @next/next/no-img-element */}
             <img className="object-cover w-full aspect-square rounded-t-lg md:w-40 md:rounded-none md:rounded-l-lg " src="https://flowbite.com/docs/images/blog/image-4.jpg" alt="" />
             <div className="flex flex-col md:flex-row gap-4 justify-between w-full p-4 leading-normal">
               <div>

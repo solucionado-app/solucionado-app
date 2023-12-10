@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>https://solucionado-app-git-dev-solucionado-app.vercel.app</loc><lastmod>2023-12-07T23:54:51.996Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://solucionado-app-git-dev-solucionado-app.vercel.app/categorias</loc><lastmod>2023-12-07T23:54:51.996Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://solucionado-app-git-dev-solucionado-app.vercel.app/completar-perfil</loc><lastmod>2023-12-07T23:54:51.996Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://solucionado-app-git-dev-solucionado-app.vercel.app/contacto</loc><lastmod>2023-12-07T23:54:51.996Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://solucionado-app-git-dev-solucionado-app.vercel.app/login</loc><lastmod>2023-12-07T23:54:51.996Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://solucionado-app-git-dev-solucionado-app.vercel.app/perfil</loc><lastmod>2023-12-07T23:54:51.996Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://solucionado-app-git-dev-solucionado-app.vercel.app/registro</loc><lastmod>2023-12-07T23:54:51.996Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://solucionado-app-git-dev-solucionado-app.vercel.app/servicios</loc><lastmod>2023-12-07T23:54:51.996Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://solucionado-app-git-dev-solucionado-app.vercel.app/solicitudes-de-servicio</loc><lastmod>2023-12-07T23:54:51.996Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://solucionado.com.ar</loc><lastmod>2023-12-10T02:57:47.501Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://solucionado.com.ar/categorias</loc><lastmod>2023-12-10T02:57:47.501Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://solucionado.com.ar/completar-perfil</loc><lastmod>2023-12-10T02:57:47.501Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://solucionado.com.ar/contacto</loc><lastmod>2023-12-10T02:57:47.501Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://solucionado.com.ar/login</loc><lastmod>2023-12-10T02:57:47.501Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://solucionado.com.ar/perfil</loc><lastmod>2023-12-10T02:57:47.501Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://solucionado.com.ar/registro</loc><lastmod>2023-12-10T02:57:47.501Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://solucionado.com.ar/servicios</loc><lastmod>2023-12-10T02:57:47.501Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://solucionado.com.ar/solicitudes-de-servicio</loc><lastmod>2023-12-10T02:57:47.501Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 </urlset>
