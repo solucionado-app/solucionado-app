@@ -25,6 +25,8 @@ export const labels = [
     },
 ]
 
+
+
 export const normalizeStatus = (status: Status) => {
     switch (status) {
         case "PENDING":
@@ -47,29 +49,30 @@ export const normalizePaymentStatus = (status: paymentStatus) => {
     switch (status) {
         case null:
             return "En espera"
-
+        default:
+            return status
     }
 }
 
 export const statuses = [
 
     {
-        value: "En proceso",
+        value: "PENDING",
         label: "En proceso",
         icon: QuestionMarkCircledIcon,
     },
     {
-        value: "Aceptado",
+        value: "ACEPTED",
         label: "Aceptado",
         icon: StopwatchIcon,
     },
     {
-        value: "Finalizado",
+        value: "FINISHED",
         label: "Finalizado",
         icon: CheckCircledIcon,
     },
     {
-        value: "Rechazado",
+        value: "REJECTED",
         label: "Rechazado",
         icon: CrossCircledIcon,
     },

@@ -23,13 +23,12 @@ export function DataTableToolbar<TData>({
   const { data: categories } = api.categories.getAll.useQuery(undefined, {
     staleTime: 1000 * 60 * 5,
   })
-  console.log(table.getColumn("category")?.columns)
 
 
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex flex-1 items-center flex-wrap space-x-2">
+      <div className="flex flex-1 items-center flex-wrap gap-2 md:space-x-2">
         <Input
           placeholder="Filter tasks..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}

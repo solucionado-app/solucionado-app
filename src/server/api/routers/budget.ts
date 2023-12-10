@@ -1,4 +1,5 @@
 // import { clerkClient } from "@clerk/nextjs/dist/types/server";
+
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
@@ -46,11 +47,11 @@ export const budgetRouter = createTRPCRouter({
         z.object({
             serviceRequestId: z.string(),
         })
-    ).query(({ ctx, input }) => {
+    ).query(async({ ctx, input }) => {
 
 
 
-        return ctx.prisma.budget.findMany({
+        const budgets= await ctx.prisma.budget.findMany({
             where: {
                 serviceRequestId: input.serviceRequestId,
             },
@@ -70,11 +71,48 @@ export const budgetRouter = createTRPCRouter({
                         last_name: true,
                         image_url: true,
                         mpCode: true,
-                    }
+                    },
+
                 },
             }
 
         });
+
+        const authorIds = budgets.map((budget) => budget.author.id);
+
+        // Get review data for all authors
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+        const reviewData = await prisma.review.groupBy({
+            by: ['userId'],
+            where: {
+                userId: {
+                    in: authorIds,
+                },
+            },
+            _avg: {
+                rating: true,
+            },
+            _count: {
+                _all: true,
+            },
+        });
+
+        console.log(reviewData);
+        const checkedAuthors = new Set();
+
+        for (const budget of budgets) {
+
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+                const data = reviewData.find((item: {userId: string}) => item.userId === budget.author.id);
+                if (data) {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+                    budget.author.mpCode = { rating: data._avg.rating , count: data._count._all  };
+                }
+                checkedAuthors.add(budget.author.id);
+
+        }
+        console.log(budgets);
+        return budgets;
     }),
     create: protectedProcedure.input(
         z.object({
