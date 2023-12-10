@@ -61,7 +61,7 @@ export function RegisterUser() {
       dni: values.dni,
       address: values.address,
       role: "USER",
-    },{
+    }, {
       onSuccess: () => {
         void router.push("/perfil");
       }

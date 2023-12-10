@@ -40,8 +40,15 @@ async function handler(request: Request) {
   if (eventType === "user.created" || eventType === "user.updated") {
     const { id, ...attributes } = evt.data;
     const emailId = attributes.primary_email_address_id as string;
-    const { first_name, last_name, email_addresses: emailsList, image_url, primary_email_address_id } = attributes;
+    const { first_name, last_name, email_addresses: emailsList, image_url, primary_email_address_id, public_metadata } = attributes;
     let email = "";
+    let role: roledb = 'USER'; // default value
+    if (typeof public_metadata === 'object' && public_metadata !== null && (public_metadata as { role?: roledb }).role === 'SOLUCIONADOR') {
+      const { role: roleMetadata } = public_metadata as { role?: roledb };
+      if (roleMetadata === 'SOLUCIONADOR') {
+        role = roleMetadata;
+      }
+    }
     if (!!emailsList || (Array.isArray(emailsList) && emailsList.length === 0)) {
 
       Array.isArray(emailsList) && emailsList?.find((emailObj) => {
@@ -53,6 +60,8 @@ async function handler(request: Request) {
 
     }
     console.log("user created or updated", id, first_name, last_name, email, primary_email_address_id, image_url );
+    type roledb = 'SOLUCIONADOR' | 'USER' | 'ADMIN' | 'CLIENT';
+    const roleUser = role ?? 'USER';
     const user = {
       id: id as string,
       externalId: id as string,
@@ -62,6 +71,7 @@ async function handler(request: Request) {
       image_url: image_url as string,
       emailAddressId: primary_email_address_id as string,
       roleId: 1,
+      role: roleUser
     }
      await prisma.user.upsert({
       where: { externalId: id as string },

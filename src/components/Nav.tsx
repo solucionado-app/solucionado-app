@@ -51,19 +51,34 @@ export default function Nav() {
 
   useEffect(() => {
     const handleColorChange = () => {
+      console.log(pathName);
       const navBar = document.getElementById('navBar');
       const logo = document.getElementById('logo');
-      if (!!window && !!navBar && pathName === '/') {
+      if (!!window && !!navBar) {
         const classnav = navBar.classList;
         const classLogo = logo?.classList;
-
-        if (window.scrollY >= 100) {
+        if (pathName !== '/') {
+          classLogo?.add('bg-transparent')
+          classLogo?.remove('bg-solBlue')
+          classnav?.add('bg-solBlue/90', 'text-white', 'backdrop-blur-md')
+          classnav?.remove('bg-transparent', 'text-gray-950')
+        }
+        if (window.scrollY >= 150) {
           if (!classnav.contains('bg-solBlue/90')) {
-            console.log("cambio de color");
-            classLogo?.add('bg-transparent')
-            classLogo?.remove('bg-solBlue')
-            classnav?.add('bg-solBlue/90', 'text-white', 'backdrop-blur-md')
-            classnav?.remove('bg-transparent', 'text-gray-950')
+
+            console.log("cambio de color", pathName);
+            if (pathName === '/') {
+              classLogo?.add('bg-transparent')
+              classLogo?.remove('bg-solBlue')
+              classnav?.add('bg-solBlue/90', 'text-white', 'backdrop-blur-md')
+              classnav?.remove('bg-transparent', 'text-gray-950')
+            }
+            else {
+              classLogo?.add('bg-transparent')
+              classLogo?.remove('bg-solBlue')
+              classnav?.add('bg-solBlue/90', 'text-white', 'backdrop-blur-md')
+              classnav?.remove('bg-transparent', 'text-gray-950')
+            }
           }
         } else {
           if (!classnav.contains('bg-transparent')) {
@@ -77,8 +92,10 @@ export default function Nav() {
             }
             else {
               console.log("transparente fuera de home");
-              classnav?.add('bg-transparent', 'text-gray-950')
-              classnav?.remove('bg-solBlue/90', 'text-white', 'backdrop-blur-md')
+              classLogo?.add('bg-transparent')
+              classLogo?.remove('bg-solBlue')
+              classnav?.add('bg-solBlue/90', 'text-white')
+              classnav?.remove('bg-transparent', 'text-gray-950', 'backdrop-blur-md')
             }
           }
         }
@@ -122,7 +139,7 @@ export default function Nav() {
   return (
     <>
 
-      <nav id="navBar" className={`fixed top-0 left-0 flex w-[calc(100vw)] transition-colors duration-300 items-center justify-between z-20 py-0 ${pathName === '/' ? "  bg-transparent text-white  " : "bg-solBlue text-white"} sm:px-12 backdrop-filter`}>
+      <nav id="navBar" className={`fixed top-0 left-0 flex w-[calc(100vw)] transition-colors duration-300 items-center justify-between z-20 py-0 ${pathName === '/' ? "  bg-transparent text-white" : "bg-solBlue text-white"} sm:px-12 backdrop-filter`}>
         <Link
           id='logo'
           className="bg-solBlue py-4 px-2 md:p-4 z-10"
