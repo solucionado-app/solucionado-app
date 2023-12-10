@@ -47,7 +47,6 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
   const rex = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
 
-  console.log(serviceRequest?.amount)
 
 
   const price = new Intl.NumberFormat("en-US", {
@@ -122,41 +121,6 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
           </AccordionItem>
         </Accordion>
 
-        {/* <div className="relative border p-5  text-xl font-semibold  w-full shadow-sm">
-          <h1 className="text-2xl lg:text-4xl font-extrabold tracking-tight">
-            Información de Solicitud
-          </h1>
-          <p className="text-lg font-bold tracking-tight">
-            {serviceRequest?.category.name}
-          </p>
-          <p className="text-md font-medium tracking-tight">
-            {serviceRequest?.address}
-          </p>
-          <p className="text-md font-medium tracking-tight">
-            {serviceRequest?.description}
-          </p>
-          <p className="text-xl text-green-500 font-medium tracking-tight">
-            {price}
-          </p>
-          <p className="text-md font-medium tracking-tight">
-            {serviceRequest?.schedule}
-          </p>
-
-          <StatusTranslate status={serviceRequest?.status} />
-          {serviceRequest?.details &&
-            Object.keys(serviceRequest?.details).map((key: string, i) => (
-              <p key={i}>
-                <span> {key.replace(rex, "$1$4 $2$3$5")}</span>
-                <span>
-                  {" "}
-                  {serviceRequest?.details &&
-                    serviceRequest?.details[
-                    key as keyof typeof serviceRequest.details
-                    ]}
-                </span>
-              </p>
-            ))}
-        </div> */}
 
         <DynamicTabs id={id} />
       </div>

@@ -39,6 +39,7 @@ import AlertCompleteBudgetDialog from "./AlertCompleteBudgetDialog";
 import { JSONObject, JSONValue } from "superjson/dist/types";
 import { Input } from "../ui/input";
 import StatusTranslate from "../servicerequest/StatusTranslate";
+import SolucionadorRating from "../profile/SolucionadorTabs/SolucionadorRating";
 
 
 export interface BudgetsTableProps {
@@ -58,6 +59,7 @@ type Author = {
   last_name: string | null;
   mpCode?: JSONValue | JSONObject | undefined;
   image_url: string | null;
+
 };
 export const columns: ColumnDef<BudgetsTableProps>[] = [
   {
@@ -87,15 +89,7 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
       return <div className="font-medium whitespace-nowrap ">{formatted}</div>;
     },
   },
-  {
-    id: 'rating',
-    accessorKey: 'rating',
-    header: 'Rating',
-    cell: ({ row }) => {
-      const rating = row.getValue('rating');
-      return <div className="font-medium">{'*****'}</div>;
-    },
-  },
+
   {
     id: "Solucionador",
     accessorKey: "author",
@@ -103,21 +97,9 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
     enableColumnFilter: true,
     cell: ({ row }) => {
       const author: Author = row.getValue("Solucionador");
-
+      const { rating, count } = author?.mpCode as { rating: number, count: number };
       return (
-        <div className="flex items-center space-x-2">
-          <Avatar className="cursor-pointer">
-            <AvatarImage
-              src={author?.image_url ? author?.image_url : undefined}
-            />
-            <AvatarFallback>
-              <div className="animate-spin rounded-full  border-b-2 border-gray-900"></div>
-            </AvatarFallback>
-          </Avatar>
-          <div className="text-sm font-medium">
-            {author?.first_name ? author?.first_name : ' '}
-          </div>
-        </div>
+        <SolucionadorRating user={author} rating={rating} count={count} />
       );
     },
   },
