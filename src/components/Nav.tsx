@@ -24,7 +24,7 @@ export default function Nav() {
       staleTime: Infinity,
     }
   );
-  console.log(numberOfNotifications);
+  // console.log(numberOfNotifications);
 
   const handleBurgerClick = () => {
     const { current: el } = popover;
@@ -51,7 +51,7 @@ export default function Nav() {
 
   useEffect(() => {
     const handleColorChange = () => {
-      console.log(pathName);
+      // console.log(pathName);
       const navBar = document.getElementById('navBar');
       const logo = document.getElementById('logo');
       if (!!window && !!navBar) {
@@ -66,7 +66,7 @@ export default function Nav() {
         if (window.scrollY >= 150) {
           if (!classnav.contains('bg-solBlue/90')) {
 
-            console.log("cambio de color", pathName);
+            // console.log("cambio de color", pathName);
             if (pathName === '/') {
               classLogo?.add('bg-transparent')
               classLogo?.remove('bg-solBlue')
@@ -82,20 +82,20 @@ export default function Nav() {
           }
         } else {
           if (!classnav.contains('bg-transparent')) {
-            console.log("transparente", pathName);
+            // console.log("transparente", pathName);
             classLogo?.remove('bg-transparent')
             classLogo?.add('bg-solBlue')
             if (pathName === '/') {
-              console.log("transparente en home");
+              // console.log("transparente en home");
               classnav?.add('bg-transparent', 'text-white')
               classnav?.remove('bg-solBlue/90', 'backdrop-blur-md')
             }
             else {
-              console.log("transparente fuera de home");
+              // console.log("transparente fuera de home");
               classLogo?.add('bg-transparent')
               classLogo?.remove('bg-solBlue')
-              classnav?.add('bg-solBlue/90', 'text-white')
-              classnav?.remove('bg-transparent', 'text-gray-950', 'backdrop-blur-md')
+              classnav?.add('bg-solBlue/90', 'text-white', 'backdrop-blur-md')
+              classnav?.remove('bg-transparent', 'text-gray-950')
             }
           }
         }

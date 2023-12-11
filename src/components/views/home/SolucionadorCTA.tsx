@@ -52,11 +52,17 @@ export default function SolucionadorCTA() {
                 </div>
 
                 {!user && <div className="mt-10 flex justify-center">
-                    <Link href="/registro" className="bg-solYellow border border-transparent rounded-md py-3 px-8 font-medium text-gray-900 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                    <Link href="/registro/solucionador" className="bg-solYellow border border-transparent rounded-md py-3 px-8 font-medium text-gray-900 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
                         Regístrate como solucionador
                     </Link>
                 </div>}
+                {!!user && user.publicMetadata.role !== 'SOLUCIONADOR' && <div className="mt-10 flex justify-center">
+                    <Link href="/registro/solucionador" className="bg-solYellow border border-transparent rounded-md py-3 px-8 font-medium text-gray-900 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                        Conviertete en solucionador
+                    </Link>
+                </div>
+                }
             </div>
-        </section>
+        </section>  
     )
 }
