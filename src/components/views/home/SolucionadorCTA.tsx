@@ -1,4 +1,5 @@
 import { useUser } from "@clerk/nextjs";
+import { MoveRight, MoveRightIcon } from "lucide-react";
 import Link from "next/link";
 
 export default function SolucionadorCTA() {
@@ -52,17 +53,17 @@ export default function SolucionadorCTA() {
                 </div>
 
                 {!user && <div className="mt-10 flex justify-center">
-                    <Link href="/registro/solucionador" className="bg-solYellow border border-transparent rounded-md py-3 px-8 font-medium text-gray-900 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
-                        Regístrate como solucionador
+                    <Link href="/registro/solucionador" className="bg-solYellow border flex justify-between items-center gap-4 border-transparent rounded-md py-3 px-8 font-medium text-gray-900 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                        Conviertete en solucionador <MoveRight className="inline-block w-6 h-6" />
                     </Link>
                 </div>}
                 {!!user && user.publicMetadata.role !== 'SOLUCIONADOR' && <div className="mt-10 flex justify-center">
-                    <Link href="/registro/solucionador" className="bg-solYellow border border-transparent rounded-md py-3 px-8 font-medium text-gray-900 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
-                        Conviertete en solucionador
+                    <Link href="/registro/solucionador" className="bg-solYellow flex justify-between items-center gap-4 border border-transparent rounded-md py-3 px-8 font-medium text-gray-900 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                        Conviertete en solucionador <MoveRight className="inline-block w-6 h-6" />
                     </Link>
                 </div>
                 }
             </div>
-        </section>  
+        </section>
     )
 }
