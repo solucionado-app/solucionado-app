@@ -257,7 +257,7 @@ export default function Nav() {
                 <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
               </svg>
             </div></SheetTrigger>
-            <SheetContent className="bg-solBlue p-2">
+            <SheetContent className="bg-sol_darkBlue/80 filter backdrop-blur-md p-2">
               <nav className=" flex z-50 flex-col justify-between h-full p-2">
                 <div className="mb-9 flex items-center ">
 

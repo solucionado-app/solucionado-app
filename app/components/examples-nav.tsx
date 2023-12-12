@@ -6,7 +6,6 @@ import { ArrowRightIcon } from "@radix-ui/react-icons"
 
 import { cn } from "@/lib/utils"
 import { ScrollArea, ScrollBar } from "@/app/ui/scroll-area"
-import { useEffect, useRef } from "react"
 
 const examples = [
   {
@@ -33,28 +32,7 @@ interface ExamplesNavProps {
 
 export function ExamplesNav({ className, ...props }: ExamplesNavProps) {
   const pathname = usePathname()
-  // const navbarRef = useRef<HTMLDivElement>(null)
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const nav = navbarRef.current
-  //     if (!!window && !!nav) {
-  //       console.log(nav?.className, window.scrollY, nav?.offsetTop)
-  //       console.log(window.scrollY + 80 > nav?.offsetTop)
 
-  //       if (window.scrollY + 80 > nav?.offsetTop) {
-  //         nav.className = "sticky md:relative w-full top-16 left-0 z-50 bg-white shadow-sm md:shadow-none md:bg-transparent md:z-0"
-
-  //       }
-  //       else {
-  //         nav.className = "relative"
-  //       }
-  //     }
-  //   }
-
-
-  //   window.addEventListener("scroll", handleScroll);
-
-  // }, [pathname])
   return (
     <div className="sticky md:relative w-full top-16 left-0 z-50 bg-white shadow-sm md:shadow-none md:top-0 md:bg-transparent md:z-10">
       <ScrollArea className="max-w-[600px]  lg:max-w-none px-4 md:px-8">

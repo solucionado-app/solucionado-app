@@ -45,13 +45,14 @@ const formSchema = z.object({
 });
 export function RegisterSolucionadorUser() {
     const { user, isSignedIn } = useUser()
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema)
+    })
     if (!isSignedIn) return null
     const { data: categories, isLoading } = api.categories.getAll.useQuery();
 
     // 1. Define your form.
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema)
-    })
+
 
     const { id } = user
     const { mutate } = api.user.update.useMutation()
