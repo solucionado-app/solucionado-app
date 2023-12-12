@@ -53,7 +53,7 @@ export default function AlertDialogDemo({ budget }: Props) {
                     category_id: "car_electronics",
                     quantity: 1,
                     currency_id: "ARS",
-                    unit_price: budget.price,
+                    unit_price: budget.price * 1.11,
                 },
             ],
             payer: {

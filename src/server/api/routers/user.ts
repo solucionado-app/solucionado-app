@@ -1,3 +1,4 @@
+import { clerkClient } from "@clerk/nextjs";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import {
@@ -99,7 +100,11 @@ export const userRouter = createTRPCRouter({
         },
       });
       console.log(user);
-
+      if(input?.role) await clerkClient.users.updateUserMetadata(input.userId, {
+        publicMetadata: {
+          role: input?.role
+        }
+      })
       return user;
     }),
 });

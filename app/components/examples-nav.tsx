@@ -34,8 +34,8 @@ export function ExamplesNav({ className, ...props }: ExamplesNavProps) {
   const pathname = usePathname()
 
   return (
-    <div className="relative">
-      <ScrollArea className="max-w-[600px] lg:max-w-none px-4 md:px-8">
+    <div className="sticky md:relative w-full top-16 left-0 z-50 bg-white shadow-sm md:shadow-none md:top-0 md:bg-transparent md:z-10">
+      <ScrollArea className="max-w-[600px]  lg:max-w-none px-4 md:px-8">
         <div className={cn("mb-4 flex items-center gap-4", className)} {...props}>
           {examples.map((example) => (
             <Link

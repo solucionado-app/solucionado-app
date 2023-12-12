@@ -44,14 +44,16 @@ const formSchema = z.object({
     })).min(1, { message: "La categoria es requerida" }),
 });
 export function RegisterSolucionadorUser() {
-    const { data: categories, isLoading } = api.categories.getAll.useQuery();
-
-    // 1. Define your form.
+    const { user, isSignedIn } = useUser()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema)
     })
-    const { user, isSignedIn } = useUser()
     if (!isSignedIn) return null
+    const { data: categories, isLoading } = api.categories.getAll.useQuery();
+
+    // 1. Define your form.
+
+
     const { id } = user
     const { mutate } = api.user.update.useMutation()
     // 2. Define a submit handler.
