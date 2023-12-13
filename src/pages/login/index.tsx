@@ -18,6 +18,6 @@ const Page: MyPage = () => {
 
 
 export default Page;
-Page.Layout = "Main";
+Page.Layout = "Auth";
 Page.Title = "Login";
 Page.Description = "login";

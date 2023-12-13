@@ -7,6 +7,8 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 import { Menu } from "lucide-react"
+import Link from "next/link"
+import Image from "next/image"
 
 const Sheet = SheetPrimitive.Root
 
@@ -52,7 +54,7 @@ const sheetVariants = cva(
 
 interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
-    VariantProps<typeof sheetVariants> {}
+  VariantProps<typeof sheetVariants> { }
 
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
@@ -60,19 +62,33 @@ const SheetContent = React.forwardRef<
 >(({ side = "right", className, children, ...props }, ref) => (
   <SheetPortal>
     <SheetOverlay >
-    <SheetPrimitive.Content
-      ref={ref}
-      className={cn(sheetVariants({ side }), className)}
-      {...props}
-    >
-
-      {children}
-        <SheetPrimitive.Close className="absolute left-6 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+      <SheetPrimitive.Content
+        ref={ref}
+        className={cn(sheetVariants({ side }), className)}
+        {...props}
+      >
+        <SheetPrimitive.Close className=" pl-6 flex w-full items-center  space-x-3 rounded-sm ring-offset-background transition-opacity disabled:pointer-events-none ">
           <Menu className="h-6 w-6" />
-        <span className="sr-only">Close</span>
+          <span className="sr-only">Close</span>
+          <Link
 
-      </SheetPrimitive.Close>
-    </SheetPrimitive.Content>
+            className=" "
+            href="/"
+          >
+            <Image
+              id='logo'
+              src="/solucionado.svg"
+              height={35}
+              width={140}
+              className={`object-contain bg-solBlue py-4 px-2 md:p-4 z-10  `}
+              alt="logo solucionado"
+            />
+
+          </Link>
+
+        </SheetPrimitive.Close>
+        {children}
+      </SheetPrimitive.Content>
     </SheetOverlay>
   </SheetPortal>
 ))

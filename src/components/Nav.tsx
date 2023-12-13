@@ -10,7 +10,8 @@ import NotificationsComponent from "./notifications/NotificationsComponent";
 import ProfileDropdown from "./auth/ProfileDropdown";
 import { api } from "~/utils/api";
 import { usePathname } from "next/navigation";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/app/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/app/ui/sheet-solucionado";
+import { Menu } from "lucide-react";
 
 export default function Nav() {
   const router = useRouter();
@@ -140,25 +141,99 @@ export default function Nav() {
   return (
     <>
 
-      <nav id="navBar" className={`fixed top-0 left-0 flex w-[calc(100vw)] transition-colors duration-300 items-center justify-between z-20 py-0 ${pathName === '/' ? "  bg-transparent text-white" : "bg-solBlue text-white"} sm:px-12 backdrop-filter`}>
+      <nav id="navBar" className={`fixed top-0 left-0 flex w-[calc(100vw)] transition-colors duration-300 items-center justify-start z-20 py-0 ${pathName === '/' ? "  bg-transparent text-white" : "bg-solBlue text-white"} px-6  backdrop-filter`}>
+
+        <Sheet >
+          <SheetTrigger className="navbar-burger order-first flex items-center p-3 pl-0 hover:text-solYellow" >
+
+            <Menu className="h-6 w-6" />
+            <span className="sr-only">Close</span></SheetTrigger>
+
+          <SheetContent side={'left'} className="bg-gray-50 w-[200px] shadow-xl p-0 border-0">
+
+            <nav className=" flex z-50 flex-col justify-between h-full ">
+              <div className="mb-9 flex items-center ">
+
+
+              </div>
+
+              <ul id="linksmobile">
+                <li className="mb-1">
+                  <Link
+                    className="block rounded p-4 text-sm font-semibold text-gray-950 hover:bg-slate-300"
+                    href="/"
+                  >
+                    Inicio
+                  </Link>
+                </li>
+                <li className="mb-1">
+                  <Link
+                    className="block rounded p-4 text-sm font-semibold text-gray-950 hover:bg-slate-300"
+                    href="/"
+                  >
+                    Sobre Nosotros
+                  </Link>
+                </li>
+                <li className="mb-1">
+                  <Link
+                    className="block rounded p-4 text-sm font-semibold text-gray-950 hover:bg-slate-300"
+                    href="/contacto"
+                  >
+                    Contacto
+                  </Link>
+                </li>
+              </ul>
+              <div className="mt-auto mx-4">
+                {!user.isSignedIn && (
+                  <div className="pt-6">
+                    <Link
+                      className="mb-3 block rounded-xl bg-gray-50 px-4 py-3 text-center text-xs  font-semibold leading-loose shadow hover:bg-gray-200"
+                      href={`/login?redirect=${pathName as string}`}
+                    >
+                      Iniciar Sesión
+                    </Link>
+                    <Link
+                      className="mb-2 block rounded-xl bg-turquesa px-4 py-3 text-center text-xs font-semibold leading-loose text-black  hover:bg-solYellow"
+                      href="/registro"
+                    >
+                      Quiero ser solucionador
+                    </Link>
+                  </div>
+                )}
+                {!!user.isSignedIn && (
+                  <SignOutButton>
+                    <button className="  rounded-xl bg-turquesa px-6 py-2 text-sm font-semibold text-gray-900 transition duration-200 hover:bg-solYellow hover:text-black">
+                      Cerrar Sesion
+                    </button>
+                  </SignOutButton>
+                )}
+
+                <p className="my-4 text-center text-xs text-gray-50">
+                  <span>Copyright © 2021</span>
+                </p>
+              </div>
+            </nav>
+
+          </SheetContent>
+        </Sheet>
         <Link
-          id='logo'
-          className="bg-solBlue py-4 px-2 md:p-4 z-10"
+
+          className="w-[140px] "
           href="/"
         >
           <Image
-
+            id='logo'
             src="/solucionado.svg"
             height={35}
             width={140}
-            className={`object-contain `}
+            className={`object-contain bg-solBlue py-4 px-2 md:p-4 z-10  `}
             alt="logo solucionado"
           />
 
         </Link>
 
         <ul
-          className={`xl:absolute  xl:left-1/2 xl:top-1/2 hidden xl:-translate-x-1/2 xl:-translate-y-1/2 transform lg:mx-auto lg:flex  lg:w-auto lg:items-center lg:space-x-6`}
+          className={`lg:absolute  lg:left-1/2 lg:top-1/2 hidden lg:-translate-x-1/2 lg:-translate-y-1/2 transform  lg:mx-auto lg:flex  lg:w-auto lg:items-center lg:space-x-6`}
         >
           <li>
             <Link
@@ -198,7 +273,7 @@ export default function Nav() {
             </Link>
           </li>
         </ul>
-        <div className="flex items-center  gap-4">
+        <div className="absolute top-0 right-6 lg:pr-4 h-full flex items-center  gap-4 ">
           {(
             <SignedOut >
               <Link
@@ -213,13 +288,14 @@ export default function Nav() {
               >
                 Iniciar Sesión
               </Link>
+
               <span
-                className="hidden rounded-xl bg-turquesa px-4 py-2 text-sm font-semibold  transition duration-200 hover:bg-solYellow text-black hover:text-black lg:inline-block cursor-pointer"
+                className=" rounded-xl bg-turquesa px-4 py-2 text-sm font-semibold  transition duration-200 hover:bg-solYellow text-black hover:text-black  cursor-pointer"
                 onClick={() => void router.replace(`/registro?redirect=${pathName as string}`, {
                   scroll: false,
                 })}
               >
-                Quiero ser solucionador
+                Unete
               </span>
             </SignedOut>
           )}
@@ -246,82 +322,7 @@ export default function Nav() {
               </ProfileDropdown>
             </SignedIn>
           )}
-          <Sheet >
-            <SheetTrigger><div className="navbar-burger flex items-center p-3  hover:text-solYellow">
-              <svg
-                className="block h-4 w-4 fill-current"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <title>Mobile menu</title>
-                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-              </svg>
-            </div></SheetTrigger>
-            <SheetContent className="bg-sol_darkBlue/80 filter backdrop-blur-md p-2">
-              <nav className=" flex z-50 flex-col justify-between h-full p-2">
-                <div className="mb-9 flex items-center ">
 
-
-                </div>
-
-                <ul id="linksmobile">
-                  <li className="mb-1">
-                    <Link
-                      className="block rounded p-4 text-sm font-semibold text-gray-100 hover:bg-slate-300"
-                      href="/"
-                    >
-                      Inicio
-                    </Link>
-                  </li>
-                  <li className="mb-1">
-                    <Link
-                      className="block rounded p-4 text-sm font-semibold text-gray-100 hover:bg-slate-300"
-                      href="/"
-                    >
-                      Sobre Nosotros
-                    </Link>
-                  </li>
-                  <li className="mb-1">
-                    <Link
-                      className="block rounded p-4 text-sm font-semibold text-gray-100 hover:bg-slate-300"
-                      href="/contacto"
-                    >
-                      Contacto
-                    </Link>
-                  </li>
-                </ul>
-                <div className="mt-auto mx-4">
-                  {!user.isSignedIn && (
-                    <div className="pt-6">
-                      <Link
-                        className="mb-3 block rounded-xl bg-gray-50 px-4 py-3 text-center text-xs  font-semibold leading-loose shadow hover:bg-gray-200"
-                        href={`/login?redirect=${pathName as string}`}
-                      >
-                        Iniciar Sesión
-                      </Link>
-                      <Link
-                        className="mb-2 block rounded-xl bg-turquesa px-4 py-3 text-center text-xs font-semibold leading-loose text-black  hover:bg-solYellow"
-                        href="/registro"
-                      >
-                        Quiero ser solucionador
-                      </Link>
-                    </div>
-                  )}
-                  {!!user.isSignedIn && (
-                    <SignOutButton>
-                      <button className="  rounded-xl bg-turquesa px-6 py-2 text-sm font-semibold text-gray-900 transition duration-200 hover:bg-solYellow hover:text-black">
-                        Cerrar Sesion
-                      </button>
-                    </SignOutButton>
-                  )}
-
-                  <p className="my-4 text-center text-xs text-gray-50">
-                    <span>Copyright © 2021</span>
-                  </p>
-                </div>
-              </nav>
-            </SheetContent>
-          </Sheet>
 
         </div>
 
