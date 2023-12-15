@@ -19,7 +19,9 @@ import {
 } from "@/app/ui/dropdown-menu"
 
 import { type ServiceAdmin } from "@/src/components/servicesComponents/ServicesTable"
-import { paymentStatuses } from "../data/serviceData"
+import { type paymentStatus, paymentStatuses } from "../data/serviceData"
+import { api } from "@/src/utils/api"
+import { trpc } from "@/src/utils/trpc"
 
 interface DataTableRowActionsProps {
     row: Row<ServiceAdmin>
@@ -29,6 +31,22 @@ export function ServiceDataTableRowActions({
     row,
 }: DataTableRowActionsProps) {
     const task = row.original
+    const utils = trpc.useContext()
+
+    const mutate = api.service.update.useMutation()
+    function handlePaymentStatusChange(status: paymentStatus) {
+        console.log(status)
+        console.log(task.id, task.paymentStatus)
+        mutate.mutate({ id: task.id, paymentStatus: status ? status : 'PENDIENTE' }, {
+            onSuccess: () => {
+                console.log('success')
+                utils.service.getEvery.invalidate()
+            },
+            onError: (error) => {
+                console.log(error)
+            }
+        })
+    }
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -45,8 +63,10 @@ export function ServiceDataTableRowActions({
                 <DropdownMenuRadioGroup value={task.paymentStatus ?? 'PENDIENTE'}>
                     {paymentStatuses.map((status) => (
                         <>
-
-                            <DropdownMenuRadioItem key={status.value} value={status.value}>
+                            <DropdownMenuRadioItem key={status.value}
+                                value={status.value ?? 'PENDIENTE'}
+                                onSelect={() => handlePaymentStatusChange(status.value)}
+                            >
                                 <div className="flex w-[100px] items-center">
                                     {status.icon && (
                                         <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />

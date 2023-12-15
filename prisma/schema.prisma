@@ -159,6 +159,7 @@ model Service {
 }
 
 enum paymentStatus {
+  
   ACREDITADO
   ENVIADO
   PENDIENTE

@@ -1,8 +1,31 @@
 import { clerkClient } from "@clerk/nextjs";
+import { Payment } from "@mercadopago/sdk-react";
+import {  Status,  paymentStatus } from "@prisma/client";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const serviceRouter = createTRPCRouter({
+  update: protectedProcedure.input(
+    z.object({
+      id: z.string(),
+      description: z.string().optional(),
+      status: z.enum([Status.PENDING, Status.REJECTED, Status.FINISHED, Status.ACEPTED]).optional(),
+      paymentStatus: z.enum([paymentStatus.ACREDITADO, paymentStatus.ENVIADO, paymentStatus.PENDIENTE, paymentStatus.RECHAZADO]),
+    })
+  ).mutation(({ ctx, input }) => {
+    const service = ctx.prisma.service.update({
+      where: {
+        id: input.id,
+      },
+      data: {
+        description: input.description,
+        status: input.status,
+        paymentStatus: input.paymentStatus,
+      },
+    });
+    console.log(service);
+    return service;
+  })  ,
   findById: protectedProcedure
     .input(
       z.object({
@@ -154,6 +177,7 @@ export const serviceRouter = createTRPCRouter({
               id: input.budgetId,
             },
           },
+          paymentStatus: 'PENDIENTE',
           description: input.description,
           category: {
             connect: {

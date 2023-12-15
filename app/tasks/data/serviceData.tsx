@@ -9,6 +9,7 @@ import {
     QuestionMarkCircledIcon,
     StopwatchIcon,
 } from "@radix-ui/react-icons"
+import { IconProps } from "@radix-ui/react-icons/dist/types"
 
 export const labels = [
     {
@@ -41,8 +42,9 @@ export const normalizeStatus = (status: Status) => {
             return "En proceso"
     }
 }
-type paymentStatus = 'ACREDITADO' | 'ENVIADO' | 'PENDIENTE' | 'RECHAZADO' | '' | null;
+export type paymentStatus = 'ACREDITADO' | 'ENVIADO' | 'PENDIENTE' | 'RECHAZADO' | '' | null;
 
+export type paymentStatusNotNull = 'ACREDITADO' | 'ENVIADO' | 'PENDIENTE' | 'RECHAZADO';
 
 
 export const normalizePaymentStatus = (status: paymentStatus) => {
@@ -78,15 +80,11 @@ export const statuses = [
     },
 ]
 
-export const paymentStatuses = [
-    {
-        value: "",
-        label: "En espera",
-        icon: CircleIcon,
-    },
+export const paymentStatuses: { value: paymentStatus, label: string, icon: React.ForwardRefExoticComponent<IconProps & React.RefAttributes<SVGSVGElement>> }[] = [
+
     {
         value: "PENDIENTE",
-        label: "Pendiente",
+        label: "En espera",
         icon: QuestionMarkCircledIcon,
     },
     {
@@ -105,4 +103,5 @@ export const paymentStatuses = [
         icon: CrossCircledIcon,
     },
 ]
+
 
