@@ -88,8 +88,8 @@ export default function ComoSection() {
 
 
             </div>
-            {!user && <div className="mt-10 flex justify-center">
-                <Link href="/registro/usuario" className="bg-white  border flex justify-between items-center gap-4 border-transparent rounded-md py-3 px-8 font-medium text-gray-900 hover:bg-azul/70 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-turquesa/70 shadow-lg">
+            {<div className="mt-10 flex justify-center">
+                <Link href="/solucionar" className="bg-solYellow  border flex justify-between items-center gap-4 border-transparent rounded-md py-3 px-8 font-medium text-gray-900 hover:bg-azul/70 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-turquesa/70 shadow-lg">
                     Empieza a recibir presupuestos<MoveRight className="inline-block w-6 h-6" />
                 </Link>
             </div>}

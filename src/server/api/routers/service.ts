@@ -1,8 +1,75 @@
 import { clerkClient } from "@clerk/nextjs";
+import { Payment } from "@mercadopago/sdk-react";
+import {  Status,  paymentStatus } from "@prisma/client";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const serviceRouter = createTRPCRouter({
+  update: protectedProcedure.input(
+    z.object({
+      id: z.string(),
+      description: z.string().optional(),
+      status: z.enum([Status.PENDING, Status.REJECTED, Status.FINISHED, Status.ACEPTED]).optional(),
+      paymentStatus: z.enum([paymentStatus.ACREDITADO, paymentStatus.ENVIADO, paymentStatus.PENDIENTE, paymentStatus.RECHAZADO]),
+    })
+  ).mutation(async({ ctx, input }) => {
+    const service = ctx.prisma.service.update({
+      where: {
+        id: input.id,
+      },
+      data: {
+        description: input.description,
+        status: input.status,
+        paymentStatus: input.paymentStatus,
+      },
+    });
+    console.log(service);
+    return service;
+  })  ,
+  acredit: protectedProcedure.input(
+    z.object({
+      id: z.string(),
+      price:z.number(),
+      userId:z.string(),
+      categoryName:z.string(),
+    })
+  ).mutation(async ({ ctx, input }) => {
+    const service = await ctx.prisma.service.update({
+      where: {
+        id: input.id,
+      },
+      data: {
+        paymentStatus: paymentStatus.ACREDITADO,
+      },
+    });
+    
+    const user = await ctx.prisma.user.findUnique({
+      where: {
+        id: input.userId,
+      },
+      select: {
+        cbu: true,
+        cuit: true,
+        first_name: true,
+        last_name: true,
+        emailAddressId: true,
+      },
+    });
+    
+    clerkClient.emails.createEmail({
+          fromEmailName: "info",
+          body: `Hola ${user?.first_name || ""} ${user?.last_name || ""} se ha acreditado el pago de tu servicio de ${input.categoryName} por un monto de $${input.price} en tu cuenta bancaria. Enlace al servicio: ${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'https:solucionado.com.ar'}/servicios/${input.id} `,
+          subject: `Pago acreditado`,
+          emailAddressId: user?.emailAddressId as string,
+      }).then((res) => {
+           console.log(res)
+      }
+      ).catch((err) => {
+           console.log(err)
+      }
+      );
+    return service;
+  }),
   findById: protectedProcedure
     .input(
       z.object({
@@ -154,6 +221,7 @@ export const serviceRouter = createTRPCRouter({
               id: input.budgetId,
             },
           },
+          paymentStatus: 'PENDIENTE',
           description: input.description,
           category: {
             connect: {

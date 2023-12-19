@@ -1,3 +1,4 @@
+// disable @typescript-eslint/no-unsafe-assignment @typescript-eslint/no-unsafe-call @typescript-eslint/no-unsafe-member-access
 import * as React from "react"
 import { ChevronDownIcon } from "@radix-ui/react-icons"
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu"

@@ -6,20 +6,6 @@ import { SidebarNav } from "@/app/forms/components/sidebar-nav"
 import "~/styles/globals.css";
 import MainLayout from "@/src/components/layouts/MainLayout";
 import { ClerkProvider, auth } from "@clerk/nextjs";
-
-
-
-import { Poppins } from "next/font/google";
-
-
-export const metadata: Metadata = {
-  title: "Dashborad ",
-  description: "En este apartado podras ver tus datos de usuario y modificarlos, las estadisticas y los servicios.",
-}
-interface SettingsLayoutProps {
-  children: React.ReactNode
-
-}
 import { esES } from "~/utils/es-ES";
 
 
@@ -32,6 +18,25 @@ import { cn } from "@/src/lib/utils";
 import { buttonVariants } from "./ui/button";
 import { ExamplesNav } from "./components/examples-nav";
 import { usePathname } from "next/navigation";
+
+
+import { Poppins } from "next/font/google";
+
+
+export const metadata: Metadata = {
+  title: "Dashborad ",
+  description: "En este apartado podras ver tus datos de usuario y modificarlos, las estadisticas y los servicios.",
+  icons: {
+    icon: "/solucionado-iso.svg",
+    shortcut: "/solucionado-iso.svg",
+    apple: "/solucionado-iso.svg",
+  },
+}
+interface SettingsLayoutProps {
+  children: React.ReactNode
+
+}
+
 
 const inter = Poppins({
   display: "swap",
