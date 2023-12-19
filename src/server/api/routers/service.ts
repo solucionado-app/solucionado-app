@@ -12,7 +12,7 @@ export const serviceRouter = createTRPCRouter({
       status: z.enum([Status.PENDING, Status.REJECTED, Status.FINISHED, Status.ACEPTED]).optional(),
       paymentStatus: z.enum([paymentStatus.ACREDITADO, paymentStatus.ENVIADO, paymentStatus.PENDIENTE, paymentStatus.RECHAZADO]),
     })
-  ).mutation(({ ctx, input }) => {
+  ).mutation(async({ ctx, input }) => {
     const service = ctx.prisma.service.update({
       where: {
         id: input.id,
@@ -26,6 +26,50 @@ export const serviceRouter = createTRPCRouter({
     console.log(service);
     return service;
   })  ,
+  acredit: protectedProcedure.input(
+    z.object({
+      id: z.string(),
+      price:z.number(),
+      userId:z.string(),
+      categoryName:z.string(),
+    })
+  ).mutation(async ({ ctx, input }) => {
+    const service = await ctx.prisma.service.update({
+      where: {
+        id: input.id,
+      },
+      data: {
+        paymentStatus: paymentStatus.ACREDITADO,
+      },
+    });
+    
+    const user = await ctx.prisma.user.findUnique({
+      where: {
+        id: input.userId,
+      },
+      select: {
+        cbu: true,
+        cuit: true,
+        first_name: true,
+        last_name: true,
+        emailAddressId: true,
+      },
+    });
+    
+    clerkClient.emails.createEmail({
+          fromEmailName: "info",
+          body: `Hola ${user?.first_name || ""} ${user?.last_name || ""} se ha acreditado el pago de tu servicio de ${input.categoryName} por un monto de $${input.price} en tu cuenta bancaria. Enlace al servicio: ${process.env.NEXT_PUBLIC_MP_DOMAIN}/servicios/${input.id} `,
+          subject: `Pago acreditado`,
+          emailAddressId: user?.emailAddressId as string,
+      }).then((res) => {
+           console.log(res)
+      }
+      ).catch((err) => {
+           console.log(err)
+      }
+      );
+    return service;
+  }),
   findById: protectedProcedure
     .input(
       z.object({
