@@ -58,7 +58,7 @@ export const serviceRouter = createTRPCRouter({
     
     clerkClient.emails.createEmail({
           fromEmailName: "info",
-          body: `Hola ${user?.first_name || ""} ${user?.last_name || ""} se ha acreditado el pago de tu servicio de ${input.categoryName} por un monto de $${input.price} en tu cuenta bancaria. Enlace al servicio: ${process.env.NEXT_PUBLIC_MP_DOMAIN}/servicios/${input.id} `,
+          body: `Hola ${user?.first_name || ""} ${user?.last_name || ""} se ha acreditado el pago de tu servicio de ${input.categoryName} por un monto de $${input.price} en tu cuenta bancaria. Enlace al servicio: ${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'https:solucionado.com.ar'}/servicios/${input.id} `,
           subject: `Pago acreditado`,
           emailAddressId: user?.emailAddressId as string,
       }).then((res) => {

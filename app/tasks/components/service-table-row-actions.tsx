@@ -46,7 +46,7 @@ export function ServiceDataTableRowActions({
         mutate.mutate({ id: task.id, paymentStatus: status ? status : 'PENDIENTE' }, {
             onSuccess: () => {
                 console.log('success')
-                utils.service.getEvery.invalidate()
+                void utils.service.getEvery.invalidate()
             },
             onError: (error) => {
                 console.log(error)
@@ -62,7 +62,7 @@ export function ServiceDataTableRowActions({
         }, {
             onSuccess: () => {
                 console.log('success')
-                utils.service.getEvery.invalidate()
+                void utils.service.getEvery.invalidate()
                 handleClose()
             },
             onError: (error) => {

@@ -1,3 +1,4 @@
+// disable @typescript-eslint/no-unsafe-assignment @typescript-eslint/no-unsafe-call @typescript-eslint/no-unsafe-member-access
 "use client"
 
 import * as React from "react"

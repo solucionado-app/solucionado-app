@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://solucionado.com.ar
+Host: https://example.com
 
 # Sitemaps
-Sitemap: https://solucionado.com.ar/sitemap.xml
+Sitemap: https://example.com/sitemap.xml
