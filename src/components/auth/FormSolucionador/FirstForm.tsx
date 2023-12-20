@@ -18,7 +18,7 @@ import { Input } from "~/components/ui/input"
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api"
 import { useUser } from "@clerk/nextjs"
-import ProvinceAndCityOptions from "../formularios/ProvinceAndCityOptions"
+import ProvinceAndCityOptions from "../../formularios/ProvinceAndCityOptions"
 
 
 const phoneRegex = new RegExp(
@@ -43,7 +43,7 @@ const formSchema = z.object({
         description: z.string(),
     })).min(1, { message: "La categoria es requerida" }),
 });
-export function RegisterSolucionadorUser() {
+export default function FirtForm() {
     const { user, isSignedIn } = useUser()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema)

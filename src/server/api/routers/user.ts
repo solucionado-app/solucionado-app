@@ -73,7 +73,7 @@ export const userRouter = createTRPCRouter({
             })
           )
           .optional(),
-        role: z.enum(["USER", "SOLUCIONADOR"]).optional(),
+        role: z.enum(["USER", "SOLUCIONADOR", "ADMIN"]).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {

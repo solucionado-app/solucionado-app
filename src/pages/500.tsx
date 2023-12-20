@@ -10,11 +10,12 @@ const ServerError: MyPage = () => {
             <div className="grid place-content-center h-screen">
                 <div className="container mx-auto max-w-md text-center">
                     <h1 className="text-4xl font-bold text-zinc-700 my-4">
-                        500 - Server eror
+                        500 - Server error
                     </h1>
                     <p className="text-zinc-400">
-                        Sorry, we could not find the page you are looking for. Instead, here
-                        are some similar pages that could help:
+                        Lo sentimos hubo un error en el servidor. Por favor, revisa
+                        la URL o utiliza el botón de abajo para volver a la página de
+                        inicio.
                     </p>
                     {/*TODO: List similar pages here */}
                     {/*TODO: Create Search bar component here */}
@@ -25,7 +26,7 @@ const ServerError: MyPage = () => {
                             className="hover:underline hover:text-indigo-400 text-indigo-500"
                             href="/"
                         >
-                            Go to Home Page
+                            Ir a la Home Page
                         </Link>
                     </div>
                 </div>
