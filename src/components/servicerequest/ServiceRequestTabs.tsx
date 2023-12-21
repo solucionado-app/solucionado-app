@@ -63,8 +63,8 @@ export default function ServiceRequestTabs({ id }: Props) {
                         <CardContent className="space-y-2 p-2">
                             <div className="space-y-1">
                                 {user?.id === serviceRequest?.userId &&
-                                    !budgetsIsLoading &&
-                                    !!budgets && !!serviceRequest ? <DynamicBudgetTable budgets={budgets} status={serviceRequest?.status} /> : null}
+
+                                    !!budgets && !!serviceRequest && <DynamicBudgetTable budgets={budgets} status={serviceRequest?.status} />}
                                 {/* <Budgets /> */}
                                 {!!budgetListSolucionador && !!serviceRequest && (
                                     <DynamicBudgetTable budgets={budgetListSolucionador} status={serviceRequest?.status} isSolucionador={true} />
