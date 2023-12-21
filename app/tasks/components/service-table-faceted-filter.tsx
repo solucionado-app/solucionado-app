@@ -20,7 +20,7 @@ import {
     PopoverTrigger,
 } from "@/app/ui/popover"
 import { Separator } from "@/app/ui/separator"
-import { Category, CategoryPayload } from "@prisma/client"
+import { Category } from "@prisma/client"
 
 interface DataTableFacetedFilterProps<TData, TValue> {
     column?: Column<TData, TValue>
