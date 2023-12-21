@@ -36,7 +36,7 @@ export default function SolucionadorRating({ user, rating, count }: props) {
                     value={rating}
                     precision={0.5}
                     readOnly={true}
-                    emptyIcon={<Star style={{ opacity: 0.4 }} fontSize="inherit" />}
+                    emptyIcon={<Star style={{ opacity: 0.80 }} fontSize="inherit" />}
                 />
                 {<span className="text-sm font-medium tracking-tight sm:text-md">
                     {count ? `(${count})` : "Sin reseñas"}

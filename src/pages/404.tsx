@@ -13,8 +13,9 @@ const NotFound: MyPage = () => {
                         404 - Page Not Found
                     </h1>
                     <p className="text-zinc-400">
-                        Sorry, we could not find the page you are looking for. Instead, here
-                        are some similar pages that could help:
+                        Lo sentimos pero la página que buscas no existe. Por favor, revisa
+                        la URL o utiliza el botón de abajo para volver a la página de
+                        inicio.
                     </p>
                     {/*TODO: List similar pages here */}
                     {/*TODO: Create Search bar component here */}
@@ -25,7 +26,7 @@ const NotFound: MyPage = () => {
                             className="hover:underline hover:text-indigo-400 text-indigo-500"
                             href="/"
                         >
-                            Go to Home Page
+                            Ir a la Home Page
                         </Link>
                     </div>
                 </div>

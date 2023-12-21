@@ -1,9 +1,11 @@
 /* eslint-disable */
+
 import { useUser } from "@clerk/nextjs";
+import { User } from "@prisma/client";
 
 import { useRouter } from "next/router";
 import React, { createContext, useContext, useState } from "react";
-import { ServiceRequest, localStorageRequests } from "~/lib/localStorage";
+import { type UserSolucionador, localStorageRequests } from "~/lib/localStorage";
 import { api } from "~/utils/api";
 import { trpc } from "~/utils/trpc";
 
@@ -12,8 +14,10 @@ interface FormStepsContextType {
     setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
     formValues: Record<string, any>;
     setFormValues: React.Dispatch<React.SetStateAction<Record<string, any>>>;
-    handleSubmition: (local: ServiceRequest | undefined) => void;
+    handleSubmition: (local: UserSolucionador) => void;
 }
+
+
 
 const FormStepsContext = createContext<FormStepsContextType>({
     currentStep: 0,
@@ -38,40 +42,34 @@ export const FormStepsProvider = ({ children }: Props) => {
 
 
 
-    const requestMutation = api.serviceRequest.create.useMutation({
+    const userMutation = api.user.update.useMutation({
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         onSuccess: (data) => {
-            if (data?.id) {
-                notification.mutate({
-                    categorySlug: router.query?.slug as string,
-                    title: "Nueva solicitud de servicio",
-                    content: `Se ha creado una nueva solicitud de servicio para ${data.category.name}`,
-                    link: `/solicitudes-de-servicio/${data.id}`,
-                    serviceRequestId: data.id,
-                })
-            }
+            console.log(data)
         },
     })
     const { user } = useUser()
     const utils = trpc.useContext()
     const notification = api.notification.create.useMutation()
-    const handleSubmition = (local: ServiceRequest | undefined) => {
-        const date = new Date(local?.date as Date)
 
-        requestMutation.mutate({
+
+
+
+    const handleSubmition = (local: UserSolucionador) => {
+
+        userMutation.mutate({
             ...local,
-            emailaddress: user?.primaryEmailAddressId || "",
-            date: date,
-            city: local?.city?.nombre,
-            province: local?.province?.nombre,
-            details: local?.details,
-            categorySlug: router.query?.slug as string,
+            userId: local.id,
+            phone: local.phone || undefined,
+            dni: local.dni || undefined,
+            address: local.address || undefined,
+            cuit: local.cuit || undefined,
+            cbu: local.cbu || undefined,
+            categories: local.categories || undefined,
+            role: local.role || undefined,
         }, {
             onSuccess: () => {
-                void utils.serviceRequest.getAll.invalidate()
-                void utils.notification.getAll.invalidate()
-                void utils.notification.countUnRead.invalidate()
-
+                console.log('success')
                 void router.push("/solicitudes-de-servicio")
                 const slug = router.query.slug as string
                 localStorageRequests.set({

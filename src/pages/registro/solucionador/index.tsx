@@ -13,7 +13,7 @@ const Page: MyPage = () => {
             path="/registro/solucionador"
             unsafeMetadata={{ role: 'SOLUCIONADOR' }}
             afterSignInUrl={!!redirect && typeof redirect === 'string' && redirect !== '' ? redirect : "/perfil"}
-            afterSignUpUrl={!!redirect && typeof redirect === 'string' && redirect !== '' ? redirect : "/completar-perfil"}
+            afterSignUpUrl={"/registro/solucionador/completar-perfil"}
         />
     </div>;
 }

@@ -1,6 +1,15 @@
 import { persistObservable } from '@legendapp/state/persist'
 import { observable } from "@legendapp/state";
 import { ObservablePersistLocalStorage } from '@legendapp/state/persist-plugins/local-storage'
+import { type User } from '@prisma/client';
+
+export type UserSolucionador = User & {
+    categories: {
+        id: number
+        name: string
+        description: string
+    }[]
+}
 
 type Category = {
     id: number;
