@@ -80,9 +80,8 @@ export const budgetRouter = createTRPCRouter({
 
         const authorIds = budgets.map((budget) => budget.author.id);
 
-        // Get review data for all authors
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-        const reviewData = await prisma.review.groupBy({
+        
+        const reviewData = await ctx.prisma.review.groupBy({
             by: ['userId'],
             where: {
                 userId: {
@@ -98,17 +97,16 @@ export const budgetRouter = createTRPCRouter({
         });
 
         console.log(reviewData);
-        const checkedAuthors = new Set();
 
         for (const budget of budgets) {
 
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+                
                 const data = reviewData.find((item: {userId: string}) => item.userId === budget.author.id);
                 if (data) {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                    budget.author.mpCode = { rating: data._avg.rating , count: data._count._all  };
+                    
+                    const jsonCompatibleRating = data._avg.rating?.toString();
+                    budget.author.mpCode = { rating: jsonCompatibleRating , count: data._count._all  };
                 }
-                checkedAuthors.add(budget.author.id);
 
         }
         console.log(budgets);

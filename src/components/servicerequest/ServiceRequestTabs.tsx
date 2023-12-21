@@ -41,8 +41,6 @@ export default function ServiceRequestTabs({ id }: Props) {
         }
     );
 
-    console.log(budgets)
-    console.log(!!user && !!serviceRequest && user?.id === serviceRequest?.userId, user?.id, serviceRequest?.userId)
 
     const searchParams = useSearchParams();
     const tab = searchParams?.get("tab");
@@ -66,8 +64,8 @@ export default function ServiceRequestTabs({ id }: Props) {
 
                                     !!budgets && !!serviceRequest && <DynamicBudgetTable budgets={budgets} status={serviceRequest?.status} />}
                                 {/* <Budgets /> */}
-                                {!!budgetListSolucionador && !!serviceRequest && (
-                                    <DynamicBudgetTable budgets={budgetListSolucionador} status={serviceRequest?.status} isSolucionador={true} />
+                                {!!budgetListSolucionador && budgetListSolucionador.length > 0 && user?.id !== serviceRequest?.userId && !!serviceRequest && (
+                                    <>solucionador<DynamicBudgetTable budgets={budgetListSolucionador} status={serviceRequest?.status} isSolucionador={true} /></>
                                 )}
                                 {user?.id !== serviceRequest?.userId && serviceRequest?.status !== 'ACEPTED' ?
                                     <BudgetsForm
