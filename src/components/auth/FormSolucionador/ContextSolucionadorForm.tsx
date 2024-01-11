@@ -35,7 +35,9 @@ interface Props {
 }
 
 export const FormStepsProvider = ({ children }: Props) => {
-    const [currentStep, setCurrentStep] = useState(0);
+    const { user } = useUser()
+
+    const [currentStep, setCurrentStep] = useState(user?.hasVerifiedPhoneNumber ? 0 : 1);
     const router = useRouter()
     const [formValues, setFormValues] = useState<Record<string, any>>({});
 
@@ -48,7 +50,6 @@ export const FormStepsProvider = ({ children }: Props) => {
             console.log(data)
         },
     })
-    const { user } = useUser()
     const utils = trpc.useContext()
     const notification = api.notification.create.useMutation()
 

@@ -295,7 +295,7 @@ export default function Nav() {
                   scroll: false,
                 })}
               >
-                Unete
+                Únete
               </span>
             </SignedOut>
           )}
