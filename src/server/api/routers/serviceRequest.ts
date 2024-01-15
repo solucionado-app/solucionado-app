@@ -46,6 +46,7 @@ export const serviceRequestRouter = createTRPCRouter({
             description: z.string().optional(),
             provinceId: z.string().optional(),
             cityId: z.string().optional(),
+            cityName: z.string().optional(),
             address: z.string().optional(),
             amount: z.string().optional(),
             schedule: z.string().optional(),
@@ -96,8 +97,7 @@ export const serviceRequestRouter = createTRPCRouter({
                     select: {
                         name: true,
                     }
-                }
-
+                },
             }
         });
 
@@ -108,6 +108,9 @@ export const serviceRequestRouter = createTRPCRouter({
                     some: {
                         slug: input.categorySlug,
                     },
+                },
+                City: {
+                    id: input.cityId,
                 },
             },
             select: {
@@ -122,9 +125,9 @@ export const serviceRequestRouter = createTRPCRouter({
                 clerkClient.emails.createEmail({
                     fromEmailName: "info",
                     body: `Hola ${user.first_name || ""} ${user.last_name || ""} hay una nueva solicitud de servicio de ${serviceRequest.category.name ?? ''} en tu zona.
-                    Entra a este link para ver los detalles de la solicitud: solucionado-app.vercel.app/solicitudes-de-servicio/${serviceRequest.id}
+                    Entra a este link para ver los detalles de la solicitud: ${process.env.VERCEL_URL ?? 'https://solucionado.com.ar'}/solicitudes-de-servicio/${serviceRequest.id}
                     `,
-                    subject: `Solicitud de servicio en ${serviceRequest.category.name ?? ''}`,
+                    subject: `Solicitud de servicio de ${serviceRequest.category.name ?? ''} en tu zona`,
                     emailAddressId: user.emailAddressId as string,
                 }).then((res) => {
                      console.log(res)

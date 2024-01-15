@@ -45,9 +45,10 @@ export const FormStepsProvider = ({ children }: Props) => {
                 notification.mutate({
                     categorySlug: router.query?.slug as string,
                     title: "Nueva solicitud de servicio",
-                    content: `Se ha creado una nueva solicitud de servicio para ${data.category.name}`,
+                    content: `Se ha creado una nueva solicitud de servicio para ${data.category.name} en tu zona.`,
                     link: `/solicitudes-de-servicio/${data.id}`,
                     serviceRequestId: data.id,
+                    cityId: data.cityId as string,
                 })
             }
         },
@@ -75,6 +76,7 @@ export const FormStepsProvider = ({ children }: Props) => {
                             ...local,
                             emailaddress: user?.primaryEmailAddressId || "",
                             date: date,
+                            cityName: citydata?.name,
                             cityId: citydata?.id,
                             provinceId: provincedata.id,
                             details: local?.details,
