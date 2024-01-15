@@ -8,6 +8,8 @@ import { commentRouter } from "./routers/comment";
 import { serviceRouter } from "./routers/service";
 import { reviewRouter } from "./routers/review";
 import { router } from "../trpcApprouter";
+import { cityRouter } from "./routers/city";
+import { provinceRouter } from "./routers/provice";
 
 /**
  * This is the primary router for your server.
@@ -23,6 +25,8 @@ export const appRouter = createTRPCRouter({
   comment: commentRouter,
   service: serviceRouter,
   review: reviewRouter,
+  city: cityRouter,
+  province: provinceRouter,
 });
 
 // export type definition of API

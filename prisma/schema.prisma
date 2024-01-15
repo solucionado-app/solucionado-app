@@ -19,8 +19,10 @@ model User {
   dni                  String?          @unique
   password             String?
   image_url            String?
-  cbu                  String?
-  cuit                 String?
+  cbu                  String?          @unique
+  cuit                 String?          @unique
+  city                 String?
+  province             String?
   createdAt            DateTime         @default(now())
   updatedAt            DateTime         @updatedAt
   roleId               Int
@@ -41,9 +43,47 @@ model User {
   budgetsRecieved      Budget[]
   budgetsMade          Budget[]         @relation("solucionador")
   notificationsReaded  Notification[]   @relation("readBy")
+  cityId               String?
+  City                 City?            @relation("cityId", fields: [cityId], references: [id])
+
+  provinceId String?
+
+  Province Province? @relation("provinceId", fields: [provinceId], references: [id])
 
   @@unique([externalId, mpId])
   @@index([roleId], map: "roleId")
+  @@index([provinceId], map: "provinceId")
+  @@index([cityId], map: "cityId")
+}
+
+model City {
+  id        String   @id
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users          User[]           @relation("cityId")
+  ServiceRequest ServiceRequest[] @relation("serivceRequestId")
+  Service        Service[]        @relation("serviceCityId")
+  provinceId     String
+  Province       Province         @relation("cityProvinceId", fields: [provinceId], references: [id])
+
+  @@index([provinceId])
+  @@index([name], map: "name")
+}
+
+model Province {
+  id        String   @id
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users          User[]           @relation("provinceId")
+  Citys          City[]           @relation("cityProvinceId")
+  ServiceRequest ServiceRequest[] @relation("serviceRequestProvinceId")
+  Service        Service[]        @relation("serviceProvinceId")
+
+  @@index([name], map: "name")
 }
 
 model Review {
@@ -98,7 +138,6 @@ model ServiceRequest {
   details       Json?
   address       String?
   amount        String?
-  city          String?
   date          DateTime?
   description   String?
   province      String?
@@ -109,7 +148,14 @@ model ServiceRequest {
   bugdets       Budget[]
   coments       Comment[]
   notifications Notification[]
+  cityId        String?
+  City          City?          @relation("serivceRequestId", fields: [cityId], references: [id])
+  proviceId     String?
+  Province      Province?      @relation("serviceRequestProvinceId", fields: [proviceId], references: [id])
+  provinceId    String?
 
+  @@index([cityId])
+  @@index([proviceId])
   @@index([categoryId])
   @@index([userId])
 }
@@ -147,6 +193,10 @@ model Service {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   categoryId    Int
+  cityId        String?
+  City          City?          @relation("serviceCityId", fields: [cityId], references: [id])
+  provinceId    String?
+  Province      Province?      @relation("serviceProvinceId", fields: [provinceId], references: [id])
   budgetId      String         @unique
   category      Category       @relation(fields: [categoryId], references: [id])
   budget        Budget         @relation(fields: [budgetId], references: [id])
@@ -154,12 +204,13 @@ model Service {
   notifications Notification[]
   comments      Comment[]
 
+  @@index([cityId])
+  @@index([provinceId])
   @@index([categoryId])
   @@index([budgetId])
 }
 
 enum paymentStatus {
-  
   ACREDITADO
   ENVIADO
   PENDIENTE

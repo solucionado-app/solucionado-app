@@ -49,6 +49,7 @@ const formSchema = z.object({
         id: z.number(),
         name: z.string(),
         description: z.string(),
+        slug: z.string(),
       })
     )
     .min(1, { message: "La categoria es requerida" }),

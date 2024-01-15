@@ -32,8 +32,8 @@ export const serviceRequestRouter = createTRPCRouter({
                 details: true,
                 description: true,
                 date: true,
-                city: true,
-                province: true,
+                City: true,
+                Province: true,
             }
         });
     }),
@@ -44,8 +44,8 @@ export const serviceRequestRouter = createTRPCRouter({
             categorySlug: z.string(),
             date: z.date().optional(),
             description: z.string().optional(),
-            province: z.string().optional(),
-            city: z.string().optional(),
+            provinceId: z.string().optional(),
+            cityId: z.string().optional(),
             address: z.string().optional(),
             amount: z.string().optional(),
             schedule: z.string().optional(),
@@ -76,8 +76,16 @@ export const serviceRequestRouter = createTRPCRouter({
                 },
                 date: input.date,
                 description: input.description,
-                province: input.province,
-                city: input.city,
+                City: {
+                    connect: {
+                        id: input.cityId,
+                    },
+                },
+                Province: {
+                    connect: {
+                        id: input.provinceId,
+                    },
+                },
                 address: input.address,
                 amount: input.amount,
                 schedule: input.schedule,
@@ -113,10 +121,10 @@ export const serviceRequestRouter = createTRPCRouter({
             userswithCategory.forEach((user) => {
                 clerkClient.emails.createEmail({
                     fromEmailName: "info",
-                    body: `Hola ${user.first_name || ""} ${user.last_name || ""} hay una nueva solicitud de servicio de ${serviceRequest.category.name} en tu zona.
+                    body: `Hola ${user.first_name || ""} ${user.last_name || ""} hay una nueva solicitud de servicio de ${serviceRequest.category.name ?? ''} en tu zona.
                     Entra a este link para ver los detalles de la solicitud: solucionado-app.vercel.app/solicitudes-de-servicio/${serviceRequest.id}
                     `,
-                    subject: `Solicitud de servicio en ${serviceRequest.category.name}`,
+                    subject: `Solicitud de servicio en ${serviceRequest.category.name ?? ''}`,
                     emailAddressId: user.emailAddressId as string,
                 }).then((res) => {
                      console.log(res)

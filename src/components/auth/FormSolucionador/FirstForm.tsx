@@ -18,9 +18,10 @@ import { useForm } from "react-hook-form";
 import { api } from "~/utils/api"
 import { useUser } from "@clerk/nextjs"
 import { useState } from "react"
-import { TrophyIcon } from "lucide-react"
-import { format } from "util"
+
 import CountdownTimer from "./countdown"
+import { useFormSteps } from "./ContextSolucionadorForm"
+import { type RegisterSolucionadorFormValues, localRegisterSolucionador } from "@/src/lib/localStorage"
 
 
 const phoneRegex = new RegExp(
@@ -31,14 +32,15 @@ const formSchema = z.object({
 });
 
 const codeSchema = z.object({
-    code: z.string({required_error: "Debes introducir un codigo"}).min(1, { message: "El codigo es requerido" })
+    code: z.string({ required_error: "Debes introducir un codigo" }).min(1, { message: "El codigo es requerido" })
 });
 
 
 export default function FirtForm() {
     const { user, isSignedIn } = useUser()
     const [verifying, setVerifying] = useState(false)
-    const [phone, setPhone] = useState<PhoneNumberResource>() 
+    const [phone, setPhone] = useState<PhoneNumberResource>()
+    const local: RegisterSolucionadorFormValues = localRegisterSolucionador.get()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -53,10 +55,17 @@ export default function FirtForm() {
         }
     })
 
-    const { data: categories, isLoading } = api.categories.getAll.useQuery();
+
+
+    const { currentStep, setCurrentStep } = useFormSteps();
+    const handleNextStep = () => {
+        setCurrentStep(currentStep + 1);
+    };
+
     const { mutate } = api.user.update.useMutation()
+
     // 1. Define your form.
-    
+
     // console.log(user?.phoneNumbers)
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -65,16 +74,26 @@ export default function FirtForm() {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
         const newPhoneNumber = '+549' + values.phone
-        console.log('values',values, id)
+
+        console.log('values', values, id)
         console.log(user.phoneNumbers)
         if (user?.phoneNumbers && user?.phoneNumbers.length > 0) {
-           const exitingPhone= user?.phoneNumbers.find( (phone) => {
+            const exitingPhone = user?.phoneNumbers.find((phone) => {
                 console.log(phone)
                 console.log(phone.phoneNumber)
                 console.log(newPhoneNumber)
-            return phone.phoneNumber === newPhoneNumber})
-           console.log('existiendo',exitingPhone)
-
+                return phone.phoneNumber === newPhoneNumber
+            })
+            console.log('existiendo', exitingPhone)
+            if (user.hasVerifiedPhoneNumber && exitingPhone) {
+                const newLocal: RegisterSolucionadorFormValues = {
+                    ...local,
+                    phone: values.phone,
+                }
+                localRegisterSolucionador.set(newLocal)
+                handleNextStep()
+                return
+            }
             if (exitingPhone) {
                 try {
                     const code = await exitingPhone.prepareVerification()
@@ -85,9 +104,9 @@ export default function FirtForm() {
                     setVerifying(true)
                     verificationForm.reset()
                 }
-                catch(error){
-                    let {message} = error as { message: string }
-                    form.setError('phone', {message})
+                catch (error) {
+                    const { message } = error as { message: string }
+                    form.setError('phone', { message })
                     console.log(error)
                 }
             }
@@ -107,12 +126,13 @@ export default function FirtForm() {
                 setVerifying(true)
 
             } catch (error) {
-                let {message} = error as { message: string }
-                form.setError('phone', { message})
+                const { message } = error as { message: string }
+                form.setError('phone', { message: message })
                 console.log(error)
             }
         }
     }
+
     const onSubmitCode = async (values: z.infer<typeof codeSchema>) => {
         if (!isSignedIn || !phone) return null
         const { id } = user
@@ -123,10 +143,23 @@ export default function FirtForm() {
         console.log(values.code)
         try {
             await phone.attemptVerification({ code: values.code })
+            mutate({
+                phone: phone.phoneNumber,
+                userId: id,
+            }, {
+                onSuccess: () => {
+                    const newLocal: RegisterSolucionadorFormValues = {
+                        ...local,
+                        phone: phone.phoneNumber
+                    }
+                    localRegisterSolucionador.set(newLocal)
+                    handleNextStep()
+                }
+            })
         }
         catch (error) {
-            let {errors} = error as { errors : {message: string}[]}
-            verificationForm.setError('code', { message: errors[0]?.message})
+            const { errors } = error as { errors: { message: string }[] }
+            verificationForm.setError('code', { message: errors[0]?.message })
             console.log(verificationForm.getFieldState('code'))
 
             console.log(error, errors[0]?.message)
@@ -145,9 +178,9 @@ export default function FirtForm() {
             verificationForm.reset()
 
         }
-        catch (error ) {
-            let {message} = error as { message: string }
-            verificationForm.setError('code', { message: message})
+        catch (error) {
+            const { message } = error as { message: string }
+            verificationForm.setError('code', { message: message })
 
             console.log(error)
         }
@@ -167,9 +200,9 @@ export default function FirtForm() {
                                 <Input placeholder="" {...field} value={field.value} />
                             </FormControl>
                             <FormDescription>
-                            Se envio un codigo a {phone?.phoneNumber} si no te ha llegado presiona aqui para <span onClick={reAttemptVerification} className="text-blue-500 cursor-pointer">reenviar</span>
+                                Se envio un codigo a {phone?.phoneNumber} si no te ha llegado presiona aqui para <span onClick={reAttemptVerification} className="text-blue-500 cursor-pointer">reenviar</span>
 
-                            { phone?.verification?.expireAt ? <CountdownTimer expireAt={phone?.verification?.expireAt}/> : null}
+                                {phone?.verification?.expireAt ? <CountdownTimer expireAt={phone?.verification?.expireAt} /> : null}
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -179,31 +212,31 @@ export default function FirtForm() {
             </form>
         </Form>
     )
-        return (
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 w-full">
-    
-                    <FormField
-                        control={form.control}
-                        name="phone"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Telofono</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="ej: 2984694512" {...field} />
-                                </FormControl>
-                                <FormDescription>
-                                    Enviaremos un codigo de verificacion a este numero con una expiracion de 10min.
-                                </FormDescription>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                   
-                    <Button type="submit">Siguiente</Button>
-                </form>
-            </Form>
-        )
-    
-    
+    return (
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 w-full">
+
+                <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Telofono</FormLabel>
+                            <FormControl>
+                                <Input placeholder="ej: 2984694512" {...field} />
+                            </FormControl>
+                            <FormDescription>
+                                Enviaremos un codigo de verificacion a este numero con una expiracion de 10min.
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <Button type="submit">Siguiente</Button>
+            </form>
+        </Form>
+    )
+
+
 }

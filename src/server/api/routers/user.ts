@@ -64,12 +64,15 @@ export const userRouter = createTRPCRouter({
         cuit: z.string().optional(),
         phone: z.string().optional(),
         address: z.string().optional(),
+        cityId: z.string().optional(),
+        provinceId: z.string().optional(),
         categories: z
           .array(
             z.object({
               id: z.number(),
               name: z.string(),
-              description: z.string(),
+              description: z.string().optional(),
+              slug : z.string(),
             })
           )
           .optional(),
@@ -96,6 +99,16 @@ export const userRouter = createTRPCRouter({
                 id: category.id,
               };
             }),
+          },
+          City: {
+            connect: input?.cityId ? {
+              id: input?.cityId,
+            }: undefined,
+          },
+          Province: {
+            connect: input?.provinceId ? {
+              id: input?.provinceId,
+            } : undefined,
           },
         },
       });

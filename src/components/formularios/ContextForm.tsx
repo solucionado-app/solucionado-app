@@ -52,33 +52,52 @@ export const FormStepsProvider = ({ children }: Props) => {
             }
         },
     })
+    const citymutation = api.city.findOrcreate.useMutation()
+    const provincemutation = api.province.findOrcreate.useMutation()
     const { user } = useUser()
     const utils = trpc.useContext()
     const notification = api.notification.create.useMutation()
     const handleSubmition = (local: ServiceRequest | undefined) => {
         const date = new Date(local?.date as Date)
 
-        requestMutation.mutate({
-            ...local,
-            emailaddress: user?.primaryEmailAddressId || "",
-            date: date,
-            city: local?.city?.nombre,
-            province: local?.province?.nombre,
-            details: local?.details,
-            categorySlug: router.query?.slug as string,
+        provincemutation.mutate({
+            nombre: local?.province?.nombre as string,
+            id: local?.province?.id as string,
         }, {
-            onSuccess: () => {
-                void utils.serviceRequest.getAll.invalidate()
-                void utils.notification.getAll.invalidate()
-                void utils.notification.countUnRead.invalidate()
+            onSuccess: (provincedata) => {
+                citymutation.mutate({
+                    nombre: local?.city?.nombre as string,
+                    id: local?.city?.id as string,
+                    provinceId: provincedata.id,
+                }, {
+                    onSuccess: (citydata) => {
+                        requestMutation.mutate({
+                            ...local,
+                            emailaddress: user?.primaryEmailAddressId || "",
+                            date: date,
+                            cityId: citydata?.id,
+                            provinceId: provincedata.id,
+                            details: local?.details,
+                            categorySlug: router.query?.slug as string,
+                        }, {
+                            onSuccess: () => {
+                                void utils.serviceRequest.getAll.invalidate()
+                                void utils.notification.getAll.invalidate()
+                                void utils.notification.countUnRead.invalidate()
 
-                void router.push("/solicitudes-de-servicio")
-                const slug = router.query.slug as string
-                localStorageRequests.set({
-                    ...localStorageRequests.get(), [slug]: {}
+                                void router.push("/solicitudes-de-servicio")
+                                const slug = router.query.slug as string
+                                localStorageRequests.set({
+                                    ...localStorageRequests.get(), [slug]: {}
+                                })
+                            }
+                        })
+                    }
                 })
             }
         })
+
+
 
     }
 

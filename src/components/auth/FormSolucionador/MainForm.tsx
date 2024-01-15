@@ -3,12 +3,27 @@ import FirstForm from './FirstForm';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { ArrowBigLeft } from 'lucide-react';
-import { type FormValues, localStorageRequests } from '~/lib/localStorage';
+import { localRegisterSolucionador, type RegisterSolucionadorFormValues } from '~/lib/localStorage';
 import { useFormSteps } from './ContextSolucionadorForm';
 import { useUser } from '@clerk/nextjs';
 
 
-const getSecondStep = () => dynamic(() => import(`~/components/formularios/SecondStep`), {
+const getThirdStep = () => dynamic(() => import(`~/components/auth/FormSolucionador/ThirdStep`), {
+    loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
+})
+
+const getSecondStep = () => dynamic(() => import(`~/components/auth/FormSolucionador/SecondStep`), {
+    loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
+})
+
+const getFourthStep = () => dynamic(() => import(`~/components/auth/FormSolucionador/FourthStep`), {
+    loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
+})
+
+const getFifthStep = () => dynamic(() => import(`~/components/auth/FormSolucionador/FifthStep`), {
+    loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
+})
+const getSixthStep = () => dynamic(() => import(`~/components/auth/FormSolucionador/SixthStep`), {
     loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
 })
 export default function MainForm() {
@@ -18,7 +33,13 @@ export default function MainForm() {
     const handlePreviousStep = () => {
         setCurrentStep(currentStep - 1);
     };
-    // const local: FormValues = localStorageRequests.get()
+    const DynamictThirdStep = getThirdStep()
+    const DynamicFourthStep = getFourthStep()
+    const DynamicFifthStep = getFifthStep()
+    const DynamicSixthStep = getSixthStep()
+
+
+    // const local: FormValues = localRegisterSolucionador.get()
     // const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug) && JSON.stringify(local[`${slug}`]) !== '{}';
 
     // useEffect(() => {
@@ -41,6 +62,13 @@ export default function MainForm() {
                 <div className='max-w-md w-full mx-auto flex flex-col'>
                     {currentStep === 0 && <FirstForm />}
                     {currentStep === 1 && <DynamicSecondStep />}
+                    {currentStep === 2 && <DynamictThirdStep />}
+                    {currentStep === 3 && <DynamicFourthStep />}
+                    {currentStep === 4 && <DynamicFifthStep />}
+                    {currentStep === 5 && <DynamicSixthStep />}
+
+
+
                 </div>
             </div>
         </>
