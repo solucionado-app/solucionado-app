@@ -40,11 +40,11 @@ async function handler(request: Request) {
   if (eventType === "user.created" || eventType === "user.updated") {
     const { id, ...attributes } = evt.data;
     const emailId = attributes.primary_email_address_id as string;
-    const { first_name, last_name, email_addresses: emailsList, image_url, primary_email_address_id, public_metadata } = attributes;
+    const { first_name, last_name, email_addresses: emailsList, image_url, primary_email_address_id, unsafe_metadata } = attributes;
     let email = "";
     let role: roledb = 'USER'; // default value
-    if (typeof public_metadata === 'object' && public_metadata !== null && (public_metadata as { role?: roledb }).role === 'SOLUCIONADOR') {
-      const { role: roleMetadata } = public_metadata as { role?: roledb };
+    if (typeof unsafe_metadata === 'object' && unsafe_metadata !== null && (unsafe_metadata as { role?: roledb }).role === 'SOLUCIONADOR') {
+      const { role: roleMetadata } = unsafe_metadata as { role?: roledb };
       if (roleMetadata === 'SOLUCIONADOR') {
         role = roleMetadata;
       }
