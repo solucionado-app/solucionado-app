@@ -18,6 +18,9 @@ export const userRouter = createTRPCRouter({
     }
     const currentUser = ctx.prisma.user.findUnique({
       where: { externalId: ctx.auth.userId },
+      include: {
+        categories: true,
+      },
     });
     return currentUser;
   }),

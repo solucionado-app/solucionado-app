@@ -225,7 +225,7 @@ export default function SecondStep() {
                 />
                 <ProvinceAndCityOptions formControl={form.control} formSetValue={form.setValue} formGetValues={form.getValues} />
 
-                <Button type="submit">Siguiente</Button>
+                <Button className="w-full" type="submit">Siguiente</Button>
             </form>
         </Form>
     )

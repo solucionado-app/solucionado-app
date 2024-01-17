@@ -214,7 +214,7 @@ export default function FirtForm() {
     )
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 w-full">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
 
                 <FormField
                     control={form.control}

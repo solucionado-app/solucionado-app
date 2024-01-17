@@ -2,12 +2,11 @@
 
 import { useUser } from "@clerk/nextjs";
 import { User } from "@prisma/client";
-
-import { useRouter } from "next/router";
+import { type UserResource } from "@clerk/nextjs/node_modules/@clerk/types/dist/user";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { type UserSolucionador, localStorageRequests, localRegisterSolucionador, RegisterSolucionadorFormValues } from "~/lib/localStorage";
 import { api } from "~/utils/api";
-import { trpc } from "~/utils/trpc";
+import { useRouter } from "next/navigation";
 
 interface FormStepsContextType {
     currentStep: number;
@@ -39,31 +38,60 @@ export const FormStepsProvider = ({ children }: Props) => {
     const local: RegisterSolucionadorFormValues = localRegisterSolucionador.get()
     console.log(local)
 
-    const [currentStep, setCurrentStep] = useState(user?.hasVerifiedPhoneNumber ? 0 : 1);
-    const router = useRouter()
+    const [currentStep, setCurrentStep] = useState(0);
     const [formValues, setFormValues] = useState<Record<string, any>>({});
+    const prismaUser = api.user.getById.useQuery(undefined, {
+        enabled: !!user?.id
+    })
+
+    type userDb = typeof prismaUser.data
+
+    const router = useRouter()
+    const determineInitialStep = (user: UserResource, userFromdb: userDb) => {
+
+        if (!user.hasVerifiedPhoneNumber || !user?.phoneNumbers?.length) {
+            return 0; // Phone number step
+        } else if (!userFromdb?.dni) {
+            return 1; // Second step
+        } else if (!userFromdb?.cbu) {
+            return 2; // Third step
+        } else if (!userFromdb?.cuit) {
+            return 3; // Fourth step
+        } else if (!userFromdb?.cityId || !userFromdb?.address) {
+            return 4; // Fifth step
+        } else if (userFromdb?.categories?.length === 0) {
+            return 5; // Fifth step
+        } else {
+
+            return 6;
+            // All steps completed
+        }
+    };
+
 
     useEffect(() => {
-        if (!user?.hasVerifiedPhoneNumber) {
-            setCurrentStep(0)
-        }
-        if (local.step) {
-            setCurrentStep(local.step)
-        }
 
+
+
+        if (!prismaUser.isLoading && !prismaUser.data) return
+        if (!user) return
+        const initialStep = determineInitialStep(user, prismaUser.data)
+        setCurrentStep(initialStep)
+        // if (local.step) {
+        //     setCurrentStep(local.step)
+        // }
         return () => {
             setCurrentStep(0)
         }
 
-    }, [local.step])
+    }, [local.step, user, prismaUser.data, prismaUser.isLoading])
     const userMutation = api.user.update.useMutation({
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         onSuccess: (data) => {
             console.log(data)
         },
     })
-    const utils = trpc.useContext()
-    const notification = api.notification.create.useMutation()
+
 
 
 

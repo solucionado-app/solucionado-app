@@ -44,9 +44,7 @@ export default function SecondStep() {
     })
 
     const { currentStep, setCurrentStep } = useFormSteps();
-    const handleNextStep = () => {
-        setCurrentStep(currentStep + 1);
-    };
+
     const router = useRouter()
     const { mutate } = api.user.update.useMutation()
     // 1. Define your form.
@@ -94,7 +92,7 @@ export default function SecondStep() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 ">
 
                 <FormField
                     control={form.control}
