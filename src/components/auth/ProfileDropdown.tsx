@@ -45,7 +45,7 @@ const ProfileDropdown = ({ children }: Props) => {
                 ? "font-semibold text-sol_lightBlue"
                 : ""
                 }`}
-              href="/completar-perfil"
+              href="/registro/solucionador/completar-perfil"
             >
               Completar Perfil
             </Link>

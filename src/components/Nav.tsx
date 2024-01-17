@@ -249,15 +249,15 @@ export default function Nav() {
 
 
           <li>
-            <a
+            <Link
               className={`text-sm sm:text-lg ${pathName === "/sobre-nosotros"
                 ? "font-semibold underline decoration-solYellow  	"
                 : " hover:underline  hover:decoration-solYellow"
                 } decoration-4  underline-offset-8 `}
-              href="/sobre-nosotros"
+              href="/"
             >
               Sobre nosotros
-            </a>
+            </Link>
           </li>
 
 
@@ -295,7 +295,7 @@ export default function Nav() {
                   scroll: false,
                 })}
               >
-                Unete
+                Únete
               </span>
             </SignedOut>
           )}

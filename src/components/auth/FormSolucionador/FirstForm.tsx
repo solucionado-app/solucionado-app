@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import Select from 'react-select'
-
+import { PhoneNumberResource } from "@clerk/types/dist/phoneNumber"
 import { Button } from "~/components/ui/button"
 import {
     Form,
@@ -18,7 +17,11 @@ import { Input } from "~/components/ui/input"
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api"
 import { useUser } from "@clerk/nextjs"
-import ProvinceAndCityOptions from "../../formularios/ProvinceAndCityOptions"
+import { useState } from "react"
+
+import CountdownTimer from "./countdown"
+import { useFormSteps } from "./ContextSolucionadorForm"
+import { type RegisterSolucionadorFormValues, localRegisterSolucionador } from "@/src/lib/localStorage"
 
 
 const phoneRegex = new RegExp(
@@ -26,89 +29,193 @@ const phoneRegex = new RegExp(
 );
 const formSchema = z.object({
     phone: z.string({ required_error: "Debes introducir un numero de telefono" }).min(1, { message: "El telefono es requerido" }).regex(phoneRegex, 'Invalid Number!'),
-    dni: z.string().min(1, { message: "El dni es requerido" }),
-    address: z.string().min(1, { message: "La direccion es requerida" }),
-    cuit: z.string().min(1, { message: "El cuit es requerido" }),
-    province: z.object({
-        id: z.string(),
-        nombre: z.string(),
-    }),
-    city: z.object({
-        id: z.string(),
-        nombre: z.string(),
-    }),
-    categories: z.array(z.object({
-        id: z.number(),
-        name: z.string(),
-        description: z.string(),
-    })).min(1, { message: "La categoria es requerida" }),
 });
+
+const codeSchema = z.object({
+    code: z.string({ required_error: "Debes introducir un codigo" }).min(1, { message: "El codigo es requerido" })
+});
+
+
 export default function FirtForm() {
     const { user, isSignedIn } = useUser()
+    const [verifying, setVerifying] = useState(false)
+    const [phone, setPhone] = useState<PhoneNumberResource>()
+    const local: RegisterSolucionadorFormValues = localRegisterSolucionador.get()
     const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema)
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            phone: "",
+        }
     })
-    const { data: categories, isLoading } = api.categories.getAll.useQuery();
+
+    const verificationForm = useForm<z.infer<typeof codeSchema>>({
+        resolver: zodResolver(codeSchema),
+        defaultValues: {
+            code: "",
+        }
+    })
+
+
+
+    const { currentStep, setCurrentStep } = useFormSteps();
+    const handleNextStep = () => {
+        setCurrentStep(currentStep + 1);
+    };
+
     const { mutate } = api.user.update.useMutation()
+
     // 1. Define your form.
 
+    // console.log(user?.phoneNumbers)
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof formSchema>) {
         if (!isSignedIn) return null
         const { id } = user
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        mutate({
-            userId: id,
-            phone: values.phone,
-            dni: values.dni,
-            address: values.address,
-            cuit: values.cuit,
-            categories: values.categories,
-            role: 'SOLUCIONADOR',
-        }, {
-            onSuccess: () => {
-                window.location.replace(`https://auth.mercadopago.com/authorization?client_id=${process.env.NEXT_PUBLIC_MP_CLIENT_ID ?? ''}&response_type=code&platform_id=mp&state=${user ? user.id : ''}&redirect_uri=${process.env.NEXT_PUBLIC_MP_DOMAIN ?? ''}/api/webhooks/mercadopago/autorization`)
-            }
-        })
-        // console.log(values)
-    }
-    // ...
+        const newPhoneNumber = '+549' + values.phone
 
-    return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+        console.log('values', values, id)
+        console.log(user.phoneNumbers)
+        if (user?.phoneNumbers && user?.phoneNumbers.length > 0) {
+            const exitingPhone = user?.phoneNumbers.find((phone) => {
+                console.log(phone)
+                console.log(phone.phoneNumber)
+                console.log(newPhoneNumber)
+                return phone.phoneNumber === newPhoneNumber
+            })
+            console.log('existiendo', exitingPhone)
+            if (user.hasVerifiedPhoneNumber && exitingPhone) {
+                const newLocal: RegisterSolucionadorFormValues = {
+                    ...local,
+                    phone: values.phone,
+                }
+                localRegisterSolucionador.set(newLocal)
+                handleNextStep()
+                return
+            }
+            if (exitingPhone) {
+                try {
+                    const code = await exitingPhone.prepareVerification()
+                    console.log(code)
+                    console.log('existiendo')
+                    console.log(exitingPhone)
+                    setPhone(code)
+                    setVerifying(true)
+                    verificationForm.reset()
+                }
+                catch (error) {
+                    const { message } = error as { message: string }
+                    form.setError('phone', { message })
+                    console.log(error)
+                }
+            }
+        }
+
+        else {
+
+
+            try {
+                const updated = await user.createPhoneNumber({ phoneNumber: newPhoneNumber })
+                const code = await updated.prepareVerification()
+
+                console.log(code)
+                console.log(updated)
+                verificationForm.reset()
+                setPhone(updated)
+                setVerifying(true)
+
+            } catch (error) {
+                const { message } = error as { message: string }
+                form.setError('phone', { message: message })
+                console.log(error)
+            }
+        }
+    }
+
+    const onSubmitCode = async (values: z.infer<typeof codeSchema>) => {
+        if (!isSignedIn || !phone) return null
+        const { id } = user
+        // Do something with the form values.
+        // ✅ This will be type-safe and validated.
+
+        console.log(phone)
+        console.log(values.code)
+        try {
+            await phone.attemptVerification({ code: values.code })
+            mutate({
+                phone: phone.phoneNumber,
+                userId: id,
+            }, {
+                onSuccess: () => {
+                    const newLocal: RegisterSolucionadorFormValues = {
+                        ...local,
+                        phone: phone.phoneNumber
+                    }
+                    localRegisterSolucionador.set(newLocal)
+                    handleNextStep()
+                }
+            })
+        }
+        catch (error) {
+            const { errors } = error as { errors: { message: string }[] }
+            verificationForm.setError('code', { message: errors[0]?.message })
+            console.log(verificationForm.getFieldState('code'))
+
+            console.log(error, errors[0]?.message)
+        }
+    }
+
+    const reAttemptVerification = async () => {
+        if (!isSignedIn || !phone) return null
+        const { id } = user
+        // Do something with the form values.
+        // ✅ This will be type-safe and validated.
+
+        console.log(phone)
+        try {
+            await phone.prepareVerification()
+            verificationForm.reset()
+
+        }
+        catch (error) {
+            const { message } = error as { message: string }
+            verificationForm.setError('code', { message: message })
+
+            console.log(error)
+        }
+    }
+
+    if (verifying) return (
+        <Form {...verificationForm}>
+            <h3>Verificacion</h3>
+            <form onSubmit={verificationForm.handleSubmit(onSubmitCode)} className="space-y-2 w-full">
                 <FormField
-                    control={form.control}
-                    name="categories"
+                    control={verificationForm.control}
+                    name="code"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Categorias</FormLabel>
+                            <FormLabel>Codigo</FormLabel>
                             <FormControl>
-                                <Select
-                                    {...field}
-                                    styles={{
-                                        control: (styles) => ({
-                                            ...styles,
-                                            backgroundColor: 'white',
-                                        }),
-                                        menuList: (provided) => ({
-                                            ...provided,
-                                            backgroundColor: 'white',
-                                        }),
-                                    }}
-                                    isLoading={isLoading}
-                                    isMulti placeholder='Elige las categorias' options={categories}
-                                    getOptionLabel={(option) => option.name}
-                                    getOptionValue={(option) => option.id.toString()}
-                                />
+                                <Input placeholder="" {...field} value={field.value} />
                             </FormControl>
                             <FormDescription>
+                                Se envio un codigo a {phone?.phoneNumber} si no te ha llegado presiona aqui para <span onClick={reAttemptVerification} className="text-blue-500 cursor-pointer">reenviar</span>
+
+                                {phone?.verification?.expireAt ? <CountdownTimer expireAt={phone?.verification?.expireAt} /> : null}
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
+                <Button type="submit">Verificar</Button>
+            </form>
+        </Form>
+    )
+    return (
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+
                 <FormField
                     control={form.control}
                     name="phone"
@@ -119,60 +226,17 @@ export default function FirtForm() {
                                 <Input placeholder="ej: 2984694512" {...field} />
                             </FormControl>
                             <FormDescription>
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="dni"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Dni</FormLabel>
-                            <FormControl>
-                                <Input placeholder="" {...field} />
-                            </FormControl>
-                            <FormDescription>
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="address"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Domiciolio Actual</FormLabel>
-                            <FormControl>
-                                <Input placeholder="" {...field} />
-                            </FormControl>
-                            <FormDescription>
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <ProvinceAndCityOptions formControl={form.control} formSetValue={form.setValue} formGetValues={form.getValues} />
-                <FormField
-                    control={form.control}
-                    name="cuit"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>CUIT - CUIL</FormLabel>
-                            <FormControl>
-                                <Input placeholder="" {...field} />
-                            </FormControl>
-                            <FormDescription>
+                                Enviaremos un codigo de verificacion a este numero con una expiracion de 10min.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
 
-                <Button type="submit">Registrarse</Button>
+                <Button type="submit">Siguiente</Button>
             </form>
         </Form>
     )
+
+
 }

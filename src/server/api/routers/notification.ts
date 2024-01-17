@@ -373,6 +373,7 @@ export const notificationRouter = createTRPCRouter({
             content: z.string(),
             title: z.string(),
             link: z.string().optional(),
+            cityId: z.string().optional(),
         })
     ).mutation(async ({ ctx, input }) => {
         const users = await ctx.prisma.user.findMany({
@@ -381,6 +382,9 @@ export const notificationRouter = createTRPCRouter({
                     some: {
                         slug: input.categorySlug,
                     },
+                },
+                City: {
+                    id: input.cityId,
                 },
             },
         });

@@ -8,6 +8,7 @@ export type UserSolucionador = User & {
         id: number
         name: string
         description: string
+        slug: string
     }[]
 }
 
@@ -50,10 +51,31 @@ export interface ServiceRequest {
     details?: Record<string, any>;
 }
 
+
+export type RegisterSolucionadorFormValues = {
+   phone?: string;
+    dni?: string;
+    address?: string;
+    cuit?: string;
+    province?: {id: string, nombre: string};
+    city?: { id: string, nombre: string };
+    categories?: Category[];
+    cbu?: string;
+    step?: number;
+}
+
 export const localStorageRequests = observable({});
+
+
 
 // Persist this observable
 persistObservable(localStorageRequests, {
     local: 'serviceRequests', // Unique name
+    persistLocal: ObservablePersistLocalStorage
+})
+
+export const localRegisterSolucionador = observable({});
+persistObservable(localRegisterSolucionador, {
+    local: 'registerSolucionador', // Unique name
     persistLocal: ObservablePersistLocalStorage
 })
