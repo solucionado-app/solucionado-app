@@ -1,5 +1,5 @@
-import { clerkClient } from '@clerk/nextjs';
-import { Clerk, authMiddleware } from '@clerk/nextjs/server';
+import {  clerkClient } from '@clerk/nextjs';
+import { redirectToSignIn, authMiddleware } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 export default authMiddleware({
     afterAuth: async (auth, req, evt) => {
@@ -7,10 +7,15 @@ export default authMiddleware({
         // if(auth.user?.phoneNumbers.length === 0){
         //     return NextResponse.redirect('/registro/usuario')
         // }
+        console.log('authed', auth.isPublicRoute, auth.userId, req.nextUrl.pathname)
         if(auth.isApiRoute){
             return NextResponse.next()
         }
-        if(req.nextUrl.pathname === '/registro/usuario' || req.nextUrl.pathname === '/registro/solucionador' || req.nextUrl.pathname === '/registro/solucionador/completar-perfil' || req.nextUrl.pathname === '/registro/usuario/completar-perfil'){
+        if (!auth.userId && !auth.isPublicRoute){
+            const url = new URL(`/login?redirect=${req.nextUrl.pathname}`, req.url);
+            return NextResponse.redirect(url)
+        }
+        if(req.nextUrl.pathname === '/registro/usuario' || req.nextUrl.pathname === '/registro/solucionador' || req.nextUrl.pathname === '/registro/solucionador/completar-perfil' || req.nextUrl.pathname === '/registro/solucionador/completar-perfil'){
             return NextResponse.next()
         }
         try{
@@ -31,8 +36,7 @@ export default authMiddleware({
         }
 
     },
-    publicRoutes: ["/", "/contacto", '/(login)(.*)','/registro','/registro/usuario','/registro/solucionador', "/(solucionar/)(.*)", "/(api|trpc)(.*)", "/api/webhooks/mercadopago/autorization"],
-
+    publicRoutes: ["/", "/contacto", '/(login)(.*)','/registro','/registro/usuario','/registro/solucionador/', "/(solucionar/)(.*)", "/(api|trpc)(.*)", "/api/webhooks/mercadopago/autorization"],
     ignoredRoutes: ["/api/webhooks/mercadopago/autorization", "/api/webhooks/user"],
 });
 

@@ -48,8 +48,9 @@ export const FormStepsProvider = ({ children }: Props) => {
 
     const router = useRouter()
     const determineInitialStep = (user: UserResource, userFromdb: userDb) => {
-
+        console.log(userFromdb, user.hasVerifiedPhoneNumber)
         if (!user.hasVerifiedPhoneNumber || !user?.phoneNumbers?.length) {
+
             return 0; // Phone number step
         } else if (!userFromdb?.dni) {
             return 1; // Second step
@@ -71,6 +72,7 @@ export const FormStepsProvider = ({ children }: Props) => {
 
     useEffect(() => {
 
+        console.log(prismaUser.data)
 
 
         if (!prismaUser.isLoading && !prismaUser.data) return

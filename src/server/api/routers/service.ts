@@ -1,5 +1,4 @@
 import { clerkClient } from "@clerk/nextjs";
-import { Payment } from "@mercadopago/sdk-react";
 import {  Status,  paymentStatus } from "@prisma/client";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -42,7 +41,7 @@ export const serviceRouter = createTRPCRouter({
         paymentStatus: paymentStatus.ACREDITADO,
       },
     });
-    
+
     const user = await ctx.prisma.user.findUnique({
       where: {
         id: input.userId,
@@ -55,7 +54,7 @@ export const serviceRouter = createTRPCRouter({
         emailAddressId: true,
       },
     });
-    
+
     clerkClient.emails.createEmail({
           fromEmailName: "info",
           body: `Hola ${user?.first_name || ""} ${user?.last_name || ""} se ha acreditado el pago de tu servicio de ${input.categoryName} por un monto de $${input.price} en tu cuenta bancaria. Enlace al servicio: ${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'https:solucionado.com.ar'}/servicios/${input.id} `,

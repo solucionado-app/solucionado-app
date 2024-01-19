@@ -1,41 +1,60 @@
 import { Button } from '@/app/ui/button';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
-import './Conffeti.css';
-import { ParticlesContainer } from './Particles';
-const colors = ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a'];
+import React, { useEffect } from 'react';
+import { confetti } from '@tsparticles/confetti';
 
-const ConfettiPiece: React.FC = () => {
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    const left = Math.random() * 100;
-    const animationDuration = Math.random() * 3 + 2;
 
-    return (
-        <div className="confetti-piece" style={{ left: `${left}%`, animationDuration: `${animationDuration}s`, backgroundColor: color }} />
-    );
-};
 const Confetti: React.FC = () => {
-    const [confetti, setConfetti] = useState(false);
     const router = useRouter();
-    const handleButtonClick = () => {
-        setConfetti(true);
-        router.push('/');
-    };
 
-    const config = {
-        angle: 90,
-        spread: 360,
-        startVelocity: 20,
-        elementCount: 70,
-        dragFriction: 0.12,
-        duration: 3000,
-        stagger: 3,
-        width: '10px',
-        height: '10px',
-        perspective: '500px',
-        colors: ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a']
-    };
-    const pieces = 70;
+
+    useEffect(() => {
+        const count = 200;
+        const defaults = {
+            origin: { y: 0.8 },
+        };
+
+        function fire(particleRatio: number, opts: unknown) {
+            return confetti(
+                Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio),
+                })
+            );
+        }
+        const confettiAni = () => {
+            return Promise.all([
+                fire(0.25, {
+                    spread: 26,
+                    startVelocity: 55,
+                }),
+                fire(0.2, {
+                    spread: 60,
+                }),
+                fire(0.35, {
+                    spread: 100,
+                    decay: 0.91,
+                    scalar: 0.8,
+                }),
+                fire(0.1, {
+                    spread: 120,
+                    startVelocity: 25,
+                    decay: 0.92,
+                    scalar: 1.2,
+                }),
+                fire(0.1, {
+                    spread: 120,
+                    startVelocity: 45,
+                }),
+            ]);
+        }
+        confettiAni().then(() => {
+            return
+        }
+        ).catch((err) => {
+            console.log(err);
+        }
+        );
+    }, []);
 
     return (
         <div className="confetti">
@@ -44,10 +63,8 @@ const Confetti: React.FC = () => {
                 <p className='text-gray-500'>Ya podes empezar a recibir solicitudes de trabajo</p>
                 <Button onClick={() => void router.push('/')} className='mt-5'>Ir al inicio</Button>
             </div>
-            {/* {Array.from({ length: pieces }).map((_, i) => (
-                <ConfettiPiece key={i} />
-            ))} */}
-            <ParticlesContainer />
+
+
         </div>
     );
 };
