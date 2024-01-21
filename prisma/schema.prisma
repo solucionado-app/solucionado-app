@@ -153,11 +153,29 @@ model ServiceRequest {
   proviceId     String?
   Province      Province?      @relation("serviceRequestProvinceId", fields: [proviceId], references: [id])
   provinceId    String?
+  photos        PhotoMeta[]    @relation("serviceRequestPhoto")
+  portraitId    String?        @unique
+  portrait      PhotoMeta?     @relation("serviceRequestPortrait", fields: [portraitId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([cityId])
   @@index([proviceId])
   @@index([categoryId])
   @@index([userId])
+}
+
+model PhotoMeta {
+  id               String         @id @default(cuid())
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  url              String
+  serviceRequestId String
+  ServiceRequest   ServiceRequest @relation("serviceRequestPhoto", fields: [serviceRequestId], references: [id])
+
+  serviceRequestPortraitId String?         @unique
+  serviceRequestPortrait   ServiceRequest? @relation("serviceRequestPortrait")
+
+  @@index([serviceRequestId])
+  @@index([serviceRequestPortraitId])
 }
 
 model Budget {

@@ -138,6 +138,7 @@ export default function Nav() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [popover]);
+  console.log(user)
   return (
     <>
 

@@ -4,9 +4,8 @@ import { useUser } from "@clerk/nextjs";
 import { User } from "@prisma/client";
 import { type UserResource } from "@clerk/nextjs/node_modules/@clerk/types/dist/user";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { type UserSolucionador, localStorageRequests, localRegisterSolucionador, RegisterSolucionadorFormValues } from "~/lib/localStorage";
+import { localRegisterSolucionador, RegisterSolucionadorFormValues } from "~/lib/localStorage";
 import { api } from "~/utils/api";
-import { useRouter } from "next/navigation";
 
 interface FormStepsContextType {
     currentStep: number;
@@ -36,7 +35,6 @@ interface Props {
 export const FormStepsProvider = ({ children }: Props) => {
     const { user } = useUser()
     const local: RegisterSolucionadorFormValues = localRegisterSolucionador.get()
-    console.log(local)
 
     const [currentStep, setCurrentStep] = useState(0);
     const [formValues, setFormValues] = useState<Record<string, any>>({});
@@ -46,10 +44,9 @@ export const FormStepsProvider = ({ children }: Props) => {
 
     type userDb = typeof prismaUser.data
 
-    const router = useRouter()
     const determineInitialStep = (user: UserResource, userFromdb: userDb) => {
-
         if (!user.hasVerifiedPhoneNumber || !user?.phoneNumbers?.length) {
+
             return 0; // Phone number step
         } else if (!userFromdb?.dni) {
             return 1; // Second step
@@ -70,19 +67,28 @@ export const FormStepsProvider = ({ children }: Props) => {
 
 
     useEffect(() => {
+        // Check if the step is in local storage
 
+        if (local.step) {
+            setCurrentStep(local.step)
+            return
+        }
+        if (!prismaUser.isLoading) {
+            // If the user data is not loaded or there's no user, reset the step
+            if (!prismaUser.data || !user) {
+                setCurrentStep(0);
+                return;
+            }
 
+            // If the user data is loaded, determine the initial step from the user data
+            const initialStep = determineInitialStep(user, prismaUser.data);
+            setCurrentStep(initialStep);
+        }
 
-        if (!prismaUser.isLoading && !prismaUser.data) return
-        if (!user) return
-        const initialStep = determineInitialStep(user, prismaUser.data)
-        setCurrentStep(initialStep)
-        // if (local.step) {
-        //     setCurrentStep(local.step)
-        // }
         return () => {
             setCurrentStep(0)
         }
+
 
     }, [local.step, user, prismaUser.data, prismaUser.isLoading])
     const userMutation = api.user.update.useMutation({
@@ -91,35 +97,6 @@ export const FormStepsProvider = ({ children }: Props) => {
             console.log(data)
         },
     })
-
-
-
-
-
-    // const handleSubmition = (local: UserSolucionador) => {
-
-    //     userMutation.mutate({
-    //         ...local,
-    //         userId: local.id,
-    //         phone: local.phone || undefined,
-    //         dni: local.dni || undefined,
-    //         address: local.address || undefined,
-    //         cuit: local.cuit || undefined,
-    //         cbu: local.cbu || undefined,
-    //         categories: local.categories || undefined,
-    //         role: local.role || undefined,
-    //     }, {
-    //         onSuccess: () => {
-    //             console.log('success')
-    //             void router.push("/solicitudes-de-servicio")
-    //             const slug = router.query.slug as string
-    //             localStorageRequests.set({
-    //                 ...localStorageRequests.get(), [slug]: {}
-    //             })
-    //         }
-    //     })
-
-    // }
 
     return (
         <FormStepsContext.Provider value={{ currentStep, setCurrentStep, formValues, setFormValues }}>
