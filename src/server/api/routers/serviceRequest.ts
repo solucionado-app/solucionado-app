@@ -2,6 +2,10 @@ import { clerkClient } from "@clerk/nextjs";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
+
+
+
+
 export const serviceRequestRouter = createTRPCRouter({
     getAll: protectedProcedure.query(({ ctx }) => {
         return ctx.prisma.serviceRequest.findMany();
@@ -121,6 +125,8 @@ export const serviceRequestRouter = createTRPCRouter({
             },
         });
         if (userswithCategory?.length > 0) {
+
+
             userswithCategory.forEach((user) => {
                 clerkClient.emails.createEmail({
                     fromEmailName: "info",

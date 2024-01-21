@@ -71,8 +71,6 @@ export default function MainForm() {
                     {currentStep === 4 && <DynamicFifthStep />}
                     {currentStep === 5 && <DynamicSixthStep />}
                     {currentStep === 6 && <Confetti />}
-
-
                 </div>
             </div>
         </>

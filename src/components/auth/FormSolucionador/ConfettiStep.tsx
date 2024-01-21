@@ -11,7 +11,7 @@ const Confetti: React.FC = () => {
     useEffect(() => {
         const count = 200;
         const defaults = {
-            origin: { y: 0.8 },
+            origin: { y: 0.7 },
         };
 
         function fire(particleRatio: number, opts: unknown) {

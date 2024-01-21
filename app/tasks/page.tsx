@@ -10,6 +10,7 @@ import { z } from "zod"
 import { UserNav } from "./components/user-nav"
 // import { taskSchema } from "./data/schema"
 import Services from "./components/Services"
+import { useUser } from "@clerk/nextjs"
 
 export const metadata: Metadata = {
   title: "Tasks",
