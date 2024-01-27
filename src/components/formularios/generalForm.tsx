@@ -137,6 +137,7 @@ export default function GeneralForm() {
                                     />
                                 </FormControl>
                                 <FormDescription>
+                                    Describe tu problema de forma detallada para que los profesionales puedan entenderlo mejor.
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
@@ -185,7 +186,7 @@ export default function GeneralForm() {
                         )}
                     />
 
-                    <Button type="submit">Continuar</Button>
+                    <Button type="submit">Siguiente</Button>
                 </form>
 
             </Form>

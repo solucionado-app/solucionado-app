@@ -2,7 +2,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 
-import { Button } from "~/components/ui/button"
 import {
     Form,
     FormControl,
@@ -22,6 +21,7 @@ import { useState } from "react"
 import DialogAuthConfirmation from "../auth/DialogAuthConfirmation"
 import { type FormValues, localStorageRequests } from "~/lib/localStorage"
 import { useFormSteps } from "./ContextForm"
+import Submitbutton from "../auth/FormSolucionador/Submitbutton"
 const formSchema = z.object({
     numeroDeLamparas: z.coerce.number({ required_error: "Debes introducir un numero de lamparas", }),
 });
@@ -29,7 +29,7 @@ export default function ElectricistasForm() {
     // 1. Define your form.
     const router = useRouter()
     const { isSignedIn } = useUser()
-    const { handleSubmition } = useFormSteps()
+    const { handleSubmition, isSubmitting } = useFormSteps()
     const slug = router.query.slug as string
     const local: FormValues = localStorageRequests.get()
     const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug) && JSON.stringify(local[`${slug}`]) !== '{}' && local[`${slug}`]?.details;
@@ -89,7 +89,7 @@ export default function ElectricistasForm() {
                     />
 
 
-                    <Button type="submit">Cotizar</Button>
+                    <Submitbutton isLoading={isSubmitting} text="Cotizar" />
                 </form>
             </Form>
 

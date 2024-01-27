@@ -9,6 +9,8 @@ import { format } from "date-fns";
 import es from "date-fns/locale/es";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { CldImage } from "next-cloudinary";
 // HomePage.Layout = "OtherLayout"; -> error Type '"OtherLayout"' is not assignable to type '"Main" | "Admin" | undefined'.
 const ServiceRequest: MyPage = () => {
   const router = useRouter();
@@ -41,15 +43,17 @@ const ServiceRequest: MyPage = () => {
             {services && services?.map((service) => (
 
               <div key={service.id} className="w-full">
-                <Card className="relative flex flex-col gap-3 hover:bg-slate-200 p-3 ">
-                  <div className="flex flex-row gap-3 md:gap-10" >
+                <Card className="flex flex-col gap-3 hover:bg-slate-200 p-3 ">
+                  <div className="flex flex-col md:flex-row  gap-1 h-full md:gap-10" >
 
                     {/* Agregar la imagen en la parte izquierda y hacer que ocupe todo el alto de la tarjeta */}
-                    <div className="w-4/12  mt-5 ">
-                      <img src={' https://flowbite.com/docs/images/blog/image-1.jpg'} alt={service.category.name} className="object-cover w-16 md:w-full aspect-square rounded-md " />
+                    {!!service.portrait?.url && <div className="w-full h-48 md:h-56 md:w-4/12 relative  ">
+                      <CldImage src={service.portrait?.url} fill alt={service.category.name} className="object-cover w-16 md:w-full aspect-square rounded-md " />
+
                     </div>
+                    }
                     {/* Mover el resto de los elementos a la derecha de la tarjeta */}
-                    <div className="  flex flex-col md:flex-row gap-4 w-full justify-between">
+                    <div className=" flex flex-col md:flex-row gap-4 w-full justify-between">
                       <div className="md:w-7/10">
                         {service?.status === 'PENDING' && <div className="text-md text-solYellow font-semibold">
                           {'Pendiente'}
@@ -72,7 +76,7 @@ const ServiceRequest: MyPage = () => {
                             <span>Direccion: {service?.address} </span>
                           </p>
                         </div>}
-                        <div className="flex flex-col gap-2 ">
+                        <div className=" md:flex flex-col hidden  gap-2 ">
                           <p className="text-md font-semibold">Descripción</p>
                           {service?.description && <div className="text-sm  text-gray-500">
                             {service?.description}

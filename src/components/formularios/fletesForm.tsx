@@ -26,6 +26,7 @@ import { useFormSteps } from "./ContextForm"
 import { type FormValues, localStorageRequests } from "~/lib/localStorage"
 import DialogAuthConfirmation from "../auth/DialogAuthConfirmation"
 import { useState } from "react"
+import Submitbutton from "../auth/FormSolucionador/Submitbutton"
 
 const formSchema = z.object({
     lugarDePartida: z
@@ -68,7 +69,7 @@ export default function FletesForm() {
     // 1. Define your form.
     const router = useRouter()
     const { isSignedIn } = useUser()
-    const { handleSubmition } = useFormSteps()
+    const { handleSubmition, isSubmitting } = useFormSteps()
     const slug = router.query.slug as string
     const local: FormValues = localStorageRequests.get()
     const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug) && JSON.stringify(local[`${slug}`]) !== '{}' && local[`${slug}`]?.details;
@@ -253,7 +254,7 @@ export default function FletesForm() {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit">Cotizar</Button>
+                    <Submitbutton isLoading={isSubmitting} text="Cotizar" />
                 </form>
             </Form>
             <DialogAuthConfirmation open={open} setOpen={setOpen} />

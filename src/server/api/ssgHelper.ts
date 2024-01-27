@@ -6,7 +6,7 @@ import { type SignedInAuthObject, type SignedOutAuthObject } from "@clerk/nextjs
 
 
 
-export function ssgHelper(auth: SignedInAuthObject | SignedOutAuthObject) {
+export function ssgHelper(auth: SignedInAuthObject | SignedOutAuthObject | undefined) {
     return createServerSideHelpers({
         router: appRouter,
         ctx: createInnerTRPCContext({ auth, revalidateSSG: null }),

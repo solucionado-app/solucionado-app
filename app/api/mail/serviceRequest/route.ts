@@ -2,26 +2,29 @@ import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 import { type EmailRequestProps } from '@/src/emails/NewServiceRequestEmail';
 import NewServiceRequestEmail from '@/src/emails/NewServiceRequestEmail'
 import { render } from "@react-email/render";
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 const mailerSend = new MailerSend({
     apiKey: process.env.MAILERSEND_API_KEY || '',
 });
 
-async function handler(request: Request) {
+export type EmailRequestData = EmailRequestProps & {
+    recipientMail: string;
+};
 
-const {categorieName,requestedByUsername,buttonText,content,link,title,userName ,recipientMail } = await request.json() as EmailRequestProps &{recipientMail:string};
+async function handler(request: NextRequest) {
 
-const emailProps: EmailRequestProps = {
+    const { categorieName, requestedByUsername, buttonText, link, userName, recipientMail } = await request.json() as EmailRequestData &{recipientMail:string};
+
+    const emailProps: EmailRequestProps = {
     categorieName: categorieName,
     requestedByUsername: requestedByUsername,
     buttonText: buttonText,
-    content: content,
     link: link,
-    title: title,
     userName: userName
     // set other props here
 };
+    console.log('emailProps', emailProps)
 const emailHtml = render(NewServiceRequestEmail(emailProps));
 
 

@@ -19,6 +19,7 @@ import { api } from "~/utils/api"
 import { useUser } from "@clerk/nextjs"
 import { type RegisterSolucionadorFormValues, localRegisterSolucionador } from "@/src/lib/localStorage"
 import { useFormSteps } from "./ContextSolucionadorForm"
+import Spinner from "../../ui/spinner"
 
 
 
@@ -37,49 +38,69 @@ export default function SecondStep() {
         }
     })
 
-    const { currentStep, setCurrentStep } = useFormSteps();
+    const { currentStep, setCurrentStep, isLoading, handleStepSubmission } = useFormSteps();
     const handleNextStep = () => {
         setCurrentStep(currentStep + 1);
     };
+
+
     const { mutate } = api.user.update.useMutation()
     // 1. Define your form.
 
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
-        if (!isSignedIn) return null
-        const { id } = user
+
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        mutate({
-            userId: id,
-            cuit: values.cuit,
-        }, {
-            onSuccess: () => {
-                const local = localRegisterSolucionador.get()
-                const newLocal: RegisterSolucionadorFormValues = {
-                    ...local,
-                    cuit: values.cuit,
-                    step: 4,
-                }
-                localRegisterSolucionador.set(newLocal)
-                handleNextStep()
-            },
-            onError: (error) => {
+        // mutate({
+        //     userId: id,
+        //     cuit: values.cuit,
+        // }, {
+        //     onSuccess: () => {
+        //         const local = localRegisterSolucionador.get()
+        //         const newLocal: RegisterSolucionadorFormValues = {
+        //             ...local,
+        //             cuit: values.cuit,
+        //             step: 4,
+        //         }
+        //         localRegisterSolucionador.set(newLocal)
+        //         handleNextStep()
+        //     },
+        //     onError: (error) => {
+        //         if (error.shape?.code === -32603) {
+        //             form.setError('cuit', {
+        //                 type: 'manual',
+        //                 message: 'El cuit ya esta registrado'
+        //             })
+        //             return
+        //         }
+        //         form.setError('cuit', {
+        //             type: 'manual',
+        //             message: error.message
+        //         })
+        //     }
+
+        // })
+
+        handleStepSubmission(currentStep, values)
+            .then(() => {
+                handleNextStep();
+            })
+            .catch((error: { shape?: { code: number; }; message: string; }) => {
                 if (error.shape?.code === -32603) {
                     form.setError('cuit', {
                         type: 'manual',
                         message: 'El cuit ya esta registrado'
-                    })
-                    return
+                    });
+                    return;
                 }
                 form.setError('cuit', {
                     type: 'manual',
                     message: error.message
-                })
-            }
+                });
+            });
 
-        })
-        // console.log(values)
+        //  console.log(values)
     }
     // ...
 
@@ -104,7 +125,10 @@ export default function SecondStep() {
                     )}
                 />
 
-                <Button type="submit">Siguiente</Button>
+                <Button type="submit" className="flex gap-2 w-full" disabled={isLoading}>
+                    {isLoading && <Spinner className="w-5" />}  {isLoading ? 'Enviando...' : 'Siguiente'}
+                </Button>
+                {/* Render the spinner loader when isLoading is true */}
             </form>
         </Form>
     )

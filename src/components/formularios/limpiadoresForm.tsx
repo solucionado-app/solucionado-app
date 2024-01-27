@@ -24,6 +24,7 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { Textarea } from "../ui/textarea"
 import { useFormSteps } from "./ContextForm"
 import { type FormValues, localStorageRequests } from "~/lib/localStorage"
+import Submitbutton from "../auth/FormSolucionador/Submitbutton";
 
 const formSchema = z.object({
     instrumentos: z.enum(["Si", "No"], {
@@ -54,7 +55,7 @@ export default function JardinerosForm() {
 
     const [open, setOpen] = useState(false)
 
-    const { handleSubmition } = useFormSteps();
+    const { handleSubmition, isSubmitting } = useFormSteps();
 
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
@@ -117,7 +118,7 @@ export default function JardinerosForm() {
                             </FormItem>
                         )}
                     />
-                    
+
                     <FormField
                         control={form.control}
                         name="detalles"
@@ -132,11 +133,11 @@ export default function JardinerosForm() {
                                     />
                                 </FormControl>
                                 <FormDescription className="text-xs bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-2">
-                                
-                                    
+
+
                                     <p className="font-bold">Nota:</p>
                                     <p>Opcional, si el cliente no desea detallar esto, corre por cuenta del solucionador en base a que medida establecerá el precio de su servicio. </p>
-                                
+
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
@@ -147,7 +148,7 @@ export default function JardinerosForm() {
                         <p className="font-bold">Nota:</p>
                         <p>Los presupuestos son en base a lo mencionado en estos comentarios, cualquier cambio que el cliente quiera hacer, deberá volver a pedir un presupuesto. ya que el cambio realizado puede cambiar el costo de los trabajos.</p>
                     </div>
-                    <Button type="submit">Cotizar</Button>
+                    <Submitbutton isLoading={isSubmitting} text="Cotizar" />
                 </form>
             </Form>
 

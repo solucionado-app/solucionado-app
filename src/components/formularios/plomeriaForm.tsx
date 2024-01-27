@@ -27,6 +27,7 @@ import { type FormValues, localStorageRequests } from "~/lib/localStorage";
 import { useState } from "react";
 import { useFormSteps } from "./ContextForm";
 import DialogAuthConfirmation from "../auth/DialogAuthConfirmation";
+import Submitbutton from "../auth/FormSolucionador/Submitbutton";
 
 const formSchema = z.object({
     tipoSuperficie: z
@@ -43,7 +44,7 @@ export default function PlomerosForm() {
     const local: FormValues = localStorageRequests.get()
     const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug);
     const [open, setOpen] = useState(false)
-    const { handleSubmition } = useFormSteps()
+    const { handleSubmition, isSubmitting } = useFormSteps()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -103,7 +104,7 @@ export default function PlomerosForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Cotizar</Button>
+                <Submitbutton isLoading={isSubmitting} text="Cotizar" />
                 <DialogAuthConfirmation open={open} setOpen={setOpen} />
 
             </form>

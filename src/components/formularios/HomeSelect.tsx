@@ -190,27 +190,7 @@ export default function HomeSelect({ categories, isLoading }: props) {
           </Button>
         </form>
       </Form>
-      {/* <Dialog open={open} onOpenChange={setOpen}>
 
-                <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                        <DialogTitle>Inicia Sesion!</DialogTitle>
-                        <DialogDescription>
-                            Inicia Sesion para Seguir con la cotizacion.
-                        </DialogDescription>
-                    </DialogHeader>
-
-                    <DialogFooter>
-                        <Button onClick={() => void router.push({
-                            pathname: "/login",
-                            query: {
-                                redirect: router.asPath,
-                                ...formvalues
-                            }
-                        })} type="button">Continuar</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog> */}
     </>
   );
 }

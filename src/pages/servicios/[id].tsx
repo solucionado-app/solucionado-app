@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { SignedOutAuthObject, type SignedInAuthObject } from "@clerk/nextjs/server";
 import {
   type GetStaticPropsContext,
   type GetStaticPaths,
   type InferGetStaticPropsType,
 } from "next";
 import { ssgHelper } from "~/server/api/ssgHelper";
-import { type JwtPayload, type ServerGetTokenOptions } from "@clerk/types";
 import Head from "next/head";
 import { type MyPage } from "~/components/types/types";
 import {
@@ -153,29 +151,8 @@ export async function getStaticProps(
       },
     };
   }
-  const auth: SignedOutAuthObject = {
-    experimental__has: () => false,
-    sessionId: null,
-    session: null,
-    actor: null,
-    userId: null,
-    user: null,
-    orgId: null,
-    orgRole: null,
-    orgSlug: null,
-    sessionClaims: null,
-    organization: null,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getToken: function (
-      _options?: ServerGetTokenOptions | undefined
-    ): Promise<string | null> {
-      throw new Error("Function not implemented.");
-    },
-    debug: function (): unknown {
-      throw new Error("Function not implemented.");
-    },
-  };
-  const ssg = ssgHelper(auth);
+
+  const ssg = ssgHelper(undefined);
   await ssg.service.findById.prefetch({ id });
   return {
     props: {

@@ -26,6 +26,7 @@ import { type FormValues, localStorageRequests } from "~/lib/localStorage"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Input } from "../ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import Submitbutton from "../auth/FormSolucionador/Submitbutton";
 
 
 const formSchema = z.object({
@@ -68,7 +69,7 @@ export default function FumigadoresForm() {
 
     const [open, setOpen] = useState(false)
 
-    const { handleSubmition } = useFormSteps();
+    const { handleSubmition, isSubmitting } = useFormSteps();
 
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
@@ -218,7 +219,7 @@ export default function FumigadoresForm() {
                         />)}
 
 
-                    <Button type="submit">Cotizar</Button>
+                    <Submitbutton isLoading={isSubmitting} text="Cotizar" />
                 </form>
             </Form>
 
