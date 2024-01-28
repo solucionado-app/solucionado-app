@@ -208,7 +208,7 @@ export default function FirtForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Verificar</Button>
+                <Button className="w-full" type="submit">Verificar</Button>
             </form>
         </Form>
     )
@@ -233,7 +233,7 @@ export default function FirtForm() {
                     )}
                 />
 
-                <Button type="submit">Siguiente</Button>
+                <Button className="w-full" type="submit">Siguiente</Button>
             </form>
         </Form>
     )

@@ -14,7 +14,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ totalSteps, currentStep }) =>
     }, [currentStep, totalSteps]);
 
     return (
-        <div className='py-2'>
+        <div className='py-4'>
             <Progress value={progress} />
         </div>
     );

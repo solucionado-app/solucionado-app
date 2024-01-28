@@ -195,7 +195,7 @@ export default function FumigadoresForm() {
                             </FormItem>
                         )}
                     />
-                    
+
                     <FormField
                         control={form.control}
                         name="detallesDeCotizacion"
@@ -210,11 +210,11 @@ export default function FumigadoresForm() {
                                     />
                                 </FormControl>
                                 <FormDescription className="text-xs bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-2">
-                                
-                                    
+
+
                                     <p className="font-bold">Nota:</p>
                                     <p>el presupuesto incluye el costo de los elementos de trabajo y los productos químicos. (dar opción al solucionador/fumigador cuando responda de poder cobrarlo a parte).</p>
-                                
+
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>

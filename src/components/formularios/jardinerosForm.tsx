@@ -25,6 +25,7 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { Textarea } from "../ui/textarea"
 import { useFormSteps } from "./ContextForm"
 import { type FormValues, localStorageRequests } from "~/lib/localStorage"
+import Submitbutton from "../auth/FormSolucionador/Submitbutton"
 
 const formSchema = z.object({
     herramientas: z.enum(["Si", "No"], {
@@ -78,7 +79,7 @@ export default function JardinerosForm() {
 
     const [open, setOpen] = useState(false)
 
-    const { handleSubmition } = useFormSteps();
+    const { handleSubmition, isSubmitting } = useFormSteps();
 
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
@@ -213,7 +214,7 @@ export default function JardinerosForm() {
                         <p className="font-bold">Nota:</p>
                         <p>Los presupuestos son en base a lo mencionado en estos comentarios, cualquier cambio que el cliente quiera hacer, deberá volver a pedir un presupuesto. ya que el cambio realizado puede cambiar el costo de los trabajos.</p>
                     </div>
-                    <Button type="submit">Cotizar</Button>
+                    <Submitbutton isLoading={isSubmitting} text="Cotizar" />
                 </form>
             </Form>
 

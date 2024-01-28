@@ -24,6 +24,7 @@ import DialogAuthConfirmation from "../auth/DialogAuthConfirmation"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { useFormSteps } from "./ContextForm"
 import { type FormValues, localStorageRequests } from "~/lib/localStorage"
+import Submitbutton from "../auth/FormSolucionador/Submitbutton"
 const formSchema = z.object({
     numeroDeMascotas: z.coerce.number({ required_error: "Debes introducir un numero de mascotas", }).min(1, { message: "El numero de mascotas es requerido" }),
     tieneCorrea: z.enum(["Si", "No"]),
@@ -54,7 +55,7 @@ export default function ElectricistasForm() {
 
     const [open, setOpen] = useState(false)
 
-    const { handleSubmition } = useFormSteps();
+    const { handleSubmition, isSubmitting } = useFormSteps();
 
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
@@ -191,7 +192,7 @@ export default function ElectricistasForm() {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit">Cotizar</Button>
+                    <Submitbutton isLoading={isSubmitting} text="Cotizar" />
                 </form>
             </Form>
 

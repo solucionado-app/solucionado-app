@@ -17,7 +17,7 @@ export default authMiddleware({
             const url = new URL(`/login?redirect=${req.nextUrl.pathname}`, req.url);
             return NextResponse.redirect(url)
         }
-        if(req.nextUrl.pathname === '/registro/usuario' || req.nextUrl.pathname === '/registro/solucionador' || req.nextUrl.pathname === '/registro/solucionador/completar-perfil' ){
+        if(req.nextUrl.pathname === '/registro/usuario' || req.nextUrl.pathname === '/registro/solucionador'  ){
             return NextResponse.next()
         }
         // try{

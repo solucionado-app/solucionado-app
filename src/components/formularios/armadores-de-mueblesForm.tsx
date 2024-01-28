@@ -21,6 +21,7 @@ import { useFormSteps } from "./ContextForm";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 import DialogAuthConfirmation from "../auth/DialogAuthConfirmation";
+import Submitbutton from "../auth/FormSolucionador/Submitbutton";
 
 const formSchema = z.object({
     elementosPintura: z.enum(["Si", "No"], {
@@ -33,7 +34,7 @@ export default function ArmadoresDeMueblesForm() {
 
     const router = useRouter()
     const { isSignedIn } = useUser()
-    const { handleSubmition } = useFormSteps()
+    const { handleSubmition, isSubmitting } = useFormSteps()
     const slug = router.query.slug as string
     const local: FormValues = localStorageRequests.get()
     const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug) && JSON.stringify(local[`${slug}`]) !== '{}' && local[`${slug}`]?.details;
@@ -112,7 +113,7 @@ export default function ArmadoresDeMueblesForm() {
                     )}
                 />
 
-                <Button type="submit">Cotizar</Button>
+                <Submitbutton isLoading={isSubmitting} text="Cotizar" />
                 <DialogAuthConfirmation open={open} setOpen={setOpen} />
 
             </form>

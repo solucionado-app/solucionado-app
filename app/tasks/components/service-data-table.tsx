@@ -113,7 +113,7 @@ export function ServiceDataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Aun no hay servicios.
                 </TableCell>
               </TableRow>
             )}

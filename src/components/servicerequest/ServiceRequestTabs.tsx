@@ -102,7 +102,7 @@ export default function ServiceRequestTabs({ id }: Props) {
                             </div>
                         </CardContent>
                         <CardFooter>
-                            <Button>Ver Más</Button>
+                            {/* <Button>Ver Más</Button> */}
                         </CardFooter>
                     </Card>
                 </TabsContent>

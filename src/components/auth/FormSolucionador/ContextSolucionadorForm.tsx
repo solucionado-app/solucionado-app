@@ -6,13 +6,15 @@ import { type UserResource } from "@clerk/nextjs/node_modules/@clerk/types/dist/
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { localRegisterSolucionador, RegisterSolucionadorFormValues } from "~/lib/localStorage";
 import { api } from "~/utils/api";
+import { TRPCClientError, TRPCClientErrorLike } from "@trpc/client";
 
 interface FormStepsContextType {
     currentStep: number;
     setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
     formValues: Record<string, any>;
     setFormValues: React.Dispatch<React.SetStateAction<Record<string, any>>>;
-
+    isLoading: boolean,
+    handleStepSubmission: (step: number, values: any) => Promise<unknown>;
 }
 
 
@@ -23,6 +25,8 @@ const FormStepsContext = createContext<FormStepsContextType>({
     setCurrentStep: () => { },
     formValues: {},
     setFormValues: () => { },
+    isLoading: false,
+    handleStepSubmission: () => new Promise(() => { })
 });
 
 export const useFormSteps = () => useContext(FormStepsContext);
@@ -38,6 +42,8 @@ export const FormStepsProvider = ({ children }: Props) => {
 
     const [currentStep, setCurrentStep] = useState(0);
     const [formValues, setFormValues] = useState<Record<string, any>>({});
+    const [isLoading, setIsLoading] = useState(false);
+
     const prismaUser = api.user.getById.useQuery(undefined, {
         enabled: !!user?.id
     })
@@ -46,7 +52,7 @@ export const FormStepsProvider = ({ children }: Props) => {
 
     const determineInitialStep = (user: UserResource, userFromdb: userDb) => {
         if (!user.hasVerifiedPhoneNumber || !user?.phoneNumbers?.length) {
-
+            if (userFromdb?.role === 'ADMIN') return 1
             return 0; // Phone number step
         } else if (!userFromdb?.dni) {
             return 1; // Second step
@@ -91,15 +97,55 @@ export const FormStepsProvider = ({ children }: Props) => {
 
 
     }, [local.step, user, prismaUser.data, prismaUser.isLoading])
-    const userMutation = api.user.update.useMutation({
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        onSuccess: (data) => {
-            console.log(data)
-        },
-    })
 
+    const { mutate } = api.user.update.useMutation()
+
+
+    const handleStepSubmission = (step: number, values: any) => {
+        setIsLoading(true); // Set isLoading to true when the submission starts
+
+        return new Promise((resolve, reject) => {
+            switch (step) {
+                case 0:
+                    // Handle the submission for the first step
+                    break;
+                case 1:
+                    // Handle the submission for the second step
+                    break;
+                case 2:
+                    // Handle the submission for the third step
+                    break;
+                case 3:
+                    mutate({
+                        userId: user?.id as string,
+                        cuit: values.cuit,
+                    }, {
+                        onSuccess: () => {
+                            const local = localRegisterSolucionador.get();
+                            const newLocal: RegisterSolucionadorFormValues = {
+                                ...local,
+                                cuit: values.cuit,
+                                step: 4,
+                            };
+                            localRegisterSolucionador.set(newLocal);
+                            resolve('Success');
+                        },
+                        onError: (error) => {
+                            reject(error);
+                        }
+                    });
+                    break;
+                // Add more cases as needed...
+                default:
+                    reject(new Error('Invalid step'));
+            }
+        })
+            .finally(() => {
+                setIsLoading(false); // Set isLoading to false when the submission ends
+            });
+    };
     return (
-        <FormStepsContext.Provider value={{ currentStep, setCurrentStep, formValues, setFormValues }}>
+        <FormStepsContext.Provider value={{ currentStep, setCurrentStep, formValues, setFormValues, isLoading, handleStepSubmission }}>
             {children}
         </FormStepsContext.Provider>
     );

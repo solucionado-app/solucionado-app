@@ -20,6 +20,7 @@ import { useUser } from "@clerk/nextjs"
 import { type RegisterSolucionadorFormValues, localRegisterSolucionador } from "@/src/lib/localStorage"
 import { useFormSteps } from "./ContextSolucionadorForm"
 import { useRouter } from "next/navigation"
+import Submitbutton from "./Submitbutton"
 
 
 
@@ -44,9 +45,12 @@ export default function SecondStep() {
     })
 
     const { currentStep, setCurrentStep } = useFormSteps();
+    const handleNextStep = () => {
+        setCurrentStep(currentStep + 1);
+    };
 
     const router = useRouter()
-    const { mutate } = api.user.update.useMutation()
+    const usermutate = api.user.update.useMutation()
     // 1. Define your form.
     const { data: categories, isLoading } = api.categories.getAll.useQuery();
 
@@ -58,7 +62,7 @@ export default function SecondStep() {
         // ✅ This will be type-safe and validated.
 
         console.log(values)
-        mutate({
+        usermutate.mutate({
             userId: id,
             categories: values.categories,
         }, {
@@ -67,9 +71,10 @@ export default function SecondStep() {
                 const newLocal: RegisterSolucionadorFormValues = {
                     ...local,
                     categories: values.categories,
+                    step: 6,
                 }
                 localRegisterSolucionador.set(newLocal)
-                router.push('/perfil')
+                handleNextStep()
             },
             onError: (error) => {
                 if (error.shape?.code === -32603) {
@@ -126,7 +131,9 @@ export default function SecondStep() {
                     )}
                 />
 
-                <Button type="submit">Siguiente</Button>
+
+                <Submitbutton isLoading={usermutate.isLoading} />
+
             </form>
         </Form>
     )

@@ -21,6 +21,7 @@ import { type RegisterSolucionadorFormValues, localRegisterSolucionador } from "
 import { useFormSteps } from "./ContextSolucionadorForm"
 import { add } from "date-fns"
 import ProvinceAndCityOptions from "../../formularios/ProvinceAndCityOptions"
+import Submitbutton from "./Submitbutton"
 
 
 
@@ -59,7 +60,7 @@ export default function SecondStep() {
     const handleNextStep = () => {
         setCurrentStep(currentStep + 1);
     };
-    const { mutate } = api.user.update.useMutation()
+    const { mutate, isLoading } = api.user.update.useMutation()
     const { mutate: mutateCity } = api.city.findOrcreate.useMutation()
     const { mutate: mutateProvince } = api.province.findOrcreate.useMutation()
 
@@ -225,7 +226,8 @@ export default function SecondStep() {
                 />
                 <ProvinceAndCityOptions formControl={form.control} formSetValue={form.setValue} formGetValues={form.getValues} />
 
-                <Button className="w-full" type="submit">Siguiente</Button>
+                {/* <Button className="w-full" type="submit">Siguiente</Button> */}
+                <Submitbutton isLoading={isLoading} />
             </form>
         </Form>
     )

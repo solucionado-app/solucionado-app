@@ -1,3 +1,5 @@
+import { EmailRequestData } from "@/app/api/mail/serviceRequest/route";
+import { getBaseUrl } from "@/src/utils/api";
 import { clerkClient } from "@clerk/nextjs";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -38,6 +40,8 @@ export const serviceRequestRouter = createTRPCRouter({
                 date: true,
                 City: true,
                 Province: true,
+                photos: true,
+                portrait: true,
             }
         });
     }),
@@ -106,44 +110,7 @@ export const serviceRequestRouter = createTRPCRouter({
         });
 
         // console.log(serviceRequest)
-        const userswithCategory = await ctx.prisma.user.findMany({
-            where: {
-                categories: {
-                    some: {
-                        slug: input.categorySlug,
-                    },
-                },
-                City: {
-                    id: input.cityId,
-                },
-            },
-            select: {
-                emailAddressId: true,
-                first_name: true,
-                last_name: true,
 
-            },
-        });
-        if (userswithCategory?.length > 0) {
-
-
-            userswithCategory.forEach((user) => {
-                clerkClient.emails.createEmail({
-                    fromEmailName: "info",
-                    body: `Hola ${user.first_name || ""} ${user.last_name || ""} hay una nueva solicitud de servicio de ${serviceRequest.category.name ?? ''} en tu zona.
-                    Entra a este link para ver los detalles de la solicitud: ${process.env.VERCEL_URL ?? 'https://solucionado.com.ar'}/solicitudes-de-servicio/${serviceRequest.id}
-                    `,
-                    subject: `Solicitud de servicio de ${serviceRequest.category.name ?? ''} en tu zona`,
-                    emailAddressId: user.emailAddressId as string,
-                }).then((res) => {
-                     console.log(res)
-                }
-                ).catch((err) => {
-                     console.log(err)
-                }
-                );
-            });
-        }
         return serviceRequest;
 
     }),
@@ -164,6 +131,8 @@ export const serviceRequestRouter = createTRPCRouter({
                         slug: true,
                     },
                 },
+                photos: true,
+                portrait: true,
             }
         });
     }),

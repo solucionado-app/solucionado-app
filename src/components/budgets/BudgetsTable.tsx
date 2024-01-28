@@ -281,14 +281,14 @@ export default function BudgetsTable({ budgets, status, isSolucionador }: Props)
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No results.
+                    Aun no hay presupuestos para tu solicitud.
                   </TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
         </div>
-        <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="flex flex-col md:flex-row items-center justify-end space-x-2 py-4">
           <div className="text-muted-foreground flex-1 text-sm">
             {table.getFilteredSelectedRowModel().rows.length} de{" "}
             {table.getFilteredRowModel().rows.length} Fila(s) seleccionadas.

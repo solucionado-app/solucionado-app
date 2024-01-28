@@ -19,6 +19,7 @@ import { api } from "~/utils/api"
 import { useUser } from "@clerk/nextjs"
 import { type RegisterSolucionadorFormValues, localRegisterSolucionador } from "@/src/lib/localStorage"
 import { useFormSteps } from "./ContextSolucionadorForm"
+import Submitbutton from "./Submitbutton"
 
 
 
@@ -41,7 +42,7 @@ export default function SecondStep() {
     const handleNextStep = () => {
         setCurrentStep(currentStep + 1);
     };
-    const { mutate } = api.user.update.useMutation()
+    const { mutate, isLoading } = api.user.update.useMutation()
     // 1. Define your form.
 
     // 2. Define a submit handler.
@@ -134,7 +135,7 @@ export default function SecondStep() {
                     )}
                 /> */}
 
-                <Button type="submit">Siguiente</Button>
+                <Submitbutton isLoading={isLoading} />
             </form>
         </Form>
     )

@@ -25,6 +25,7 @@ import { Textarea } from "../ui/textarea"
 import { useFormSteps } from "./ContextForm"
 import { type FormValues, localStorageRequests } from "~/lib/localStorage"
 import { Input } from "../ui/input";
+import Submitbutton from "../auth/FormSolucionador/Submitbutton";
 
 const formSchema = z.object({
     cantidadDePrendas: z
@@ -46,7 +47,7 @@ export default function PlanchadoresForm() {
     const local: FormValues = localStorageRequests.get()
     const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug);
     const [open, setOpen] = useState(false)
-    const { handleSubmition } = useFormSteps();
+    const { handleSubmition, isSubmitting } = useFormSteps();
     // console.log(local[`${slug}`]?.details)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -168,7 +169,7 @@ export default function PlanchadoresForm() {
                         <p className="font-bold">Nota:</p>
                         <p>Los presupuestos son en base a lo mencionado en estos comentarios, cualquier cambio que el cliente quiera hacer, deberá volver a pedir un presupuesto. ya que el cambio realizado puede cambiar el costo de los trabajos.</p>
                     </div>
-                    <Button type="submit">Cotizar</Button>
+                    <Submitbutton isLoading={isSubmitting} text="Cotizar" />
                 </form>
             </Form>
 

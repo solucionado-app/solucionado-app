@@ -25,6 +25,7 @@ import { Textarea } from "../ui/textarea"
 import { useFormSteps } from "./ContextForm"
 import { type FormValues, localStorageRequests } from "~/lib/localStorage"
 import { Input } from "../ui/input";
+import Submitbutton from "../auth/FormSolucionador/Submitbutton";
 
 const formSchema = z.object({
     partida: z
@@ -80,7 +81,7 @@ export default function EnviosVariosForm() {
 
     const [open, setOpen] = useState(false)
 
-    const { handleSubmition } = useFormSteps();
+    const { handleSubmition, isSubmitting } = useFormSteps();
 
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
@@ -205,11 +206,11 @@ export default function EnviosVariosForm() {
                                     />
                                 </FormControl>
                                 <FormDescription className="text-xs bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-2">
-                                
-                                    
+
+
                                     <p className="font-bold">Nota:</p>
                                     <p>El solucionador debe pedir si o si la factura, la cual ante algún inconveniente con el cliente este puede mostrar. Caso contrario, no se tomará como válido el reclamo.</p>
-                                
+
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
@@ -260,13 +261,13 @@ export default function EnviosVariosForm() {
                             </FormItem>
                         )}
                     />
-                    
+
                     <div className="text-sm bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4"
                         role="alert">
                         <p className="font-bold">Nota:</p>
                         <p>Los presupuestos son en base a lo mencionado en estos comentarios, cualquier cambio que el cliente quiera hacer, deberá volver a pedir un presupuesto. ya que el cambio realizado puede cambiar el costo de los trabajos.</p>
                     </div>
-                    <Button type="submit">Cotizar</Button>
+                    <Submitbutton isLoading={isSubmitting} text="Cotizar" />
                 </form>
             </Form>
 

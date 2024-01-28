@@ -2,7 +2,9 @@ import React from 'react';
 import { Tailwind, Button, Body, Container, Heading, Section, Text, Link, Img, Hr } from "@react-email/components";
 import { getBaseUrl } from '../utils/api';
 
-export interface EmailRequestProps {
+export interface IservicePaymentNotification {
+    title?: string;
+    content?: string;
     link?: string;
     buttonText?: string;
     userName?: string;
@@ -10,7 +12,7 @@ export interface EmailRequestProps {
     requestedByUsername: string;
 }
 
-export default function NewServiceRequestEmail({ link = 'https://solucionado.com.ar/solicitudes-de-servicio/', buttonText = 'Ver solicitud', userName = 'Francisco', categorieName = 'Electricidad', requestedByUsername = 'Santiago' }: EmailRequestProps) {
+export default function ServicePaymentNotification({ link = 'https://solucionado.com.ar/solicitudes-de-servicio/', buttonText = 'Ver solicitud', userName = 'Francisco', categorieName = 'Electricidad', requestedByUsername = 'Santiago' }: IservicePaymentNotification) {
     // const baseUrl = getBaseUrl();
 
     return (
@@ -29,7 +31,7 @@ export default function NewServiceRequestEmail({ link = 'https://solucionado.com
                 <Container className="border border-solid border-[#eaeaea] max-w-lg rounded my-[40px] mx-auto p-[20px] w-[465px]">
                     <Section className="mt-[32px]">
                         <Img
-                            src={`https://res.cloudinary.com/dozjn0kxw/image/upload/v1706170808/solucionado/solucionado-isologo.png`}
+                            src={`https://solucionado.com.ar/solucionado-iso.svg`}
                             width="40"
                             height="40"
                             alt="Solucionado"

@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { useRouter } from "next/navigation";
-import { type SignedOutAuthObject } from "@clerk/nextjs/server";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   type GetStaticPropsContext,
   type GetStaticPaths,
   type InferGetStaticPropsType,
 } from "next";
 import { ssgHelper } from "~/server/api/ssgHelper";
-import { type ServerGetTokenOptions } from "@clerk/types";
 import { type MyPage } from "~/components/types/types";
 
 
@@ -20,12 +18,21 @@ import StatusTranslate from "~/components/servicerequest/StatusTranslate";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
 import { ArrowLeftIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
+import { CldImage } from "next-cloudinary";
+import { useCallback, useEffect, useState } from "react";
+import { trpc } from "@/src/utils/trpc";
+import { useToast } from "@/src/components/ui/use-toast";
+import { confettiAni } from "@/src/components/auth/FormSolucionador/ConfettiStep";
 
 
 
 const tabsDynamic = () =>
   dynamic(() => import(`~/components/servicerequest/ServiceRequestTabs`), {
     loading: () => <Spinner className="h-12 w-12 text-solBlue" />,
+  });
+
+const confetiDynamic = () =>
+  dynamic(() => import(`@/src/components/auth/FormSolucionador/ConfettiAnimation`), {
   });
 
 const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
@@ -36,12 +43,15 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   const handleGoToSolicitudes = () => {
     router.push("/solicitudes-de-servicio");
   };
-
+  const searchParams = useSearchParams();
+  const newserviceRequestId = searchParams?.get("newserviceRequestId");
   const request = api.serviceRequest.findById.useQuery({ id }, {
     staleTime: Infinity,
+    enabled: Boolean(newserviceRequestId),
   });
   const { data: serviceRequest } = request;
   const DynamicTabs = tabsDynamic();
+  const ConfetiDynamic = confetiDynamic();
 
 
 
@@ -53,6 +63,110 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
     style: "currency",
     currency: "USD",
   }).format(parseFloat(serviceRequest?.amount ?? ''));
+
+
+  const { toast } = useToast();
+  const notificationApi = api.notification
+  const useCheckNotificationExists = notificationApi.findByServiceRequestId.useQuery({ serviceRequestId: newserviceRequestId as string }, {
+    enabled: Boolean(newserviceRequestId),
+
+    onSuccess(data) {
+      console.log('entro al onsuccess', data)
+    },
+  })
+
+
+  const notification = notificationApi.create.useMutation()
+  const utils = trpc.useContext()
+  const [notificationsSent, setNotificationsSent] = useState(false);
+
+  const sendNotifications = useCallback(() => {
+    console.log('entro')
+    if (notificationsSent || !!useCheckNotificationExists.data) return;
+    console.log('entro', notificationsSent, useCheckNotificationExists.data)
+
+
+
+
+    if (notificationsSent) return;
+
+    if (!newserviceRequestId) return
+
+    if (!request?.data) return
+
+    if (newserviceRequestId !== request?.data.id) return
+
+    console.log('entro al try catch')
+    toast({
+      key: 'notificationProcessStart',
+      title: "Proceso de Notificacion iniciado.",
+      description: `Se ha creado una nueva solicitud de servicio para ${request?.data?.category?.name ?? ''} en tu zona.`,
+      duration: 100000,
+    });
+
+    setTimeout(() => {
+      confettiAni().then(() => {
+        // Do something after the confetti animation
+      }).catch((err) => {
+        console.log(err);
+      });
+    }, 500);
+
+    setNotificationsSent(true);
+    notification.mutate({
+      categorySlug: request?.data.category.slug,
+      title: "Nueva solicitud de servicio",
+      categoryName: request?.data.category.name,
+      content: `Se ha creado una nueva solicitud de servicio para ${request?.data.category.name} en tu zona.`,
+      link: `/solicitudes-de-servicio/${request?.data.id}`,
+      serviceRequestId: newserviceRequestId,
+      cityId: request?.data.cityId as string,
+    }, {
+      onSuccess: () => {
+        console.log('entro al onsuccess')
+        void utils.notification.getAll.invalidate()
+        void utils.notification.countUnRead.invalidate()
+        toast({
+          key: 'notificationProcessfinished',
+          title: "Notificacion creada",
+          description: `Muy pronto solucionadores en tu zona veran tu solicitud.`,
+          duration: 100000,
+
+        });
+        setNotificationsSent(true);
+      },
+      onError: (error) => {
+        setNotificationsSent(true);
+        let message = 'Ha ocurrido un error al enviar las notificaciones.'
+        if (error instanceof Error) {
+          message = error.message
+        }
+        console.log('entro al onerror')
+        console.log(error)
+        toast({
+          key: 'notificationProcessfinished',
+          title: "Ha ocurrido un error.",
+          variant: "destructive",
+          description: message,
+          duration: Infinity,
+        });
+      }
+
+    });
+
+
+
+  }, [newserviceRequestId, request?.data, toast, notification, utils.notification.getAll, utils.notification.countUnRead, notificationsSent, useCheckNotificationExists.data]);
+
+  useEffect(() => {
+    if (newserviceRequestId && !useCheckNotificationExists.data && !notificationsSent && request?.data) {
+      console.log('entro al if')
+      sendNotifications()
+    }
+  }, [newserviceRequestId, useCheckNotificationExists.data, notificationsSent, request?.data, sendNotifications]);
+
+
+
   return (
     <>
       <div className="container relative flex flex-col items-center justify-center gap-8 px-4 pt-24 w-full ">
@@ -66,7 +180,11 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
         <div className="flex w-full flex-col  items-center bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 ">
           <div className=" flex flex-col md:flex-row w-full  ">
             {/*  eslint-disable-next-line @next/next/no-img-element */}
-            <img className="object-cover w-full aspect-square rounded-t-lg md:w-40 md:rounded-none md:rounded-l-lg " src="https://flowbite.com/docs/images/blog/image-4.jpg" alt="" />
+            {!!serviceRequest?.portrait?.url && <div className=" relative md:w-40 w-full  ">
+              <CldImage src={serviceRequest.portrait?.url} fill className="  object-cover aspect-square rounded-t-lg md:rounded-none md:rounded-l-lg" alt={serviceRequest.category.name} />
+            </div>
+            }
+
             <div className="flex flex-col md:flex-row gap-4 justify-between w-full p-4 leading-normal">
               <div>
                 <h1 className="text-2xl lg:text-4xl font-extrabold tracking-tight">
@@ -122,7 +240,6 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
           </AccordionItem>
         </Accordion>
 
-
         <DynamicTabs id={id} />
       </div>
     </>
@@ -156,29 +273,8 @@ export async function getStaticProps(
       },
     };
   }
-  const auth: SignedOutAuthObject = {
-    experimental__has: () => false,
-    sessionId: null,
-    session: null,
-    actor: null,
-    userId: null,
-    user: null,
-    orgId: null,
-    orgRole: null,
-    orgSlug: null,
-    sessionClaims: null,
-    organization: null,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getToken: function (
-      _options?: ServerGetTokenOptions | undefined
-    ): Promise<string | null> {
-      throw new Error("Function not implemented.");
-    },
-    debug: function (): unknown {
-      throw new Error("Function not implemented.");
-    },
-  };
-  const ssg = ssgHelper(auth);
+
+  const ssg = ssgHelper(undefined);
   await ssg.serviceRequest.findById.prefetch({ id });
   await ssg.comment.getNumberOfCommentsRequest.prefetch({
     serviceRequestId: id,

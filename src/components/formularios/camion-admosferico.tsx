@@ -21,6 +21,7 @@ import { useFormSteps } from "./ContextForm"
 import { type FormValues, localStorageRequests } from "~/lib/localStorage"
 import { useState } from "react"
 import DialogAuthConfirmation from "../auth/DialogAuthConfirmation"
+import Submitbutton from "../auth/FormSolucionador/Submitbutton"
 
 
 const formSchema = z.object({
@@ -32,7 +33,7 @@ export function CamionAdmosfericoForm() {
 
     const router = useRouter()
     const { isSignedIn } = useUser()
-    const { handleSubmition } = useFormSteps()
+    const { handleSubmition, isSubmitting } = useFormSteps()
     const slug = router.query.slug as string
     const local: FormValues = localStorageRequests.get()
     const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug) && JSON.stringify(local[`${slug}`]) !== '{}' && local[`${slug}`]?.details;
@@ -90,7 +91,7 @@ export function CamionAdmosfericoForm() {
                 />
 
 
-                <Button type="submit">Cotizar</Button>
+                <Submitbutton isLoading={isSubmitting} text="Cotizar" />
                 <DialogAuthConfirmation open={open} setOpen={setOpen} />
 
             </form>

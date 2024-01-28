@@ -47,6 +47,8 @@ export interface ServiceRequest {
     date?: Date;
     city?: City;
     province?: province;
+    photos?: File[];
+    portrait?: File;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     details?: Record<string, any>;
 }

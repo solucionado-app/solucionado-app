@@ -30,6 +30,7 @@ import { type FormValues, localStorageRequests } from "~/lib/localStorage"
 import { useFormSteps } from "./ContextForm"
 import { useState } from "react"
 import DialogAuthConfirmation from "../auth/DialogAuthConfirmation"
+import Submitbutton from "../auth/FormSolucionador/Submitbutton"
 
 
 const formSchema = z.object({
@@ -87,7 +88,7 @@ export function PintoresForm() {
 
     const [open, setOpen] = useState(false)
 
-    const { handleSubmition } = useFormSteps();
+    const { handleSubmition, isSubmitting } = useFormSteps();
     // 2. Define a submit handler.
     function onSubmit(values: z.infer<typeof formSchema>) {
         // Do something with the form values.
@@ -291,7 +292,7 @@ export function PintoresForm() {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit">Cotizar</Button>
+                    <Submitbutton isLoading={isSubmitting} text="Cotizar" />
                 </form>
             </Form>
 
