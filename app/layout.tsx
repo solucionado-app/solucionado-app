@@ -1,12 +1,8 @@
-import { Metadata } from "next"
-import Image from "next/image"
+import { type Metadata } from "next"
 
 import { Separator } from "@/app/ui/separator"
-import { SidebarNav } from "@/app/forms/components/sidebar-nav"
 import "~/styles/globals.css";
-import MainLayout from "@/src/components/layouts/MainLayout";
-import { ClerkProvider, auth } from "@clerk/nextjs";
-import { esES } from "~/utils/es-ES";
+import { ClerkProvider, } from "@clerk/nextjs";
 
 
 import Provider from "./_trpc/Provider";
@@ -14,10 +10,7 @@ import Nav from "@/src/components/Nav";
 import Link from "next/link";
 import { PageHeader, PageHeaderDescription, PageHeaderHeading } from "./components/page-header";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { cn } from "@/src/lib/utils";
-import { buttonVariants } from "./ui/button";
 import { ExamplesNav } from "./components/examples-nav";
-import { usePathname } from "next/navigation";
 
 
 import { Poppins } from "next/font/google";
