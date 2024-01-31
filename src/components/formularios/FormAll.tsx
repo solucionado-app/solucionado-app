@@ -50,7 +50,7 @@ export default function FormAll() {
                     {currentStep === 0 && <GeneralForm />}
                     {currentStep === 1 && <DynamicSecondStep />}
                     {currentStep === 2 && <ImageStep />}
-                    {currentStep === 3 && slug !== 'electricistas' && <DynamicCategoryForm />}
+                    {currentStep === 3 && <DynamicCategoryForm />}
 
 
                 </div>

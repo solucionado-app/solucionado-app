@@ -8,6 +8,7 @@ import { type MyPage } from "~/components/types/types";
 import { api } from "~/utils/api";
 import { FormStepsProvider } from "~/components/formularios/ContextForm";
 import FormAll from "~/components/formularios/FormAll";
+import Link from "next/link";
 
 
 
@@ -16,8 +17,38 @@ import FormAll from "~/components/formularios/FormAll";
 
 const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ slug }) => {
 
-    const { data: category, isLoading } = api.categories.findBySlug.useQuery({ slug })
+    const { data: category, isLoading, isFetched } = api.categories.findBySlug.useQuery({ slug }, {
+        retry: 3,
+    })
 
+    if (category == null && isFetched && !isLoading) {
+        return (
+            <div className="grid place-content-center h-screen">
+                <div className="container mx-auto max-w-md text-center">
+                    <h1 className="text-4xl font-bold text-zinc-700 my-4">
+                        404 - Page Not Found
+                    </h1>
+                    <p className="text-zinc-400">
+                        Lo sentimos pero la página que buscas no existe. Por favor, revisa
+                        la URL o utiliza el botón de abajo para volver a la página de
+                        inicio.
+                    </p>
+                    {/*TODO: List similar pages here */}
+                    {/*TODO: Create Search bar component here */}
+                    <div className="border border-b-gray-50 my-4"></div>
+                    {/* Add navigation to important pages */}
+                    <div>
+                        <Link
+                            className="hover:underline hover:text-indigo-400 text-indigo-500"
+                            href="/"
+                        >
+                            Ir a la Home Page
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        );
+    }
     return (
         <>
             <Head>
