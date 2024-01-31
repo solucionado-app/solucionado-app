@@ -83,17 +83,9 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   const sendNotifications = useCallback(() => {
     console.log('entro')
     if (notificationsSent || !!useCheckNotificationExists.data) return;
-    console.log('entro', notificationsSent, useCheckNotificationExists.data)
-
-
-
-
     if (notificationsSent) return;
-
     if (!newserviceRequestId) return
-
     if (!request?.data) return
-
     if (newserviceRequestId !== request?.data.id) return
 
     console.log('entro al try catch')
@@ -159,11 +151,12 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   }, [newserviceRequestId, request?.data, toast, notification, utils.notification.getAll, utils.notification.countUnRead, notificationsSent, useCheckNotificationExists.data]);
 
   useEffect(() => {
+
     if (newserviceRequestId && !useCheckNotificationExists.data && !notificationsSent && request?.data) {
       console.log('entro al if')
       sendNotifications()
     }
-  }, [newserviceRequestId, useCheckNotificationExists.data, notificationsSent, request?.data, sendNotifications]);
+  }, [newserviceRequestId, useCheckNotificationExists.data, notificationsSent, request?.data, sendNotifications, toast]);
 
 
 
