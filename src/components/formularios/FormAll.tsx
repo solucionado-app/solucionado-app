@@ -41,7 +41,7 @@ export default function FormAll() {
     return (
         <>
             <div className='max-w-md w-full '>
-                <ProgressBar totalSteps={slug === 'electricistas' ? 3 : 4} currentStep={currentStep} />
+                <ProgressBar totalSteps={slug === 'electricistas' ? 2.5 : 3.5} currentStep={currentStep} />
                 {currentStep > 0 && <div onClick={handlePreviousStep} className='flex items-center gap-2 mb-5 cursor-pointer w-fit'>
                     <ArrowBigLeft fill='' /> Volver
                 </div>}
@@ -50,7 +50,7 @@ export default function FormAll() {
                     {currentStep === 0 && <GeneralForm />}
                     {currentStep === 1 && <DynamicSecondStep />}
                     {currentStep === 2 && <ImageStep />}
-                    {currentStep === 3 && <DynamicCategoryForm />}
+                    {currentStep === 3 && slug !== 'electricistas' && <DynamicCategoryForm />}
 
 
                 </div>
