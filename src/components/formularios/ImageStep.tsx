@@ -117,20 +117,21 @@ export default function ImageStep() {
             return;
         }
         if (!!slug) {
-            localStorageRequests.set({ ...localStorageRequests.get(), [slug]: { ...local[`${slug}`], photos, portrait, currentStep: currentStep + 1 } })
-            if (slug === 'electricistas') {
-                if (!isSignedIn) {
-                    setOpen(true)
-                    return
-                }
-                else {
-                    handleSubmition(local[`${slug}`])
-                }
+            localStorageRequests.set({ ...localStorageRequests.get(), [slug]: { ...local[`${slug}`], photos, portrait, currentStep: slug === 'electricistas' ? currentStep : currentStep + 1 } })
+            if (!isSignedIn) {
+                setOpen(true)
+                return
             }
             else {
-                handleNextStep()
+                if (slug === 'electricistas') {
+                    console.log('cotizar')
+                    handleSubmition(local[`${slug}`])
+                }
+                else {
+                    console.log('siguiente')
+                    handleNextStep()
+                }
             }
-
         }
 
     }
