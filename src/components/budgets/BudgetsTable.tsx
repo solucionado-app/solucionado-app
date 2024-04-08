@@ -80,11 +80,12 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
     cell: ({ row }) => {
       const price = parseFloat(row.getValue("Precio"));
 
+
       // Format the price as a dollar price
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
-      }).format(price);
+      }).format(price * 1.11);
 
       return <div className="font-medium whitespace-nowrap ">{formatted}</div>;
     },
