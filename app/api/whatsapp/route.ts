@@ -2,6 +2,8 @@ import { env } from "@/src/env.mjs";
 import { type NextRequest, NextResponse } from "next/server";
 import twilio from 'twilio';
 
+
+
 export async function POST(request : NextRequest) {
 const {body, to} = await request.json() as {body: string, to: string} ;
 const accountSid = env.TWILIO_ACCOUNT_SID;
@@ -21,7 +23,7 @@ try{
        })
 
     console.log(message.sid);
-    return NextResponse.json( { statusText: 'succes' , message: message}, { status: 200 })
+    return NextResponse.json( message, { status: 200 })
 }
 catch(err){
     console.log(err);
