@@ -9,7 +9,10 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
     NODE_ENV: z.enum(["development", "test", "production"]),
+    TWILIO_AUTH_TOKEN: z.string(),
+    TWILIO_ACCOUNT_SID: z.string(),
   },
+
 
   /**
    * Specify your client-side environment variables schema here. This way you can ensure the app
@@ -27,6 +30,8 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
+    TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
+    TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
