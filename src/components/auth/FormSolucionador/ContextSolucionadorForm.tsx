@@ -52,6 +52,13 @@ export const FormStepsProvider = ({ children }: Props) => {
         // if (user.id === 'user_2aEYpsnkUQjrD1kNxkagEcYXQ0N'){
         //     user.primaryPhoneNumber?.destroy()
         // }
+        if(user.primaryPhoneNumber){
+            const newLocal: RegisterSolucionadorFormValues = {
+                ...local,
+                phone: user.primaryPhoneNumber.phoneNumber
+            }
+            localRegisterSolucionador.set(newLocal)
+        }
         if (!user.hasVerifiedPhoneNumber || !user?.phoneNumbers?.length) {
             if (userFromdb?.role === 'ADMIN') return 1
             return 0; // Phone number step
