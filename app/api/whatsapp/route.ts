@@ -22,11 +22,12 @@ try{
          to: to,
        })
 
-    console.log(message.sid);
+    console.log(message);
     return NextResponse.json( message, { status: 200 })
 }
 catch(err){
     console.log(err);
+
     return NextResponse.json( { error: err }, { status: 500 })
 }
 

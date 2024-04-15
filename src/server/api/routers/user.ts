@@ -39,6 +39,7 @@ export const userRouter = createTRPCRouter({
         },
 
       });
+      console.log(user);
       const {_avg: {rating : average}} = await ctx.prisma.review.aggregate({
         where: {
           userId: input.id,
@@ -53,9 +54,11 @@ export const userRouter = createTRPCRouter({
           userId: input.id,
         },
       });
-      if (!user) {
-        throw new TRPCError({ code: "NOT_FOUND" });
-      }
+
+      console.log(rating);
+      // if (!user) {
+      //   throw new TRPCError({ code: "NOT_FOUND" });
+      // }
       return { user, rating, countReviews};
     }),
   update: protectedProcedure

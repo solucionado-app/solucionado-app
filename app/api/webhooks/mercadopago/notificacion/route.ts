@@ -1,3 +1,4 @@
+import { SendWhatsapp } from "@/src/server/whatsapp";
 import { NextResponse } from "next/server";
 import { prisma } from "~/server/db";
 
@@ -39,7 +40,7 @@ async function handler(request:Request) {
                             email: true,
                             first_name: true,
                             last_name: true,
-
+                            phone: true,
                         },
                     },
                     serviceRequest: {
@@ -89,6 +90,15 @@ async function handler(request:Request) {
                             },
                         },
                     });
+                    let whatsapp = budget.user.phone;
+
+
+                   if(!!whatsapp){
+                    if (!whatsapp.startsWith('+549')) {
+                        whatsapp = '+549' + whatsapp;
+                    }
+                    await SendWhatsapp({ body: `Se ha aceptado un presupuesto que enviaste para una solicitud de servicio en solucionado`, to: `whatsapp:${whatsapp}` })
+                    }
                     console.log(newService);
 
                 }

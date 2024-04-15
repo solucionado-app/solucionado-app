@@ -32,7 +32,7 @@ const CountdownTimer = ({ expireAt }: props) => {
         <div>
             {timeLeft.minutes === 0 && timeLeft.seconds === 0
                 ? '00:00'
-                : <h1> Tiempo restante: {timeLeft.minutes < 10 ? `0${timeLeft.minutes}` : timeLeft.minutes}:{timeLeft.seconds < 10 ? `0${timeLeft.seconds}` : timeLeft.seconds}</h1>
+                : <span> Tiempo restante: {timeLeft.minutes < 10 ? `0${timeLeft.minutes}` : timeLeft.minutes}:{timeLeft.seconds < 10 ? `0${timeLeft.seconds}` : timeLeft.seconds}</span>
             }
         </div>
     )
