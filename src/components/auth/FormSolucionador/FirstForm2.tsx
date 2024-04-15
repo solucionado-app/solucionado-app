@@ -1,34 +1,24 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { PhoneNumberResource } from "@clerk/types/dist/phoneNumber"
-import { Button } from "~/components/ui/button"
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "~/components/ui/form"
-import { Input } from "~/components/ui/input"
-
+import { type PhoneNumberResource } from "@clerk/types/dist/phoneNumber"
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api"
 import { useUser } from "@clerk/nextjs"
 import { useState } from "react"
 
-import CountdownTimer from "./countdown"
 import { useFormSteps } from "./ContextSolucionadorForm"
 import { type RegisterSolucionadorFormValues, localRegisterSolucionador } from "@/src/lib/localStorage"
+import { isValidPhoneNumber } from "react-phone-number-input";
+import { VerificationForm } from "./VerificationForm";
+import { PhoneNumberForm } from "./PhoneNumberForm";
+import { ArrowBigLeft } from "lucide-react";
 
 
-const phoneRegex = new RegExp(
-    /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
-);
 const formSchema = z.object({
-    phone: z.string({ required_error: "Debes introducir un numero de telefono" }).min(1, { message: "El telefono es requerido" }).regex(phoneRegex, 'Invalid Number!'),
+    phone: z
+        .string()
+        .refine(isValidPhoneNumber, { message: "Numero de telefono invalido" }),
 });
 
 const codeSchema = z.object({
@@ -36,7 +26,7 @@ const codeSchema = z.object({
 });
 
 
-export default function FirtForm() {
+export default function FirstForm2() {
     const { user, isSignedIn } = useUser()
     const [verifying, setVerifying] = useState(false)
     const [phone, setPhone] = useState<PhoneNumberResource>()
@@ -73,11 +63,22 @@ export default function FirtForm() {
         const { id } = user
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
-        const newPhoneNumber = '+549' + values.phone
+        const newPhoneNumber = values.phone.replace('+54', '+549');
+        console.log('values', values, newPhoneNumber, id)
+        //  if (user.id === 'user_2aEYpsnkUQjrD1kNxkagEcYXQ0N') {
+        //      user?.phoneNumbers.map( (phone) => {
+        //          console.log(phone)
+        //          console.log(phone.phoneNumber)
+        //          console.log(newPhoneNumber)
+        //          phone.destroy().finally(() => {console.log('destruido')})
+        //          return phone
+        //      })
+        //      return
+        //  }
 
-        console.log('values', values, id)
         console.log(user.phoneNumbers)
         if (user?.phoneNumbers && user?.phoneNumbers.length > 0) {
+
             const exitingPhone = user?.phoneNumbers.find((phone) => {
                 console.log(phone)
                 console.log(phone.phoneNumber)
@@ -86,6 +87,7 @@ export default function FirtForm() {
             })
             console.log('existiendo', exitingPhone)
             if (user.hasVerifiedPhoneNumber && exitingPhone) {
+                console.log('verificado')
                 const newLocal: RegisterSolucionadorFormValues = {
                     ...local,
                     phone: values.phone,
@@ -94,15 +96,14 @@ export default function FirtForm() {
                 handleNextStep()
                 return
             }
-            if (exitingPhone) {
+            if (!!exitingPhone) {
                 try {
+                    console.log('existiendo')
                     const code = await exitingPhone.prepareVerification()
                     console.log(code)
-                    console.log('existiendo')
                     console.log(exitingPhone)
                     setPhone(code)
                     setVerifying(true)
-                    verificationForm.reset()
                 }
                 catch (error) {
                     const { message } = error as { message: string }
@@ -110,20 +111,37 @@ export default function FirtForm() {
                     console.log(error)
                 }
             }
+            else {
+
+                try {
+                    user?.phoneNumbers.map(async(phone) => {
+                        await phone.destroy()
+                        return phone
+                    })
+                    const updated = await user.createPhoneNumber({ phoneNumber: newPhoneNumber })
+                    console.log(updated)
+                    const code = await updated.prepareVerification()
+                    console.log(code)
+                    setPhone(code)
+                    setVerifying(true)
+                } catch (error) {
+                    const { message } = error as { message: string }
+                    form.setError('phone', { message: message })
+                    console.log(error)
+                }
+            }
         }
 
         else {
-
-
             try {
                 const updated = await user.createPhoneNumber({ phoneNumber: newPhoneNumber })
                 const code = await updated.prepareVerification()
-
                 console.log(code)
                 console.log(updated)
-                verificationForm.reset()
-                setPhone(updated)
+                setPhone(code)
                 setVerifying(true)
+
+
 
             } catch (error) {
                 const { message } = error as { message: string }
@@ -133,7 +151,7 @@ export default function FirtForm() {
         }
     }
 
-    const onSubmitCode = async (values: z.infer<typeof codeSchema>) => {
+    async function onSubmitCode(values: z.infer<typeof codeSchema>) {
         if (!isSignedIn || !phone) return null
         const { id } = user
         // Do something with the form values.
@@ -186,57 +204,22 @@ export default function FirtForm() {
         }
     }
 
-    if (verifying) return (
-        <Form {...verificationForm}>
-            <h3>Verificacion</h3>
-            <form onSubmit={verificationForm.handleSubmit(onSubmitCode)} className="space-y-2 w-full">
-                <FormField
-                    control={verificationForm.control}
-                    name="code"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Codigo</FormLabel>
-                            <FormControl>
-                                <Input placeholder="" {...field} value={field.value} />
-                            </FormControl>
-                            <FormDescription>
-                                Se envio un codigo a {phone?.phoneNumber} si no te ha llegado presiona aqui para <span onClick={reAttemptVerification} className="text-blue-500 cursor-pointer">reenviar</span>
+    const handlePreviousStep = () => {
+        setPhone(undefined)
+        setVerifying(false)
+    }
+    if (verifying && phone) {
+        return (
+            <>
+                <div className='flex items-center gap-2 mb-5 cursor-pointer w-fit' onClick={handlePreviousStep}>
+                    <ArrowBigLeft fill='' /> Volver
+                </div>
+                <VerificationForm onSubmit={onSubmitCode} phone={phone} reAttemptVerification={reAttemptVerification} />
+            </>
+        )
+    }
 
-                                {phone?.verification?.expireAt ? <CountdownTimer expireAt={phone?.verification?.expireAt} /> : null}
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <Button className="w-full" type="submit">Verificar</Button>
-            </form>
-        </Form>
-    )
-    return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-
-                <FormField
-                    control={form.control}
-                    name="phone"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Telofono</FormLabel>
-                            <FormControl>
-                                <Input placeholder="ej: 2984694512" {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                Enviaremos un codigo de verificacion a este numero con una expiracion de 10min.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
-                <Button className="w-full" type="submit">Siguiente</Button>
-            </form>
-        </Form>
-    )
+    return <PhoneNumberForm onSubmit={onSubmit} />
 
 
 }

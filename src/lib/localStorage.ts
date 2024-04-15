@@ -64,6 +64,7 @@ export type RegisterSolucionadorFormValues = {
     categories?: Category[];
     cbu?: string;
     step?: number;
+    messageSent?: string;
 }
 
 export const localStorageRequests = observable({});

@@ -2,6 +2,8 @@ import { Button } from '@/app/ui/button';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { confetti } from '@tsparticles/confetti';
+import { SendWhatsapp } from '@/src/server/whatsapp';
+import { localRegisterSolucionador, type RegisterSolucionadorFormValues } from '@/src/lib/localStorage';
 
 export const confettiAni = () => {
     const count = 200;
@@ -65,6 +67,22 @@ const Confetti: React.FC = () => {
     useEffect(() => {
         confettiAni().then(() => {
             // Do something after the confetti animation
+            const local: RegisterSolucionadorFormValues = localRegisterSolucionador.get()
+            console.log('local', local);
+            if(!!local.phone && !local.messageSent){
+                console.log('sending message');
+                SendWhatsapp({
+                    body: "¡Bienvenido a Solucionado! Conecta con clientes de toda Argentina y comienza a ofrecer tus servicios hoy.", to: `whatsapp:${local.phone}`}).then((res) => {
+                         console.log('res', res);
+                        const newLocal: RegisterSolucionadorFormValues = {
+                            ...local,
+                            messageSent: 'true'
+                        }
+                        localRegisterSolucionador.set(newLocal)
+            }
+            ).catch((err) => {
+                console.log(err);
+            });}
         }).catch((err) => {
             console.log(err);
         });

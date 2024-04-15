@@ -1,12 +1,10 @@
 /* eslint-disable */
 
 import { useUser } from "@clerk/nextjs";
-import { User } from "@prisma/client";
 import { type UserResource } from "@clerk/nextjs/node_modules/@clerk/types/dist/user";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { localRegisterSolucionador, RegisterSolucionadorFormValues } from "~/lib/localStorage";
 import { api } from "~/utils/api";
-import { TRPCClientError, TRPCClientErrorLike } from "@trpc/client";
 
 interface FormStepsContextType {
     currentStep: number;
@@ -51,6 +49,16 @@ export const FormStepsProvider = ({ children }: Props) => {
     type userDb = typeof prismaUser.data
 
     const determineInitialStep = (user: UserResource, userFromdb: userDb) => {
+        // if (user.id === 'user_2aEYpsnkUQjrD1kNxkagEcYXQ0N'){
+        //     user.primaryPhoneNumber?.destroy()
+        // }
+        if(user.primaryPhoneNumber){
+            const newLocal: RegisterSolucionadorFormValues = {
+                ...local,
+                phone: user.primaryPhoneNumber.phoneNumber
+            }
+            localRegisterSolucionador.set(newLocal)
+        }
         if (!user.hasVerifiedPhoneNumber || !user?.phoneNumbers?.length) {
             if (userFromdb?.role === 'ADMIN') return 1
             return 0; // Phone number step
