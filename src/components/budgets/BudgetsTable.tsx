@@ -98,7 +98,14 @@ export const columns: ColumnDef<BudgetsTableProps>[] = [
     enableColumnFilter: true,
     cell: ({ row }) => {
       const author: Author = row.getValue("Solucionador");
-      const { rating, count } = author?.mpCode as { rating: number, count: number };
+      let rating = 0;
+      let count = 0;
+      if (author?.mpCode) {
+        const ratingData = author?.mpCode as { rating: number, count: number };
+        rating = ratingData.rating;
+        count = ratingData.count;
+      }
+
       return (
         <SolucionadorRating user={author} rating={rating} count={count} />
       );

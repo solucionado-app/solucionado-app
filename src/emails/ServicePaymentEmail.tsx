@@ -1,18 +1,11 @@
 import React from 'react';
 import { Tailwind, Button, Body, Container, Heading, Section, Text, Link, Img, Hr } from "@react-email/components";
 import { getBaseUrl } from '../utils/api';
+import { type EmailRequestProps } from './NewServiceRequestEmail';
 
-export interface IservicePaymentNotification {
-    title?: string;
-    content?: string;
-    link?: string;
-    buttonText?: string;
-    userName?: string;
-    categorieName: string;
-    requestedByUsername: string;
-}
 
-export default function ServicePaymentNotification({ link = 'https://solucionado.com.ar/solicitudes-de-servicio/', buttonText = 'Ver solicitud', userName = 'Francisco', categorieName = 'Electricidad', requestedByUsername = 'Santiago' }: IservicePaymentNotification) {
+
+export default function ServicePaymentEmail({ link = 'https://solucionado.com.ar/solicitudes-de-servicio/', buttonText = 'Ver solicitud', userName = 'Francisco', categorieName = 'Electricidad', requestedByUsername = 'Santiago' }: EmailRequestProps) {
     // const baseUrl = getBaseUrl();
 
     return (
@@ -40,14 +33,16 @@ export default function ServicePaymentNotification({ link = 'https://solucionado
                     </Section>
                     <Heading className="text-black text-[24px] font-normal text-center p-0 py-[30px] mx-0">
 
-                        {' Nueva solicitud de '}  <strong>{categorieName}</strong> en tu zona
+                        {' Nueva pago en tu servicio de '}  <strong>{categorieName}</strong>
                     </Heading>
                     <Text className="text-black text-[14px] leading-[24px]">
                         Hola {userName},
                     </Text>
                     <Text className="text-black text-[14px] leading-[24px]">
-                        <strong>{requestedByUsername}</strong> ha solicitado un presupuesto para un servicio de <strong>{categorieName}</strong> en{" "}
+                        <strong>{requestedByUsername}</strong> ha liberado el pago para tu servicio de <strong>{categorieName}</strong> en{" "}
                         <strong>Solucionado</strong>.
+                        Te enviaremos el dinero en breve.
+
                     </Text>
                     <Section className="text-center mt-[32px] mb-[32px] ">
                         <Button

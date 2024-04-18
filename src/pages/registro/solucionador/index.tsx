@@ -10,10 +10,11 @@ const Page: MyPage = () => {
 
         <SignUp
             signInUrl="/login"
-            path="/registro/solucionador"
+
+            redirectUrl="/registro/solucionador/completar-perfil"
             unsafeMetadata={{ role: 'SOLUCIONADOR' }}
             afterSignInUrl={!!redirect && typeof redirect === 'string' && redirect !== '' ? redirect : "/perfil"}
-            afterSignUpUrl={"/registro/solucionador/completar-perfil"}
+            afterSignUpUrl="/registro/solucionador/completar-perfil"
         />
     </div>;
 }

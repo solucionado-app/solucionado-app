@@ -2,6 +2,7 @@ import { clerkClient } from "@clerk/nextjs/server";
 import {  Status,  paymentStatus } from "@prisma/client";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { notificationRouter, sendEmail } from "./notification";
 
 export const serviceRouter = createTRPCRouter({
   update: protectedProcedure.input(
@@ -40,32 +41,85 @@ export const serviceRouter = createTRPCRouter({
       data: {
         paymentStatus: paymentStatus.ACREDITADO,
       },
+      include:{
+        budget:{
+          select:{
+            id:true,
+            author:{
+              select:{
+                id:true,
+                first_name:true,
+                last_name:true,
+                email:true,
+              }
+            },
+            serviceRequestId:true,
+            user:{
+              select:{
+                id:true,
+                first_name:true,
+                last_name:true,
+                email:true,
+              }
+            }
+          }
+        }
+      }
     });
 
-    const user = await ctx.prisma.user.findUnique({
-      where: {
-        id: input.userId,
-      },
-      select: {
-        cbu: true,
-        cuit: true,
-        first_name: true,
-        last_name: true,
-        emailAddressId: true,
-      },
-    });
-    try{
-      const email = await clerkClient.emails.createEmail({
-        fromEmailName: "info",
-        body: `Hola ${user?.first_name || ""} ${user?.last_name || ""} se ha acreditado el pago de tu servicio de ${input.categoryName} por un monto de $${input.price} en tu cuenta bancaria. Enlace al servicio: ${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'https:solucionado.com.ar'}/servicios/${input.id} `,
-        subject: `Pago acreditado`,
-        emailAddressId: user?.emailAddressId as string,
-      })
-      console.log(email)
-    }
-    catch(e){
-      console.log(e)
-    }
+    const user = service?.budget.user;
+    const budgetAuthor = service?.budget.author;
+    const notiData = {
+                    title: "Nueva solicitud de servicio",
+                    content: `${user.first_name ? user?.first_name : ""} ${user?.last_name ? user.last_name : ""} ha enviado un presupuesto para tu solicitud de servicio`,
+                    link: `/solicitudes-de-servicio/${service.budget.serviceRequestId}`,
+                    serviceRequestId: service.budget.serviceRequestId,
+                    userId: budgetAuthor?.id ,
+                    budgetId: service?.budget.id,
+                    authorName: user?.first_name || "",
+                    authorLastName: user?.last_name || "",
+                    categoryName: input.categoryName
+     }
+    await ctx.prisma.notification.create({
+            data: {
+                title: notiData.title,
+                content: notiData.content,
+                link: notiData.link,
+                users: {
+                    connect: {
+                        externalId: input?.userId,
+                    },
+                },
+                author: {
+                    connect: {
+                        externalId: user.id,
+                    },
+                },
+                serviceRequest: {
+                    connect: {
+                        id: notiData.serviceRequestId,
+                    },
+                },
+                budget: {
+                    connect: {
+                        id: service?.budget.id,
+                    },
+                },
+            },
+        });
+        sendEmail({
+                categorieName: notiData.categoryName,
+                requestedByUsername: `${user.first_name ? user?.first_name : ""} ${user?.last_name ? user.last_name : ""} `,
+                buttonText: 'Ver solicitud',
+                link: `https://solucionado.com.ar'/solicitudes-de-servicio/${notiData.serviceRequestId}`,
+                userName: budgetAuthor?.first_name ?? '',
+                recipientMail: budgetAuthor?.email,
+                type: 'payment',
+            }).then((res) => {
+            console.log('email sent', res)
+            }).catch((e) => {
+                            console.log('error al enviar el mail', e)
+            });
 
     return service;
   }),

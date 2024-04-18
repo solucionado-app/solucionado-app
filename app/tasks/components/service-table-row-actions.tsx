@@ -35,8 +35,17 @@ export function ServiceDataTableRowActions({
     const task = row.original
     const utils = trpc.useContext()
     const [open, setOpen] = useState(false)
+    const notification = api.notification.createServicePayment.useMutation()
     const mutate = api.service.update.useMutation()
-    const acredit = api.service.acredit.useMutation()   
+    const acredit = api.service.acredit.useMutation({
+        onSuccess: () => {
+            console.log('success')
+            void utils.service.getEvery.invalidate()
+        },
+        onError: (error) => {
+            console.log(error)
+        }
+    })
     function handlePaymentStatusChange(status: paymentStatus) {
         console.log(status, task.category)
         console.log(task.id, task.paymentStatus)

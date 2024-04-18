@@ -1,9 +1,10 @@
 import { Button } from '@/app/ui/button';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { confetti } from '@tsparticles/confetti';
 import { SendWhatsapp } from '@/src/server/whatsapp';
 import { localRegisterSolucionador, type RegisterSolucionadorFormValues } from '@/src/lib/localStorage';
+import { useFormSteps } from './ContextSolucionadorForm';
 
 export const confettiAni = () => {
     const count = 200;
@@ -62,7 +63,16 @@ export const ConfettiAnimation: React.FC = () => {
 };
 const Confetti: React.FC = () => {
     const router = useRouter();
-
+    const path = usePathname();
+    const {setOpen } = useFormSteps();
+    const handleButtonClick = () => {
+        console.log('path', path);
+        if (path === '/registro/solucionador/completar-perfil') {
+            void router.push('/');
+        } else {
+            setOpen && setOpen(false);
+        }
+    }
 
     useEffect(() => {
         confettiAni().then(() => {
@@ -93,10 +103,8 @@ const Confetti: React.FC = () => {
             <div className='flex flex-col justify-center text-center'>
                 <h1 className='text-2xl font-bold'>¡Listo!</h1>
                 <p className='text-gray-500'>Ya podes empezar a recibir solicitudes de trabajo</p>
-                <Button onClick={() => void router.push('/')} className='mt-5'>Ir al inicio</Button>
+                <Button onClick={handleButtonClick} className='mt-5'>Continuar</Button>
             </div>
-
-
         </div>
     );
 };

@@ -8,9 +8,9 @@ export const budgetRouter = createTRPCRouter({
         z.object({
             serviceRequestId: z.string(),
         })
-    ).query(({ ctx, input }) => {
+    ).query(async({ ctx, input }) => {
 
-        const serviceRequest = ctx.prisma.budget.findMany({
+        const budgets = await ctx.prisma.budget.findMany({
             where: {
                 serviceRequestId: input.serviceRequestId,
                 authorId: ctx.auth.userId,
@@ -36,21 +36,41 @@ export const budgetRouter = createTRPCRouter({
             }
 
         });
-
-        if (serviceRequest === null) {
+        const reviewData = await ctx.prisma.review.groupBy({
+            by: ['userId'],
+            where: {
+                userId: ctx.auth.userId,
+            },
+            _avg: {
+                rating: true,
+            },
+            _count: {
+                _all: true,
+            },
+        });
+        if (budgets === null) {
             throw new Error("Budget not found");
         }
-        // console.log(serviceRequest);
-        return serviceRequest;
+        for (const budget of budgets) {
+                const data = reviewData.find((item: {userId: string}) => item.userId === budget.author.id);
+                if (data) {
+
+                    const jsonCompatibleRating = data._avg.rating?.toString();
+                    budget.author.mpCode = { rating: jsonCompatibleRating , count: data._count._all  };
+                }
+
+        }
+        console.log(budgets);
+
+
+        // console.log(budgets);
+        return budgets;
     }),
     getAll: protectedProcedure.input(
         z.object({
             serviceRequestId: z.string(),
         })
     ).query(async({ ctx, input }) => {
-
-
-
         const budgets= await ctx.prisma.budget.findMany({
             where: {
                 serviceRequestId: input.serviceRequestId,
@@ -80,7 +100,7 @@ export const budgetRouter = createTRPCRouter({
 
         const authorIds = budgets.map((budget) => budget.author.id);
 
-        
+
         const reviewData = await ctx.prisma.review.groupBy({
             by: ['userId'],
             where: {
@@ -100,10 +120,10 @@ export const budgetRouter = createTRPCRouter({
 
         for (const budget of budgets) {
 
-                
+
                 const data = reviewData.find((item: {userId: string}) => item.userId === budget.author.id);
                 if (data) {
-                    
+
                     const jsonCompatibleRating = data._avg.rating?.toString();
                     budget.author.mpCode = { rating: jsonCompatibleRating , count: data._count._all  };
                 }
