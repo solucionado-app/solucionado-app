@@ -26,9 +26,12 @@ import { format } from "date-fns"
 import { api } from "~/utils/api";
 import { trpc } from '~/utils/trpc'
 import AlertMercadoPagoIntegrate from './AlertMercadoPagoIntegrate'
+import dynamic from 'next/dynamic'
 
 
-
+const getDynamicAlertProfile = () => dynamic(() => import('./AlertMercadoPagoIntegrate'), {
+    loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+})
 interface Props {
     serviceRequest: ServiceRequest | null | undefined,
     serviceRequestId: string
@@ -36,11 +39,12 @@ interface Props {
 const locale = es;
 
 const FormSchema = z.object({
-    price: z.coerce.number().min(1999, {
+    price: z.coerce.number().min(19, {
         message: "debe haber al menos un valor mayor a 2000.",
     }),
     description: z
         .string()
+        .nonempty("La descripcion es requerida.")
         .max(160, {
             message: "Debe tener maximo 130 caracteres.",
         }),
@@ -74,6 +78,7 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
                     budgetId: data.id,
                     authorName: user?.firstName || "",
                     authorLastName: user?.lastName || "",
+                    categoryId: serviceRequest?.categoryId as number
                 })
             }
         },
@@ -81,15 +86,26 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
     const notification = api.notification.createBudgetNotification.useMutation()
 
     const [open, setOpen] = React.useState(false)
-    const utils = trpc.useContext()
+    const utils = trpc.useUtils()
     const { data: userData } = api.user.getById.useQuery();
     function onSubmit(data: z.infer<typeof FormSchema>) {
-
-
-        if (userData?.mpCode === null || userData?.mpCode === undefined) {
+        console.log(userData)
+        if (userData?.phone === null || userData?.phone === undefined) {
             setOpen(true)
+        } else if (!userData?.dni) {
+           setOpen(true) // Second step
+        } else if (!userData?.cbu) {
+           setOpen(true)// Third step
+        } else if (!userData?.cuit) {
+           setOpen(true) // Fourth step
+        } else if (!userData?.cityId || !userData?.address) {
+            setOpen(true) // Fifth step
+        } else if (userData?.categories?.length === 0) {
+            setOpen(true) // Fifth step
         }
-        mutateBugdet.mutate({
+        else{
+            console.log(serviceRequest?.userId)
+            mutateBugdet.mutate({
             serviceRequestId: serviceRequestId,
             price: data.price,
             description: data.description,
@@ -103,6 +119,8 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
                 form.reset()
             }
         })
+        }
+
 
         // console.log(data)
     }
@@ -111,7 +129,7 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
             <div>
                 <h1 className="text-5xl font-extrabold tracking-tight">Generar Presupuesto</h1>
             </div><Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+                <form id='budget-form' onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
                     <FormField
                         control={form.control}
                         name="price"
@@ -192,8 +210,8 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
                             </FormItem>
                         )}
                     />
-                    <Button disabled={!isSignedIn} type="submit">Generar Presupuesto</Button>
-                    <AlertMercadoPagoIntegrate open={open} />
+                    <Button formTarget='budget-form' form='budget-form' disabled={!isSignedIn} type="submit">Generar Presupuesto</Button>
+                    <AlertMercadoPagoIntegrate open={open}  setOpen={setOpen}/>
                 </form>
             </Form>
         </>

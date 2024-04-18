@@ -2,7 +2,7 @@
 
 import { useUser } from "@clerk/nextjs";
 import { type UserResource } from "@clerk/nextjs/node_modules/@clerk/types/dist/user";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { localRegisterSolucionador, RegisterSolucionadorFormValues } from "~/lib/localStorage";
 import { api } from "~/utils/api";
 
@@ -13,6 +13,8 @@ interface FormStepsContextType {
     setFormValues: React.Dispatch<React.SetStateAction<Record<string, any>>>;
     isLoading: boolean,
     handleStepSubmission: (step: number, values: any) => Promise<unknown>;
+    setOpen?: Dispatch<SetStateAction<boolean>>;
+
 }
 
 
@@ -24,17 +26,19 @@ const FormStepsContext = createContext<FormStepsContextType>({
     formValues: {},
     setFormValues: () => { },
     isLoading: false,
-    handleStepSubmission: () => new Promise(() => { })
+    handleStepSubmission: () => new Promise(() => { }),
+    setOpen: () => { },
+
 });
 
 export const useFormSteps = () => useContext(FormStepsContext);
 
 interface Props {
     children: React.ReactNode;
-
+    setOpen?: Dispatch<SetStateAction<boolean>>
 }
 
-export const FormStepsProvider = ({ children }: Props) => {
+export const FormStepsProvider = ({ children, setOpen }: Props) => {
     const { user } = useUser()
     const local: RegisterSolucionadorFormValues = localRegisterSolucionador.get()
 
@@ -153,7 +157,7 @@ export const FormStepsProvider = ({ children }: Props) => {
             });
     };
     return (
-        <FormStepsContext.Provider value={{ currentStep, setCurrentStep, formValues, setFormValues, isLoading, handleStepSubmission }}>
+        <FormStepsContext.Provider value={{ currentStep, setCurrentStep, formValues, setFormValues, isLoading, handleStepSubmission, setOpen }}>
             {children}
         </FormStepsContext.Provider>
     );

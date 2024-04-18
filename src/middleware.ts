@@ -42,7 +42,7 @@ export default authMiddleware({
         // }
 
     },
-    publicRoutes: ["/", "/contacto", '/(login)(.*)','/registro','/registro/usuario','/registro/solucionador/', "/(solucionar/)(.*)", "/(api|trpc)(.*)", "/api/webhooks/mercadopago/autorization"],
+    publicRoutes: ["/", "/contacto", '/(login)(.*)','/(registro)(.*)','/registro/usuario','/registro/solucionador/', "/(solucionar/)(.*)", "/(api|trpc)(.*)", "/api/webhooks/mercadopago/autorization"],
     ignoredRoutes: ["/api/webhooks/mercadopago/autorization", "/api/webhooks/user"],
 });
 

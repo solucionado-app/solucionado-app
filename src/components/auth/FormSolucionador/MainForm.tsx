@@ -13,28 +13,34 @@ const getThirdStep = () => dynamic(() => import(`~/components/auth/FormSoluciona
 
 const getSecondStep = () => dynamic(() => import(`~/components/auth/FormSolucionador/SecondStep`), {
     loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
+    ssr: false
 })
 
 const getFourthStep = () => dynamic(() => import(`~/components/auth/FormSolucionador/FourthStep`), {
     loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
+    ssr: false
 })
 
 const getFifthStep = () => dynamic(() => import(`~/components/auth/FormSolucionador/FifthStep`), {
     loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
+    ssr: false
 })
 const getSixthStep = () => dynamic(() => import(`~/components/auth/FormSolucionador/SixthStep`), {
     loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
+    ssr: false
 })
+
+const DynamictThirdStep = getThirdStep()
+const DynamicFourthStep = getFourthStep()
+const DynamicFifthStep = getFifthStep()
+const DynamicSixthStep = getSixthStep()
+const DynamicSecondStep = getSecondStep()
+
 export default function MainForm() {
     const { currentStep, setCurrentStep } = useFormSteps();
-    const DynamicSecondStep = getSecondStep()
     const handlePreviousStep = () => {
         setCurrentStep(currentStep - 1);
     };
-    const DynamictThirdStep = getThirdStep()
-    const DynamicFourthStep = getFourthStep()
-    const DynamicFifthStep = getFifthStep()
-    const DynamicSixthStep = getSixthStep()
 
     return (
         <>

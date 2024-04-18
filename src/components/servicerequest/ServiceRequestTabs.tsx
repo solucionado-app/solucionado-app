@@ -10,6 +10,7 @@ import { useUser } from '@clerk/nextjs'
 import Spinner from '../ui/spinner'
 import CommentsForm from '../comments/CommentForm'
 import { Button } from '../ui/button'
+import { Separator } from '@/app/ui/separator'
 
 const budgetTableDynamic = () =>
     dynamic(() => import(`~/components/budgets/BudgetsTable`), {
@@ -41,19 +42,19 @@ export default function ServiceRequestTabs({ id }: Props) {
         }
     );
 
-
     const searchParams = useSearchParams();
+    console.log(serviceRequest?.userId);
     const tab = searchParams?.get("tab");
     return (
         <>
-            {!isLoaded && <Spinner className="h-12 w-12 text-solBlue" />}
-            {!!user && isSignedIn && <Tabs defaultValue={tab ?? 'budget'} className="w-full">
+            {!serviceRequest && !isLoaded && !user && <Spinner className="h-12 w-12 text-solBlue" />}
+            {!!user && isSignedIn && !!serviceRequest && <Tabs defaultValue={tab ?? 'budget'} className="w-full">
                 <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="budget"  >Presupuestos</TabsTrigger>
                     <TabsTrigger value="comments" >Comentarios</TabsTrigger>
                 </TabsList>
                 <TabsContent value="budget">
-                    {!!user && !!serviceRequest && user?.id === serviceRequest?.userId ? <Card>
+                    { user?.id === serviceRequest?.userId ? <Card>
                         <CardHeader>
                             <CardTitle>Presupuestos</CardTitle>
                             <CardDescription>Estos son los presupuestos que se han enviado a tu solicitud</CardDescription>
@@ -62,23 +63,39 @@ export default function ServiceRequestTabs({ id }: Props) {
                             <div className="space-y-1">
                                 {user?.id === serviceRequest?.userId &&
 
-                                    !!budgets && !!serviceRequest && <DynamicBudgetTable budgets={budgets} status={serviceRequest?.status} />}
+                                    !!budgets &&  <DynamicBudgetTable budgets={budgets} status={serviceRequest?.status} />}
                                 {/* <Budgets /> */}
                                 {!!budgetListSolucionador && budgetListSolucionador.length > 0 && user?.id !== serviceRequest?.userId && !!serviceRequest && (
-                                    <>solucionador<DynamicBudgetTable budgets={budgetListSolucionador} status={serviceRequest?.status} isSolucionador={true} /></>
+                                    <><DynamicBudgetTable budgets={budgetListSolucionador} status={serviceRequest?.status} isSolucionador={true} /></>
                                 )}
-                                {user?.id !== serviceRequest?.userId && serviceRequest?.status !== 'ACEPTED' ?
-                                    <BudgetsForm
-                                        serviceRequest={serviceRequest}
-                                        serviceRequestId={id}
-                                    />
-                                    : null}
-
 
                             </div>
                         </CardContent>
                         <CardFooter>{/* <Button>ver mas</Button> */}</CardFooter>
-                    </Card> : <Card>
+                    </Card> :  serviceRequest?.status !== 'ACEPTED' ?
+                            (user?.id !== serviceRequest?.userId &&<>
+                                <Card>
+                                    <CardHeader>
+                                        <BudgetsForm
+                                            serviceRequest={serviceRequest}
+                                            serviceRequestId={id}
+                                        />
+                                    </CardHeader>
+                                    <Separator />
+                                    <CardContent className="space-y-2 p-2 md:p-10">
+                                        <div className="space-y-1">
+
+                                                <CardTitle>Presupuestos</CardTitle>
+                                                <CardDescription>Estos son los presupuestos que se has enviado a esta solicitud</CardDescription>
+
+                                            {(
+                                                <DynamicBudgetTable budgets={budgetListSolucionador} status={serviceRequest?.status} isSolucionador={true} />
+                                            )}
+                                        </div>
+                                    </CardContent>
+                                    </Card>
+                            </>)
+                            : <Card>
                         <CardHeader>
                             <CardTitle>Presupuestos</CardTitle>
                             <CardDescription>El usuario que hizo la solicitud ya ha aceptado un presupuesto.</CardDescription>

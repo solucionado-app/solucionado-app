@@ -1,9 +1,38 @@
-import { EmailRequestData } from "@/app/api/mail/serviceRequest/route";
+import { type EmailRequestData } from "@/app/api/mail/serviceRequest/route";
 import { getBaseUrl } from "@/src/utils/api";
 import { clerkClient } from "@clerk/nextjs";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+const baseUrl = getBaseUrl();
 
+ export const sendEmail = async (data: EmailRequestData) => {
+            try {
+                    const response = await fetch(`${baseUrl}/api/mail/serviceRequest`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                    const responseData = await response.json();
+                    console.log(responseData);
+                    return response; // Return null if no error occurred
+            } catch (error) {
+                    if (error instanceof Error) {
+                        console.error('An error occurred while sending the email:', error);
+                        return error.message; // Return the error message
+                    }
+
+                    // If the error is not an instance of Error, return a generic error message
+                    return 'An error occurred while sending the email.'; // Return the error message
+                }
+            };
 export const notificationRouter = createTRPCRouter({
     getAll: protectedProcedure.query(({ ctx }) => {
         return ctx.prisma.notification.findMany({
@@ -151,7 +180,7 @@ export const notificationRouter = createTRPCRouter({
             userId: z.string(),
             authorName: z.string(),
             authorLastName: z.string(),
-
+            categoryId: z.number(),
         })
     ).mutation(async ({ ctx, input }) => {
 
@@ -163,23 +192,18 @@ export const notificationRouter = createTRPCRouter({
                 first_name: true,
                 last_name: true,
                 emailAddressId: true,
+                email: true,
             },
         });
 
-        clerkClient.emails.createEmail({
-            fromEmailName: "info",
-            body: `hola ${user?.first_name || ""} ${user?.last_name || ""} el usuario  ${input.authorName} ${input.authorLastName} ha enviado un presupuesto para tu solicitud de servicio
-            Entra a este link para ver los detalles de la solicitud: ${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'https://solucionado.com.ar'}/${input.link || "solicitudes-de-servicio"}/${input.serviceRequestId}
-            `,
-            subject: `Nuevo presupuesto para tu solicitud de servicio`,
-            emailAddressId: user?.emailAddressId as string,
-        }).then((res) => {
-             console.log(res)
-        }
-        ).catch((err) => {
-             console.log(err)
-        }
-        );
+        const category = await ctx.prisma.category.findUnique({
+            where: {
+                id: input.categoryId,
+            },
+            select:{
+                name: true,
+            }
+        })
 
         const notification = await ctx.prisma.notification.create({
             data: {
@@ -208,7 +232,100 @@ export const notificationRouter = createTRPCRouter({
                 },
             },
         });
+        sendEmail({
+                categorieName: category?.name as string,
+                requestedByUsername: `${input.authorName ?? ''}  ${input.authorLastName ?? ''}`,
+                buttonText: 'Ver solicitud',
+                link: `${baseUrl ?? 'https://solucionado.com.ar'}/solicitudes-de-servicio/${input.serviceRequestId}`,
+                userName: user?.first_name ?? '',
+                recipientMail: user?.email as string,
+                type: 'budget',
+            }).then((res) => {
+            console.log('email sent', res)
+            }).catch((e) => {
+                            console.log('error al enviar el mail', e)
+            });
         return notification;
+    }),
+    createServicePayment: protectedProcedure.input(
+        z.object({
+            link: z.string().optional(),
+            title: z.string(),
+            content: z.string(),
+            budgetId: z.string(),
+            serviceRequestId: z.string(),
+            userId: z.string(),
+            authorName: z.string(),
+            authorLastName: z.string(),
+            categoryId: z.number(),
+            categoryName: z.string(),
+        })
+    ).mutation(async ({ ctx, input }) => {
+
+        const user = await ctx.prisma.user.findUnique({
+            where: {
+                externalId: input.userId,
+            },
+            select: {
+                first_name: true,
+                last_name: true,
+                emailAddressId: true,
+                email: true,
+            },
+        });
+
+        const category = await ctx.prisma.category.findUnique({
+            where: {
+                id: input.categoryId,
+            },
+            select:{
+                name: true,
+            }
+        })
+
+        const notification = await ctx.prisma.notification.create({
+            data: {
+                title: input.title,
+                content: input.content,
+                link: input.link,
+                users: {
+                    connect: {
+                        externalId: input?.userId,
+                    },
+                },
+                author: {
+                    connect: {
+                        externalId: ctx.auth.userId,
+                    },
+                },
+                serviceRequest: {
+                    connect: {
+                        id: input.serviceRequestId,
+                    },
+                },
+                budget: {
+                    connect: {
+                        id: input.budgetId,
+                    },
+                },
+            },
+        });
+        sendEmail({
+                categorieName: category?.name as string,
+                requestedByUsername: `${input.authorName ?? ''}  ${input.authorLastName ?? ''}`,
+                buttonText: 'Ver solicitud',
+                link: `${baseUrl ?? 'https://solucionado.com.ar'}/solicitudes-de-servicio/${input.serviceRequestId}`,
+                userName: user?.first_name ?? '',
+                recipientMail: user?.email as string,
+                type: 'payment',
+            }).then((res) => {
+            console.log('email sent', res)
+            }).catch((e) => {
+                            console.log('error al enviar el mail', e)
+            });
+        return notification;
+
+
     }),
     createBudgetAcceptedNotification: protectedProcedure.input(
         z.object({
@@ -230,21 +347,10 @@ export const notificationRouter = createTRPCRouter({
                 first_name: true,
                 last_name: true,
                 emailAddressId: true,
+                email: true,
             },
         });
-        clerkClient.emails.createEmail({
-            fromEmailName: "info",
-            body: `hola ${user?.first_name || ""} ${user?.last_name || ""} el usuario  ${input.authorName} ${input.authorLastName} ha aceptado tu presupuesto para su solicitud de servicio
-            Entra a este link para ver los detalles de la solicitud: ${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'https://solucionado.com.ar'}/${input.link || "solicitudes-de-servicio"}/${input.serviceRequestId}
-            `,
-            subject: `Presupuesto aceptado para tu solicitud de servicio`,
-            emailAddressId: user?.emailAddressId as string,
-        }).then((res) => {
-                console.log(res)
-        })
-        .catch((err) => {
-                console.log(err)
-        });
+
         const notification = await ctx.prisma.notification.create({
             data: {
                 title: input.title,
@@ -335,21 +441,6 @@ export const notificationRouter = createTRPCRouter({
         if (filteredUsers.length === 0) {
             return null;
         }
-        !!filteredUsers && filteredUsers.length > 0 && filteredUsers.forEach((user) => {
-            clerkClient.emails.createEmail({
-                fromEmailName: "info",
-                body: `${input.authorName} ${input.authorLastName} ha comentado la solicitud de servicio de ${input.categoryName}
-                    Entra a este link para ver los detalles de la solicitud: ${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'https://solucionado.com.ar'}/${input.link || "solicitudes-de-servicio"}/${input.serviceRequestId}`,
-                subject: `Nuevo comenario en Solicitud de servicio en ${input.categoryName}`,
-                emailAddressId: user.emailAddressId as string,
-            }).then((res) => {
-                 console.log(res)
-            }
-            ).catch((err) => {
-                console.log(err)
-            }
-            );
-        });
 
 
         const notification = await ctx.prisma.notification.create({
@@ -443,37 +534,7 @@ export const notificationRouter = createTRPCRouter({
             }
         });
 
-        const baseUrl = getBaseUrl();
-        console.log('baseUrl', baseUrl)
 
-        const sendEmail = async (data: EmailRequestData) => {
-            try {
-                    const response = await fetch(`${baseUrl}/api/mail/serviceRequest`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data),
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                    const responseData = await response.json();
-                    console.log(responseData);
-                    return response; // Return null if no error occurred
-            } catch (error) {
-                    if (error instanceof Error) {
-                        console.error('An error occurred while sending the email:', error);
-                        return error.message; // Return the error message
-                    }
-
-                    // If the error is not an instance of Error, return a generic error message
-                    return 'An error occurred while sending the email.'; // Return the error message
-                }
-            };
             if (users?.length > 0) {
 
 
@@ -487,6 +548,7 @@ export const notificationRouter = createTRPCRouter({
                             link: `${baseUrl ?? 'https://solucionado.com.ar'}/solicitudes-de-servicio/${input.serviceRequestId}`,
                             userName: user.first_name ?? '',
                             recipientMail: user.email,
+                            type: 'serviceRequest',
                         }).then((res) => {
                             console.log('email sent', res)
                         }).catch((e) => {
