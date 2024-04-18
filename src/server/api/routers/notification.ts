@@ -1,13 +1,11 @@
 import { type EmailRequestData } from "@/app/api/mail/serviceRequest/route";
-import { getBaseUrl } from "@/src/utils/api";
-import { clerkClient } from "@clerk/nextjs";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-const baseUrl = getBaseUrl();
+const baseUrl = `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}`;
 
  export const sendEmail = async (data: EmailRequestData) => {
             try {
-                    const response = await fetch(`${baseUrl}/api/mail/serviceRequest`, {
+                    const response = await fetch(`/api/mail/serviceRequest`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
