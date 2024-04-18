@@ -2,7 +2,9 @@ import { clerkClient } from "@clerk/nextjs/server";
 import {  Status,  paymentStatus } from "@prisma/client";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { notificationRouter, sendEmail } from "./notification";
+import {  sendEmail } from "./notification";
+
+const baseUrl = `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}`;
 
 export const serviceRouter = createTRPCRouter({
   update: protectedProcedure.input(
@@ -72,7 +74,7 @@ export const serviceRouter = createTRPCRouter({
     const notiData = {
                     title: "Nueva solicitud de servicio",
                     content: `${user.first_name ? user?.first_name : ""} ${user?.last_name ? user.last_name : ""} ha enviado un presupuesto para tu solicitud de servicio`,
-                    link: `/solicitudes-de-servicio/${service.budget.serviceRequestId}`,
+                    link: `${baseUrl ?? 'https://solucionado.com.ar'}/solicitudes-de-servicio/${service.budget.serviceRequestId}`,
                     serviceRequestId: service.budget.serviceRequestId,
                     userId: budgetAuthor?.id ,
                     budgetId: service?.budget.id,
