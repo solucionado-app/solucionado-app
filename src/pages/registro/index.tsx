@@ -1,14 +1,11 @@
 import DialogRegisterSolucionador from "@/src/components/auth/DialogRegisterSolucionador";
 import RegisterUserDialog from "@/src/components/auth/RegisterUserDialog";
-import { Button } from "@/src/components/ui/button";
-import { SignUp, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { type MyPage } from "~/components/types/types";
 
 
 const Page: MyPage = () => {
-    const { user } = useUser()
     return (
         <>
             <div className=" flex items-baseline w-full min-h-screen justify-between ">

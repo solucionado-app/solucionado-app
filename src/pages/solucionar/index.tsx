@@ -1,7 +1,6 @@
 import About from "@/src/components/views/home/About";
 import { api } from "@/src/utils/api";
 import { type MyPage } from "~/components/types/types";
-import ContactForm from "~/components/views/contact/ContactForm";
 
 const Categorias: MyPage = () => {
     const apitrcp = api.categories.getAll.useQuery();

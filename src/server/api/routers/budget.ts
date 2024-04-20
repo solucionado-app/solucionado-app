@@ -60,7 +60,7 @@ export const budgetRouter = createTRPCRouter({
                 }
 
         }
-        console.log(budgets);
+        // console.log(budgets);
 
 
         // console.log(budgets);
@@ -116,7 +116,7 @@ export const budgetRouter = createTRPCRouter({
             },
         });
 
-        console.log(reviewData);
+        // console.log(reviewData);
 
         for (const budget of budgets) {
 
@@ -129,7 +129,7 @@ export const budgetRouter = createTRPCRouter({
                 }
 
         }
-        console.log(budgets);
+        // console.log(budgets);
         return budgets;
     }),
     create: protectedProcedure.input(

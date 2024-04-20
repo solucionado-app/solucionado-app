@@ -1,7 +1,5 @@
-import { SignedOutAuthObject, type SignedInAuthObject } from "@clerk/nextjs/server";
 import { type GetStaticPropsContext, type GetStaticPaths, type InferGetStaticPropsType, } from "next";
 import { ssgHelper } from "~/server/api/ssgHelper";
-import { type JwtPayload, type ServerGetTokenOptions } from "@clerk/types";
 import Head from "next/head";
 import { type MyPage } from "~/components/types/types";
 

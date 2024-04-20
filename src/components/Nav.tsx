@@ -10,7 +10,7 @@ import NotificationsComponent from "./notifications/NotificationsComponent";
 import ProfileDropdown from "./auth/ProfileDropdown";
 import { api } from "~/utils/api";
 import { usePathname } from "next/navigation";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/app/ui/sheet-solucionado";
+import { Sheet, SheetContent,   SheetTrigger } from "@/app/ui/sheet-solucionado";
 import { Menu } from "lucide-react";
 
 export default function Nav() {
@@ -18,7 +18,6 @@ export default function Nav() {
   const pathName = usePathname();
   const user = useUser();
 
-  const popover = React.useRef<HTMLDialogElement>(null);
   const { data: numberOfNotifications } = api.notification.countUnRead.useQuery(
     undefined,
     {
@@ -27,29 +26,6 @@ export default function Nav() {
     }
   );
   // console.log(numberOfNotifications);
-
-  const handleBurgerClick = () => {
-    const { current: el } = popover;
-    el?.show();
-    (el?.firstChild as HTMLDivElement)?.classList.remove("w-0", "opacity-0");
-    (el?.firstChild as HTMLDivElement)?.classList.add("w-9/12", "opacity-100");
-  };
-
-  const closeDialog = () => {
-    const { current: el } = popover;
-    (el?.firstChild as HTMLDivElement)?.classList.remove(
-      "w-9/12",
-      "opacity-100"
-    );
-    (el?.firstChild as HTMLDivElement)?.classList.add("w-0", "opacity-0");
-    sleep(500)
-      .then(() => el?.close())
-      .catch((err) => console.log(err));
-  };
-  function sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
 
   useEffect(() => {
     const handleColorChange = () => {
@@ -106,38 +82,7 @@ export default function Nav() {
     window.addEventListener("scroll", handleColorChange);
 
   }, [pathName])
-  useEffect(() => {
-    /**
-     * close the popover if clicked on outside of the element
-     */
 
-    const { current: el } = popover;
-    const linksmobile = document.getElementById("linksmobile");
-    const burger = document.getElementById("burger");
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        el &&
-        !el.contains(event.target as Node) &&
-        !burger?.contains(event.target as Node) ||
-        linksmobile?.contains(event.target as Node)
-      ) {
-        (el?.firstChild as HTMLDivElement)?.classList.remove(
-          "w-9/12",
-          "opacity-100"
-        );
-        (el?.firstChild as HTMLDivElement)?.classList.add("w-0", "opacity-0");
-        sleep(500)
-          .then(() => el?.close())
-          .catch((err) => console.log(err));
-      }
-    }
-    // Bind the event listener
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      // Unbind the event listener on clean up
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [popover]);
   // console.log(user)
   return (
     <>

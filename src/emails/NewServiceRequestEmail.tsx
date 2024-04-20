@@ -1,6 +1,5 @@
 import React from 'react';
 import { Tailwind, Button, Body, Container, Heading, Section, Text, Link, Img, Hr } from "@react-email/components";
-import { getBaseUrl } from '../utils/api';
 
 export interface EmailRequestProps {
     link?: string;

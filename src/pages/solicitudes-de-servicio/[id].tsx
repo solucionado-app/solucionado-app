@@ -51,7 +51,6 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   });
   const { data: serviceRequest } = request;
   const DynamicTabs = tabsDynamic();
-  const ConfetiDynamic = confetiDynamic();
 
 
 
