@@ -9,7 +9,6 @@ import { format } from "date-fns";
 import es from "date-fns/locale/es";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { CldImage } from "next-cloudinary";
 // HomePage.Layout = "OtherLayout"; -> error Type '"OtherLayout"' is not assignable to type '"Main" | "Admin" | undefined'.
 const ServiceRequest: MyPage = () => {

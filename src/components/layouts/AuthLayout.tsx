@@ -1,5 +1,4 @@
 
-import Nav from "../Nav";
 export default function AuthLayout({ children }: React.PropsWithChildren<object>) {
     return (
         <>

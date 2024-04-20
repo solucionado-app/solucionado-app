@@ -1,11 +1,9 @@
-import { useUser } from '@clerk/nextjs'
 import { MoveRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
 export default function ComoSection() {
-    const { user } = useUser()
     return (
         <section className="container p-6">
             <h2 className="text-4xl font-semibold text-black text-center mb-6">¿Como Funciona?</h2>

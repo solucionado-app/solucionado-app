@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Ban, Loader2 } from "lucide-react";
-import type { SignedInAuthObject, SignedOutAuthObject } from "@clerk/nextjs/dist/types/server";
 import type { GetStaticPaths, GetStaticPropsContext } from "next";
-import { type JwtPayload, type ServerGetTokenOptions } from "@clerk/types";
 
 import { SolucionadorProfileCard } from "~/components/profile/SolucionadorProfileCard";
 import { SolucionadorTabs } from "~/components/profile/SolucionadorTabs";

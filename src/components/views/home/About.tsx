@@ -4,7 +4,6 @@ import HomeSelect from "~/components/formularios/HomeSelect";
 import { type CategoriesQueryResponse } from "~/components/types/common";
 import {
   Card,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";

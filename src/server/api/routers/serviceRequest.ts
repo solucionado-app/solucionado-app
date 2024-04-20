@@ -1,6 +1,4 @@
-import { EmailRequestData } from "@/app/api/mail/serviceRequest/route";
-import { getBaseUrl } from "@/src/utils/api";
-import { clerkClient } from "@clerk/nextjs";
+
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
