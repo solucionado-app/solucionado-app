@@ -23,7 +23,7 @@ export default function ServicePaymentEmail({ link = 'https://solucionado.com.ar
                 <Container className="border border-solid border-[#eaeaea] max-w-lg rounded my-[40px] mx-auto p-[20px] w-[465px]">
                     <Section className="mt-[32px]">
                         <Img
-                            src={`https://solucionado.com.ar/solucionado-iso.svg`}
+                            src={`https://res.cloudinary.com/dozjn0kxw/image/upload/v1706170808/solucionado/solucionado-isologo.png`}
                             width="40"
                             height="40"
                             alt="Solucionado"

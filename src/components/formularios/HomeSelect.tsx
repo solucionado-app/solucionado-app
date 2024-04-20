@@ -183,7 +183,7 @@ export default function HomeSelect({ categories, isLoading }: props) {
 
           <Button
             size={"lg"}
-            className=" bg-solYellow text-lg z-10  h-14 font-semibold text-black rounded-lg shadow-md hover:bg-solYellow/80 transition-colors w-full md:w-auto   max-[640px]:w-full"
+            className=" bg-solYellow text-lg z-10  h-14 font-semibold text-black rounded-lg shadow-md hover:bg-solYellow/90 transition-colors w-full md:w-auto   max-[640px]:w-full"
             type="submit"
           >
             Buscar

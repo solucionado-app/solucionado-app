@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { Button } from "~/components/ui/button"
 import {
     Form,
     FormControl,
@@ -14,31 +13,16 @@ import {
 import { Input } from "~/components/ui/input"
 import { useForm } from "react-hook-form";
 
-import { Textarea } from "../ui/textarea"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger
-} from "../ui/popover"
-import { format, set } from "date-fns"
-import { CalendarIcon } from "lucide-react"
-import { cn } from "~/lib/utils"
-import { Calendar } from "../ui/calendar"
 
 import es from 'date-fns/locale/es';
-import { sendEmail, useFormSteps } from "./ContextForm"
+import {  useFormSteps } from "./ContextForm"
 import { FormValues, localStorageRequests } from "~/lib/localStorage"
 
-import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import { Console } from "console"
 import Submitbutton from "../auth/FormSolucionador/Submitbutton"
 import { useUser } from "@clerk/nextjs"
 import DialogAuthConfirmation from "../auth/DialogAuthConfirmation"
-
-const locale = es;
-
 
 
 const formSchema = z.object({
@@ -53,7 +37,6 @@ export default function ImageStep() {
     const slug = router.query.slug as string;
     const { currentStep, setCurrentStep, isSubmitting, handleSubmition } = useFormSteps();
     const local: FormValues = localStorageRequests.get()
-    const hasCategoryInLocal = slug in local && Object.prototype.hasOwnProperty.call(local, slug) && JSON.stringify(local[`${slug}`]) !== '{}';
     const [photos, setPhotos] = useState<File[]>([]);
     const [portrait, setPortrait] = useState<File>();
     const [previewUrls, setPreviewUrls] = useState<string[]>([]);

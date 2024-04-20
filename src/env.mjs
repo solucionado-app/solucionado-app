@@ -11,6 +11,7 @@ export const env = createEnv({
     NODE_ENV: z.enum(["development", "test", "production"]),
     TWILIO_AUTH_TOKEN: z.string(),
     TWILIO_ACCOUNT_SID: z.string(),
+
   },
 
 
@@ -21,6 +22,7 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
+    NEXT_PUBLIC_MP_DOMAIN: z.string().url(),
   },
 
   /**
@@ -32,6 +34,7 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
     TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
+    NEXT_PUBLIC_MP_DOMAIN: process.env.NEXT_PUBLIC_MP_DOMAIN,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

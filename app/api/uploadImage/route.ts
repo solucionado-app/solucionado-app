@@ -6,7 +6,7 @@ import { prisma } from "~/server/db";
 
 import { existsSync, promises as fs } from 'fs';
 import { tmpdir } from 'os';
-import { join, extname } from 'path';
+import { join } from 'path';
 
 
 // disable

@@ -175,7 +175,19 @@ export const notificationRouter = createTRPCRouter({
                 name: true,
             }
         })
-
+        sendEmail({
+                categorieName: category?.name as string,
+                requestedByUsername: `${input.authorName ?? ''}  ${input.authorLastName ?? ''}`,
+                buttonText: 'Ver solicitud',
+                link: `${baseUrl ?? 'https://solucionado.com.ar'}/solicitudes-de-servicio/${input.serviceRequestId}`,
+                userName: user?.first_name ?? '',
+                recipientMail: user?.email as string,
+                type: 'budget',
+            }).then((res) => {
+            console.log('email sent', res)
+            }).catch((e) => {
+                            console.log('error al enviar el mail', e)
+            });
         const notification = await ctx.prisma.notification.create({
             data: {
                 title: input.title,
@@ -203,19 +215,7 @@ export const notificationRouter = createTRPCRouter({
                 },
             },
         });
-        sendEmail({
-                categorieName: category?.name as string,
-                requestedByUsername: `${input.authorName ?? ''}  ${input.authorLastName ?? ''}`,
-                buttonText: 'Ver solicitud',
-                link: `${baseUrl ?? 'https://solucionado.com.ar'}/solicitudes-de-servicio/${input.serviceRequestId}`,
-                userName: user?.first_name ?? '',
-                recipientMail: user?.email as string,
-                type: 'budget',
-            }).then((res) => {
-            console.log('email sent', res)
-            }).catch((e) => {
-                            console.log('error al enviar el mail', e)
-            });
+
         return notification;
     }),
     createServicePayment: protectedProcedure.input(
@@ -310,17 +310,7 @@ export const notificationRouter = createTRPCRouter({
             authorLastName: z.string(),
         })
     ).mutation(async ({ ctx, input }) => {
-        const user = await ctx.prisma.user.findUnique({
-            where: {
-                externalId: input.userId,
-            },
-            select: {
-                first_name: true,
-                last_name: true,
-                emailAddressId: true,
-                email: true,
-            },
-        });
+
 
         const notification = await ctx.prisma.notification.create({
             data: {

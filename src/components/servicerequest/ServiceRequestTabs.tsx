@@ -9,7 +9,6 @@ import dynamic from 'next/dynamic'
 import { useUser } from '@clerk/nextjs'
 import Spinner from '../ui/spinner'
 import CommentsForm from '../comments/CommentForm'
-import { Button } from '../ui/button'
 import { Separator } from '@/app/ui/separator'
 
 const budgetTableDynamic = () =>
@@ -30,7 +29,7 @@ export default function ServiceRequestTabs({ id }: Props) {
 
     const DynamicBudgetTable = budgetTableDynamic();
 
-    const { data: budgets, isLoading: budgetsIsLoading } =
+    const { data: budgets } =
         api.budget.getAll.useQuery({ serviceRequestId: id }, {
             staleTime: Infinity,
         });

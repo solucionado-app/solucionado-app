@@ -1,7 +1,5 @@
 import React from 'react'
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '../ui/dialog'
-import { AlertDialogHeader } from '../ui/alert-dialog'
-import { RegisterSolucionadorUser } from './RegisterSolucionadorUser'
+
 import { Card } from '../ui/card'
 import Link from 'next/link'
 

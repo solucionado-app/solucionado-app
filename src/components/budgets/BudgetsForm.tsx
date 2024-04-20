@@ -26,12 +26,9 @@ import { format } from "date-fns"
 import { api } from "~/utils/api";
 import { trpc } from '~/utils/trpc'
 import AlertMercadoPagoIntegrate from './AlertMercadoPagoIntegrate'
-import dynamic from 'next/dynamic'
 
 
-const getDynamicAlertProfile = () => dynamic(() => import('./AlertMercadoPagoIntegrate'), {
-    loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
-})
+
 interface Props {
     serviceRequest: ServiceRequest | null | undefined,
     serviceRequestId: string
@@ -127,9 +124,9 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
     return (
         user && user?.id !== serviceRequest?.userId && <>
             <div>
-                <h1 className="text-5xl font-extrabold tracking-tight">Generar Presupuesto</h1>
+                <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">Generar Presupuesto</h1>
             </div><Form {...form}>
-                <form id='budget-form' onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+                <form id='budget-form' onSubmit={form.handleSubmit(onSubmit)} className="max-w-md space-y-3">
                     <FormField
                         control={form.control}
                         name="price"
@@ -165,8 +162,6 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
                             </FormItem>
                         )}
                     />
-
-
                     <FormField
                         control={form.control}
                         name="estimatedAt"
@@ -210,7 +205,7 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
                             </FormItem>
                         )}
                     />
-                    <Button formTarget='budget-form' form='budget-form' disabled={!isSignedIn} type="submit">Generar Presupuesto</Button>
+                    <Button className='w-full md:w-auto' formTarget='budget-form' form='budget-form' disabled={!isSignedIn} type="submit">Generar Presupuesto</Button>
                     <AlertMercadoPagoIntegrate open={open}  setOpen={setOpen}/>
                 </form>
             </Form>
