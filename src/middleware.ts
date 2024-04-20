@@ -1,6 +1,7 @@
 import {  authMiddleware } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 export default authMiddleware({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     afterAuth:  (auth, req, evt) => {
         // ...
         // if(auth.user?.phoneNumbers.length === 0){

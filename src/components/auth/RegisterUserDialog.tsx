@@ -1,6 +1,5 @@
 import React from 'react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
-import { RegisterUser } from './RegisterUser'
+
 import { Card } from '../ui/card'
 import Link from 'next/link'
 

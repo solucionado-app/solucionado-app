@@ -15,8 +15,6 @@ import {
 import { Input } from "~/components/ui/input"
 
 import { useForm } from "react-hook-form";
-import { api } from "~/utils/api"
-import { useUser } from "@clerk/nextjs"
 import { type RegisterSolucionadorFormValues, localRegisterSolucionador } from "@/src/lib/localStorage"
 import { useFormSteps } from "./ContextSolucionadorForm"
 import Spinner from "../../ui/spinner"
@@ -29,7 +27,6 @@ const formSchema = z.object({
 
 
 export default function SecondStep() {
-    const { user, isSignedIn } = useUser()
     const local: RegisterSolucionadorFormValues = localRegisterSolucionador.get()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -44,7 +41,6 @@ export default function SecondStep() {
     };
 
 
-    const { mutate } = api.user.update.useMutation()
     // 1. Define your form.
 
     // 2. Define a submit handler.

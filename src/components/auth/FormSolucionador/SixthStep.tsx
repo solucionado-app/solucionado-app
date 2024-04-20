@@ -3,7 +3,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import Select from 'react-select'
 
-import { Button } from "~/components/ui/button"
 import {
     Form,
     FormControl,
@@ -19,7 +18,6 @@ import { api } from "~/utils/api"
 import { useUser } from "@clerk/nextjs"
 import { type RegisterSolucionadorFormValues, localRegisterSolucionador } from "@/src/lib/localStorage"
 import { useFormSteps } from "./ContextSolucionadorForm"
-import { useRouter } from "next/navigation"
 import Submitbutton from "./Submitbutton"
 
 
@@ -49,7 +47,6 @@ export default function SecondStep() {
         setCurrentStep(currentStep + 1);
     };
 
-    const router = useRouter()
     const usermutate = api.user.update.useMutation()
     // 1. Define your form.
     const { data: categories, isLoading } = api.categories.getAll.useQuery();

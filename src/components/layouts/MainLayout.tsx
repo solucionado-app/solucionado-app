@@ -1,6 +1,5 @@
 
 
-import { ClerkProvider } from "@clerk/nextjs";
 import Nav from "../Nav";
 import MainHead from "./head/MainHead";
 

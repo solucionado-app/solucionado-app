@@ -26,12 +26,9 @@ import { format } from "date-fns"
 import { api } from "~/utils/api";
 import { trpc } from '~/utils/trpc'
 import AlertMercadoPagoIntegrate from './AlertMercadoPagoIntegrate'
-import dynamic from 'next/dynamic'
 
 
-const getDynamicAlertProfile = () => dynamic(() => import('./AlertMercadoPagoIntegrate'), {
-    loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
-})
+
 interface Props {
     serviceRequest: ServiceRequest | null | undefined,
     serviceRequestId: string

@@ -31,9 +31,7 @@ const tabsDynamic = () =>
     loading: () => <Spinner className="h-12 w-12 text-solBlue" />,
   });
 
-const confetiDynamic = () =>
-  dynamic(() => import(`@/src/components/auth/FormSolucionador/ConfettiAnimation`), {
-  });
+
 
 const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   id,
