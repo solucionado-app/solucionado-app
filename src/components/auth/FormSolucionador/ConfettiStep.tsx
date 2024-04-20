@@ -1,10 +1,10 @@
-import { Button } from '@/app/ui/button';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { confetti } from '@tsparticles/confetti';
 import { SendWhatsapp } from '@/src/server/whatsapp';
 import { localRegisterSolucionador, type RegisterSolucionadorFormValues } from '@/src/lib/localStorage';
 import { useFormSteps } from './ContextSolucionadorForm';
+import { Button } from '../../ui/button';
 
 export const confettiAni = () => {
     const count = 200;
