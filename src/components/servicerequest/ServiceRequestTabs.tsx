@@ -81,7 +81,7 @@ export default function ServiceRequestTabs({ id }: Props) {
                                         />
                                     </CardHeader>
                                     <Separator />
-                                    <CardContent className="space-y-2 p-2 md:p-10">
+                                    <CardContent className="space-y-2 pt-6 ">
                                         <div className="space-y-1">
 
                                                 <CardTitle>Presupuestos</CardTitle>
@@ -104,18 +104,18 @@ export default function ServiceRequestTabs({ id }: Props) {
                 <TabsContent value="comments">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Comentarios</CardTitle>
-                            <CardDescription>Estos van los comentarios de tu solicitud</CardDescription>
+                            {serviceRequest?.status !== 'ACEPTED' && <CommentsForm
+                                serviceRequest={serviceRequest}
+                                serviceRequestId={id}
+                                categoryName={serviceRequest?.category.name}
+                            />}
                         </CardHeader>
-                        <CardContent className="space-y-2">
-                            <div className="space-y-1">
-                                {serviceRequest?.status !== 'ACEPTED' && <CommentsForm
-                                    serviceRequest={serviceRequest}
-                                    serviceRequestId={id}
-                                    categoryName={serviceRequest?.category.name}
-                                />}
-                                <CommentsServiceRequest serviceRequestId={id} />
-                            </div>
+                        <CardContent className="space-y-3">
+                            <CardTitle>Comentarios</CardTitle>
+                            <CommentsServiceRequest serviceRequestId={id} />
+
+
+
                         </CardContent>
                         <CardFooter>
                             {/* <Button>Ver Más</Button> */}

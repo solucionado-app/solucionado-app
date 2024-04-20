@@ -126,7 +126,7 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
             <div>
                 <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">Generar Presupuesto</h1>
             </div><Form {...form}>
-                <form id='budget-form' onSubmit={form.handleSubmit(onSubmit)} className="max-w-md space-y-3">
+                <form id='budget-form' onSubmit={form.handleSubmit(onSubmit)} className="max-w-md space-y-2">
                     <FormField
                         control={form.control}
                         name="price"
