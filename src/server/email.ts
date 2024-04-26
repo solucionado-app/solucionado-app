@@ -1,5 +1,5 @@
 import { type EmailNewServiceData } from "@/app/api/mail/newService/route";
-import { EmailPaymentData } from "@/app/api/mail/payment/route";
+import { type EmailPaymentData } from "@/app/api/mail/payment/route";
 import { type EmailRequestData } from "@/app/api/mail/serviceRequest/route";
 import { env } from "@/src/env.mjs";
 

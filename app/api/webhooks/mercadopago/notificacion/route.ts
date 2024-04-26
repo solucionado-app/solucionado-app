@@ -1,6 +1,5 @@
 import { sendNewServiceEmail } from "@/src/server/email";
-import { SendWhatsapp } from "@/src/server/whatsapp";
-import { ca } from "date-fns/locale";
+import { baseUrl, SendWhatsapp } from "@/src/server/whatsapp";
 import { NextResponse } from "next/server";
 import { prisma } from "~/server/db";
 
@@ -17,7 +16,8 @@ async function handler(request: Request) {
   } = payload;
   console.log(id, type);
   console.log(payload);
-  if (type === "payment" || type === "refund") {
+  if(!id) return NextResponse.json({}, { status: 200 });
+  if (type === "payment" || type === "refund"  ) {
     try {
       const responseCompra = await fetch(
         `https://api.mercadopago.com/v1/payments/${id}`,
@@ -51,6 +51,7 @@ async function handler(request: Request) {
         select: {
           id: true,
           price: true,
+          status: true,
           serviceRequestId: true,
           user: {
             select: {
@@ -89,7 +90,8 @@ async function handler(request: Request) {
         budget &&
         type === "payment" &&
         data.status === "approved" &&
-        data.status_detail === "accredited"
+        data.status_detail === "accredited" &&
+        budget.status === "PENDING"
       ) {
         await prisma.budget.update({
           where: {
@@ -136,15 +138,15 @@ async function handler(request: Request) {
               to: `whatsapp:${whatsapp}`,
             });
           }
+
+
           await sendNewServiceEmail({
             categorieName: budget.serviceRequest.category.name,
             requestedByUsername: `${
               budget.serviceRequest.user.first_name as string
             } ${budget.serviceRequest.user.last_name as string}`,
             buttonText: "Ver servicio",
-            link: `${process.env.NEXT_PUBLIC_WEB_URL as string}/service/${
-              newService.id
-            }`,
+            link: `${baseUrl}/service/${newService.id}`,
             userName: `${budget.user.first_name as string} ${
               budget.user.last_name as string
             }`,
