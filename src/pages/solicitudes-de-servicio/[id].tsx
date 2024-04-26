@@ -23,8 +23,7 @@ import { useCallback, useEffect, useState } from "react";
 import { trpc } from "@/src/utils/trpc";
 import { useToast } from "@/src/components/ui/use-toast";
 import { confettiAni } from "@/src/components/auth/FormSolucionador/ConfettiStep";
-
-
+import { useUser } from "@clerk/nextjs";
 
 const tabsDynamic = () =>
   dynamic(() => import(`~/components/servicerequest/ServiceRequestTabs`), {
@@ -37,8 +36,10 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   id,
 }) => {
   const router = useRouter();
-
+  const { user } = useUser();
+  const isSolucionador = user?.unsafeMetadata?.role === 'SOLUCIONADOR';
   const handleGoToSolicitudes = () => {
+    if (isSolucionador) router.push("/solucionador/solicitudes-de-servicio");
     router.push("/solicitudes-de-servicio");
   };
   const searchParams = useSearchParams();
@@ -74,7 +75,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
 
   const notification = notificationApi.create.useMutation()
-  const utils = trpc.useContext()
+  const utils = trpc.useUtils()
   const [notificationsSent, setNotificationsSent] = useState(false);
 
   const sendNotifications = useCallback(() => {
@@ -212,6 +213,7 @@ const CategoryPage: MyPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
                 <p className="text-md font-normal tracking-tight">
                   <span className="font-medium">Horario :</span> {serviceRequest?.schedule}
                 </p>
+                {serviceRequest?.cityId}
                 {serviceRequest?.details &&
                   Object.keys(serviceRequest?.details).map((key: string, i) => (
                     <p key={i}>

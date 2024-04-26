@@ -67,14 +67,16 @@ const SheetContent = React.forwardRef<
         className={cn(sheetVariants({ side }), className)}
         {...props}
       >
-        <SheetPrimitive.Close className=" pl-6 flex w-full items-center  space-x-3 rounded-sm ring-offset-background transition-opacity disabled:pointer-events-none ">
+        <SheetPrimitive.Close key={'close'} className=" pl-6 flex w-full items-center  space-x-3 rounded-sm ring-offset-background transition-opacity disabled:pointer-events-none ">
           <Menu className="h-6 w-6" />
           <span className="sr-only">Close</span>
+          <SheetClose asChild  >
           <Link
 
             className=" "
             href="/"
           >
+
             <Image
               id='logo'
               src="/solucionado.svg"
@@ -85,6 +87,7 @@ const SheetContent = React.forwardRef<
             />
 
           </Link>
+          </SheetClose>
 
         </SheetPrimitive.Close>
         {children}

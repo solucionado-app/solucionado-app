@@ -1,6 +1,6 @@
 "use client"
 
-import { SignOutButton, SignedIn } from "@clerk/nextjs";
+import { SignOutButton, SignedIn, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -18,8 +18,8 @@ type Props = {
 
 const ProfileDropdown = ({ children }: Props) => {
   const pathName = usePathname();
-  console.log(pathName);
-
+  const {user} = useUser();
+  const userMetadata = user?.unsafeMetadata;
   return (
     <Dialog>
       <DropdownMenu>
@@ -39,7 +39,7 @@ const ProfileDropdown = ({ children }: Props) => {
               Mi Perfil
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          {!userMetadata?.completedProfile && <DropdownMenuItem>
             <Link
               className={`text-sm ${pathName === "/completar-perfil"
                 ? "font-semibold text-sol_lightBlue"
@@ -49,7 +49,7 @@ const ProfileDropdown = ({ children }: Props) => {
             >
               Completar Perfil
             </Link>
-          </DropdownMenuItem>
+          </DropdownMenuItem>}
           <DropdownMenuItem>
             <Link
               className={`text-sm ${pathName === "/servicios"
@@ -58,7 +58,7 @@ const ProfileDropdown = ({ children }: Props) => {
                 }`}
               href="/servicios"
             >
-              Mis servicios
+              Servicios contratados
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
@@ -70,10 +70,37 @@ const ProfileDropdown = ({ children }: Props) => {
                   }`}
                 href="/solicitudes-de-servicio"
               >
-                Solicitudes de Servicio
+                Mis solicitudes de Servicio
               </Link>
             </SignedIn>
           </DropdownMenuItem>
+          <DropdownMenuLabel>Solucionador</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {userMetadata?.role === "SOLUCIONADOR" && <DropdownMenuItem>
+            <Link
+              className={`text-sm ${pathName === "/servicios/solucionador"
+                ? "font-semibold text-sol_lightBlue"
+                : ""
+                }`}
+              href="/servicios/solucionador"
+            >
+              Servicios como solucionador
+            </Link>
+          </DropdownMenuItem>}
+
+          {userMetadata?.role === "SOLUCIONADOR" && <DropdownMenuItem>
+              <Link
+              className={`text-sm ${pathName === "/solucionador/solicitudes-de-servicio"
+                  ? "font-semibold text-sol_lightBlue"
+                  : ""
+                  }`}
+                href="/solucionador/solicitudes-de-servicio"
+              >
+                Solicitudes en la zona
+              </Link>
+          </DropdownMenuItem>
+    }
+          <DropdownMenuSeparator />
           <DropdownMenuItem>
             <SignOutButton>Cerrar Sesion</SignOutButton>{" "}
           </DropdownMenuItem>

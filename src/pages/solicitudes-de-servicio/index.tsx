@@ -116,7 +116,7 @@ const ServiceRequest: MyPage = () => {
             }
             {/* {services && <ServiceRequestTable serviceRequests={services} />} */}
             {isFetched && !services && (
-              <div className="text-2xl">No hay servicios</div>
+              <div className="text-2xl">Aun no has hecho ninguna solicitud de servicio</div>
             )}
           </div>
         </div>

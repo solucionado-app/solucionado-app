@@ -86,7 +86,7 @@ export default function CommentServiceForm({
     //     }
     // },
   });
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
   const notification = api.notification.createCommentNotification.useMutation();
   function onSubmit(data: z.infer<typeof FormSchema>) {
     mutateComment.mutate(

@@ -19,7 +19,7 @@ export default function NotificationItem({ notification }: Props) {
     const { mutate: markAsUnread } = api.notification.markAsUnread.useMutation()
     const { mutate: markAsRead } = api.notification.markAsRead.useMutation()
     const { mutate: deleteNotification } = api.notification.delete.useMutation()
-    const utils = trpc.useContext()
+    const utils = trpc.useUtils()
     const handleMarkAsUnread = () => {
         markAsUnread({
             notificationId: notification.id,

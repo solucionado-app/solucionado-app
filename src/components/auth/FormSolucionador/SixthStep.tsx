@@ -71,7 +71,14 @@ export default function SecondStep() {
                     step: 6,
                 }
                 localRegisterSolucionador.set(newLocal)
+
+                if (user.unsafeMetadata.role === 'SOLUCIONADOR') {
+                    user.update({ unsafeMetadata: { ...user.unsafeMetadata, completedProfile: true } })
+                        .then((res) => console.log(res))
+                        .catch((error: { errors: unknown }) => console.log("An error occurred:", error?.errors));
+                }
                 handleNextStep()
+
             },
             onError: (error) => {
                 if (error.shape?.code === -32603) {
