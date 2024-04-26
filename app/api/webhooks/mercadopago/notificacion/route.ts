@@ -53,7 +53,7 @@ async function handler(request: Request) {
           price: true,
           status: true,
           serviceRequestId: true,
-          user: {
+          author: {
             select: {
               email: true,
               first_name: true,
@@ -127,7 +127,7 @@ async function handler(request: Request) {
               },
             },
           });
-          let whatsapp = budget.user.phone;
+          let whatsapp = budget.author.phone;
 
           if (!!whatsapp) {
             if (!whatsapp.startsWith("+549")) {
@@ -145,10 +145,10 @@ async function handler(request: Request) {
             } ${serviceRequest.user.last_name as string}`,
             buttonText: "Ver servicio",
             link: `${baseUrl}/service/${newService.id}`,
-            userName: `${budget.user.first_name as string} ${
-              budget.user.last_name as string
+            userName: `${budget.author.first_name as string} ${
+              budget.author.last_name as string
             }`,
-            recipientMail: budget.user.email,
+            recipientMail: budget.author.email,
             price: budget.price,
             city: serviceRequest?.City
               ? serviceRequest?.City.name

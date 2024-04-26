@@ -44,14 +44,14 @@ export default function NewServiceEmail({
                     </Section>
                     <Heading className="text-black text-[24px] font-normal text-center p-0 py-[30px] mx-0">
 
-                        {'Tu presupuesto de'}<strong>{price}</strong> {'ha sido aceptado y confirmado.'}
+                        {'Tu presupuesto de '}<strong>${price}</strong> {'ha sido aceptado y confirmado.'}
                     </Heading>
                     <Text className="text-black text-[14px] leading-[24px]">
                         Hola {userName},
                     </Text>
                     <Text className="text-black text-[14px] leading-[24px]">
-                        <strong>{requestedByUsername}</strong> ha aceptado tu presupuesto y ha pagado <strong>{price}</strong> para su solicitud servicio de <strong>{categorieName}</strong> en {" "}
-                        <strong>{address}</strong> {""} <strong>{city}</strong>
+                        <strong>{requestedByUsername}</strong> ha aceptado tu presupuesto y ha pagado <strong>${price}</strong> para su solicitud servicio de <strong>{categorieName}</strong> en {" "}
+                        <strong>{address}</strong> {","} <strong>{city}</strong>
                     </Text>
                     <Text className="text-black text-[14px] leading-[24px]">
                         En cuanto puedas, por favor contacta a <strong>{requestedByUsername}</strong> para coordinar la visita y realizar el trabajo.
