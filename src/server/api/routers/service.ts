@@ -81,14 +81,14 @@ export const serviceRouter = createTRPCRouter({
                       name: true,
                     },
                   },
-                },
-              },
-              user: {
-                select: {
-                  id: true,
-                  first_name: true,
-                  last_name: true,
-                  email: true,
+                  user: {
+                    select: {
+                      id: true,
+                      first_name: true,
+                      last_name: true,
+                      email: true,
+                    },
+                  },
                 },
               },
             },
@@ -96,7 +96,7 @@ export const serviceRouter = createTRPCRouter({
         },
       });
 
-      const user = service?.budget.user;
+      const user = service?.budget.serviceRequest.user;
       const budgetAuthor = service?.budget.author;
       const notiData = {
         title: `Hemos enviado $${input.price} a tu cuenta, por tu servicio de ${input.categoryName}. Puedes ver el detalle de la transacción en tu cuenta.`,
