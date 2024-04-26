@@ -9,6 +9,7 @@ async function handler(request: Request) {
     type: string;
     data: { id: string };
   };
+  if (!payload.data?.id) return NextResponse.json({}, { status: 200 });
   const {
     type,
     data: { id },
@@ -16,7 +17,6 @@ async function handler(request: Request) {
   } = payload;
   console.log(id, type);
   console.log(payload);
-  if(!id) return NextResponse.json({}, { status: 200 });
   if (type === "payment" || type === "refund"  ) {
     try {
       const responseCompra = await fetch(
