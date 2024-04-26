@@ -26,6 +26,7 @@ import { format } from "date-fns"
 import { api } from "~/utils/api";
 import { trpc } from '~/utils/trpc'
 import AlertMercadoPagoIntegrate from './AlertMercadoPagoIntegrate'
+import Spinner from '../ui/spinner'
 
 
 
@@ -205,7 +206,7 @@ export default function BudgetsForm({ serviceRequest, serviceRequestId }: Props)
                             </FormItem>
                         )}
                     />
-                    <Button className='w-full md:w-auto' formTarget='budget-form' form='budget-form' disabled={!isSignedIn} type="submit">Generar Presupuesto</Button>
+                    <Button className='w-full md:w-auto' disabled={!isSignedIn} type="submit">{mutateBugdet.isLoading && <Spinner className="w-5" />} {mutateBugdet.isLoading ?  'Enviando presupuesto...' :'Generar presupuesto'}</Button>
                     <AlertMercadoPagoIntegrate open={open}  setOpen={setOpen}/>
                 </form>
             </Form>
