@@ -61,28 +61,6 @@ async function handler(request: Request) {
               phone: true,
             },
           },
-          serviceRequest: {
-            select: {
-              categoryId: true,
-              category: {
-                select: {
-                  name: true,
-                },
-              },
-              address: true,
-              City: {
-                select: {
-                  name: true,
-                },
-              },
-              user: {
-                select: {
-                  first_name: true,
-                  last_name: true,
-                },
-              },
-            },
-          },
         },
       });
 
@@ -93,7 +71,7 @@ async function handler(request: Request) {
         data.status_detail === "accredited" &&
         budget.status === "PENDING"
       ) {
-        await prisma.budget.update({
+         await prisma.budget.update({
           where: {
             id: budget.id,
           },
@@ -101,13 +79,35 @@ async function handler(request: Request) {
             status: "ACEPTED",
             status_detail: data.status_detail,
           },
+
         });
-        await prisma.serviceRequest.update({
+        const serviceRequest = await prisma.serviceRequest.update({
           where: {
             id: budget.serviceRequestId,
           },
           data: {
             status: "ACEPTED",
+          },
+          select: {
+            id: true,
+            category: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            address: true,
+            City: {
+              select: {
+                name: true,
+              },
+            },
+            user: {
+              select: {
+                first_name: true,
+                last_name: true,
+              },
+            },
           },
         });
         try {
@@ -122,7 +122,7 @@ async function handler(request: Request) {
               description: data.metadata.description,
               category: {
                 connect: {
-                  id: budget.serviceRequest.categoryId,
+                  id: serviceRequest.category.id,
                 },
               },
             },
@@ -138,13 +138,11 @@ async function handler(request: Request) {
               to: `whatsapp:${whatsapp}`,
             });
           }
-
-
           await sendNewServiceEmail({
-            categorieName: budget.serviceRequest.category.name,
+            categorieName: serviceRequest.category.name,
             requestedByUsername: `${
-              budget.serviceRequest.user.first_name as string
-            } ${budget.serviceRequest.user.last_name as string}`,
+              serviceRequest.user.first_name as string
+            } ${serviceRequest.user.last_name as string}`,
             buttonText: "Ver servicio",
             link: `${baseUrl}/service/${newService.id}`,
             userName: `${budget.user.first_name as string} ${
@@ -152,10 +150,10 @@ async function handler(request: Request) {
             }`,
             recipientMail: budget.user.email,
             price: budget.price,
-            city: budget.serviceRequest?.City
-              ? budget.serviceRequest?.City.name
+            city: serviceRequest?.City
+              ? serviceRequest?.City.name
               : "Neuquen",
-            address: budget.serviceRequest.address as string,
+            address: serviceRequest.address as string,
           });
         } catch (error) {
           console.log(error);

@@ -67,6 +67,12 @@ export const FormStepsProvider = ({ children, setOpen }: Props) => {
                 phone: user.primaryPhoneNumber.phoneNumber
             }
             localRegisterSolucionador.set(newLocal)
+            if (userFromdb?.phone !== user.primaryPhoneNumber.phoneNumber) {
+                mutate({
+                    userId: user.id,
+                    phone: user.primaryPhoneNumber.phoneNumber
+                })
+            }
         }
         if (!user.hasVerifiedPhoneNumber || !user?.phoneNumbers?.length) {
             if (userFromdb?.role === 'ADMIN') return 1
