@@ -25,7 +25,7 @@ const ServiceRequest: MyPage = () => {
       <MainHead title="Solucionado App" description="app solucionado" />
 
       <main className="flex min-h-screen w-full flex-col items-center ">
-        <div className="flex w-full max-w-7xl flex-col items-center justify-center gap-12 px-4 py-16 ">
+        <div className="flex w-full max-w-7xl flex-col items-center justify-center gap-12 px-4 py-24 ">
           <h1 className="text-5xl font-extrabold tracking-tight">Servicios</h1>
           {isLoading && <Spinner className="h-12 w-12 text-solBlue" />}
           {/* {services && services?.map((service) => (

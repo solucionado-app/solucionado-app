@@ -2,12 +2,10 @@ import React from 'react';
 import { Tailwind, Button, Body, Container, Heading, Section, Text, Link, Img, Hr } from "@react-email/components";
 import { type EmailRequestProps } from './NewServiceRequestEmail';
 
-export type EmailPaymentProps = EmailRequestProps & {
+export type EmailServiceProps = EmailRequestProps & {
     price: number;
-    cbu: string;
-    city: string;
     address: string;
-
+    city: string;
 };
 
 export default function NewServiceEmail({
@@ -15,13 +13,12 @@ export default function NewServiceEmail({
     buttonText = 'Ver solicitud',
     userName = 'Francisco',
     categorieName = 'Electricidad',
-    cbu = '001',
+    requestedByUsername = 'Santiago',
     price,
     address,
     city,
-}: EmailPaymentProps) {
+    }: EmailServiceProps) {
     // const baseUrl = getBaseUrl();
-
     return (
         <Tailwind
             config={{
@@ -47,26 +44,20 @@ export default function NewServiceEmail({
                     </Section>
                     <Heading className="text-black text-[24px] font-normal text-center p-0 py-[30px] mx-0">
 
-                        {' Nueva pago en tu servicio de '}  <strong>{categorieName}</strong>
+                        {'Tu presupuesto de'}<strong>{price}</strong> {'ha sido aceptado y confirmado.'}
                     </Heading>
                     <Text className="text-black text-[14px] leading-[24px]">
                         Hola {userName},
                     </Text>
                     <Text className="text-black text-[14px] leading-[24px]">
-                        Hemos enviado un pago por tu servicio de <strong>{categorieName}</strong> en{" "} <strong>{address}</strong>, <strong>{city}</strong>.
+                        <strong>{requestedByUsername}</strong> ha aceptado tu presupuesto y ha pagado <strong>{price}</strong> para su solicitud servicio de <strong>{categorieName}</strong> en {" "}
+                        <strong>{address}</strong> {""} <strong>{city}</strong>
                     </Text>
                     <Text className="text-black text-[14px] leading-[24px]">
-                        En breve recibirás el dinero en tu cuenta bancaria. Por un total de <strong>${price}</strong>.
+                        En cuanto puedas, por favor contacta a <strong>{requestedByUsername}</strong> para coordinar la visita y realizar el trabajo.
                     </Text>
                     <Text className="text-black text-[14px] leading-[24px]">
-                        Detalles:
-                    </Text>
-                    <Text className="text-black text-[14px] leading-[24px]">
-                        CBU: <strong>{cbu}</strong>
-                        Total: <strong>${price}</strong>.
-                    </Text>
-                    <Text className="text-black text-[14px] leading-[24px]">
-                        Gracias por confiar en Solucionado para tus servicios.
+                        En cuanto <strong>{requestedByUsername}</strong> marque como completado el servicio liberaremos <strong>${price}</strong> al cbu asociado a tu cuenta.
                     </Text>
                     <Section className="text-center mt-[32px] mb-[32px] ">
                         <Button

@@ -46,7 +46,7 @@ export const CommentProfileForm: React.FC<CommentProfileFormProps> = ({
     },
   });
   const { mutate: createComment, isLoading } = api.comment.create.useMutation();
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     createComment(

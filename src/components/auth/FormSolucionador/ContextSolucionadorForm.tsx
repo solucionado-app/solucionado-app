@@ -14,6 +14,7 @@ interface FormStepsContextType {
     isLoading: boolean,
     handleStepSubmission: (step: number, values: any) => Promise<unknown>;
     setOpen?: Dispatch<SetStateAction<boolean>>;
+    isLoadingStep: boolean;
 
 }
 
@@ -28,6 +29,7 @@ const FormStepsContext = createContext<FormStepsContextType>({
     isLoading: false,
     handleStepSubmission: () => new Promise(() => { }),
     setOpen: () => { },
+    isLoadingStep: false
 
 });
 
@@ -45,7 +47,7 @@ export const FormStepsProvider = ({ children, setOpen }: Props) => {
     const [currentStep, setCurrentStep] = useState(0);
     const [formValues, setFormValues] = useState<Record<string, any>>({});
     const [isLoading, setIsLoading] = useState(false);
-
+    const [isLoadingStep, setIsLoadingStep] = useState(true);
     const prismaUser = api.user.getById.useQuery(undefined, {
         enabled: !!user?.id
     })
@@ -56,6 +58,9 @@ export const FormStepsProvider = ({ children, setOpen }: Props) => {
         // if (user.id === 'user_2aEYpsnkUQjrD1kNxkagEcYXQ0N'){
         //     user.primaryPhoneNumber?.destroy()
         // }
+        const userMetadata = user?.unsafeMetadata;
+        const role = userMetadata?.role
+        const isSolucionador = role === 'SOLUCIONADOR'
         if(user.primaryPhoneNumber){
             const newLocal: RegisterSolucionadorFormValues = {
                 ...local,
@@ -74,10 +79,10 @@ export const FormStepsProvider = ({ children, setOpen }: Props) => {
             return 3; // Fourth step
         } else if (!userFromdb?.cityId || !userFromdb?.address) {
             return 4; // Fifth step
-        } else if (userFromdb?.categories?.length === 0) {
+        } else if (isSolucionador && userFromdb?.categories?.length === 0) {
             return 5; // Fifth step
         } else {
-
+            if(!isSolucionador) return 5;
             return 6;
             // All steps completed
         }
@@ -101,6 +106,8 @@ export const FormStepsProvider = ({ children, setOpen }: Props) => {
             // If the user data is loaded, determine the initial step from the user data
             const initialStep = determineInitialStep(user, prismaUser.data);
             setCurrentStep(initialStep);
+            setIsLoadingStep(false);
+
         }
 
         return () => {
@@ -157,7 +164,7 @@ export const FormStepsProvider = ({ children, setOpen }: Props) => {
             });
     };
     return (
-        <FormStepsContext.Provider value={{ currentStep, setCurrentStep, formValues, setFormValues, isLoading, handleStepSubmission, setOpen }}>
+        <FormStepsContext.Provider value={{ currentStep, setCurrentStep, formValues, setFormValues, isLoading, handleStepSubmission, setOpen, isLoadingStep }}>
             {children}
         </FormStepsContext.Provider>
     );

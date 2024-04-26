@@ -19,7 +19,7 @@ export default function NotificationsContent({ notificationsNumber, ...props }: 
 
     })
     const { mutate: markAllAsRead } = api.notification.markAllAsRead.useMutation()
-    const utils = trpc.useContext()
+    const utils = trpc.useUtils()
     const handelMarkAllAsRead = () => markAllAsRead(undefined, {
         onSuccess: () => {
             void utils.notification.countUnRead.invalidate()

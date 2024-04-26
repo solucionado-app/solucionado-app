@@ -33,9 +33,8 @@ export function ServiceDataTableRowActions({
     row,
 }: DataTableRowActionsProps) {
     const task = row.original
-    const utils = trpc.useContext()
+    const utils = trpc.useUtils()
     const [open, setOpen] = useState(false)
-    const notification = api.notification.createServicePayment.useMutation()
     const mutate = api.service.update.useMutation()
     const acredit = api.service.acredit.useMutation({
         onSuccess: () => {

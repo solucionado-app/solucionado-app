@@ -2,24 +2,22 @@ import React from 'react';
 import { Tailwind, Button, Body, Container, Heading, Section, Text, Link, Img, Hr } from "@react-email/components";
 import { type EmailRequestProps } from './NewServiceRequestEmail';
 
-export type EmailPaymentProps = EmailRequestProps & {
+export type EmailServiceProps = EmailRequestProps & {
     price: number;
-    cbu: string;
-    city: string;
     address: string;
-
+    city: string;
 };
 
-export default function NewServiceEmail({
+export default function FinishServiceEmail({
     link = 'https://solucionado.com.ar/solicitudes-de-servicio/',
     buttonText = 'Ver solicitud',
     userName = 'Francisco',
     categorieName = 'Electricidad',
-    cbu = '001',
+    requestedByUsername = 'Santiago',
     price,
     address,
     city,
-}: EmailPaymentProps) {
+}: EmailServiceProps) {
     // const baseUrl = getBaseUrl();
 
     return (
@@ -53,17 +51,11 @@ export default function NewServiceEmail({
                         Hola {userName},
                     </Text>
                     <Text className="text-black text-[14px] leading-[24px]">
-                        Hemos enviado un pago por tu servicio de <strong>{categorieName}</strong> en{" "} <strong>{address}</strong>, <strong>{city}</strong>.
+                        <strong>{requestedByUsername}</strong> ha liberado el pago para tu servicio de <strong>{categorieName}</strong> en{" "}
+                        <strong>{address}</strong>{" ,"} <strong>{city}</strong>.
                     </Text>
                     <Text className="text-black text-[14px] leading-[24px]">
                         En breve recibirás el dinero en tu cuenta bancaria. Por un total de <strong>${price}</strong>.
-                    </Text>
-                    <Text className="text-black text-[14px] leading-[24px]">
-                        Detalles:
-                    </Text>
-                    <Text className="text-black text-[14px] leading-[24px]">
-                        CBU: <strong>{cbu}</strong>
-                        Total: <strong>${price}</strong>.
                     </Text>
                     <Text className="text-black text-[14px] leading-[24px]">
                         Gracias por confiar en Solucionado para tus servicios.

@@ -81,7 +81,7 @@ export const FormStepsProvider = ({ children }: Props) => {
     const citymutation = api.city.findOrcreate.useMutation()
     const provincemutation = api.province.findOrcreate.useMutation()
     const { user } = useUser()
-    const utils = trpc.useContext()
+    const utils = trpc.useUtils()
     const handleSubmition = (local: ServiceRequest | undefined) => {
         const date = new Date(local?.date as Date)
         setIsSubmitting(true); // Set isSubmitting to true when the submission starts

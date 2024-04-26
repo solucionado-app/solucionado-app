@@ -1,18 +1,15 @@
 import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
-import { type EmailRequestProps } from "@/src/emails/NewServiceRequestEmail";
-import NewServiceRequestEmail from "@/src/emails/NewServiceRequestEmail";
-import NewBudgetEmail from "@/src/emails/NewBudgetEmail";
 
 import { render } from "@react-email/render";
 import { type NextRequest, NextResponse } from "next/server";
+import NewServiceEmail, { type EmailServiceProps } from "@/src/emails/NewServiceEmail";
 
 const mailerSend = new MailerSend({
   apiKey: process.env.MAILERSEND_API_KEY || "",
 });
 
-export type EmailRequestData = EmailRequestProps & {
+export type EmailNewServiceData = EmailServiceProps & {
   recipientMail: string;
-  type: "serviceRequest" | "budget" | "comment" | "payment";
 };
 
 async function handler(request: NextRequest) {
@@ -23,24 +20,26 @@ async function handler(request: NextRequest) {
     link,
     userName,
     recipientMail,
-    type,
-  } = (await request.json()) as EmailRequestData;
+    price,
+    address,
+    city,
+  } = (await request.json()) as EmailNewServiceData;
 
-  const emailProps: EmailRequestProps = {
+  const emailProps: EmailServiceProps = {
     categorieName: categorieName,
     requestedByUsername: requestedByUsername,
     buttonText: buttonText,
     link: link,
     userName: userName,
+    price: price,
+    address: address,
+    city: city,
     // set other props here
   };
   console.log("emailProps", emailProps);
-  let emailHtml = render(NewServiceRequestEmail(emailProps));
-  let subject = `Nueva solicitud de servicio de ${categorieName} en tu zona`;
-  if (type && type === "budget") {
-    emailHtml = render(NewBudgetEmail(emailProps));
-    subject = `Nuevo presupuesto en tu solicitud de ${categorieName}`;
-  }
+  const emailHtml = render(NewServiceEmail(emailProps));
+  const subject = `${requestedByUsername} ha aceptado y pagado tu presupuesto de ${price}`;
+
 
   const sentFrom = new Sender("info@solucionado.com.ar", "Info");
   const recipients = [new Recipient(recipientMail, userName)];
@@ -65,4 +64,5 @@ async function handler(request: NextRequest) {
     return NextResponse.json(e, { status: 400 });
   }
 }
+
 export const POST = handler;

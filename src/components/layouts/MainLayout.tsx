@@ -3,7 +3,7 @@
 import Nav from "../Nav";
 import MainHead from "./head/MainHead";
 
-interface MainLayoutProps {
+export interface MainLayoutProps {
     children: React.ReactNode | React.JSX.Element;
     title: string;
     description: string;
