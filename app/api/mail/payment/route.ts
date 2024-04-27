@@ -40,7 +40,7 @@ async function handler(request: NextRequest) {
   };
   console.log("emailProps", emailProps);
   const emailHtml = render(ServicePaymentEmail(emailProps));
-  const subject = `Se ha enviado ${price} a tu cuenta por el servicio de ${categorieName} en ${city}`;
+  const subject = `Hemos enviado $${price} a tu cuenta por el servicio de ${categorieName} en ${city}`;
 
   const sentFrom = new Sender("info@solucionado.com.ar", "Info");
   const recipients = [new Recipient(recipientMail, userName)];
