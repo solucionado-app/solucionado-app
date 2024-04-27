@@ -23,7 +23,8 @@ import { type paymentStatus, paymentStatuses } from "../data/serviceData"
 import { api } from "@/src/utils/api"
 import { trpc } from "@/src/utils/trpc"
 import { useState } from "react"
-import { Dialog, DialogContent, DialogHeader } from "@/src/components/ui/dialog"
+import { Dialog } from "@/src/components/ui/dialog"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader } from "@/app/ui/alert-dialog"
 
 interface DataTableRowActionsProps {
     row: Row<ServiceAdmin>
@@ -35,6 +36,7 @@ export function ServiceDataTableRowActions({
     const task = row.original
     const utils = trpc.useUtils()
     const [open, setOpen] = useState(false)
+    const [openAcredit, setOpenAcredit] = useState(false)
     const mutate = api.service.update.useMutation()
     const acredit = api.service.acredit.useMutation({
         onSuccess: () => {
@@ -49,17 +51,24 @@ export function ServiceDataTableRowActions({
         console.log(status, task.category)
         console.log(task.id, task.paymentStatus)
         if (status === 'ACREDITADO') {
-            setOpen(true)
+            setOpenAcredit(true)
         }
-        mutate.mutate({ id: task.id, paymentStatus: status ? status : 'PENDIENTE' }, {
-            onSuccess: () => {
-                console.log('success')
-                void utils.service.getEvery.invalidate()
-            },
-            onError: (error) => {
-                console.log(error)
-            }
-        })
+        else{
+            mutate.mutate({ id: task.id, paymentStatus: status ? status : 'PENDIENTE' }, {
+                onSuccess: () => {
+                    console.log('success')
+                    void utils.service.getEvery.invalidate()
+                },
+                onError: (error) => {
+                    console.log(error)
+                }
+            })
+        }
+
+    }
+    const handleCloseAcredit = () => {
+        setOpenAcredit(false)
+        setTimeout(() => (document.body.style.pointerEvents = ""), 500)
     }
     const handleAcredit = () => {
         acredit.mutate({
@@ -71,11 +80,11 @@ export function ServiceDataTableRowActions({
             onSuccess: () => {
                 console.log('success')
                 void utils.service.getEvery.invalidate()
-                handleClose()
+                handleCloseAcredit()
             },
             onError: (error) => {
                 console.log(error)
-                handleClose()
+                handleCloseAcredit()
 
             }
         })
@@ -90,7 +99,7 @@ export function ServiceDataTableRowActions({
     return (
         <>
             <Dialog open={open}
-                onOpenChange={handleClose}
+                onOpenChange={setOpen}
 
             >
                 <DropdownMenu>
@@ -111,6 +120,7 @@ export function ServiceDataTableRowActions({
                             <DropdownMenuRadioItem key={status.value}
                                 value={status.value ?? 'PENDIENTE'}
                                 onSelect={() => handlePaymentStatusChange(status.value)}
+                                className="cursor-pointer  "
                             >
                                 <div className="flex w-[100px] items-center">
                                     {status.icon && (
@@ -127,29 +137,45 @@ export function ServiceDataTableRowActions({
             </DropdownMenuContent>
                 </DropdownMenu>
 
-                <DialogContent>
-                    <DialogHeader>
-                        <div className="text-2xl text-center font-bold text-gray-900">Esta opcion no es reversible!</div>
-                    </DialogHeader>
-                    <div className="flex flex-col items-center justify-center">
-                        <div className="flex flex-col text-center items-center justify-center">
-                            <div>Esta opcion le enviara un mail a el usuario notificandole que se ha acredtado su pago.
+                <AlertDialog open={openAcredit}
+                    onOpenChange={setOpenAcredit}
+                >
+                    <AlertDialogContent
+                    >
+                        <AlertDialogHeader>
+                            <div className="text-2xl text-center font-bold text-gray-900">Esta opcion no es reversible!</div>
+                            <div className="flex flex-col text-center items-center justify-center">
+                                <div>
+                                    Esta opcion le enviara un mail a el usuario notificandole que se ha acredtado su pago.
+                                </div>
+                                <span>Precio: {task.budget.price}</span>
+                                <span>Cbu: {task.budget.author.cbu}</span>
                             </div>
-                            <span>Precio: {task.budget.price}</span>
-                            <span>Cbu: {task.budget.author.cbu}</span>
+                        </AlertDialogHeader>
+                        <div className="flex flex-col items-center justify-center">
+
+                            <AlertDialogFooter>
+                                <AlertDialogAction>
+                                    <Button
+                                        className="w-full"
+                                        variant="default"
+                                        onClick={handleAcredit}
+                                    >
+                                        Enviar mail
+                                    </Button>
+                                </AlertDialogAction>
+                                <AlertDialogCancel>
+                                    Cancelar
+                                </AlertDialogCancel>
+                            </AlertDialogFooter>
+
+
+
                         </div>
-                        <div className="flex items-center justify-center mt-4">
-                            <Button
-                                className="w-full"
-                                variant="default"
-                                onClick={handleAcredit}
-                            >
-                                Enviar mail
-                            </Button>
-                        </div>
-                    </div>
-                </DialogContent>
+                    </AlertDialogContent>
+                </AlertDialog>
             </Dialog>
+
 
 
         </>

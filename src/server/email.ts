@@ -42,7 +42,7 @@ export const sendNewServiceEmail = async (data: EmailNewServiceData) => {
 };
 
 export const sendPaymentEmail = async (data: EmailPaymentData) => {
-  return fetch(`${baseUrl}/api/mail/newService`, {
+  return fetch(`${baseUrl}/api/mail/payment`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

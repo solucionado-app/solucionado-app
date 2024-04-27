@@ -58,12 +58,13 @@ export default function NewServiceEmail({
                     <Text className="text-black text-[14px] leading-[24px]">
                         En breve recibirás el dinero en tu cuenta bancaria. Por un total de <strong>${price}</strong>.
                     </Text>
-                    <Text className="text-black text-[14px] leading-[24px]">
+                    <Text className="text-black text-[12px] leading-[16px]">
                         Detalles:
+                        <Text className='ml-2'>CBU: <strong>{cbu}</strong></Text>
+                        <Text className='ml-2'>Total: <strong>${price}</strong>.</Text>
                     </Text>
                     <Text className="text-black text-[14px] leading-[24px]">
-                        CBU: <strong>{cbu}</strong>
-                        Total: <strong>${price}</strong>.
+
                     </Text>
                     <Text className="text-black text-[14px] leading-[24px]">
                         Gracias por confiar en Solucionado para tus servicios.

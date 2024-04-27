@@ -104,7 +104,7 @@ export const serviceRouter = createTRPCRouter({
         link: `${baseUrl ?? "https://solucionado.com.ar"}/servicios/${
           service.id
         }`,
-        serviceRequestId: service.id,
+        serviceRequestId: service.budget.serviceRequestId,
         userId: budgetAuthor?.id,
         budgetId: service?.budget.id,
         authorName: user?.first_name || "",
@@ -123,12 +123,7 @@ export const serviceRouter = createTRPCRouter({
           },
           author: {
             connect: {
-              externalId: user.id,
-            },
-          },
-          serviceRequest: {
-            connect: {
-              id: notiData.serviceRequestId,
+              externalId: ctx.auth.userId,
             },
           },
           budget: {
@@ -234,6 +229,12 @@ export const serviceRouter = createTRPCRouter({
           budget: {
             select: {
               id: true,
+              user:{
+                select:{
+                  first_name:true,
+                  last_name:true
+                }
+              },
               serviceRequestId: true,
               serviceRequest:{
                 select:{
@@ -241,23 +242,24 @@ export const serviceRouter = createTRPCRouter({
                 }
               },
             },
-
           },
         },
       });
 
-      const user = ctx.auth.user;
+      const user = service?.budget.user;
+
+
       const notiData = {
         title: `Se ha marcado como completado tu servicio de ${input.categoryName} en breve te acreditaremos $${input.price} a tu cuenta.`,
         content: `Se ha marcado como completado tu servicio de ${input.categoryName} en breve te acreditaremos $${input.price} a tu cuenta.`,
         link: `${baseUrl ?? "https://solucionado.com.ar"}/servicios/${
           service.id
         }`,
-        serviceRequestId: service.id,
+        serviceRequestId: service?.budget.serviceRequestId,
         userId: input?.budgetAuthorId,
         budgetId: service?.budget.id,
-        authorName: user?.firstName || "",
-        authorLastName: user?.lastName || "",
+        authorName: user?.first_name || "",
+        authorLastName: user?.last_name || "",
         categoryName: input.categoryName,
       };
       await ctx.prisma.notification.create({
@@ -272,7 +274,7 @@ export const serviceRouter = createTRPCRouter({
           },
           author: {
             connect: {
-              externalId: user?.id,
+              externalId: ctx.auth.userId,
             },
           },
           serviceRequest: {
@@ -289,8 +291,8 @@ export const serviceRouter = createTRPCRouter({
       });
       sendFinishServiceEmail({
         categorieName: notiData.categoryName,
-        requestedByUsername: `${user?.firstName || ""} ${
-          user?.lastName || ""
+        requestedByUsername: `${user?.first_name || ""} ${
+          user?.last_name || ""
         } `,
         buttonText: "Ver solicitud",
         link: `https://solucionado.com.ar'/solicitudes-de-servicio/${notiData.serviceRequestId}`,
