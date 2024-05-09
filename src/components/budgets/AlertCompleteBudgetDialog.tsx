@@ -14,7 +14,7 @@ import {
     AlertDialogTrigger,
 } from "~/components/ui/alert-dialog"
 import { Button } from "~/components/ui/button"
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
 import { type BudgetsTableProps } from "./BudgetsTable";
 import { useObservable } from "@legendapp/state/react";
 
