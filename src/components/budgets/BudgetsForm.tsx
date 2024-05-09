@@ -37,12 +37,12 @@ interface Props {
 const locale = es;
 
 const FormSchema = z.object({
-    price: z.coerce.number().min(19, {
-        message: "debe haber al menos un valor mayor a 2000.",
+    price: z.coerce.number().min(30, {
+        message: "debe haber al menos un valor mayor a 30.",
     }),
     description: z
         .string()
-        .nonempty("La descripcion es requerida.")
+        .min(1,"La descripcion es requerida.")
         .max(160, {
             message: "Debe tener maximo 130 caracteres.",
         }),
