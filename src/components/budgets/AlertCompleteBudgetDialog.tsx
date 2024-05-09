@@ -18,62 +18,60 @@ import dynamic from "next/dynamic";
 import { type BudgetsTableProps } from "./BudgetsTable";
 import { useObservable } from "@legendapp/state/react";
 
-const getDynamicMercadoPago = () => dynamic(() => import(`~/components/budgets/MercadoPagoDialog`), {
-    loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
-})
+//  const getDynamicMercadoPago = () => dynamic(() => import(`~/components/budgets/MercadoPagoDialog`), {
+//      loading: () => <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>,
+//  })
 
 interface Props {
     budget: BudgetsTableProps
 }
 import { enableReactUse } from "@legendapp/state/config/enableReactUse";
+import MercadoPagoDialog from "./MercadoPagoDialog";
 enableReactUse();
 
 export default function AlertDialogDemo({ budget }: Props) {
 
     const { user } = useUser()
-    const [isOpen, setIsOpen] = useState(false)
-    const [isLoading, setisLoading] = useState(true)
-    const DynamicMercadoPago = getDynamicMercadoPago()
+    const [open, setOpen] = useState(true)
+    //  const DynamicMercadoPago = getDynamicMercadoPago()
     const preference$ = useObservable({ id: "" })
-    const metadata = {
-        user_id: user?.id as string,
-        budget_id: budget.id,
-        description: budget.description,
-        price: budget.price,
-    }
-    const validartoken = budget.author.mpCode && typeof budget.author.mpCode === 'object' && 'access_token' in budget.author.mpCode ? budget.author.mpCode?.access_token as string : ""
-    const createPreference = async () => {
-        const requestData = {
-            items: [
-                {
-                    id: budget.id,
-                    title: `Pagar Presupuesto a ${budget.author.first_name || ""} por ${budget.price} `,
-                    description: budget.description,
-                    picture_url: "http://www.myapp.com/myimage.jpg",
-                    category_id: "car_electronics",
-                    quantity: 1,
-                    currency_id: "ARS",
-                    unit_price: budget.price * 1.11,
-                },
-            ],
-            payer: {
-                name: user?.firstName as string,
-                surname: user?.lastName as string,
-            },
-            metadata: {
-                user_id: user?.id as string,
-                budget_id: budget.id,
+
+    const requestData = {
+        items: [
+            {
+                id: budget.id,
+                title: `Pagar Presupuesto a ${budget.author.first_name || ""} por ${budget.price} `,
                 description: budget.description,
-                price: budget.price,
+                picture_url: "http://www.myapp.com/myimage.jpg",
+                category_id: "car_electronics",
+                quantity: 1,
+                currency_id: "ARS",
+                unit_price: budget.price * 1.11,
             },
-            notification_url: `${process.env.NEXT_PUBLIC_MP_DOMAIN as string}/api/webhooks/mercadopago/notificacion`,
-            back_urls: {
-                success: `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}/servicios`,
-                failure: `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}/error`,
-                pending: `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}/solicitudes-de-servicio`,
-            },
-            differential_pricing: {},
-        };
+        ],
+        payer: {
+            name: user?.firstName as string,
+            surname: user?.lastName as string,
+        },
+        metadata: {
+            user_id: user?.id as string,
+            budget_id: budget.id,
+            description: budget.description,
+            price: budget.price,
+        },
+        notification_url: `${process.env.NEXT_PUBLIC_MP_DOMAIN as string}/api/webhooks/mercadopago/notificacion`,
+        back_urls: {
+            success: `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}/servicios`,
+            failure: `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}/error`,
+            pending: `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}/solicitudes-de-servicio`,
+        },
+        differential_pricing: {},
+    };
+    const createPreference = async () => {
+        if (preference$.get().id){
+            setOpen(true)
+            return
+        }
 
         try {
             const response = await fetch(`https://api.mercadopago.com/checkout/preferences`, {
@@ -93,7 +91,6 @@ export default function AlertDialogDemo({ budget }: Props) {
                 preference$.set({ id: id })
                 console.log(preference$.get().id)
 
-                setIsOpen(true)
             }
         }
         catch (error) {
@@ -104,7 +101,7 @@ export default function AlertDialogDemo({ budget }: Props) {
     preference$.use()
     return (
         <>
-            <AlertDialog>
+            <AlertDialog >
                 <AlertDialogTrigger asChild >
                     <Button className="w-full bg-solYellow" variant={"ghost"} > Aceptar</Button>
                 </AlertDialogTrigger>
@@ -123,19 +120,14 @@ export default function AlertDialogDemo({ budget }: Props) {
 
                     </AlertDialogFooter>
                 </AlertDialogContent>
-            </AlertDialog>
 
-            {preference$.get().id !== "" && <DynamicMercadoPago
-                open={isOpen}
-                metadata={metadata}
-                publickey={budget.author.mpCode && typeof budget.author.mpCode === 'object' && 'public_key' in budget.author.mpCode ?
-                    budget.author.mpCode?.public_key as string : ''}
-                isLoading={isLoading}
-                amount={budget.price}
-                token={validartoken}
-                setIsloading={() => setisLoading(false)}
-                onClose={() => setIsOpen(false)}
+            </AlertDialog>
+            {preference$.get().id !== "" && <MercadoPagoDialog
+                open={open}
+                setOpen={setOpen}
+                requestData={requestData}
                 preferenceId={preference$.get().id} />}
+
         </>
     )
 }

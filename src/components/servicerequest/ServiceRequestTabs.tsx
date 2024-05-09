@@ -42,8 +42,10 @@ export default function ServiceRequestTabs({ id }: Props) {
     );
 
     const searchParams = useSearchParams();
-    console.log(serviceRequest?.userId);
     const tab = searchParams?.get("tab");
+    if(!serviceRequest || !isLoaded || !user || !budgets || !budgetListSolucionador) {
+        return <Spinner className="h-28 w-28 text-solBlue" />;
+    }
     return (
         <>
             {!serviceRequest && !isLoaded && !user && <Spinner className="h-12 w-12 text-solBlue" />}
