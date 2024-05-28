@@ -1,5 +1,5 @@
 
-import { Status } from "@prisma/client";
+import { type Status } from "@prisma/client";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 

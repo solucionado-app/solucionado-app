@@ -168,7 +168,9 @@ export default function HomeSelect({ categories, isLoading }: props) {
 
                     className="w-full m-0 p-0 "
                     isLoading={isLoading}
-
+                    onChange={(option) => {
+                      void router.push(`/solucionar/${option?.slug ?? ''}`);
+                    }}
                     placeholder="Necesito ayuda con..."
                     options={categories}
                     getOptionLabel={(option) => option.name}

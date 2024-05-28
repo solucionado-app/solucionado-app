@@ -18,7 +18,7 @@ type Props = {
 
 const ProfileDropdown = ({ children }: Props) => {
   const pathName = usePathname();
-  const {user} = useUser();
+  const { user } = useUser();
   const userMetadata = user?.unsafeMetadata;
   return (
     <Dialog>
@@ -74,23 +74,24 @@ const ProfileDropdown = ({ children }: Props) => {
               </Link>
             </SignedIn>
           </DropdownMenuItem>
-          <DropdownMenuLabel>Solucionador</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          {userMetadata?.role === "SOLUCIONADOR" && <DropdownMenuItem>
-            <Link
-              className={`text-sm ${pathName === "/servicios/solucionador"
-                ? "font-semibold text-sol_lightBlue"
-                : ""
-                }`}
-              href="/servicios/solucionador"
-            >
-              Servicios como solucionador
-            </Link>
-          </DropdownMenuItem>}
 
-          {userMetadata?.role === "SOLUCIONADOR" && <DropdownMenuItem>
+          {userMetadata?.role === "SOLUCIONADOR" && <>
+            <DropdownMenuLabel>Solucionador</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
               <Link
-              className={`text-sm ${pathName === "/solucionador/solicitudes-de-servicio"
+                className={`text-sm ${pathName === "/servicios/solucionador"
+                  ? "font-semibold text-sol_lightBlue"
+                  : ""
+                  }`}
+                href="/servicios/solucionador"
+              >
+                Servicios como solucionador
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link
+                className={`text-sm ${pathName === "/solucionador/solicitudes-de-servicio"
                   ? "font-semibold text-sol_lightBlue"
                   : ""
                   }`}
@@ -98,8 +99,9 @@ const ProfileDropdown = ({ children }: Props) => {
               >
                 Solicitudes en la zona
               </Link>
-          </DropdownMenuItem>
-    }
+            </DropdownMenuItem>
+          </>}
+
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <SignOutButton>Cerrar Sesion</SignOutButton>{" "}

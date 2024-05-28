@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { sendEmail } from "../../email";
+import {  SendWhatsappServiceRequest } from "../../whatsapp";
 const baseUrl = `${process.env.NEXT_PUBLIC_MP_DOMAIN ?? 'localhost:3000'}`;
 
 
@@ -515,6 +516,23 @@ export const notificationRouter = createTRPCRouter({
                         }).catch((e) => {
                             console.log('error al enviar el mail', e)
                         });
+                    }
+                    if(user.phone){
+                        SendWhatsappServiceRequest({
+                            variables: {
+                                userName: user.first_name ?? '',
+                                requestedBy: `${notification?.author.first_name ?? ''}  ${notification?.author.last_name ?? ''}`,
+                                categoryName: input.categoryName as string,
+                                serviceRequestId: input.serviceRequestId,
+                            },
+                            to: user.phone,
+                            })
+                          .then((res) => {
+                            console.log("whatsapp sent", res);
+                          })
+                          .catch((e) => {
+                            console.log("error al enviar el whatsapp", e);
+                          });
                     }
 
                 });
