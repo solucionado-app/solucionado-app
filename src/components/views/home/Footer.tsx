@@ -137,8 +137,9 @@ export default function Footer() {
                     </li>
                     <li>
                       <a
-                        href="#"
+                        href="https://www.instagram.com/solucionado.servicios/"
                         className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#0b2554] transition duration-500 hover:bg-solYellow hover:text-white"
+                        target="_blank"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

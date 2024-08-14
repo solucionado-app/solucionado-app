@@ -32,7 +32,7 @@ const Home: MyPage = () => {
       <SolucionadorCTA />
       <BeneficiosSection />
       <About categories={categories} isLoading={isLoading} />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <Footer />
 
     </>

@@ -40,7 +40,7 @@ function MyApp({ Component, pageProps }: MyAppProps) {
 
 
   return (
-    <main className={poppins.className}>
+    <main className={`${poppins.className}`} suppressHydrationWarning>
       <ClerkProvider localization={esES} {...pageProps}>
         <Layout title={title} description={description}>
           <Loading />

@@ -13,7 +13,7 @@ const Contacto: MyPage = () => {
                                 Contactenos
                             </strong>
                             <br />
-                            Respondemos a la brevedad!
+                            Respondemos a la brevedad
                         </h1>
                     </div>
                     <ContactForm />
