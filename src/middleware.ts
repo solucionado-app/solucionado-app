@@ -13,7 +13,10 @@ export default authMiddleware({
         // if(auth.isApiRoute && !!auth.userId){
         //     return NextResponse.next()
         // }
-        if (!auth.userId && !auth.isPublicRoute){
+        if (!auth.isPublicRoute){
+            if (auth.userId) {
+              return NextResponse.next();
+            }
             const url = new URL(`/login?redirect=${req.nextUrl.pathname}`, req.url);
             return NextResponse.redirect(url)
         }
